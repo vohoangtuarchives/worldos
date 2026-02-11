@@ -1,0 +1,94 @@
+{
+    "material_activation": {
+        "DIVINE_KINGSHIP": [
+            "The king proclaims divine authority over the realm.",
+            "Sacred rites legitimize the ruler's claim to power."
+        ],
+        "RITUAL_SACRIFICE": [
+            "The priests demand a great sacrifice to appease the gods.",
+            "Blood must be spilled to maintain cosmic order."
+        ],
+        "PROPHETIC_MOVEMENT": [
+            "A prophet emerges, speaking of visions and transformation.",
+            "The faithful gather to hear revelations of a new age."
+        ],
+        "HERO_JOURNEY": [
+            "A hero hears the call to adventure.",
+            "Trials await those who seek to transform the world."
+        ],
+        "SCAPEGOATING": [
+            "The people seek someone to blame for their misfortunes.",
+            "A scapegoat is chosen to bear the community's sins."
+        ],
+        "PLAGUE_DISRUPTION": [
+            "A mysterious illness spreads through the land.",
+            "Death walks among the people, sparing none."
+        ],
+        "PEASANT_REVOLT": [
+            "The oppressed rise up against their masters.",
+            "Torches and pitchforks fill the streets."
+        ],
+        "MARKET_CITY": [
+            "Merchants gather, transforming the settlement into a hub of trade.",
+            "Goods from distant lands flow through the marketplace."
+        ]
+    },
+    "material_collapse": {
+        "DIVINE_KINGSHIP": [
+            "The king's divine authority is questioned and rejected.",
+            "Sacred legitimacy crumbles as the ruler falls from grace."
+        ],
+        "RITUAL_SACRIFICE": [
+            "The people refuse to continue the bloody rites.",
+            "The sacrificial altar stands empty and abandoned."
+        ],
+        "PROPHETIC_MOVEMENT": [
+            "The prophet's visions are revealed as false.",
+            "The faithful disperse, disillusioned and lost."
+        ]
+    },
+    "material_mutation": {
+        "DIVINE_KINGSHIP->THEOCRATIC_STATE": [
+            "The king's divine authority evolves into absolute theocratic rule.",
+            "Religious law becomes the foundation of all governance."
+        ],
+        "DIVINE_KINGSHIP->SYMBOLIC_MONARCHY": [
+            "The king retains ceremonial status but loses real power.",
+            "Divine authority becomes mere pageantry."
+        ],
+        "RITUAL_SACRIFICE->SYMBOLIC_OFFERING": [
+            "Blood sacrifice transforms into symbolic ritual.",
+            "The gods are appeased with tokens rather than lives."
+        ],
+        "PROPHETIC_MOVEMENT->MESSIANIC_CULT": [
+            "The prophetic movement crystallizes into a messianic cult.",
+            "Followers await the promised savior with fervent devotion."
+        ],
+        "SCAPEGOATING->WITCH_HUNT": [
+            "Scapegoating escalates into systematic witch hunts.",
+            "Accusations of witchcraft spread like wildfire."
+        ],
+        "GIFT_ECONOMY->PATRONAGE_NETWORK": [
+            "Gift-giving becomes hierarchical patronage.",
+            "Favors are traded in webs of obligation and power."
+        ]
+    },
+    "material_conflict": {
+        "DIVINE_KINGSHIP+PROPHETIC_MOVEMENT": [
+            "The prophet challenges the king's divine right to rule.",
+            "A schism forms between old order and new revelation."
+        ],
+        "RITUAL_SACRIFICE+HERO_JOURNEY": [
+            "The hero refuses to be sacrificed, defying the priests.",
+            "Individual will clashes with collective ritual demand."
+        ],
+        "SCAPEGOATING+MARKET_CITY": [
+            "Merchants are blamed for the city's moral decay.",
+            "Trade and commerce become targets of popular anger."
+        ],
+        "DIVINE_KINGSHIP+PEASANT_REVOLT": [
+            "The peasants rise against the divinely ordained king.",
+            "Sacred authority faces the fury of the oppressed."
+        ]
+    }
+}

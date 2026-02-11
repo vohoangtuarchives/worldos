@@ -1,0 +1,287 @@
+{
+    "DIVINE_KINGSHIP": {
+        "character_archetypes": [
+            "king",
+            "priest",
+            "divine_ruler"
+        ],
+        "traits": [
+            "authoritative",
+            "sacred",
+            "commanding",
+            "legitimate",
+            "distant"
+        ],
+        "narrative_roles": [
+            "ruler",
+            "religious_authority",
+            "lawgiver"
+        ]
+    },
+    "RITUAL_SACRIFICE": {
+        "character_archetypes": [
+            "priest",
+            "executioner",
+            "victim"
+        ],
+        "traits": [
+            "ritualistic",
+            "devout",
+            "merciless",
+            "fearful",
+            "resigned"
+        ],
+        "narrative_roles": [
+            "religious_authority",
+            "enforcer",
+            "martyr"
+        ]
+    },
+    "PROPHETIC_MOVEMENT": {
+        "character_archetypes": [
+            "prophet",
+            "visionary",
+            "preacher"
+        ],
+        "traits": [
+            "charismatic",
+            "inspired",
+            "radical",
+            "persuasive",
+            "zealous"
+        ],
+        "narrative_roles": [
+            "revolutionary",
+            "spiritual_guide",
+            "challenger"
+        ]
+    },
+    "HERO_JOURNEY": {
+        "character_archetypes": [
+            "hero",
+            "wanderer",
+            "champion"
+        ],
+        "traits": [
+            "brave",
+            "transformative",
+            "questing",
+            "determined",
+            "exceptional"
+        ],
+        "narrative_roles": [
+            "protagonist",
+            "savior",
+            "adventurer"
+        ]
+    },
+    "SCAPEGOATING": {
+        "character_archetypes": [
+            "scapegoat",
+            "accuser",
+            "mob_leader"
+        ],
+        "traits": [
+            "victimized",
+            "blamed",
+            "innocent",
+            "vengeful",
+            "manipulative"
+        ],
+        "narrative_roles": [
+            "victim",
+            "antagonist",
+            "crowd"
+        ]
+    },
+    "TRICKSTER_DISRUPTION": {
+        "character_archetypes": [
+            "trickster",
+            "rebel",
+            "jester"
+        ],
+        "traits": [
+            "cunning",
+            "subversive",
+            "boundary-crossing",
+            "clever",
+            "unpredictable"
+        ],
+        "narrative_roles": [
+            "disruptor",
+            "fool",
+            "catalyst"
+        ]
+    },
+    "GIFT_ECONOMY": {
+        "character_archetypes": [
+            "patron",
+            "client",
+            "gift_giver"
+        ],
+        "traits": [
+            "generous",
+            "obligated",
+            "reciprocal",
+            "strategic",
+            "honorable"
+        ],
+        "narrative_roles": [
+            "benefactor",
+            "debtor",
+            "mediator"
+        ]
+    },
+    "ORAL_TRADITION": {
+        "character_archetypes": [
+            "storyteller",
+            "elder",
+            "bard"
+        ],
+        "traits": [
+            "wise",
+            "memory-keeper",
+            "eloquent",
+            "traditional",
+            "respected"
+        ],
+        "narrative_roles": [
+            "narrator",
+            "teacher",
+            "historian"
+        ]
+    },
+    "FEUDAL_OATH": {
+        "character_archetypes": [
+            "lord",
+            "vassal",
+            "knight"
+        ],
+        "traits": [
+            "loyal",
+            "honorable",
+            "bound",
+            "hierarchical",
+            "dutiful"
+        ],
+        "narrative_roles": [
+            "master",
+            "servant",
+            "warrior"
+        ]
+    },
+    "MARKET_CITY": {
+        "character_archetypes": [
+            "merchant",
+            "trader",
+            "guild_master"
+        ],
+        "traits": [
+            "shrewd",
+            "cosmopolitan",
+            "pragmatic",
+            "wealthy",
+            "networked"
+        ],
+        "narrative_roles": [
+            "trader",
+            "negotiator",
+            "entrepreneur"
+        ]
+    },
+    "PEASANT_REVOLT": {
+        "character_archetypes": [
+            "rebel_leader",
+            "peasant",
+            "revolutionary"
+        ],
+        "traits": [
+            "angry",
+            "oppressed",
+            "defiant",
+            "desperate",
+            "united"
+        ],
+        "narrative_roles": [
+            "revolutionary",
+            "underdog",
+            "agitator"
+        ]
+    },
+    "PLAGUE_DISRUPTION": {
+        "character_archetypes": [
+            "plague_doctor",
+            "survivor",
+            "dying"
+        ],
+        "traits": [
+            "fearful",
+            "desperate",
+            "resilient",
+            "doomed",
+            "isolated"
+        ],
+        "narrative_roles": [
+            "healer",
+            "victim",
+            "witness"
+        ]
+    },
+    "ANCESTOR_VENERATION": {
+        "character_archetypes": [
+            "ancestor_spirit",
+            "descendant",
+            "medium"
+        ],
+        "traits": [
+            "reverent",
+            "connected",
+            "traditional",
+            "guided",
+            "haunted"
+        ],
+        "narrative_roles": [
+            "spirit",
+            "heir",
+            "intermediary"
+        ]
+    },
+    "BLOOD_FEUD": {
+        "character_archetypes": [
+            "avenger",
+            "kinsman",
+            "mediator"
+        ],
+        "traits": [
+            "vengeful",
+            "honor-bound",
+            "relentless",
+            "tribal",
+            "conflicted"
+        ],
+        "narrative_roles": [
+            "avenger",
+            "family_member",
+            "peacemaker"
+        ]
+    },
+    "SACRED_KINGSHIP": {
+        "character_archetypes": [
+            "sacred_king",
+            "high_priest",
+            "ritual_guardian"
+        ],
+        "traits": [
+            "divine",
+            "ceremonial",
+            "symbolic",
+            "powerful",
+            "isolated"
+        ],
+        "narrative_roles": [
+            "divine_ruler",
+            "religious_authority",
+            "symbol"
+        ]
+    }
+}

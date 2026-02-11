@@ -1,0 +1,314 @@
+{
+    "candidate_materials": [
+        {
+            "code": "DIVINE_KINGSHIP",
+            "ontology": "institutional",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "The sovereign is viewed as a deity or the chosen representative of the divine.",
+            "preconditions": [
+                "centralized authority",
+                "shared cosmology"
+            ],
+            "pressure_inputs": [
+                "succession crisis",
+                "natural disaster"
+            ],
+            "pressure_outputs": [
+                "religious institution",
+                "taboo enforcement"
+            ],
+            "incompatible_with": [
+                "EGALITARIAN_COUNCIL"
+            ],
+            "mutation_axes": [
+                "theocracy",
+                "symbolic monarchy"
+            ]
+        },
+        {
+            "code": "ANCESTRAL_LINEAGE",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "Social status and authority are derived from direct descent from a revered ancestor.",
+            "preconditions": [
+                "kinship structure",
+                "oral history"
+            ],
+            "pressure_inputs": [
+                "genealogical dispute",
+                "population migration"
+            ],
+            "pressure_outputs": [
+                "clan cohesion",
+                "xenophobia"
+            ],
+            "incompatible_with": [
+                "MERITOCRATIC_BUREAUCRACY"
+            ],
+            "mutation_axes": [
+                "dynastic myth",
+                "blood purity"
+            ]
+        },
+        {
+            "code": "RITUAL_SACRIFICE",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Regular offering of valuable resources or life to appease metaphysical forces.",
+            "preconditions": [
+                "scarcity mindset",
+                "metaphysical threat"
+            ],
+            "pressure_inputs": [
+                "famine",
+                "plague"
+            ],
+            "pressure_outputs": [
+                "social trauma",
+                "resource depletion"
+            ],
+            "incompatible_with": [
+                "HUMANIST_ETHICS"
+            ],
+            "mutation_axes": [
+                "symbolic offering",
+                "mass purge"
+            ]
+        },
+        {
+            "code": "PROPHETIC_MOVEMENT",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Charismatic leadership based on direct revelation attempting to upend the social order.",
+            "preconditions": [
+                "social unrest",
+                "stagnant hierarchy"
+            ],
+            "pressure_inputs": [
+                "oppression",
+                "crisis of faith"
+            ],
+            "pressure_outputs": [
+                "revolution",
+                "schism"
+            ],
+            "incompatible_with": [
+                "STATE_ORTHODOXY"
+            ],
+            "mutation_axes": [
+                "messianic cult",
+                "reformation"
+            ]
+        },
+        {
+            "code": "BUREAUCRATIC_EMPIRE",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Governance through a complex hierarchy of non-hereditary officials based on written rules.",
+            "preconditions": [
+                "literacy",
+                "large population"
+            ],
+            "pressure_inputs": [
+                "corruption",
+                "budget deficit"
+            ],
+            "pressure_outputs": [
+                "standardization",
+                "taxation"
+            ],
+            "incompatible_with": [
+                "TRIBAL_FEDERATION"
+            ],
+            "mutation_axes": [
+                "feudal fragmentation",
+                "surveillance state"
+            ]
+        },
+        {
+            "code": "COSMIC_DUALISM",
+            "ontology": "symbolic",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Belief that the world is a battleground between absolute good and absolute evil.",
+            "preconditions": [
+                "moral polarization"
+            ],
+            "pressure_inputs": [
+                "external war",
+                "cultural shock"
+            ],
+            "pressure_outputs": [
+                "crusade",
+                "inquisition"
+            ],
+            "incompatible_with": [
+                "SYNCRETIC_POLYTHEISM"
+            ],
+            "mutation_axes": [
+                "gnostic withdrawal",
+                "total war"
+            ]
+        },
+        {
+            "code": "GIFT_ECONOMY",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Exchange of goods and services without explicit agreement for immediate or future rewards.",
+            "preconditions": [
+                "high trust",
+                "small scale"
+            ],
+            "pressure_inputs": [
+                "market integration",
+                "resource hoarding"
+            ],
+            "pressure_outputs": [
+                "social debt",
+                "community bond"
+            ],
+            "incompatible_with": [
+                "COMMODITIZED_MARKET"
+            ],
+            "mutation_axes": [
+                "patronage network",
+                "bribe culture"
+            ]
+        },
+        {
+            "code": "SCAPEGOATING",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "dormant",
+            "description": "Blaming a specific group or individual for societal problems to restore internal cohesion.",
+            "preconditions": [
+                "social anxiety",
+                "definable outgroup"
+            ],
+            "pressure_inputs": [
+                "inexplicable failure",
+                "epidemic"
+            ],
+            "pressure_outputs": [
+                "purge",
+                "temporary peace"
+            ],
+            "incompatible_with": [
+                "UNIVERSAL_RIGHTS"
+            ],
+            "mutation_axes": [
+                "institutionalized racism",
+                "witch hunt"
+            ]
+        },
+        {
+            "code": "ORAL_TRADITION",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Transmission of cultural knowledge and law through spoken word and memory.",
+            "preconditions": [
+                "pre-literacy",
+                "elder authority"
+            ],
+            "pressure_inputs": [
+                "adoption of writing",
+                "genocide"
+            ],
+            "pressure_outputs": [
+                "cultural continuity",
+                "adaptability"
+            ],
+            "incompatible_with": [
+                "DOGMATIC_SCRIPTURE"
+            ],
+            "mutation_axes": [
+                "mythologization",
+                "secret societies"
+            ]
+        },
+        {
+            "code": "DIVINE_MANDATE",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "The right to rule is granted by a higher power and can be withdrawn.",
+            "preconditions": [
+                "monotheism/henotheism"
+            ],
+            "pressure_inputs": [
+                "regime failure",
+                "natural signs"
+            ],
+            "pressure_outputs": [
+                "dynastic cycle",
+                "rebellion justification"
+            ],
+            "incompatible_with": [
+                "POPULAR_SOVEREIGNTY"
+            ],
+            "mutation_axes": [
+                "absolutism",
+                "constitutional monarchy"
+            ]
+        },
+        {
+            "code": "FEUDAL_OATH",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Personal vows of loyalty and service exchanged for land or protection.",
+            "preconditions": [
+                "weak central state",
+                "military aristocracy"
+            ],
+            "pressure_inputs": [
+                "monetization",
+                "centralization"
+            ],
+            "pressure_outputs": [
+                "decentralized defense",
+                "chronic warfare"
+            ],
+            "incompatible_with": [
+                "STANDING_ARMY"
+            ],
+            "mutation_axes": [
+                "chivalric code",
+                "mafia code"
+            ]
+        },
+        {
+            "code": "MARKET_CITY",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Urban center dedicated to trade, often independent of territorial lords.",
+            "preconditions": [
+                "trade routes",
+                "surplus production"
+            ],
+            "pressure_inputs": [
+                "blockade",
+                "wealth concentration"
+            ],
+            "pressure_outputs": [
+                "social mobility",
+                "cultural exchange"
+            ],
+            "incompatible_with": [
+                "AGRARIAN_SERFDOM"
+            ],
+            "mutation_axes": [
+                "merchant republic",
+                "plutocracy"
+            ]
+        }
+    ]
+}

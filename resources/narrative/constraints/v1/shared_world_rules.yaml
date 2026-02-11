@@ -1,0 +1,23 @@
+constraints:
+  - id: power.mundane_clash
+    when: 
+      stage: mundane
+      scope: local
+    forbid: 
+      words: ["linh khí", "vỡ vụn hư không", "phi thăng"]
+      patterns: ["/([a-zA-Z0-9 ]+)/"] # No Western terms in localized mundane setting
+    reason: "Thực tại Mundane không cho phép từ ngữ tiên hiệp hoặc hiện đại quá mức."
+
+  - id: transition.pre_moment
+    when:
+      phase: pre
+    favor:
+      words: ["điềm báo", "bồn chồn", "dị tượng"]
+    reason: "Giai đoạn tích tụ cần tạo cảm giác bất an và kỳ ảo."
+
+  - id: global.legacy_respect
+    when:
+      scope: global
+    favor:
+      words: ["di sản", "vết sẹo lịch sử", "truyền thuyết"]
+    reason: "Sự kiện quy mô toàn cầu cần được nhắc đến như những bài học lịch sử."

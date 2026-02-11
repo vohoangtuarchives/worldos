@@ -1,0 +1,522 @@
+{
+    "candidate_materials": [
+        {
+            "code": "MATRILINEAL_DESCENT",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Kinship and inheritance traced through maternal line.",
+            "preconditions": [
+                "kinship system"
+            ],
+            "pressure_inputs": [
+                "patriarchal pressure",
+                "property dispute"
+            ],
+            "pressure_outputs": [
+                "female authority",
+                "uncle-nephew bond"
+            ],
+            "incompatible_with": [
+                "PATRILINEAL_DESCENT"
+            ],
+            "mutation_axes": [
+                "matriarchy",
+                "bilateral descent"
+            ]
+        },
+        {
+            "code": "BRIDE_PRICE",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Payment from groom's family to bride's family for marriage rights.",
+            "preconditions": [
+                "patrilocal residence",
+                "wealth transfer"
+            ],
+            "pressure_inputs": [
+                "inflation",
+                "elopement"
+            ],
+            "pressure_outputs": [
+                "commodification of women",
+                "alliance"
+            ],
+            "incompatible_with": [
+                "DOWRY_SYSTEM"
+            ],
+            "mutation_axes": [
+                "bride service",
+                "token payment"
+            ]
+        },
+        {
+            "code": "POTLATCH_REDISTRIBUTION",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Competitive gift-giving destroying wealth to gain prestige.",
+            "preconditions": [
+                "surplus production",
+                "status competition"
+            ],
+            "pressure_inputs": [
+                "wealth inequality",
+                "colonial ban"
+            ],
+            "pressure_outputs": [
+                "leveling mechanism",
+                "debt bondage"
+            ],
+            "incompatible_with": [
+                "CAPITAL_ACCUMULATION"
+            ],
+            "mutation_axes": [
+                "conspicuous consumption",
+                "cargo cult"
+            ]
+        },
+        {
+            "code": "INITIATION_RITE",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Ritual ordeal marking transition to adult status.",
+            "preconditions": [
+                "age-grade system",
+                "secret knowledge"
+            ],
+            "pressure_inputs": [
+                "modernization",
+                "trauma"
+            ],
+            "pressure_outputs": [
+                "social cohesion",
+                "gender segregation"
+            ],
+            "incompatible_with": [
+                "CONTINUOUS_MATURATION"
+            ],
+            "mutation_axes": [
+                "hazing",
+                "vision quest"
+            ]
+        },
+        {
+            "code": "TOTEM_CLAN",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Social group identified with non-human ancestor or spirit.",
+            "preconditions": [
+                "animism",
+                "exogamy"
+            ],
+            "pressure_inputs": [
+                "species extinction",
+                "conversion"
+            ],
+            "pressure_outputs": [
+                "taboo system",
+                "clan identity"
+            ],
+            "incompatible_with": [
+                "INDIVIDUALISM"
+            ],
+            "mutation_axes": [
+                "heraldry",
+                "mascot"
+            ]
+        },
+        {
+            "code": "AVOIDANCE_TABOO",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Strict prohibition on interaction between specific kin categories.",
+            "preconditions": [
+                "kinship rules",
+                "incest anxiety"
+            ],
+            "pressure_inputs": [
+                "violation",
+                "modernization"
+            ],
+            "pressure_outputs": [
+                "social distance",
+                "respect hierarchy"
+            ],
+            "incompatible_with": [
+                "CASUAL_KINSHIP"
+            ],
+            "mutation_axes": [
+                "mother-in-law avoidance",
+                "name taboo"
+            ]
+        },
+        {
+            "code": "SHAMANIC_HEALING",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Ritual specialist mediates between human and spirit realms for cure.",
+            "preconditions": [
+                "spirit belief",
+                "illness attribution"
+            ],
+            "pressure_inputs": [
+                "biomedicine",
+                "persecution"
+            ],
+            "pressure_outputs": [
+                "ecstatic trance",
+                "herbal knowledge"
+            ],
+            "incompatible_with": [
+                "SCIENTIFIC_MEDICINE"
+            ],
+            "mutation_axes": [
+                "faith healing",
+                "psychotherapy"
+            ]
+        },
+        {
+            "code": "BLOOD_FEUD",
+            "ontology": "behavioral",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Cyclical revenge killings between kin groups.",
+            "preconditions": [
+                "honor culture",
+                "weak state"
+            ],
+            "pressure_inputs": [
+                "insult",
+                "murder"
+            ],
+            "pressure_outputs": [
+                "vendetta",
+                "peace-making ritual"
+            ],
+            "incompatible_with": [
+                "STATE_MONOPOLY_VIOLENCE"
+            ],
+            "mutation_axes": [
+                "honor killing",
+                "gang warfare"
+            ]
+        },
+        {
+            "code": "CROSS_COUSIN_MARRIAGE",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Preferential marriage between children of opposite-sex siblings.",
+            "preconditions": [
+                "kinship calculation",
+                "alliance strategy"
+            ],
+            "pressure_inputs": [
+                "genetic risk",
+                "romantic choice"
+            ],
+            "pressure_outputs": [
+                "alliance renewal",
+                "closed network"
+            ],
+            "incompatible_with": [
+                "EXOGAMY"
+            ],
+            "mutation_axes": [
+                "parallel cousin marriage",
+                "endogamy"
+            ]
+        },
+        {
+            "code": "HEADHUNTING_PRESTIGE",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Taking enemy heads as proof of valor and spiritual power.",
+            "preconditions": [
+                "warrior culture",
+                "animist belief"
+            ],
+            "pressure_inputs": [
+                "pacification",
+                "scarcity of enemies"
+            ],
+            "pressure_outputs": [
+                "trophy display",
+                "fertility belief"
+            ],
+            "incompatible_with": [
+                "PACIFISM"
+            ],
+            "mutation_axes": [
+                "scalping",
+                "body count"
+            ]
+        },
+        {
+            "code": "BRIDE_CAPTURE",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Ritualized or actual abduction of women for marriage.",
+            "preconditions": [
+                "exogamy",
+                "gender inequality"
+            ],
+            "pressure_inputs": [
+                "resistance",
+                "legal prohibition"
+            ],
+            "pressure_outputs": [
+                "patrilocal residence",
+                "trauma"
+            ],
+            "incompatible_with": [
+                "CONSENT_MARRIAGE"
+            ],
+            "mutation_axes": [
+                "symbolic abduction",
+                "raiding"
+            ]
+        },
+        {
+            "code": "AGE_SET_SYSTEM",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Cohort of same-age individuals progressing through life stages together.",
+            "preconditions": [
+                "age-grading",
+                "collective identity"
+            ],
+            "pressure_inputs": [
+                "individualization",
+                "demographic shift"
+            ],
+            "pressure_outputs": [
+                "generational solidarity",
+                "gerontocracy"
+            ],
+            "incompatible_with": [
+                "INDIVIDUAL_LIFECYCLE"
+            ],
+            "mutation_axes": [
+                "warrior age-set",
+                "retirement cohort"
+            ]
+        },
+        {
+            "code": "FOOD_TABOO",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Prohibition on consuming specific animals or plants.",
+            "preconditions": [
+                "symbolic classification",
+                "group identity"
+            ],
+            "pressure_inputs": [
+                "famine",
+                "globalization"
+            ],
+            "pressure_outputs": [
+                "dietary identity",
+                "purity boundary"
+            ],
+            "incompatible_with": [
+                "OMNIVOROUS_PRAGMATISM"
+            ],
+            "mutation_axes": [
+                "kosher",
+                "veganism"
+            ]
+        },
+        {
+            "code": "SPIRIT_POSSESSION",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Temporary inhabitation of human body by supernatural entity.",
+            "preconditions": [
+                "spirit belief",
+                "trance capacity"
+            ],
+            "pressure_inputs": [
+                "skepticism",
+                "medicalization"
+            ],
+            "pressure_outputs": [
+                "oracle",
+                "exorcism"
+            ],
+            "incompatible_with": [
+                "MATERIALIST_PSYCHOLOGY"
+            ],
+            "mutation_axes": [
+                "channeling",
+                "dissociative disorder"
+            ]
+        },
+        {
+            "code": "JOKING_RELATIONSHIP",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Prescribed irreverence between specific kin categories to ease tension.",
+            "preconditions": [
+                "kinship structure",
+                "potential conflict"
+            ],
+            "pressure_inputs": [
+                "offense",
+                "breakdown"
+            ],
+            "pressure_outputs": [
+                "social lubricant",
+                "ritual insult"
+            ],
+            "incompatible_with": [
+                "UNIVERSAL_RESPECT"
+            ],
+            "mutation_axes": [
+                "roasting",
+                "banter"
+            ]
+        },
+        {
+            "code": "SORCERY_ACCUSATION",
+            "ontology": "behavioral",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Blaming misfortune on malevolent magic by social deviant.",
+            "preconditions": [
+                "witchcraft belief",
+                "social tension"
+            ],
+            "pressure_inputs": [
+                "unexplained death",
+                "envy"
+            ],
+            "pressure_outputs": [
+                "scapegoating",
+                "witch trial"
+            ],
+            "incompatible_with": [
+                "RATIONAL_CAUSATION"
+            ],
+            "mutation_axes": [
+                "witch hunt",
+                "moral panic"
+            ]
+        },
+        {
+            "code": "CARGO_CULT",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Ritual imitation of foreign technology to summon material wealth.",
+            "preconditions": [
+                "colonial contact",
+                "wealth disparity"
+            ],
+            "pressure_inputs": [
+                "disappointment",
+                "cultural change"
+            ],
+            "pressure_outputs": [
+                "millenarian movement",
+                "syncretism"
+            ],
+            "incompatible_with": [
+                "TECHNOLOGICAL_UNDERSTANDING"
+            ],
+            "mutation_axes": [
+                "revitalization movement",
+                "simulation"
+            ]
+        },
+        {
+            "code": "LEVELING_MECHANISM",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Social practices preventing wealth or power accumulation.",
+            "preconditions": [
+                "egalitarian ethos",
+                "small scale"
+            ],
+            "pressure_inputs": [
+                "inequality",
+                "market integration"
+            ],
+            "pressure_outputs": [
+                "ridicule",
+                "forced sharing"
+            ],
+            "incompatible_with": [
+                "STRATIFICATION"
+            ],
+            "mutation_axes": [
+                "tall poppy syndrome",
+                "progressive taxation"
+            ]
+        },
+        {
+            "code": "MANA_POWER",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "Impersonal supernatural force concentrated in persons or objects.",
+            "preconditions": [
+                "animist worldview"
+            ],
+            "pressure_inputs": [
+                "desecration",
+                "loss"
+            ],
+            "pressure_outputs": [
+                "taboo",
+                "chiefly authority"
+            ],
+            "incompatible_with": [
+                "SECULAR_POWER"
+            ],
+            "mutation_axes": [
+                "charisma",
+                "qi"
+            ]
+        },
+        {
+            "code": "RITUAL_CLOWNING",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Sacred transgression of norms through ritual buffoonery.",
+            "preconditions": [
+                "ceremonial context",
+                "norm rigidity"
+            ],
+            "pressure_inputs": [
+                "suppression",
+                "misunderstanding"
+            ],
+            "pressure_outputs": [
+                "social critique",
+                "catharsis"
+            ],
+            "incompatible_with": [
+                "ABSOLUTE_REVERENCE"
+            ],
+            "mutation_axes": [
+                "carnival",
+                "satire"
+            ]
+        }
+    ]
+}

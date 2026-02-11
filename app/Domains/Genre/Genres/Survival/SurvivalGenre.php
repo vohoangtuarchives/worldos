@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Domains\Genre\Genres\Survival;
+
+use App\Domains\Genre\Contracts\EventCatalog;
+use App\Domains\Genre\Contracts\GenreDefinition;
+use App\Domains\Genre\Contracts\GenreValidator;
+use App\Domains\Genre\Contracts\MaterialSystem;
+use App\Domains\Genre\Contracts\ProgressionRule;
+use App\Domains\Genre\Contracts\VocabularyMap;
+
+class SurvivalGenre implements GenreDefinition
+{
+    public function key(): string
+    {
+        return 'survival'; // Matches user request
+    }
+
+    public function displayName(): string
+    {
+        return 'Sinh Tồn (Survival)';
+    }
+
+    public function materials(): MaterialSystem
+    {
+        return new ScarcityMaterial();
+    }
+
+    public function progression(): ProgressionRule
+    {
+        return new AttritionProgression();
+    }
+
+    public function vocabulary(): VocabularyMap
+    {
+        return new SurvivalNarrativeVocabulary();
+    }
+
+    public function events(): EventCatalog
+    {
+        return new SurvivalEventCatalog();
+    }
+
+    public function validator(): GenreValidator
+    {
+        return new SurvivalGenreValidator();
+    }
+
+    public function worldConstraints(): array
+    {
+        return [
+            'death_is_final' => true,
+            'no_resurrection' => true,
+            'no_system' => true,
+            'environment_is_hostile' => true,
+            'magic_level' => 'none',
+        ];
+    }
+}

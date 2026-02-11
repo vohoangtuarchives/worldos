@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Domains\Material\Engine;
+
+use App\Domains\Material\MaterialInstance;
+
+class CompatibilityChecker
+{
+    /**
+     * Check if a material instance is compatible with the current world state.
+     * Returns true if compatible, false if it should collapse/fail.
+     */
+    public function isCompatible(MaterialInstance $instance, array $worldContext): bool
+    {
+        $material = $instance->material;
+
+        // 1. Institutional + Stabilizing needs minimum tech/organization level
+        if ($material->ontology === \App\Domains\Material\Enums\MaterialOntology::INSTITUTIONAL &&
+            $material->function === \App\Domains\Material\Enums\MaterialFunction::STABILIZING) {
+            
+            $techLevel = $worldContext['tech_level'] ?? 0;
+            // Generalized threshold check - in real impl this would be granular
+            if ($techLevel < 2) {
+                return false;
+            }
+        }
+
+        // 2. Explicit Incompatibility Check (from JSON rules)
+        if ($material->incompatible_with) {
+            foreach ($material->incompatible_with as $conflictCode) {
+                if (in_array($conflictCode, $worldContext['active_materials'] ?? [])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+}

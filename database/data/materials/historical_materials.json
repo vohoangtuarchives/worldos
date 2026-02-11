@@ -1,0 +1,524 @@
+{
+    "candidate_materials": [
+        {
+            "code": "EMPIRE_CYCLE",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Rise, expansion, overextension, and collapse of centralized power.",
+            "preconditions": [
+                "surplus extraction",
+                "military organization"
+            ],
+            "pressure_inputs": [
+                "resource depletion",
+                "frontier pressure"
+            ],
+            "pressure_outputs": [
+                "imperial nostalgia",
+                "fragmentation"
+            ],
+            "incompatible_with": [
+                "PERPETUAL_STABILITY"
+            ],
+            "mutation_axes": [
+                "neo-imperialism",
+                "balkanization"
+            ]
+        },
+        {
+            "code": "TRADE_NETWORK",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Long-distance exchange creating interdependence and cultural diffusion.",
+            "preconditions": [
+                "surplus production",
+                "transportation tech"
+            ],
+            "pressure_inputs": [
+                "piracy",
+                "protectionism"
+            ],
+            "pressure_outputs": [
+                "cosmopolitanism",
+                "merchant class"
+            ],
+            "incompatible_with": [
+                "AUTARKY"
+            ],
+            "mutation_axes": [
+                "globalization",
+                "mercantilism"
+            ]
+        },
+        {
+            "code": "RELIGIOUS_SCHISM",
+            "ontology": "symbolic",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Doctrinal split fracturing unified religious authority.",
+            "preconditions": [
+                "orthodoxy",
+                "theological dispute"
+            ],
+            "pressure_inputs": [
+                "corruption",
+                "reform movement"
+            ],
+            "pressure_outputs": [
+                "sectarian violence",
+                "pluralism"
+            ],
+            "incompatible_with": [
+                "RELIGIOUS_MONOPOLY"
+            ],
+            "mutation_axes": [
+                "reformation",
+                "denominationalism"
+            ]
+        },
+        {
+            "code": "PEASANT_REVOLT",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Mass uprising of agricultural laborers against extraction.",
+            "preconditions": [
+                "exploitation",
+                "subsistence crisis"
+            ],
+            "pressure_inputs": [
+                "famine",
+                "taxation"
+            ],
+            "pressure_outputs": [
+                "repression",
+                "concessions"
+            ],
+            "incompatible_with": [
+                "UNIVERSAL_PROSPERITY"
+            ],
+            "mutation_axes": [
+                "jacquerie",
+                "class consciousness"
+            ]
+        },
+        {
+            "code": "PLAGUE_DISRUPTION",
+            "ontology": "behavioral",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Epidemic disease destabilizing labor, authority, and worldview.",
+            "preconditions": [
+                "population density",
+                "trade routes"
+            ],
+            "pressure_inputs": [
+                "infection",
+                "mortality"
+            ],
+            "pressure_outputs": [
+                "labor shortage",
+                "apocalyptic belief"
+            ],
+            "incompatible_with": [
+                "MEDICAL_CONTROL"
+            ],
+            "mutation_axes": [
+                "demographic collapse",
+                "scapegoating"
+            ]
+        },
+        {
+            "code": "MILITARY_COUP",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Armed forces seize political power from civilian authority.",
+            "preconditions": [
+                "weak legitimacy",
+                "military autonomy"
+            ],
+            "pressure_inputs": [
+                "crisis",
+                "corruption"
+            ],
+            "pressure_outputs": [
+                "authoritarianism",
+                "instability"
+            ],
+            "incompatible_with": [
+                "CIVILIAN_SUPREMACY"
+            ],
+            "mutation_axes": [
+                "junta",
+                "praetorian guard"
+            ]
+        },
+        {
+            "code": "PRINTING_REVOLUTION",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Mass reproduction of text undermining knowledge monopolies.",
+            "preconditions": [
+                "literacy",
+                "technological capacity"
+            ],
+            "pressure_inputs": [
+                "censorship",
+                "demand"
+            ],
+            "pressure_outputs": [
+                "public sphere",
+                "propaganda"
+            ],
+            "incompatible_with": [
+                "ORAL_MONOPOLY"
+            ],
+            "mutation_axes": [
+                "information age",
+                "fake news"
+            ]
+        },
+        {
+            "code": "COLONIAL_EXTRACTION",
+            "ontology": "institutional",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Systematic resource transfer from periphery to core through coercion.",
+            "preconditions": [
+                "technological asymmetry",
+                "expansionism"
+            ],
+            "pressure_inputs": [
+                "resistance",
+                "depletion"
+            ],
+            "pressure_outputs": [
+                "dependency",
+                "anti-colonial movement"
+            ],
+            "incompatible_with": [
+                "SOVEREIGN_EQUALITY"
+            ],
+            "mutation_axes": [
+                "neocolonialism",
+                "settler colonialism"
+            ]
+        },
+        {
+            "code": "URBAN_REVOLUTION",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Concentration of population enabling specialization and hierarchy.",
+            "preconditions": [
+                "agricultural surplus",
+                "defense needs"
+            ],
+            "pressure_inputs": [
+                "overcrowding",
+                "sanitation"
+            ],
+            "pressure_outputs": [
+                "class stratification",
+                "cultural innovation"
+            ],
+            "incompatible_with": [
+                "NOMADIC_EGALITARIANISM"
+            ],
+            "mutation_axes": [
+                "city-state",
+                "megacity"
+            ]
+        },
+        {
+            "code": "SUCCESSION_CRISIS",
+            "ontology": "institutional",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Contested transfer of power triggering civil conflict.",
+            "preconditions": [
+                "hereditary rule",
+                "unclear succession"
+            ],
+            "pressure_inputs": [
+                "death of ruler",
+                "rival claimants"
+            ],
+            "pressure_outputs": [
+                "civil war",
+                "regency"
+            ],
+            "incompatible_with": [
+                "CLEAR_SUCCESSION"
+            ],
+            "mutation_axes": [
+                "war of succession",
+                "interregnum"
+            ]
+        },
+        {
+            "code": "MONETARY_ECONOMY",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Standardized currency replacing barter and gift exchange.",
+            "preconditions": [
+                "state authority",
+                "market scale"
+            ],
+            "pressure_inputs": [
+                "inflation",
+                "counterfeiting"
+            ],
+            "pressure_outputs": [
+                "commodification",
+                "debt"
+            ],
+            "incompatible_with": [
+                "PURE_BARTER"
+            ],
+            "mutation_axes": [
+                "financialization",
+                "cryptocurrency"
+            ]
+        },
+        {
+            "code": "ICONOCLASM",
+            "ontology": "behavioral",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Systematic destruction of religious images or symbols.",
+            "preconditions": [
+                "image worship",
+                "reform movement"
+            ],
+            "pressure_inputs": [
+                "theological dispute",
+                "political crisis"
+            ],
+            "pressure_outputs": [
+                "cultural erasure",
+                "purification"
+            ],
+            "incompatible_with": [
+                "SACRED_ART"
+            ],
+            "mutation_axes": [
+                "cultural revolution",
+                "damnatio memoriae"
+            ]
+        },
+        {
+            "code": "LEGAL_CODIFICATION",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Written law replacing customary or arbitrary judgment.",
+            "preconditions": [
+                "literacy",
+                "state capacity"
+            ],
+            "pressure_inputs": [
+                "legal dispute",
+                "reform"
+            ],
+            "pressure_outputs": [
+                "bureaucracy",
+                "legal profession"
+            ],
+            "incompatible_with": [
+                "CUSTOMARY_LAW"
+            ],
+            "mutation_axes": [
+                "code law",
+                "common law"
+            ]
+        },
+        {
+            "code": "SLAVE_ECONOMY",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "dormant",
+            "description": "Coerced labor as foundational economic structure.",
+            "preconditions": [
+                "conquest",
+                "legal inequality"
+            ],
+            "pressure_inputs": [
+                "rebellion",
+                "abolition"
+            ],
+            "pressure_outputs": [
+                "dehumanization",
+                "racial hierarchy"
+            ],
+            "incompatible_with": [
+                "UNIVERSAL_FREEDOM"
+            ],
+            "mutation_axes": [
+                "chattel slavery",
+                "debt bondage"
+            ]
+        },
+        {
+            "code": "RELIGIOUS_CONVERSION",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Mass adoption of new faith system, often coerced or incentivized.",
+            "preconditions": [
+                "missionary activity",
+                "political alliance"
+            ],
+            "pressure_inputs": [
+                "conquest",
+                "trade"
+            ],
+            "pressure_outputs": [
+                "syncretism",
+                "persecution"
+            ],
+            "incompatible_with": [
+                "RELIGIOUS_CONTINUITY"
+            ],
+            "mutation_axes": [
+                "forced conversion",
+                "voluntary adoption"
+            ]
+        },
+        {
+            "code": "FRONTIER_EXPANSION",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Territorial growth into unclaimed or contested lands.",
+            "preconditions": [
+                "population pressure",
+                "military capacity"
+            ],
+            "pressure_inputs": [
+                "resistance",
+                "resource limits"
+            ],
+            "pressure_outputs": [
+                "settler society",
+                "indigenous displacement"
+            ],
+            "incompatible_with": [
+                "FIXED_BORDERS"
+            ],
+            "mutation_axes": [
+                "manifest destiny",
+                "lebensraum"
+            ]
+        },
+        {
+            "code": "DYNASTIC_MARRIAGE",
+            "ontology": "institutional",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Strategic alliance through intermarriage of ruling families.",
+            "preconditions": [
+                "hereditary rule",
+                "diplomatic practice"
+            ],
+            "pressure_inputs": [
+                "succession dispute",
+                "divorce"
+            ],
+            "pressure_outputs": [
+                "composite monarchy",
+                "legitimacy claims"
+            ],
+            "incompatible_with": [
+                "ELECTED_LEADERSHIP"
+            ],
+            "mutation_axes": [
+                "Habsburg jaw",
+                "royal incest"
+            ]
+        },
+        {
+            "code": "HERESY_PERSECUTION",
+            "ontology": "behavioral",
+            "function": "stabilizing",
+            "default_lifecycle": "dormant",
+            "description": "Violent suppression of doctrinal deviation to enforce orthodoxy.",
+            "preconditions": [
+                "religious authority",
+                "heretical movement"
+            ],
+            "pressure_inputs": [
+                "theological challenge",
+                "political threat"
+            ],
+            "pressure_outputs": [
+                "martyrdom",
+                "underground networks"
+            ],
+            "incompatible_with": [
+                "RELIGIOUS_TOLERANCE"
+            ],
+            "mutation_axes": [
+                "inquisition",
+                "witch hunt"
+            ]
+        },
+        {
+            "code": "TECHNOLOGICAL_DIFFUSION",
+            "ontology": "institutional",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Spread of innovations across cultural boundaries.",
+            "preconditions": [
+                "trade contact",
+                "knowledge transfer"
+            ],
+            "pressure_inputs": [
+                "secrecy",
+                "adaptation"
+            ],
+            "pressure_outputs": [
+                "competitive advantage",
+                "cultural borrowing"
+            ],
+            "incompatible_with": [
+                "TECHNOLOGICAL_ISOLATION"
+            ],
+            "mutation_axes": [
+                "industrial espionage",
+                "open source"
+            ]
+        },
+        {
+            "code": "FAMINE_MIGRATION",
+            "ontology": "behavioral",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Mass population movement driven by subsistence failure.",
+            "preconditions": [
+                "agricultural dependence",
+                "crop failure"
+            ],
+            "pressure_inputs": [
+                "drought",
+                "war"
+            ],
+            "pressure_outputs": [
+                "refugee crisis",
+                "demographic shift"
+            ],
+            "incompatible_with": [
+                "FOOD_SECURITY"
+            ],
+            "mutation_axes": [
+                "climate migration",
+                "diaspora"
+            ]
+        }
+    ]
+}

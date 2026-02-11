@@ -1,0 +1,20 @@
+constraints:
+  - id: language.modern.forbidden
+    forbid:
+      words: ["level", "hp", "mp", "skill", "buff", "debuff", "quest", "system", "ui", "interface", "dashboard", "vãi", "quẩy"]
+    reason: "Văn xuất bản dùng Việt ngữ Hán–Việt, cấm hiện đại ngữ."
+
+  - id: honorific.authority.violation
+    when:
+      scope: public
+      speaker_status: commoner
+    forbid:
+      words: ["ngươi", "hắn", "lão tặc"]
+    reason: "Người có địa vị thấp không được xưng hô vô lễ với trưởng bối trước công chúng."
+
+  - id: survival.no_emotional_modifier
+    when:
+      genre: survival
+    forbid:
+      words: ["vô cùng", "cực kỳ", "đến mức", "tuyệt đẹp", "huy hoàng"]
+    reason: "Văn sinh tồn tiết chế cảm xúc, cấm cường điệu."

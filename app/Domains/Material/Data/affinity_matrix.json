@@ -1,0 +1,160 @@
+{
+    "DIVINE_KINGSHIP": {
+        "archetypes": [
+            "authority",
+            "sacred"
+        ],
+        "drift_modifier": 0.15,
+        "activation_threshold": 0.6,
+        "character_archetypes": [
+            "king",
+            "priest",
+            "divine_ruler"
+        ]
+    },
+    "ANCESTRAL_LINEAGE": {
+        "archetypes": [
+            "tradition",
+            "kinship"
+        ],
+        "drift_modifier": 0.1,
+        "activation_threshold": 0.5,
+        "character_archetypes": [
+            "elder",
+            "ancestor_spirit",
+            "descendant"
+        ]
+    },
+    "RITUAL_SACRIFICE": {
+        "archetypes": [
+            "sacred",
+            "violence"
+        ],
+        "drift_modifier": 0.2,
+        "activation_threshold": 0.7,
+        "character_archetypes": [
+            "priest",
+            "executioner",
+            "victim"
+        ]
+    },
+    "PROPHETIC_MOVEMENT": {
+        "archetypes": [
+            "change",
+            "faith"
+        ],
+        "drift_modifier": 0.25,
+        "activation_threshold": 0.8,
+        "character_archetypes": [
+            "prophet",
+            "visionary",
+            "preacher"
+        ]
+    },
+    "BUREAUCRATIC_EMPIRE": {
+        "archetypes": [
+            "order",
+            "authority"
+        ],
+        "drift_modifier": 0.12,
+        "activation_threshold": 0.55,
+        "character_archetypes": [
+            "bureaucrat",
+            "administrator",
+            "official"
+        ]
+    },
+    "COSMIC_DUALISM": {
+        "archetypes": [
+            "conflict",
+            "sacred"
+        ],
+        "drift_modifier": 0.18,
+        "activation_threshold": 0.65,
+        "character_archetypes": [
+            "light_bearer",
+            "shadow_warrior",
+            "dualist_priest"
+        ]
+    },
+    "GIFT_ECONOMY": {
+        "archetypes": [
+            "reciprocity",
+            "community"
+        ],
+        "drift_modifier": 0.08,
+        "activation_threshold": 0.4,
+        "character_archetypes": [
+            "patron",
+            "client",
+            "gift_giver"
+        ]
+    },
+    "SCAPEGOATING": {
+        "archetypes": [
+            "violence",
+            "cohesion"
+        ],
+        "drift_modifier": 0.22,
+        "activation_threshold": 0.75,
+        "character_archetypes": [
+            "scapegoat",
+            "accuser",
+            "mob_leader"
+        ]
+    },
+    "ORAL_TRADITION": {
+        "archetypes": [
+            "memory",
+            "tradition"
+        ],
+        "drift_modifier": 0.05,
+        "activation_threshold": 0.3,
+        "character_archetypes": [
+            "storyteller",
+            "elder",
+            "bard"
+        ]
+    },
+    "DIVINE_MANDATE": {
+        "archetypes": [
+            "authority",
+            "sacred",
+            "legitimacy"
+        ],
+        "drift_modifier": 0.16,
+        "activation_threshold": 0.6,
+        "character_archetypes": [
+            "emperor",
+            "high_priest",
+            "divine_messenger"
+        ]
+    },
+    "FEUDAL_OATH": {
+        "archetypes": [
+            "loyalty",
+            "hierarchy"
+        ],
+        "drift_modifier": 0.11,
+        "activation_threshold": 0.5,
+        "character_archetypes": [
+            "lord",
+            "vassal",
+            "knight"
+        ]
+    },
+    "MARKET_CITY": {
+        "archetypes": [
+            "trade",
+            "change",
+            "mobility"
+        ],
+        "drift_modifier": 0.14,
+        "activation_threshold": 0.55,
+        "character_archetypes": [
+            "merchant",
+            "trader",
+            "guild_master"
+        ]
+    }
+}

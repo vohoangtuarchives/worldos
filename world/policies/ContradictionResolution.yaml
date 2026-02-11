@@ -1,0 +1,52 @@
+policy:
+  id: contradiction_resolution
+  version: 1.0
+  description: "Governance logic for resolving conflicts between World State components without breaking linearity."
+
+  definitions:
+    contradiction:
+      severity_scale:
+        low: 0.0-0.3
+        medium: 0.4-0.6
+        high: 0.7-0.9
+        critical: 1.0
+      types:
+        myth_vs_scar: "Immutable history conflicts with physical reality"
+        gate_vs_pressure: "EventGate denies entry but Pressure exceeds threshold"
+        social_vs_world: "Social awareness exceeds World State (e.g. secret revealed but physics unchanged)"
+
+  budget:
+    max_active_contradictions: 3
+    action_on_breach: "LOCK_GATE"
+
+  strategies:
+    accumulation:
+      condition: "severity < 0.4 AND duration < 5 chapters"
+      action: "Increase World Pressure and Scar Visibility. Do not resolve yet."
+      cost: "tension_increase"
+    
+    deflection:
+      condition: "Gate Blocked OR Myth Inactive"
+      action: "Alter Event Outcome to side-effect (e.g., Invasion -> Incident)"
+      cost: "narrative_distortion"
+    
+    decomposition:
+      condition: "severity > 0.6"
+      action: "Split Contradiction into smaller sub-issues (e.g., Social vs religious, Gov vs public)"
+      cost: "complexity_increase"
+      
+    delay_with_memory:
+      condition: "No immediate resolution possible"
+      action: "Log to Memory, reduce confidence over time"
+      cost: "memory_load"
+      
+    sacrifice:
+      condition: "Budget Breach OR Critical Severity"
+      action: "Destroy a local entity (City, Org) to enforce Scar"
+      cost: "permanent_loss"
+
+  forbidden_actions:
+    - "RESET_SCAR"
+    - "RETCON_MYTH"
+    - "DEUS_EX_MACHINA"
+    - "FORCE_EVENT_OVER_GATE"

@@ -1,0 +1,518 @@
+{
+    "candidate_materials": [
+        {
+            "code": "FLOOD_PURIFICATION",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Catastrophic deluge as divine reset of corrupted world.",
+            "preconditions": [
+                "moral decay",
+                "divine wrath"
+            ],
+            "pressure_inputs": [
+                "environmental crisis",
+                "social collapse"
+            ],
+            "pressure_outputs": [
+                "renewal myth",
+                "survivor covenant"
+            ],
+            "incompatible_with": [
+                "ETERNAL_STABILITY"
+            ],
+            "mutation_axes": [
+                "apocalypse cult",
+                "environmental determinism"
+            ]
+        },
+        {
+            "code": "PRIMORDIAL_CHAOS",
+            "ontology": "symbolic",
+            "function": "destructive",
+            "default_lifecycle": "dormant",
+            "description": "Pre-creation void threatening to consume ordered reality.",
+            "preconditions": [
+                "cosmological anxiety"
+            ],
+            "pressure_inputs": [
+                "entropy",
+                "disorder"
+            ],
+            "pressure_outputs": [
+                "creation ritual",
+                "boundary enforcement"
+            ],
+            "incompatible_with": [
+                "RATIONAL_COSMOS"
+            ],
+            "mutation_axes": [
+                "nihilism",
+                "cosmic horror"
+            ]
+        },
+        {
+            "code": "HERO_JOURNEY",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "active",
+            "description": "Individual undergoes trials to return with transformative power.",
+            "preconditions": [
+                "individual agency",
+                "quest narrative"
+            ],
+            "pressure_inputs": [
+                "crisis",
+                "call to adventure"
+            ],
+            "pressure_outputs": [
+                "cultural renewal",
+                "leadership legitimacy"
+            ],
+            "incompatible_with": [
+                "COLLECTIVE_ANONYMITY"
+            ],
+            "mutation_axes": [
+                "messianic cult",
+                "individualism"
+            ]
+        },
+        {
+            "code": "TRICKSTER_DISRUPTION",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Boundary-crossing figure who subverts order through cunning.",
+            "preconditions": [
+                "rigid hierarchy",
+                "taboo system"
+            ],
+            "pressure_inputs": [
+                "stagnation",
+                "oppression"
+            ],
+            "pressure_outputs": [
+                "social innovation",
+                "moral ambiguity"
+            ],
+            "incompatible_with": [
+                "ABSOLUTE_LAW"
+            ],
+            "mutation_axes": [
+                "anarchism",
+                "amorality"
+            ]
+        },
+        {
+            "code": "UNDERWORLD_DESCENT",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Journey to realm of death to retrieve knowledge or life.",
+            "preconditions": [
+                "death anxiety",
+                "afterlife belief"
+            ],
+            "pressure_inputs": [
+                "loss",
+                "forbidden knowledge"
+            ],
+            "pressure_outputs": [
+                "initiation rite",
+                "necromancy"
+            ],
+            "incompatible_with": [
+                "MATERIALIST_WORLDVIEW"
+            ],
+            "mutation_axes": [
+                "death cult",
+                "shamanism"
+            ]
+        },
+        {
+            "code": "SACRED_KINGSHIP",
+            "ontology": "institutional",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "Ruler embodies cosmic order and must be ritually pure.",
+            "preconditions": [
+                "centralized power",
+                "ritual calendar"
+            ],
+            "pressure_inputs": [
+                "succession crisis",
+                "ritual failure"
+            ],
+            "pressure_outputs": [
+                "regicide",
+                "scapegoat king"
+            ],
+            "incompatible_with": [
+                "SECULAR_AUTHORITY"
+            ],
+            "mutation_axes": [
+                "divine right",
+                "ritual murder"
+            ]
+        },
+        {
+            "code": "WORLD_TREE",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Cosmic axis connecting realms and sustaining reality.",
+            "preconditions": [
+                "vertical cosmology"
+            ],
+            "pressure_inputs": [
+                "cosmic threat",
+                "desecration"
+            ],
+            "pressure_outputs": [
+                "pilgrimage",
+                "sacred grove"
+            ],
+            "incompatible_with": [
+                "FLAT_COSMOLOGY"
+            ],
+            "mutation_axes": [
+                "axis mundi",
+                "world pillar"
+            ]
+        },
+        {
+            "code": "ETERNAL_RETURN",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Time is cyclical; all events repeat infinitely.",
+            "preconditions": [
+                "cyclical calendar",
+                "ritual repetition"
+            ],
+            "pressure_inputs": [
+                "historical trauma",
+                "stagnation"
+            ],
+            "pressure_outputs": [
+                "fatalism",
+                "ritual obsession"
+            ],
+            "incompatible_with": [
+                "LINEAR_PROGRESS"
+            ],
+            "mutation_axes": [
+                "reincarnation",
+                "historical determinism"
+            ]
+        },
+        {
+            "code": "GOLDEN_AGE_NOSTALGIA",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "dormant",
+            "description": "Belief in a lost perfect past that must be restored.",
+            "preconditions": [
+                "cultural decline",
+                "historical memory"
+            ],
+            "pressure_inputs": [
+                "crisis",
+                "foreign influence"
+            ],
+            "pressure_outputs": [
+                "reactionary movement",
+                "purification"
+            ],
+            "incompatible_with": [
+                "PROGRESSIVE_IDEOLOGY"
+            ],
+            "mutation_axes": [
+                "fundamentalism",
+                "nativism"
+            ]
+        },
+        {
+            "code": "APOCALYPSE_REVELATION",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Hidden truth will be unveiled in catastrophic final judgment.",
+            "preconditions": [
+                "eschatological belief",
+                "moral dualism"
+            ],
+            "pressure_inputs": [
+                "oppression",
+                "injustice"
+            ],
+            "pressure_outputs": [
+                "millenarian movement",
+                "martyrdom"
+            ],
+            "incompatible_with": [
+                "GRADUALIST_REFORM"
+            ],
+            "mutation_axes": [
+                "revolutionary terror",
+                "doomsday cult"
+            ]
+        },
+        {
+            "code": "VIRGIN_BIRTH",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "dormant",
+            "description": "Divine intervention bypasses normal reproduction to create sacred lineage.",
+            "preconditions": [
+                "patrilineal anxiety",
+                "divine parentage"
+            ],
+            "pressure_inputs": [
+                "legitimacy crisis",
+                "dynastic dispute"
+            ],
+            "pressure_outputs": [
+                "cult of purity",
+                "miraculous claims"
+            ],
+            "incompatible_with": [
+                "BIOLOGICAL_DETERMINISM"
+            ],
+            "mutation_axes": [
+                "immaculate conception",
+                "parthenogenesis myth"
+            ]
+        },
+        {
+            "code": "DRAGON_SLAYING",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Hero defeats primordial chaos monster to establish order.",
+            "preconditions": [
+                "external threat",
+                "heroic culture"
+            ],
+            "pressure_inputs": [
+                "invasion",
+                "natural disaster"
+            ],
+            "pressure_outputs": [
+                "warrior cult",
+                "conquest ideology"
+            ],
+            "incompatible_with": [
+                "PACIFIST_ETHICS"
+            ],
+            "mutation_axes": [
+                "imperialism",
+                "monster genocide"
+            ]
+        },
+        {
+            "code": "FORBIDDEN_KNOWLEDGE",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Accessing secret wisdom brings power but also corruption or punishment.",
+            "preconditions": [
+                "knowledge hierarchy",
+                "taboo"
+            ],
+            "pressure_inputs": [
+                "curiosity",
+                "crisis"
+            ],
+            "pressure_outputs": [
+                "secret society",
+                "heresy"
+            ],
+            "incompatible_with": [
+                "OPEN_KNOWLEDGE"
+            ],
+            "mutation_axes": [
+                "gnosticism",
+                "techno-utopianism"
+            ]
+        },
+        {
+            "code": "TWIN_DUALITY",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Paired opposites (light/dark, order/chaos) maintain cosmic balance.",
+            "preconditions": [
+                "dualistic cosmology"
+            ],
+            "pressure_inputs": [
+                "imbalance",
+                "extremism"
+            ],
+            "pressure_outputs": [
+                "complementarity",
+                "dialectic"
+            ],
+            "incompatible_with": [
+                "MONISTIC_UNITY"
+            ],
+            "mutation_axes": [
+                "yin-yang",
+                "Manicheanism"
+            ]
+        },
+        {
+            "code": "SHAPESHIFTER_BOUNDARY",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Beings who cross species/form boundaries, challenging fixed categories.",
+            "preconditions": [
+                "animism",
+                "fluid identity"
+            ],
+            "pressure_inputs": [
+                "category crisis",
+                "liminality"
+            ],
+            "pressure_outputs": [
+                "totemism",
+                "lycanthropy"
+            ],
+            "incompatible_with": [
+                "FIXED_TAXONOMY"
+            ],
+            "mutation_axes": [
+                "werewolf myth",
+                "shamanic transformation"
+            ]
+        },
+        {
+            "code": "COSMIC_EGG",
+            "ontology": "symbolic",
+            "function": "legitimizing",
+            "default_lifecycle": "active",
+            "description": "Universe born from primordial egg containing all potential.",
+            "preconditions": [
+                "creation myth"
+            ],
+            "pressure_inputs": [
+                "origin question"
+            ],
+            "pressure_outputs": [
+                "cosmogony ritual",
+                "rebirth symbolism"
+            ],
+            "incompatible_with": [
+                "ETERNAL_UNIVERSE"
+            ],
+            "mutation_axes": [
+                "big bang",
+                "nested worlds"
+            ]
+        },
+        {
+            "code": "STOLEN_FIRE",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Culture hero steals divine resource for humanity, incurring punishment.",
+            "preconditions": [
+                "technological leap",
+                "divine monopoly"
+            ],
+            "pressure_inputs": [
+                "innovation",
+                "transgression"
+            ],
+            "pressure_outputs": [
+                "technological guilt",
+                "prometheus complex"
+            ],
+            "incompatible_with": [
+                "DIVINE_GIFT"
+            ],
+            "mutation_axes": [
+                "scientific hubris",
+                "technological determinism"
+            ]
+        },
+        {
+            "code": "WORLD_SERPENT",
+            "ontology": "symbolic",
+            "function": "stabilizing",
+            "default_lifecycle": "active",
+            "description": "Cosmic snake encircling reality, maintaining boundaries.",
+            "preconditions": [
+                "bounded cosmos"
+            ],
+            "pressure_inputs": [
+                "boundary threat",
+                "chaos"
+            ],
+            "pressure_outputs": [
+                "ouroboros",
+                "world-ending"
+            ],
+            "incompatible_with": [
+                "INFINITE_UNIVERSE"
+            ],
+            "mutation_axes": [
+                "Jörmungandr",
+                "Leviathan"
+            ]
+        },
+        {
+            "code": "DYING_GOD",
+            "ontology": "symbolic",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Deity sacrifices self cyclically to renew world or ensure fertility.",
+            "preconditions": [
+                "agricultural cycle",
+                "sacrifice ritual"
+            ],
+            "pressure_inputs": [
+                "famine",
+                "drought"
+            ],
+            "pressure_outputs": [
+                "mystery cult",
+                "resurrection belief"
+            ],
+            "incompatible_with": [
+                "IMMORTAL_DEITY"
+            ],
+            "mutation_axes": [
+                "Osiris myth",
+                "Christ archetype"
+            ]
+        },
+        {
+            "code": "LABYRINTH_TRIAL",
+            "ontology": "behavioral",
+            "function": "transformative",
+            "default_lifecycle": "dormant",
+            "description": "Complex maze as test of worthiness or initiation ordeal.",
+            "preconditions": [
+                "initiation rite",
+                "sacred architecture"
+            ],
+            "pressure_inputs": [
+                "coming of age",
+                "quest"
+            ],
+            "pressure_outputs": [
+                "mystery school",
+                "pilgrimage"
+            ],
+            "incompatible_with": [
+                "DIRECT_ACCESS"
+            ],
+            "mutation_axes": [
+                "esoteric knowledge",
+                "psychological journey"
+            ]
+        }
+    ]
+}
