@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "worldos.fullname" . }}-material-service
+  labels:
+    app: material-service
+spec:
+  replicas: {{ .Values.materialService.replicas }}
+  selector:
+    matchLabels:
+      app: material-service
+  template:
+    metadata:
+      labels:
+        app: material-service
+    spec:
+      containers:
+        - name: material-service
+          image: {{ .Values.materialService.image }}
+          ports:
+            - containerPort: 50051
+              name: grpc

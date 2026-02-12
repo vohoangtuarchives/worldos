@@ -6,3 +6,7 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('world:crawl-materials {--world=} {--keywords=}', function () {
+    $this->comment('Use the CrawlMaterialsCommand class instead.');
+})->describe('Legacy stub. Actual logic in command class.');

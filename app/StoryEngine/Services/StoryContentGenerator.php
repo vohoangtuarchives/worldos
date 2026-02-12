@@ -5,6 +5,7 @@ namespace App\StoryEngine\Services;
 use App\Models\Story;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use App\StoryEngine\Seed;
+use App\StoryEngine\Services\NarrativeAssembler;
 
 class StoryContentGenerator
 {
@@ -12,7 +13,8 @@ class StoryContentGenerator
         protected LLMProvider $llm,
         protected \App\Domains\World\Services\WorldLawValidator $validator,
         protected \App\Domains\World\Contracts\ClaimExtractorInterface $extractor,
-        protected \App\Domains\WorldManagement\Services\AIGovernanceService $governance // ADR-0007
+        protected \App\Domains\WorldManagement\Services\AIGovernanceService $governance, // ADR-0007
+        protected NarrativeAssembler $assembler
     ) {}
 
     public function generate(Story $story, Seed $seed): array
@@ -84,10 +86,14 @@ class StoryContentGenerator
                     continue; 
                 }
 
+                // Assemble rich narrative layers
+                $rich = $this->assembler->assemble($story, $response, $seed);
+
                 // Success!
                 return [
                     'title' => $response['title'] ?? 'Untitled Chapter',
                     'content' => $content,
+                    'rich' => $rich,
                 ];
 
             } catch (\Exception $e) {
@@ -115,6 +121,7 @@ class StoryContentGenerator
         return [
             'title' => 'Chapter Generation Failed',
             'content' => "The Narrator struggled to conform to World Laws. Violations:\n" . $lastError,
+            'rich' => null,
         ];
     }
 

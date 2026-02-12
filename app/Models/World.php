@@ -62,4 +62,9 @@ class World extends Model
     {
         return $this->hasMany(Faction::class);
     }
+
+    public function powerProfile(): HasOne
+    {
+        return $this->hasOne(WorldPowerProfile::class);
+    }
 }

@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package worldos.world;
+
+import "common.proto";
+
+option go_package = "github.com/worldos/api/gen/world;world";
+option java_package = "com.worldos.world";
+option csharp_namespace = "WorldOS.World";
+
+service WorldSimulationService {
+  rpc TickWorld(TickWorldRequest) returns (TickWorldResponse);
+  rpc GetWorldState(GetWorldStateRequest) returns (GetWorldStateResponse);
+  rpc RecordEvent(RecordEventRequest) returns (RecordEventResponse);
+}
+
+message TickWorldRequest {
+  worldos.common.WorldId world_id = 1;
+  int32 ticks = 2;
+}
+
+message TickWorldResponse {
+  worldos.common.WorldId world_id = 1;
+  int64 new_epoch = 2;
+  repeated WorldEvent events = 3;
+}
+
+message GetWorldStateRequest {
+  worldos.common.WorldId world_id = 1;
+}
+
+message GetWorldStateResponse {
+  worldos.common.WorldId world_id = 1;
+  WorldSnapshot snapshot = 2;
+}
+
+message RecordEventRequest {
+  worldos.common.WorldId world_id = 1;
+  WorldEvent event = 2;
+}
+
+message RecordEventResponse {
+  bool acknowledged = 1;
+}
+
+message WorldSnapshot {
+  int64 epoch = 1;
+  worldos.common.StageKey stage = 2;
+  map<string, double> archetype_weights = 3;
+  map<string, double> metrics = 4;
+}
+
+message WorldEvent {
+  string event_id = 1;
+  string type = 2;
+  double magnitude = 3;
+  double permanence = 4;
+  string description = 5;
+  worldos.common.Timestamp occurred_at = 6;
+}

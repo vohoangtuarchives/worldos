@@ -1,0 +1,87 @@
++# Material taxonomy by power schema
++
++cuu_trong_thien:
++  essence:
++    - linh_thach
++    - tien_thao_han_bang
++  energy:
++    - chan_khi_hach
++    - thien_dia_tinh_hoa
++  spirit:
++    - thanh_thu_mam
++    - dao_van_co
++
++giang_ho_phong_van:
++  essence:
++    - noi_cong_bi_tich
++    - thap_ngu_duoc
++  energy:
++    - chuong_luc_tan_du
++    - tu_khi_tran
++  spirit:
++    - kiem_y_tan_anh
++
++ma_dao_to_su:
++  essence:
++    - huyet_dam
++    - ma_the_di_cot
++  energy:
++    - hac_luyen_dan
++  spirit:
++    - ac_linh_te_chau
++
++hac_am_te_dan:
++  essence:
++    - te_pham_hac_diem
++  energy:
++    - huyet_nguyet_ngoc
++  spirit:
++    - ma_van_linh_tan
++
++huyen_mon_hoc_vien:
++  essence:
++    - phap_su_truong
++  energy:
++    - mana_ket_tinh
++  spirit:
++    - linh_van_phu
++
++mao_son_phu_luc:
++  essence:
++    - doan_moc_bua
++  energy:
++    - am_duong_hach
++  spirit:
++    - thien_su_tran_ngoc
++
++huyen_mon_bi_phap:
++  essence:
++    - te_le_cot
++  energy:
++    - co_thuat_to
++  spirit:
++    - trieu_hoan_an
++
++neon_dystopia:
++  essence:
++    - syn_skin_patch
++  energy:
++    - overclock_core
++  spirit:
++    - ai_spirit_chip
++
++niem_su_hoi:
++  essence:
++    - nen_physical_band
++  energy:
++    - nen_reservoir
++  spirit:
++    - oath_contract
++
++tu_chan_khoa_hoc:
++  essence:
++    - nanite_linh_thach
++  energy:
++    - reactor_core
++  spirit:
++    - dao_kernel

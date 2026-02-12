@@ -5,6 +5,7 @@ namespace App\Domains\World\Services;
 use App\Models\World;
 use App\Domains\Power\PowerStageRegistry;
 use App\Domains\Power\Enums\PowerStage;
+use App\Models\WorldPowerProfile;
 
 class StageTransitionEngine
 {
@@ -18,7 +19,8 @@ class StageTransitionEngine
      */
     public function evaluateTransition(World $world): bool
     {
-        $currentStageKey = $world->config['current_stage'] ?? 'mundane';
+        $profile = $world->powerProfile;
+        $currentStageKey = $profile?->progression_state['current_stage'] ?? $world->config['current_stage'] ?? 'mundane';
         $stageInfo = $this->registry->getStageAndConstraint($currentStageKey);
         
         if (empty($stageInfo)) {
@@ -29,7 +31,7 @@ class StageTransitionEngine
         $threshold = $this->getThresholdForStage($currentStageKey);
 
         if ($pressure >= $threshold) {
-            return $this->transitionToNextStage($world, $currentStageKey);
+            return $this->transitionToNextStage($world, $profile, $currentStageKey, $pressure);
         }
 
         return false;
@@ -38,7 +40,7 @@ class StageTransitionEngine
     /**
      * Execute the transition to the next logical stage
      */
-    private function transitionToNextStage(World $world, string $currentStageKey): bool
+    private function transitionToNextStage(World $world, ?WorldPowerProfile $profile, string $currentStageKey, float $pressure): bool
     {
         $nextStageKey = $this->getNextStageKey($currentStageKey);
         
@@ -60,6 +62,20 @@ class StageTransitionEngine
         $config['current_stage'] = $nextStageKey;
         $world->config = $config;
         $world->save();
+
+        if ($profile) {
+            $state = $profile->progression_state;
+            $state['current_stage'] = $nextStageKey;
+            $state['pressure'] = $pressure;
+            $state['stage_history'][] = [
+                'from' => $currentStageKey,
+                'to' => $nextStageKey,
+                'pressure' => $pressure,
+                'timestamp' => now()->toIso8601String(),
+            ];
+            $profile->progression_state = $state;
+            $profile->save();
+        }
 
         return true;
     }

@@ -1,0 +1,18 @@
+gateway:
+  image: ghcr.io/worldos/gateway:latest
+  replicas: 2
+  service:
+    type: LoadBalancer
+    port: 80
+
+worldSimulation:
+  image: ghcr.io/worldos/world-simulation:latest
+  replicas: 3
+
+storyService:
+  image: ghcr.io/worldos/story-service:latest
+  replicas: 3
+
+materialService:
+  image: ghcr.io/worldos/material-service:latest
+  replicas: 2

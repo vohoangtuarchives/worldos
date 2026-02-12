@@ -479,12 +479,26 @@ class SagaRunner
      */
     private function createWorld(Saga $saga, ?array $legacy): World
     {
+        $presetKey = $saga->preset_key ?? 'cuu_trong_thien';
+        $preset = app(
+            \App\Domains\Saga\Services\GenesisPresetService::class
+        )->find($presetKey) ?? [];
+
         $world = World::create([
             'name' => "{$saga->name} - World {$saga->current_world_index}",
             'status' => 'active',
             'tick' => 0,
-            'genre' => $saga->genre ?? 'historical',
+            'genre' => $preset['genre'] ?? $saga->genre ?? 'historical',
+            'config' => [
+                'preset_key' => $presetKey,
+                'current_stage' => $preset['power_stage'] ?? 'mundane',
+            ],
         ]);
+
+        if (!empty($preset)) {
+            app(\App\Domains\World\Services\WorldPowerProfileService::class)
+                ->bootstrapProfile($world, $preset);
+        }
 
         // Initialize archetypes with bias
         $archetypeFocus = $saga->archetype_focus ?? [];

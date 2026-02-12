@@ -156,5 +156,17 @@
             "trader",
             "guild_master"
         ]
+    },
+    "POWER_SCHEMA_AFFINITY": {
+        "cuu_trong_thien": ["linh_thach", "thien_dia_tinh_hoa", "dao_van_co"],
+        "giang_ho_phong_van": ["noi_cong_bi_tich", "tu_khi_tran", "kiem_y_tan_anh"],
+        "ma_dao_to_su": ["huyet_dam", "ac_linh_te_chau"],
+        "hac_am_te_dan": ["te_pham_hac_diem", "ma_van_linh_tan"],
+        "huyen_mon_hoc_vien": ["mana_ket_tinh", "linh_van_phu"],
+        "mao_son_phu_luc": ["doan_moc_bua", "thien_su_tran_ngoc"],
+        "huyen_mon_bi_phap": ["te_le_cot", "trieu_hoan_an"],
+        "neon_dystopia": ["syn_skin_patch", "overclock_core", "ai_spirit_chip"],
+        "niem_su_hoi": ["nen_reservoir", "oath_contract"],
+        "tu_chan_khoa_hoc": ["nanite_linh_thach", "dao_kernel"]
     }
 }

@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package worldos.story;
+
+import "common.proto";
+
+option go_package = "github.com/worldos/api/gen/story;story";
+option java_package = "com.worldos.story";
+option csharp_namespace = "WorldOS.Story";
+
+service StoryService {
+  rpc GenerateChapter(GenerateChapterRequest) returns (GenerateChapterResponse);
+  rpc GetStory(GetStoryRequest) returns (GetStoryResponse);
+}
+
+message GenerateChapterRequest {
+  worldos.common.StoryId story_id = 1;
+  Seed seed = 2;
+}
+
+message GenerateChapterResponse {
+  worldos.common.StoryId story_id = 1;
+  Chapter chapter = 2;
+}
+
+message GetStoryRequest {
+  worldos.common.StoryId story_id = 1;
+}
+
+message GetStoryResponse {
+  worldos.common.StoryId story_id = 1;
+  repeated Chapter chapters = 2;
+}
+
+message Seed {
+  string type = 1;
+  string dimension = 2;
+  int32 severity = 3;
+}
+
+message Chapter {
+  string chapter_id = 1;
+  int32 order = 2;
+  string title = 3;
+  string content = 4;
+  RichContent rich_content = 5;
+}
+
+message RichContent {
+  string lore = 1;
+  repeated string material_highlights = 2;
+  repeated string social_events = 3;
+}

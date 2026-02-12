@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "worldos.fullname" . }}-story-service
+  labels:
+    app: story-service
+spec:
+  replicas: {{ .Values.storyService.replicas }}
+  selector:
+    matchLabels:
+      app: story-service
+  template:
+    metadata:
+      labels:
+        app: story-service
+    spec:
+      containers:
+        - name: story-service
+          image: {{ .Values.storyService.image }}
+          ports:
+            - containerPort: 50051
+              name: grpc

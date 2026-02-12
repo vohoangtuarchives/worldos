@@ -1,10 +1,39 @@
 <?php
 
 use App\Http\Controllers\StoryController;
+use App\Http\Controllers\WorldController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/debug-schema', function () {
-    return \Illuminate\Support\Facades\Schema::getColumnListing('material_instances');
+Route::get('/', function () {
+    return view('welcome');
+});
+
+// World Routes
+Route::prefix('worlds')->name('worlds.')->group(function () {
+    Route::get('/', [WorldController::class, 'index'])->name('index');
+    Route::get('/create', [WorldController::class, 'create'])->name('create');
+    Route::post('/', [WorldController::class, 'store'])->name('store');
+    Route::get('/{worldId}', [WorldController::class, 'show'])->name('show');
+    Route::get('/{worldId}/dashboard', [WorldController::class, 'dashboard'])->name('dashboard');
+    Route::get('/{worldId}/edit', [WorldController::class, 'edit'])->name('edit');
+    Route::put('/{worldId}', [WorldController::class, 'update'])->name('update');
+    Route::delete('/{worldId}', [WorldController::class, 'destroy'])->name('destroy');
+    
+    // World Actions
+    Route::post('/{worldId}/tick', [WorldController::class, 'tick'])->name('tick');
+    Route::post('/{worldId}/start', [WorldController::class, 'start'])->name('start');
+    Route::post('/{worldId}/stop', [WorldController::class, 'stop'])->name('stop');
+    Route::get('/{worldId}/status', [WorldController::class, 'status'])->name('status');
+    Route::get('/{worldId}/intelligence', [WorldController::class, 'intelligence'])->name('intelligence');
+    Route::get('/{worldId}/materials', [WorldController::class, 'materials'])->name('materials');
+    Route::get('/{worldId}/realtime', [WorldController::class, 'realtime'])->name('realtime');
+});
+
+// API Routes for AJAX calls
+Route::prefix('api/worlds')->name('api.worlds.')->group(function () {
+    Route::post('/start-all', [WorldController::class, 'startAll'])->name('start-all');
+    Route::post('/stop-all', [WorldController::class, 'stopAll'])->name('stop-all');
+    Route::get('/{worldId}/realtime', [WorldController::class, 'realtime'])->name('realtime');
 });
 
 Route::get('/story', StoryController::class);

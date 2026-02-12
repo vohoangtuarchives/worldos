@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package worldos.common;
+
+option go_package = "github.com/worldos/api/gen/common;common";
+option java_package = "com.worldos.common";
+option csharp_namespace = "WorldOS.Common";
+
+message WorldId {
+  string value = 1;
+}
+
+message StoryId {
+  string value = 1;
+}
+
+message SagaId {
+  string value = 1;
+}
+
+message MaterialId {
+  string value = 1;
+}
+
+message Timestamp {
+  int64 seconds = 1;
+  int32 nanos = 2;
+}
+
+message PageRequest {
+  int32 page_size = 1;
+  string page_token = 2;
+}
+
+message PageResponse {
+  string next_page_token = 1;
+  int32 total_size = 2;
+}
+
+enum StageKey {
+  STAGE_KEY_UNSPECIFIED = 0;
+  STAGE_KEY_MUNDANE = 1;
+  STAGE_KEY_MORTAL_MARTIAL = 2;
+  STAGE_KEY_ENHANCED_MARTIAL = 3;
+  STAGE_KEY_LOW_IMMORTAL = 4;
+  STAGE_KEY_HIGH_IMMORTAL = 5;
+  STAGE_KEY_MYTHIC = 6;
+}
+
+enum PowerSystem {
+  POWER_SYSTEM_UNSPECIFIED = 0;
+  POWER_SYSTEM_SPIRITUAL_QI = 1;
+  POWER_SYSTEM_INTERNAL_QI = 2;
+  POWER_SYSTEM_DARK_MANA = 3;
+  POWER_SYSTEM_MANA = 4;
+  POWER_SYSTEM_TECH_IMPLANT = 5;
+  POWER_SYSTEM_NEN = 6;
+  POWER_SYSTEM_SYSTEM_STATS = 7;
+  POWER_SYSTEM_EVOLUTION = 8;
+  POWER_SYSTEM_MULTIVERSE = 9;
+  POWER_SYSTEM_NONE = 100;
+}

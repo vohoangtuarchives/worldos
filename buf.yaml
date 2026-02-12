@@ -1,0 +1,8 @@
+version: v1
+name: buf.build/worldos/worldos
+deps:
+  - buf.build/google/protobuf
+  - buf.build/grpc-ecosystem/grpc-gateway
+build:
+  roots:
+    - proto

@@ -203,6 +203,7 @@ class StoryGenerationService
             // 6. Generate AI Content
             // We use the Seed Object ($seedObj) and Story state
             $generatedContent = $this->generator->generate($story, $seedObj);
+            $richContent = $generatedContent['rich'] ?? null;
             
             $nextOrder = $story->chapters()->max('order') + 1;
             
@@ -213,6 +214,7 @@ class StoryGenerationService
                 'content' => $generatedContent['content'],
                 'resolved_seed_id' => $seedModel->id,
                 'generated_seeds' => $createdSeedsSnapshot,
+                'rich_content' => $richContent,
             ]);
 
             return $chapter;

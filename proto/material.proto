@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package worldos.material;
+
+import "common.proto";
+
+option go_package = "github.com/worldos/api/gen/material;material";
+option java_package = "com.worldos.material";
+option csharp_namespace = "WorldOS.Material";
+
+service MaterialService {
+  rpc IngestMaterials(IngestMaterialsRequest) returns (IngestMaterialsResponse);
+  rpc ListMaterials(ListMaterialsRequest) returns (ListMaterialsResponse);
+  rpc GetMaterial(GetMaterialRequest) returns (GetMaterialResponse);
+}
+
+message IngestMaterialsRequest {
+  worldos.common.WorldId world_id = 1;
+  repeated MaterialPayload materials = 2;
+}
+
+message IngestMaterialsResponse {
+  int32 ingested_count = 1;
+}
+
+message ListMaterialsRequest {
+  worldos.common.PageRequest page = 1;
+  string filter_power_tag = 2;
+}
+
+message ListMaterialsResponse {
+  repeated Material materials = 1;
+  worldos.common.PageResponse page = 2;
+}
+
+message GetMaterialRequest {
+  worldos.common.MaterialId material_id = 1;
+}
+
+message GetMaterialResponse {
+  Material material = 1;
+}
+
+message MaterialPayload {
+  string name = 1;
+  string category = 2;
+  repeated string power_tags = 3;
+  repeated string world_affinity = 4;
+  string source_url = 5;
+  string origin_locale = 6;
+  string rarity = 7;
+}
+
+message Material {
+  worldos.common.MaterialId id = 1;
+  string name = 2;
+  string category = 3;
+  repeated string power_tags = 4;
+  repeated string world_affinity = 5;
+  string rarity = 6;
+  repeated MaterialInstance instances = 7;
+}
+
+message MaterialInstance {
+  string instance_id = 1;
+  worldos.common.WorldId world_id = 2;
+  int32 strength_level = 3;
+  int32 activation_epoch = 4;
+}

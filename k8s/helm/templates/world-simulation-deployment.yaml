@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "worldos.fullname" . }}-world-simulation
+  labels:
+    app: world-simulation
+spec:
+  replicas: {{ .Values.worldSimulation.replicas }}
+  selector:
+    matchLabels:
+      app: world-simulation
+  template:
+    metadata:
+      labels:
+        app: world-simulation
+    spec:
+      containers:
+        - name: world-simulation
+          image: {{ .Values.worldSimulation.image }}
+          ports:
+            - containerPort: 50051
+              name: grpc

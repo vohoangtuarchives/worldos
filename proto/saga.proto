@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package worldos.saga;
+
+import "common.proto";
+
+option go_package = "github.com/worldos/api/gen/saga;saga";
+option java_package = "com.worldos.saga";
+option csharp_namespace = "WorldOS.Saga";
+
+service SagaService {
+  rpc StartSaga(StartSagaRequest) returns (StartSagaResponse);
+  rpc GetSagaState(GetSagaStateRequest) returns (GetSagaStateResponse);
+}
+
+message StartSagaRequest {
+  string saga_key = 1;
+  map<string, string> parameters = 2;
+}
+
+message StartSagaResponse {
+  worldos.common.SagaId saga_id = 1;
+}
+
+message GetSagaStateRequest {
+  worldos.common.SagaId saga_id = 1;
+}
+
+message GetSagaStateResponse {
+  worldos.common.SagaId saga_id = 1;
+  repeated SagaWorld worlds = 2;
+}
+
+message SagaWorld {
+  worldos.common.WorldId world_id = 1;
+  int32 sequence = 2;
+  string status = 3;
+}
