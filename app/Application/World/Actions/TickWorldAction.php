@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\World\Actions;
 
 use App\Domains\World\Aggregates\WorldAggregate;
-use App\Domains\World\Services\EntropyCalculator;
+use App\Domains\History\Services\EntropyCalculator;
 use App\Domains\World\Services\ShockEventGenerator;
 use App\Domains\World\Events\ShockEvent;
 use App\Domains\Character\Services\SurvivalCheckEngine;

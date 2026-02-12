@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::create('material_changes', function (Blueprint $table) {
             $table->id();
-            $table->string('world_id');
+            $table->unsignedBigInteger('world_id');
             $table->string('instance_id');
             $table->enum('change_type', ['add', 'update', 'remove', 'transfer', 'degrade', 'upgrade', 'retire']);
             $table->json('old_state')->nullable();

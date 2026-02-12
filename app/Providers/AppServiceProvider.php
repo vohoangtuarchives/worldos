@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,11 +30,29 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\World\Contracts\ClaimExtractorInterface::class,
             \App\Domains\World\Services\RegexClaimExtractor::class
         );
+        
+        // World repository binding
+        $this->app->bind(
+            \App\Domains\World\Repositories\WorldRepository::class,
+            \App\Domains\World\Repositories\EloquentWorldRepository::class
+        );
+        
+        // Shock event repository binding
+        $this->app->bind(
+            \App\Domains\World\Repositories\ShockEventRepository::class,
+            \App\Domains\World\Repositories\EloquentShockEventRepository::class
+        );
 
         // Continuous operation services
         $this->app->singleton(\App\Services\World\ContinuousWorldService::class);
         $this->app->singleton(\App\Domains\Intelligence\Services\WorldIntelligenceService::class);
         $this->app->singleton(\App\Domains\Material\Services\WorldMaterialTracker::class);
+        
+        // Intelligence repository binding
+        $this->app->bind(
+            \App\Domains\Intelligence\Repositories\IntelligenceRepository::class,
+            \App\Domains\Intelligence\Repositories\EloquentIntelligenceRepository::class
+        );
 
         // Phase 31: History & Institution Domains
         $this->app->bind(
@@ -45,6 +66,54 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Domains\Institution\Repositories\InstitutionRepositoryInterface::class,
             \App\Domains\Institution\Repositories\InstitutionEloquentRepository::class
+        );
+        
+        // Character repository binding
+        $this->app->bind(
+            \App\Domains\Character\Repositories\CharacterSurvivalRepository::class,
+            \App\Domains\Character\Repositories\EloquentCharacterSurvivalRepository::class
+        );
+        
+        // Material repository binding
+        $this->app->bind(
+            \App\Domains\Material\Contracts\MaterialRepositoryInterface::class,
+            \App\Domains\Material\Repositories\MaterialEloquentRepository::class
+        );
+        
+        // WorldMaterial repository binding
+        $this->app->bind(
+            \App\Domains\Material\Repositories\WorldMaterialRepository::class,
+            \App\Domains\Material\Repositories\WorldMaterialRepository::class
+        );
+        
+        // WorldState repository binding
+        $this->app->bind(
+            \App\Domains\Material\State\WorldStateRepository::class,
+            \App\Domains\Material\State\WorldStateRepository::class
+        );
+        
+        // WorldStateMutator binding
+        $this->app->bind(
+            \App\Domains\Material\State\WorldStateMutator::class,
+            \App\Domains\Material\State\WorldStateMutator::class
+        );
+        
+        // CompressedSnapshot repository binding
+        $this->app->bind(
+            \App\Domains\Material\State\CompressedSnapshotRepository::class,
+            \App\Domains\Material\State\CompressedSnapshotRepository::class
+        );
+        
+        // EntropyCalculator binding
+        $this->app->bind(
+            \App\Domains\History\Services\EntropyCalculator::class,
+            \App\Domains\History\Services\EntropyCalculator::class
+        );
+        
+        // ScarImpactService binding
+        $this->app->bind(
+            \App\Domains\History\Services\ScarImpactService::class,
+            \App\Domains\History\Services\ScarImpactService::class
         );
     }
 
@@ -91,7 +160,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Validator::extend('material_id', function ($attribute, $value, $parameters, $validator) {
-            return \App\Domains\Material\Repositories\MaterialRepository::exists($value);
+            return \App\Domains\Material\Repositories\MaterialEloquentRepository::exists($value);
         });
 
         Validator::extend('character_id', function ($attribute, $value, $parameters, $validator) {

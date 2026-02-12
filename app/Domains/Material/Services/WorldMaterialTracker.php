@@ -9,6 +9,8 @@ use App\Domains\Material\ValueObjects\MaterialInstance;
 use App\Domains\World\Aggregates\WorldAggregate;
 use App\Domains\Material\Collections\WorldMaterialCollection;
 use App\Domains\Material\ValueObjects\MaterialState;
+use App\Domains\Material\Contracts\MaterialRepositoryInterface;
+use App\Domains\Material\Repositories\WorldMaterialRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -20,7 +22,7 @@ final class WorldMaterialTracker
     private const ABUNDANCE_THRESHOLD = 0.8; // Above this is abundant
 
     public function __construct(
-        private readonly MaterialRepository $materialRepository,
+        private readonly MaterialRepositoryInterface $materialRepository,
         private readonly WorldMaterialRepository $worldMaterialRepository,
     ) {}
 

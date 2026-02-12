@@ -10,6 +10,7 @@ use App\Domains\World\Events\ShockEvent;
 use App\Domains\Intelligence\ValueObjects\IntelligenceReport;
 use App\Domains\Intelligence\ValueObjects\IntelligenceSource;
 use App\Domains\Intelligence\ValueObjects\IntelligenceType;
+use App\Domains\Intelligence\Repositories\IntelligenceRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 

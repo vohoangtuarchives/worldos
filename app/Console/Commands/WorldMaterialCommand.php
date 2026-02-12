@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 
 use App\Domains\Material\Services\WorldMaterialTracker;
 use App\Domains\World\Repositories\WorldRepository;
-use App\Domains\Material\Repositories\MaterialRepository;
+use App\Domains\Material\Contracts\MaterialRepositoryInterface;
 use Illuminate\Console\Command;
 
 final class WorldMaterialCommand extends Command
@@ -27,7 +27,7 @@ final class WorldMaterialCommand extends Command
     public function __construct(
         private readonly WorldMaterialTracker $materialTracker,
         private readonly WorldRepository $worldRepository,
-        private readonly MaterialRepository $materialRepository,
+        private readonly MaterialRepositoryInterface $materialRepository,
     ) {
         parent::__construct();
     }

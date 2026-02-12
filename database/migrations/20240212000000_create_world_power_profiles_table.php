@@ -12,21 +12,14 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->uuid('world_id');
             $table->string('schema_key');
-            $table->json('parameters')->default(json_encode([]));
-            $table->json('material_affinities')->default(json_encode([]));
-            $table->json('progression_state')->default(json_encode([
-                'current_stage' => 'mundane',
-                'pressure' => 0,
-                'stage_history' => [],
-            ]));
-            $table->json('collision_traits')->default(json_encode([]));
+            $table->json('parameters')->nullable();
+            $table->json('material_affinities')->nullable();
+            $table->json('progression_state')->nullable();
+            $table->json('collision_traits')->nullable();
             $table->timestamps();
 
-            $table->foreign('world_id')
-                ->references('id')
-                ->on('worlds')
-                ->cascadeOnDelete();
-
+            // Remove foreign key for now - will add later in separate migration
+            $table->index('world_id');
             $table->unique(['world_id', 'schema_key']);
         });
     }

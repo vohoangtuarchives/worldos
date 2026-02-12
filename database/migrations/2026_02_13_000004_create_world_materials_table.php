@@ -13,8 +13,8 @@ return new class extends Migration
         Schema::create('world_materials', function (Blueprint $table) {
             $table->id();
             $table->string('instance_id')->unique(); // UUID
-            $table->string('world_id');
-            $table->string('material_id');
+            $table->unsignedBigInteger('world_id');
+            $table->unsignedBigInteger('material_id');
             $table->float('strength_level'); // 0.0 to 10.0
             $table->float('durability'); // 0.0 to 100.0
             $table->float('purity'); // 0.0 to 1.0
@@ -43,9 +43,9 @@ return new class extends Migration
             $table->index(['corruption']);
             $table->index(['retired_at']);
             
-            // Foreign key constraints
+            // Foreign key constraints - only world_id for now
             $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
-            $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade');
+            // materials table doesn't exist yet, so skip material_id foreign key for now
         });
     }
 
