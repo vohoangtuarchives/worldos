@@ -1,4 +1,4 @@
-??php
+<?php
 
 namespace App\Models;
 
@@ -12,14 +12,14 @@ class WorldPowerProfile extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'parameters' ='> 'array',
-        'material_affinities' =''array',
-        'progression_state' ='array',
-        'collision_traits' ='array',
+        'parameters' => 'array',
+        'material_affinities' => 'array',
+        'progression_state' => 'array',
+        'collision_traits' => 'array',
     ];
 
     public function world()
     {
-        return $this-belongsTo(World::class);
+        return $this->belongsTo(World::class);
     }
 }

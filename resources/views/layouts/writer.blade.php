@@ -24,69 +24,70 @@
             </div>
             
             <nav class="flex-1 flex flex-col px-4 py-6 space-y-1 overflow-y-auto">
-                <!-- Dashboard -->
-                <a href="{{ route('writer.dashboard') }}" 
+                <!-- Main Navigation -->
+                <div class="pb-2">
+                    <span class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Điều hướng</span>
+                </div>
+
+                <a href="{{ route('writer.dashboard') }}"
                    class="{{ request()->routeIs('writer.dashboard') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 {{ request()->routeIs('writer.dashboard') ? 'text-indigo-400' : 'text-gray-500 group-hover:text-gray-300' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                     </svg>
-                    Bảng điều khiển
+                    Trang chủ
                 </a>
 
-                <a href="{{ route('writer.genesis') }}" 
-                   class="{{ request()->routeIs('writer.genesis') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                    <svg class="mr-3 h-5 w-5 flex-shrink-0 {{ request()->routeIs('writer.genesis') ? 'text-indigo-400' : 'text-gray-500 group-hover:text-gray-300' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9l-7.5 7.5m0 0l-1.5-1.5m1.5 1.5l1.5 1.5m0-7.5L12 3m0 0l1.5 1.5M12 3v18m4.5-13.5L12 3m0 0l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <a href="{{ route('writer.genesis') }}"
+                   class="{{ request()->routeIs('writer.genesis*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+                    <svg class="mr-3 h-5 w-5 flex-shrink-0 {{ request()->routeIs('writer.genesis*') ? 'text-amber-400' : 'text-gray-500 group-hover:text-gray-300' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
                     </svg>
-                    Khởi tạo Thế giới (Genesis)
+                    🌅 Khai Thiên (Genesis)
                 </a>
 
-                <!-- Saga Exploration -->
-                <div class="pt-4 pb-2">
-                    <span class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Khám phá</span>
-                </div>
-                
-                <a href="{{ route('writer.sagas.index') }}" 
+                <a href="{{ route('writer.sagas.index') }}"
                    class="{{ request()->routeIs('writer.sagas.*') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 {{ request()->routeIs('writer.sagas.*') ? 'text-indigo-400' : 'text-gray-500 group-hover:text-gray-300' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
                     </svg>
-                    Saga của tôi
+                    📚 Saga của tôi
                 </a>
 
-                <!-- Material Tools -->
-                <div class="pt-4 pb-2">
-                    <span class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Công cụ Vật liệu</span>
+                <!-- Active Worlds -->
+                @php
+                    $sidebarWorlds = \App\Models\World::where('status', '!=', 'archived')
+                        ->orderByDesc('updated_at')
+                        ->limit(5)
+                        ->get();
+                @endphp
+                @if($sidebarWorlds->count() > 0)
+                <div class="pt-5 pb-2">
+                    <span class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">🌍 Thế giới</span>
                 </div>
-                
-                <a href="#" onclick="alert('Vui lòng chọn một thế giới cụ thể từ trong Saga để quản lý vật liệu.')" 
-                   class="text-gray-400 hover:bg-gray-700 hover:text-white group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                    <svg class="mr-3 h-5 w-5 flex-shrink-0 text-gray-500 group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    Quản lý Vật liệu
+
+                @foreach($sidebarWorlds as $sw)
+                <a href="{{ route('writer.worlds.hub', $sw->id) }}"
+                   class="{{ request()->is('writer/worlds/'.$sw->id.'*') ? 'bg-indigo-900/50 text-white border-l-2 border-indigo-400' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
+                    <span class="mr-3 h-5 w-5 flex-shrink-0 flex items-center justify-center text-xs {{ $sw->status === 'active' ? 'text-green-400' : 'text-gray-500' }}">●</span>
+                    <span class="truncate">{{ $sw->name }}</span>
+                    @if($sw->health_status === 'CRITICAL')
+                        <span class="ml-auto flex-shrink-0 text-red-400 text-xs">⚠</span>
+                    @endif
                 </a>
-                
-                <a href="#" onclick="alert('Chọn một world từ Saga để xem timeline')" 
-                   class="text-gray-400 hover:bg-gray-700 hover:text-white group flex items-center px-3 py-2 text-sm font-medium rounded-md">
-                    <svg class="mr-3 h-5 w-5 flex-shrink-0 text-gray-500 group-hover:text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    Timeline Sự kiện
-                </a>
+                @endforeach
+                @endif
 
                 <!-- Help -->
-                <div class="pt-4 pb-2">
+                <div class="pt-5 pb-2">
                     <span class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Trợ giúp</span>
                 </div>
-                
-                <a href="{{ route('writer.terminology') }}" 
+
+                <a href="{{ route('writer.terminology') }}"
                    class="{{ request()->routeIs('writer.terminology') ? 'bg-gray-700 text-white' : 'text-gray-400 hover:bg-gray-700 hover:text-white' }} group flex items-center px-3 py-2 text-sm font-medium rounded-md">
                     <svg class="mr-3 h-5 w-5 flex-shrink-0 {{ request()->routeIs('writer.terminology') ? 'text-indigo-400' : 'text-gray-500 group-hover:text-gray-300' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
                     </svg>
-                    Thuật ngữ
+                    📖 Thuật ngữ
                 </a>
             </nav>
 
@@ -149,5 +150,7 @@
             </main>
         </div>
     </div>
+
+    @stack('scripts')
 </body>
 </html>

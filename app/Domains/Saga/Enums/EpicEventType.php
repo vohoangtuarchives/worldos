@@ -10,6 +10,8 @@ enum EpicEventType: string
     case GREAT_WAR = 'great_war';
     case DIVINE_INTERVENTION = 'divine_intervention';
     case WORLD_COLLAPSE = 'world_collapse';
+    case ENTROPY_SPIKE = 'entropy_spike';
+    case TERRAFORM_EVENT = 'terraform_event';
 
     public function label(): string
     {
@@ -20,6 +22,8 @@ enum EpicEventType: string
             self::GREAT_WAR => 'Đại Chiến Thế Giới',
             self::DIVINE_INTERVENTION => 'Thần Tích',
             self::WORLD_COLLAPSE => 'Tận Thế',
+            self::ENTROPY_SPIKE => 'Đột Biến Entropy',
+            self::TERRAFORM_EVENT => 'Tái Thiết Thực Tại',
         };
     }
 }

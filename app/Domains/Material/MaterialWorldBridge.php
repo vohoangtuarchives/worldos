@@ -39,13 +39,19 @@ class MaterialWorldBridge
      * Process all material instances for a world and apply effects to world state.
      * 
      * @param World $world
-     * @param array $worldContext Current world state
+     * @param float $deltaTime Time passed in this tick (in years)
      * @return array Aggregated effects to apply to world
      */
-    public function processTick(World $world, array $worldContext): array
+    public function processTick(World $world, float $deltaTime): array
     {
         $instances = $this->repository->getInstancesForWorld($world->id);
         
+        // Context now includes deltaTime for physics calculations
+        $worldContext = [
+            'delta_time' => $deltaTime,
+            'tech_level' => 2, // Placeholder
+        ];
+
         $aggregatedEffects = [
             'cohesion_modifier' => 0,
             'entropy_modifier' => 0,

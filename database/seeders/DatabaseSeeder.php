@@ -26,11 +26,17 @@ class DatabaseSeeder extends Seeder
         );
 
         $this->call([
+            AttractorSeeder::class,           // ← NEW: Seed cosmic attractors FIRST
             MaterialSeeder::class,
             TechnologyInteractionMaterialsSeeder::class,
             ArchetypeSeeder::class,
             WorldSeeder::class,
             \Database\Seeders\WorldPresetSeeder::class,
+            
+            // Vietnamese Cultural System
+            ScoringVersionSeeder::class,      // ← Seed scoring config first
+            RealmContactSeeder::class,        // ← Seed realm contacts
+            VietnameseFullHeroSeeder::class,  // ← Seed FULL hero database (96+ heroes)
         ]);
     }
 }

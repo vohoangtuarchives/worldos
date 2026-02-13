@@ -33,6 +33,11 @@ class WorldForkService
                 'name' => $newName,
                 'law_profile' => $lawProfile,
                 'parent_id' => $sourceWorld->id, // Track Lineage
+                'preset' => $sourceWorld->preset ?? 'vietnamese_mythology', // Default fallback
+                'gene_vector' => $sourceWorld->gene_vector,
+                'origin_type' => $sourceWorld->origin_type,
+                'chaos_seed' => $sourceWorld->chaos_seed, // Share seed or new? Usually fork shares base seed but diverges
+                // 'type' removed as column does not exist
             ]);
 
             // 2. Initialize Clock at the fork point

@@ -18,21 +18,25 @@ class DecayProcessor
      * 
      * @param MaterialInstance $instance
      * @param array $worldState Current world pressures
+     * @param float $deltaTime Time passed in this tick (in years)
      * @return array Decay result
      */
-    public function processDecay(MaterialInstance $instance, array $worldState = []): array
+    public function processDecay(MaterialInstance $instance, array $worldState = [], float $deltaTime = 1.0): array
     {
         $material = $instance->material;
         $decayAmount = 0;
 
-        // 1. Time-based decay (baseline)
-        $decayAmount += $this->calculateTimeDecay($instance);
+        // 1. Time-based decay (baseline) - Scaled by deltaTime
+        $decayAmount += $this->calculateTimeDecay($instance, $deltaTime);
 
-        // 2. Condition-based decay
-        $decayAmount += $this->calculateConditionDecay($instance, $worldState);
+        // 2. Condition-based decay - Scaled by deltaTime
+        $decayAmount += $this->calculateConditionDecay($instance, $worldState) * $deltaTime;
 
-        // 3. Shock-accelerated decay
-        $decayAmount += $this->calculateShockDecay($instance, $worldState);
+        // 3. Shock-accelerated decay - NOT scaled (instant impact)
+        // Shocks happen "during" the tick, regardless of length, typically.
+        // OR: Should shocks be scaled? A 1-day war is less damaging than a 1-year war.
+        // DECISION: Scale shocks too, assuming the state flag persists for the duration.
+        $decayAmount += $this->calculateShockDecay($instance, $worldState) * $deltaTime;
 
         // Apply decay
         $instance->degradation_level += $decayAmount;
@@ -56,16 +60,18 @@ class DecayProcessor
     /**
      * Time-based decay (constant entropy).
      */
-    private function calculateTimeDecay(MaterialInstance $instance): float
+    private function calculateTimeDecay(MaterialInstance $instance, float $deltaTime): float
     {
         $material = $instance->material;
 
-        return match($material->ontology) {
+        $baseRate = match($material->ontology) {
             MaterialOntology::INSTITUTIONAL => $instance->strength_level < 3 ? 2.0 : 1.0,
             MaterialOntology::SYMBOLIC => $instance->strength_level < 1 ? 1.0 : 0.5,
             MaterialOntology::BEHAVIORAL => 1.5,
             default => 1.0,
         };
+
+        return $baseRate * $deltaTime;
     }
 
     /**

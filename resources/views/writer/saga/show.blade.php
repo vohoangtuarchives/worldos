@@ -60,6 +60,13 @@
                 <button type="button" class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
                     Xuất Phân tích
                 </button>
+
+                <a href="{{ route('writer.sagas.tree', $saga) }}" class="inline-flex items-center rounded-md bg-amber-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-amber-500">
+                    <svg class="-ml-0.5 mr-1.5 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                    Yggdrasil Tree
+                </a>
                 
                 @if(!$saga->isPending() && $saga->sagaWorlds->count() > 0)
                     <form action="{{ route('writer.story.publish', $saga->sagaWorlds->last()->world) }}" method="POST" onsubmit="return confirm('Bạn có chắc muốn xuất bản Saga này thành truyện chính thức?');">
@@ -76,6 +83,68 @@
         </div>
     </div>
 
+    <!-- World Laws / Physics Metadata -->
+    <div class="bg-gray-800 shadow rounded-lg border border-gray-700">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+            <h3 class="text-base font-semibold leading-6 text-white">Cấu trúc Vũ trụ (Laws of the World)</h3>
+            <p class="mt-1 text-sm text-gray-400">Các quy tắc vật lý và xã hội chi phối chuỗi thế giới này.</p>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Hệ Sức Mạnh</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        <span class="inline-flex items-center rounded-full bg-purple-400/10 px-2 py-1 text-xs font-medium text-purple-400 ring-1 ring-inset ring-purple-400/20">
+                            {{ $saga->metadata['power_system'] ?? 'N/A' }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Cấp độ Công nghệ</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        <span class="inline-flex items-center rounded-full bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">
+                            {{ $saga->metadata['tech_level'] ?? 'N/A' }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Cấu trúc Xã hội</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        <span class="inline-flex items-center rounded-full bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-400 ring-1 ring-inset ring-yellow-400/20">
+                            {{ $saga->metadata['social_structure'] ?? 'N/A' }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Trần Sức Mạnh</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        <span class="inline-flex items-center rounded-full bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 ring-1 ring-inset ring-red-400/20">
+                            {{ $saga->metadata['power_ceiling'] ?? 'N/A' }}
+                        </span>
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Môi trường</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        {{ $saga->metadata['environment'] ?? 'N/A' }}
+                    </dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Khủng hoảng đầu</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        {{ $saga->metadata['starting_crisis'] ?? 'None' }}
+                    </dd>
+                </div>
+                 <div class="sm:col-span-1">
+                    <dt class="text-xs font-medium text-gray-400 uppercase tracking-widest">Xếp hạng Sức mạnh</dt>
+                    <dd class="mt-1 text-sm font-semibold text-white">
+                        {{ $saga->metadata['power_ranking'] ?? 'Default' }}
+                    </dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
     <!-- Timeline / Worlds -->
     <div class="bg-gray-800 shadow rounded-lg border border-gray-700">
         <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
@@ -85,17 +154,16 @@
         <ul role="list" class="divide-y divide-gray-700">
             @foreach($worlds as $sagaWorld)
                 <li class="group hover:bg-gray-700/50 transition-colors">
-                    <a href="{{ route('writer.sagas.worlds.show', [$saga, $sagaWorld->sequence]) }}" class="block px-4 py-5 sm:px-6">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center">
-                                <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full {{ $sagaWorld->hasCollapsed() ? 'bg-red-900/50 border border-red-700' : 'bg-indigo-900/50 border border-indigo-700' }}">
-                                    <span class="text-sm font-medium {{ $sagaWorld->hasCollapsed() ? 'text-red-400' : 'text-indigo-400' }}">
-                                        {{ $sagaWorld->sequence + 1 }}
-                                    </span>
+                    <div class="flex items-center justify-between px-4 py-5 sm:px-6">
+                        <a href="{{ route('writer.sagas.worlds.show', [$saga, $sagaWorld->sequence]) }}" class="flex items-center flex-1">
+                            <span class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full {{ $sagaWorld->hasCollapsed() ? 'bg-red-900/50 border border-red-700' : 'bg-indigo-900/50 border border-indigo-700' }}">
+                                <span class="text-sm font-medium {{ $sagaWorld->hasCollapsed() ? 'text-red-400' : 'text-indigo-400' }}">
+                                    {{ $sagaWorld->sequence + 1 }}
                                 </span>
-                                <div class="ml-4">
-                                    <div class="font-medium text-white">{{ $sagaWorld->world->name }}</div>
-                                    <div class="text-sm text-gray-500 capitalize">{{ $sagaWorld->status }}</div>
+                            </span>
+                            <div class="ml-4">
+                                <div class="font-medium text-white">{{ $sagaWorld->world->name }}</div>
+                                <div class="text-sm text-gray-500 capitalize">{{ $sagaWorld->status }}</div>
                                 </div>
                             </div>
                             
@@ -114,10 +182,15 @@
                                 </div>
                             @endif
 
-                            <div class="flex items-center text-gray-400">
-                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
-                                </svg>
+                            <div class="flex items-center space-x-4">
+                                <a href="{{ route('writer.worlds.hub', $sagaWorld->world_id) }}" class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-1.5 text-xs font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                                    Open World Hub
+                                </a>
+                                <div class="text-gray-400">
+                                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
                             </div>
                         </div>
                         

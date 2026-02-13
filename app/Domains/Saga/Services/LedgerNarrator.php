@@ -37,7 +37,9 @@ class LedgerNarrator
         $allowedTypes = [
             EpicEventType::STAGE_TRANSITION->value, 
             EpicEventType::WORLD_COLLAPSE->value,
-            'personal_event' // String literal matching EncounterService
+            'personal_event',
+            'terraform_event',
+            'entropy_spike'
         ];
 
         if ($event->payload['magnitude'] < 0.5 && !in_array($event->type, $allowedTypes)) {
@@ -52,6 +54,10 @@ class LedgerNarrator
         $type = $event->type;
         $payload = $event->payload;
         $templateKey = $this->resolveTemplateKey($event);
+
+        if (isset($payload['description']) && $payload['description'] !== "Một sự kiện chấn động đã xảy ra.") {
+            return $payload['description'];
+        }
 
         if (!$templateKey) {
             return $this->fallbackNarrative($event);
@@ -87,6 +93,8 @@ class LedgerNarrator
             EpicEventType::CATACLYSM->value => 'natural_disaster',
             EpicEventType::GREAT_WAR->value => 'clash_of_empires',
             EpicEventType::DIVINE_INTERVENTION->value => 'miracle',
+            EpicEventType::ENTROPY_SPIKE->value => 'standard',
+            EpicEventType::TERRAFORM_EVENT->value => 'reality_drift',
         ];
 
         if (array_key_exists($event->type, $typeDefaults)) {

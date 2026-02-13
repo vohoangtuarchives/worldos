@@ -12,4 +12,7 @@ enum FactionIntentType: string
     case SPLIT = 'split';
     case RECOVER = 'recover';
     case STABILIZE = 'stabilize';
+    case PURGE = 'purge';
+    case REFORM = 'reform';
+    case ADAPT = 'adapt';
 }

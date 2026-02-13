@@ -14,99 +14,33 @@
         </div>
     </div>
 
-    <!-- Create Saga Form -->
-    <div class="bg-gray-800 shadow rounded-lg border border-gray-700">
-        <div class="px-4 py-5 sm:p-6">
-            <form action="{{ route('writer.sagas.store') }}" method="POST" class="space-y-6">
-                @csrf
-                <input type="hidden" name="action_type" value="seed_archetype">
-
-                <!-- Saga Name -->
-                <div>
-                    <label for="name" class="block text-sm font-medium leading-6 text-gray-200">Tên Saga</label>
-                    <div class="mt-2">
-                        <input type="text" name="name" id="name" 
-                               class="block w-full rounded-md border-0 bg-gray-900 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 placeholder-gray-500" 
-                               placeholder="ví dụ: Sự sụp đổ của Hyperion" required>
-                    </div>
-                    <p class="mt-2 text-sm text-gray-500">Một tên mô tả cho chuỗi thế giới này.</p>
-                </div>
-
-                <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <!-- World Count -->
-                    <div class="sm:col-span-3">
-                        <label for="world_count" class="block text-sm font-medium leading-6 text-gray-200">Số lượng Thế giới</label>
-                        <div class="mt-2">
-                            <input type="number" name="world_count" id="world_count" value="5" min="1" max="20"
-                                   class="block w-full rounded-md border-0 bg-gray-900 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-700 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                        <p class="mt-2 text-sm text-gray-500">Bao nhiêu thế giới tuần tự để tạo ra.</p>
-                    </div>
-
-                    <!-- Legacy Toggle -->
-                    <div class="sm:col-span-3">
-                        <label for="carry_legacy" class="block text-sm font-medium leading-6 text-gray-200">Chuyển giao Di sản</label>
-                        <div class="mt-2 flex items-center">
-                            <select name="carry_legacy" id="carry_legacy" class="block w-full rounded-md border-0 bg-gray-900 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option value="1">Bật (Lịch sử quan trọng)</option>
-                                <option value="0">Tắt (Khởi đầu mới mỗi lần)</option>
-                            </select>
-                        </div>
-                        <p class="mt-2 text-sm text-gray-500">Chuyển giao thiên hướng nguyên mẫu sang thế giới tiếp theo?</p>
-                    </div>
-
-                    <!-- Genre Selection -->
-                    <div class="sm:col-span-3">
-                        <label for="genre" class="block text-sm font-medium leading-6 text-gray-200">Thể loại (World Physics)</label>
-                        <div class="mt-2 flex items-center">
-                            <select name="genre" id="genre" class="block w-full rounded-md border-0 bg-gray-900 py-1.5 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                <option value="historical">Historical (Default)</option>
-                                <option value="xianxia">Xianxia (Cultivation)</option>
-                                <option value="wuxia">Wuxia (Martial Arts)</option>
-                                <option value="system">System (LitRPG)</option>
-                                <option value="magical_academy">Magical Academy</option>
-                            </select>
-                        </div>
-                        <p class="mt-2 text-sm text-gray-500">Quy tắc vật lý và hệ thống sức mạnh chủ đạo.</p>
-                    </div>
-                </div>
-
-                <!-- Archetype Focus Selection -->
-                <div class="border-t border-gray-700 pt-6">
-                    <fieldset>
-                        <legend class="text-base font-semibold leading-6 text-white">Hạt giống Nguyên mẫu Ban đầu</legend>
-                        <p class="mt-1 text-sm text-gray-500">Chọn các chủ đề chủ đạo để định hướng thế giới ban đầu.</p>
-                        
-                        <div class="mt-6 grid grid-cols-1 gap-y-6 sm:grid-cols-2 md:grid-cols-4 gap-x-4">
-                            @foreach($themes as $domain => $domainThemes)
-                                <div class="space-y-4">
-                                    <h3 class="text-sm font-medium text-indigo-400 uppercase tracking-wider">{{ $domain }}</h3>
-                                    @foreach($domainThemes as $theme)
-                                        <div class="relative flex items-start">
-                                            <div class="flex h-6 items-center">
-                                                <input id="theme_{{ $theme['key'] }}" name="archetype_focus[]" value="{{ $theme['key'] }}" type="checkbox" 
-                                                       class="h-4 w-4 rounded border-gray-600 bg-gray-900 text-indigo-600 focus:ring-indigo-600 focus:ring-offset-gray-900">
-                                            </div>
-                                            <div class="ml-3 text-sm leading-6">
-                                                <label for="theme_{{ $theme['key'] }}" class="font-medium text-gray-200">{{ $theme['name'] }}</label>
-                                                <p class="text-gray-500 text-xs">{{ Str::limit($theme['description'], 50) }}</p>
-                                            </div>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endforeach
-                        </div>
-                    </fieldset>
-                </div>
-
-                <div class="border-t border-gray-700 pt-6 flex items-center justify-end gap-x-6">
-                    <button type="button" class="text-sm font-semibold leading-6 text-white">Hủy</button>
-                    <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                        Khởi tạo Mô phỏng
-                    </button>
-                </div>
-            </form>
+    <!-- Genesis Call to Action -->
+    <div class="relative isolate overflow-hidden bg-gray-900 px-6 py-24 shadow-2xl sm:rounded-3xl sm:px-24 xl:py-32 border border-gray-800">
+        <h2 class="mx-auto max-w-2xl text-center text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            Khai Thiên Tịch Địa
+            <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-600">Sáng tạo Thế giới Mới</span>
+        </h2>
+        <p class="mx-auto mt-2 max-w-xl text-center text-lg leading-8 text-gray-300">
+            Khởi tạo một vũ trụ mới với hệ thống vật lý, cấp độ công nghệ và cấu trúc xã hội tùy chỉnh. Sử dụng Material Engine để mô phỏng sự thăng trầm của các nền văn minh.
+        </p>
+        <div class="mt-10 flex justify-center gap-x-6">
+            <a href="{{ route('writer.genesis') }}" class="rounded-md bg-gradient-to-r from-amber-500 to-orange-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:from-amber-400 hover:to-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 transition-all hover:scale-105">
+                Khởi động Genesis System <span aria-hidden="true">→</span>
+            </a>
+            <a href="{{ route('writer.terminology') }}" class="text-sm font-semibold leading-6 text-white hover:text-amber-400 transition-colors">
+                Tìm hiểu về Material Engine <span aria-hidden="true">→</span>
+            </a>
         </div>
+        <svg viewBox="0 0 1024 1024" class="absolute left-1/2 top-1/2 -z-10 h-[64rem] w-[64rem] -translate-x-1/2 [mask-image:radial-gradient(closest-side,white,transparent)]" aria-hidden="true">
+            <circle cx="512" cy="512" r="512" fill="url(#gradient)" fill-opacity="0.15" />
+            <defs>
+                <radialGradient id="gradient">
+                    <stop stop-color="#CA8A04" /> <!-- Amber-600 -->
+                    <stop offset="1" stop-color="#EA580C" /> <!-- Orange-600 -->
+                </radialGradient>
+            </defs>
+        </svg>
     </div>
 
     <!-- Recent Sagas -->

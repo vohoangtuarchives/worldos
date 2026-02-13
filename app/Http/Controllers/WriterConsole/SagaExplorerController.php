@@ -7,21 +7,26 @@ use App\Domains\Saga\Saga;
 use App\Domains\Historian\SagaAnalyzer;
 use App\Domains\WriterConsole\WriterFacingAPI;
 use App\Domains\Saga\SagaRunner;
+use App\Models\GateChannel;
+use App\Domains\World\ValueObjects\PhysicsProfile;
 
 class SagaExplorerController extends Controller
 {
     private SagaAnalyzer $analyzer;
     private WriterFacingAPI $writerApi;
     private SagaRunner $sagaRunner;
+    private \App\Domains\Material\Contracts\MaterialRepositoryInterface $materialRepo;
 
     public function __construct(
         SagaAnalyzer $analyzer, 
         WriterFacingAPI $writerApi,
-        SagaRunner $sagaRunner
+        SagaRunner $sagaRunner,
+        \App\Domains\Material\Contracts\MaterialRepositoryInterface $materialRepo
     ) {
         $this->analyzer = $analyzer;
         $this->writerApi = $writerApi;
         $this->sagaRunner = $sagaRunner;
+        $this->materialRepo = $materialRepo;
     }
 
     /**
@@ -104,13 +109,60 @@ class SagaExplorerController extends Controller
             ->get();
 
         $story = \App\Models\Story::where('world_id', $sagaWorld->world_id)->first();
+        
+        // Fetch Material Instances
+        $materials = $this->materialRepo->getInstancesForWorld($sagaWorld->world_id);
+
+        // --- MULTIVERSE AUTOMATION DATA ---
+        $gates = GateChannel::where('source_world_id', $sagaWorld->world_id)
+            ->orWhere('target_world_id', $sagaWorld->world_id)
+            ->with(['sourceWorld', 'targetWorld'])
+            ->get();
+
+        $baseline = $sagaWorld->world->preset === 'void' 
+            ? PhysicsProfile::void() 
+            : PhysicsProfile::standard();
+            
+        $drift = $sagaWorld->world->physics_profile->calculateDrift($baseline);
 
         return view('writer.saga.world', [
             'saga' => $saga,
             'sagaWorld' => $sagaWorld,
             'writerState' => $writerState,
             'chronicles' => $chronicles,
-            'story' => $story
+            'story' => $story,
+            'materials' => $materials,
+            'gates' => $gates,
+            'realityDrift' => $drift
+        ]);
+    }
+    /**
+     * Show Yggdrasil Tree Visualization for Saga
+     */
+    public function tree(Saga $saga)
+    {
+        // Fetch all worlds in this saga with checking parent relationships
+        $sagaWorlds = $saga->sagaWorlds()->with('world')->get();
+        
+        // Prepare data for D3
+        $nodes = $sagaWorlds->map(function($sw) {
+            $w = $sw->world;
+            return [
+                'id' => $w->id,
+                'parentId' => $w->parent_id, // Root world has null
+                'name' => $w->name,
+                'origin_type' => $w->origin_type ?? 'cosmic',
+                'current_era' => (int) floor(($w->current_time ?? 0) / 50),
+                'bifurcation_trigger' => $w->bifurcation_trigger, // e.g. "hero:5"
+                'status' => $sw->status,
+                'has_collapsed' => $sw->hasCollapsed(),
+                'sequence' => $sw->sequence
+            ];
+        });
+
+        return view('writer.saga.tree', [
+            'saga' => $saga,
+            'treeData' => $nodes
         ]);
     }
 }

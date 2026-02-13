@@ -29,6 +29,6 @@ class SurvivalEventCatalog implements EventCatalog
             'rest' => ['risk' => 'medium', 'reward' => 'stamina_recovery'],
             'hunt' => ['risk' => 'very_high', 'reward' => 'high_food'],
             default => []
-        ];
+        };
     }
 }

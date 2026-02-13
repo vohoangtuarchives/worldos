@@ -18,8 +18,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Domains\Narrative\LLM\Contracts\LLMProvider::class,
             function ($app) {
+                $apiKey = config('services.openai.api_key');
+                if (empty($apiKey) || app()->environment('testing')) {
+                    return new \App\Domains\Narrative\LLM\Services\FakeLLMService();
+                }
                 return new \App\Domains\Narrative\LLM\Services\OpenAIService(
-                    config('services.openai.api_key'),
+                    $apiKey,
                     config('services.openai.model')
                 );
             }
@@ -115,6 +119,12 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\History\Services\ScarImpactService::class,
             \App\Domains\History\Services\ScarImpactService::class
         );
+
+        // RealityNarrator binding
+        $this->app->singleton(\App\Domains\Narrative\Services\RealityNarrator::class);
+
+        // SagaDirector binding
+        $this->app->singleton(\App\Domains\Saga\Services\SagaDirector::class);
     }
 
     /**

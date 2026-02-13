@@ -58,6 +58,7 @@ class WorldCreationController extends Controller
             'social_structure' => 'nullable|string',
             'starting_crisis' => 'nullable|string',
             'power_ranking' => 'nullable|string',
+            'origin_type' => 'nullable|string',
             'world_count' => 'integer|min:1|max:20',
             'carry_legacy' => 'boolean',
         ]);
@@ -85,6 +86,7 @@ class WorldCreationController extends Controller
             'genre' => $config['genre'] ?? 'xianxia',
             'status' => Saga::STATUS_PENDING,
             'metadata' => [
+                'origin_type' => $validated['origin_type'] ?? 'cosmic',
                 'genesis_preset' => $validated['preset_key'] ?? 'custom',
                 'power_system' => $config['power_system'] ?? 'NONE',
                 'power_ceiling' => $config['power_ceiling'] ?? 'HUMAN',

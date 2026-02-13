@@ -17,9 +17,10 @@ class EffectApplier
      * 
      * @param Collection $activeMaterials
      * @param array $worldState Current state
+     * @param float $deltaTime Time passed in this tick (in years)
      * @return array Deltas and origins
      */
-    public function apply(Collection $activeMaterials, array $worldState): array
+    public function apply(Collection $activeMaterials, array $worldState, float $deltaTime = 1.0): array
     {
         $deltas = [];
         $origins = [];
@@ -36,7 +37,8 @@ class EffectApplier
             $outputs = $material->pressure_outputs ?? [];
             
             foreach ($outputs as $target => $baseEffect) {
-                $effectValue = $this->calculateEffectValue($baseEffect, $strength);
+                // Scale effect by deltaTime
+                $effectValue = $this->calculateEffectValue($baseEffect, $strength) * $deltaTime;
                 
                 // Aggregate deltas
                 if (!isset($deltas[$target])) {
@@ -49,9 +51,9 @@ class EffectApplier
             }
         }
 
-        // Clamp all deltas to reasonable bounds
+        // Clamp all deltas to reasonable bounds (Scaled by Time)
         foreach ($deltas as $key => $value) {
-            $deltas[$key] = $this->clampDelta($value);
+            $deltas[$key] = $this->clampDelta($value, $deltaTime);
         }
 
         return [
@@ -85,11 +87,12 @@ class EffectApplier
 
     /**
      * Clamp delta to prevent extreme state changes.
-     * Max change per tick: ±0.3
+     * Max change per tick: ±0.3 (Scaled by Time)
      */
-    private function clampDelta(float $delta): float
+    private function clampDelta(float $delta, float $deltaTime = 1.0): float
     {
-        return min(0.3, max(-0.3, $delta));
+        $limit = 0.3 * $deltaTime;
+        return min($limit, max(-$limit, $delta));
     }
 
     /**

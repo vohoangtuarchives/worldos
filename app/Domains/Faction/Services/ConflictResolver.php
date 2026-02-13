@@ -47,7 +47,6 @@ class ConflictResolver
 
     private function resolveAttacks(World $world, array $factionIds): void
     {
-        // ... (rest of methods)
         foreach ($factionIds as $id) {
             $faction = Faction::find($id);
             // Simple victory/defeat logic based on military power (if we had it)
@@ -199,3 +198,4 @@ class ConflictResolver
             }
         }
     }
+}

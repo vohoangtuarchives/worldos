@@ -43,6 +43,12 @@
                     <span class="ml-2 border-l border-gray-700 pl-2">
                         Căng thẳng: {{ $writerState['tension'] }}
                     </span>
+                    @php
+                        $timeManager = app(\App\Domains\Time\TimeManager::class);
+                    @endphp
+                    <span class="ml-2 border-l border-gray-700 pl-2 text-indigo-400 font-mono">
+                        {{ $timeManager->formatTime($sagaWorld->world->current_time, $sagaWorld->world->calendar_system) }}
+                    </span>
                 </div>
             </div>
         </div>
@@ -82,6 +88,125 @@
                     </button>
                 </form>
             @endif
+        </div>
+    </div>
+
+    <!-- Material Monitor -->
+    <div class="bg-gray-800 shadow rounded-lg border border-gray-700">
+        <div class="px-4 py-5 sm:px-6 border-b border-gray-700 flex justify-between items-center">
+            <div>
+                <h3 class="text-base font-semibold leading-6 text-white">Material Monitor (Giám sát Vật liệu)</h3>
+                <p class="mt-1 text-sm text-gray-400">Trạng thái các yếu tố nền tảng cấu thành thế giới.</p>
+            </div>
+            <span class="inline-flex items-center rounded-md bg-gray-700 px-2 py-1 text-xs font-medium text-gray-300 ring-1 ring-inset ring-gray-600">
+                {{ $materials->count() }} Active Elements
+            </span>
+        </div>
+        <div class="px-4 py-5 sm:p-6">
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach($materials->groupBy('material.ontology') as $ontology => $items)
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-indigo-400 uppercase tracking-widest border-b border-gray-700 pb-2 mb-3">
+                            {{ $ontology }}
+                        </h4>
+                        @foreach($items as $instance)
+                            <div class="flex items-center justify-between p-3 rounded-lg bg-gray-700/30 border border-gray-700 hover:border-gray-600 transition-colors">
+                                <div class="flex-1 min-w-0 pr-4">
+                                    <div class="text-sm font-medium text-gray-200 truncate" title="{{ $instance->material->description }}">
+                                        {{ str_replace('_', ' ', $instance->material->code) }}
+                                    </div>
+                                    <div class="flex items-center mt-1">
+                                        <div class="h-1.5 flex-1 bg-gray-700 rounded-full overflow-hidden">
+                                            <div class="h-full {{ $instance->strength_level > 7 ? 'bg-green-500' : ($instance->strength_level < 3 ? 'bg-red-500' : 'bg-amber-500') }}" style="width: {{ ($instance->strength_level / 10) * 100 }}%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right flex-shrink-0">
+                                    <div class="text-sm font-bold font-mono {{ $instance->strength_level > 7 ? 'text-green-400' : ($instance->strength_level < 3 ? 'text-red-400' : 'text-amber-400') }}">
+                                        {{ $instance->strength_level }}
+                                    </div>
+                                    <div class="text-[10px] uppercase text-gray-500 mt-0.5">
+                                        {{ isset($instance->mutation_state['original']) ? 'BASE' : 'MUTATED' }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <!-- Cosmic Connectivity (Multiverse Automation) -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <!-- Reality Drift Card -->
+        <div class="bg-gray-800 shadow rounded-lg border border-gray-700 transition hover:border-indigo-500/50">
+            <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                <h3 class="text-base font-semibold leading-6 text-white">Reality Drift (Trôi dạt Thực tại)</h3>
+                <p class="mt-1 text-sm text-gray-400">Độ lệch của quy luật vật lý so với nguyên bản.</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6 flex flex-col justify-center">
+                <div class="flex items-end justify-between mb-2">
+                    <span class="text-3xl font-bold text-white font-mono">{{ number_format($realityDrift * 100, 1) }}%</span>
+                    <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Physics Divergence</span>
+                </div>
+                <div class="h-4 w-full bg-gray-700 rounded-full overflow-hidden border border-gray-600">
+                    <div class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 shadow-[0_0_10px_rgba(139,92,246,0.5)]" style="width: {{ $realityDrift * 100 }}%"></div>
+                </div>
+                <p class="mt-4 text-xs text-gray-400 leading-relaxed italic">
+                    "Thực tại đang dần tan rã. Những quy luật cơ bản không còn giữ được hình hài nguyên thủy khi entropy từ các thế giới khác xâm chiếm."
+                </p>
+            </div>
+        </div>
+
+        <!-- Active Rifts Card -->
+        <div class="bg-gray-800 shadow rounded-lg border border-gray-700">
+            <div class="px-4 py-5 sm:px-6 border-b border-gray-700">
+                <h3 class="text-base font-semibold leading-6 text-white">Cosmic Rifts (Vết nứt Đa vũ trụ)</h3>
+                <p class="mt-1 text-sm text-gray-400">Các kết nối đang hoạt động với các thế giới khác.</p>
+            </div>
+            <div class="px-4 py-5 sm:p-6">
+                @forelse($gates as $gate)
+                    @php
+                        $isOutgoing = $gate->source_world_id === $sagaWorld->world_id;
+                        $partner = $isOutgoing ? $gate->targetWorld : $gate->sourceWorld;
+                    @endphp
+                    <div class="flex items-center justify-between p-4 rounded-lg bg-gray-700/20 border border-indigo-500/30 mb-3 last:mb-0">
+                        <div class="flex items-center">
+                            <div class="flex-shrink-0">
+                                @if($isOutgoing)
+                                    <svg class="h-6 w-6 text-pink-400 animate-pulse" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699-2.7a14.93 14.93 0 015.841-2.58m1.76 1.76a14.923 14.923 0 012.58 5.841m-2.58-5.84a14.926 14.926 0 00-5.841 2.58M14.24 14.24a14.932 14.932 0 01-5.841 2.58m-4.522-4.522a14.928 14.928 0 012.58-5.841m5.84 2.58a14.926 14.926 0 00-2.58 5.841" />
+                                    </svg>
+                                @else
+                                    <svg class="h-6 w-6 text-indigo-400 rotate-180 animate-pulse" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699-2.7a14.93 14.93 0 015.841-2.58m1.76 1.76a14.923 14.923 0 012.58 5.841m-2.58-5.84a14.926 14.926 0 00-5.841 2.58M14.24 14.24a14.932 14.932 0 01-5.841 2.58m-4.522-4.522a14.928 14.928 0 012.58-5.841m5.84 2.58a14.926 14.926 0 00-2.58 5.841" />
+                                    </svg>
+                                @endif
+                            </div>
+                            <div class="ml-4">
+                                <p class="text-sm font-bold text-white truncate">{{ $partner->name }}</p>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-tighter">{{ $isOutgoing ? 'Invasion Source' : 'Under Invasion' }}</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-mono text-indigo-300">{{ number_format($gate->throughput, 0) }} E/s</span>
+                            <div class="flex items-center mt-1">
+                                <div class="h-1 w-12 bg-gray-700 rounded-full">
+                                    <div class="h-full bg-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.5)]" style="width: {{ $gate->stability * 100 }}%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="flex flex-col items-center justify-center py-8">
+                        <svg class="h-10 w-10 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="mt-2 text-xs text-gray-500 italic">"Thực tại vẫn đang ổn định... tạm thời."</p>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
 
@@ -135,8 +260,25 @@
         <div class="border-t border-gray-700 px-4 py-5 sm:p-0">
             <dl class="divide-y divide-gray-700">
                 @forelse($chronicles as $chronicle)
+                    @php
+                        // Calculate approximate time for this chronicle based on epoch if world_time not available
+                        // Ideally chronicle should store world_time. For now, we estimate or use current world time if it's the latest.
+                        // Actually, let's just show Epoch + Formatted estimation if possible, or just Epoch for now until Chronicles table is updated.
+                        // BUT, the requirement is to show "World Date".
+                        // Use TimeManager instance injected into view or facade.
+                        $timeManager = app(\App\Domains\Time\TimeManager::class);
+                        // Assuming chronicle epoch correlates to time roughly 1:1 in old system, but new system varies.
+                        // We should probably migrate chronicles to have `world_time` too.
+                        // For now, let's just display the Epoch as "Kỷ nguyên".
+                        // Wait, the plan said "Update Dashboard to show formatted World Date".
+                        // This view shows the LIST of chronicles.
+                    @endphp
                     <div class="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                        <dt class="text-sm font-medium text-gray-400">Năm {{ $chronicle->epoch }}</dt>
+                        <dt class="text-sm font-medium text-gray-400">
+                            Kỷ nguyên {{ $chronicle->epoch }}
+                            {{-- <br>
+                            <span class="text-xs text-gray-500">{{ $timeManager->formatTime($chronicle->epoch) }}</span> --}}
+                        </dt>
                         <dd class="mt-1 text-sm text-gray-100 sm:col-span-2 sm:mt-0">
                             {{ $chronicle->content }}
                         </dd>

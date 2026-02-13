@@ -14,8 +14,73 @@
     <form action="{{ route('writer.genesis.store') }}" method="POST" id="genesis-form">
         @csrf
 
-        <!-- Hidden fields for preset data -->
+        <!-- Hidden fields for preset/origin data -->
         <input type="hidden" name="preset_key" id="preset_key" value="">
+        <input type="hidden" name="origin_type" id="origin_type" value="cosmic">
+
+        <!-- Origin Selector -->
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 mb-6 border-b border-gray-700 pb-2 flex items-center gap-2">
+                <span class="text-2xl">🌌</span> Bước 1: Chọn Nguồn Gốc (Origin)
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Cosmic Origin -->
+                <div class="origin-card group cursor-pointer relative overflow-hidden rounded-2xl border-2 border-indigo-500/50 bg-gray-900/80 p-6 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-indigo-400 hover:shadow-indigo-500/20 active"
+                     onclick="selectOrigin(this, 'cosmic')">
+                    <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-indigo-500/10 blur-3xl transition-all group-hover:bg-indigo-500/20"></div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="rounded-lg bg-indigo-900/30 p-3 ring-1 ring-indigo-500/30">
+                            <span class="text-3xl">🌌</span>
+                        </div>
+                        <div class="origin-check opacity-100 text-indigo-400">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">Vũ Trụ Nguyên Thủy</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Khởi đầu từ Hỗn Mang (Chaos), hình thành các Attractor vũ trụ và tiến hóa theo quy luật vật lý/siêu hình chuẩn.
+                    </p>
+                    
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-gray-800 text-xs font-mono text-gray-300 border border-gray-700">Standard Physics</span>
+                        <span class="px-2 py-1 rounded bg-gray-800 text-xs font-mono text-gray-300 border border-gray-700">Cosmic Attractors</span>
+                    </div>
+                </div>
+
+                <!-- Vietnamese Origin -->
+                <div class="origin-card group cursor-pointer relative overflow-hidden rounded-2xl border-2 border-gray-700 bg-gray-900/80 p-6 shadow-xl transition-all duration-300 hover:scale-[1.02] hover:border-red-500 hover:shadow-red-500/20"
+                     onclick="selectOrigin(this, 'vietnamese')">
+                    <div class="absolute -right-10 -top-10 h-40 w-40 rounded-full bg-red-500/10 blur-3xl transition-all group-hover:bg-red-500/20"></div>
+                    
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="rounded-lg bg-red-900/30 p-3 ring-1 ring-red-500/30">
+                            <span class="text-3xl">🇻🇳</span>
+                        </div>
+                        <div class="origin-check opacity-0 text-red-400 transition-opacity">
+                            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                        </div>
+                    </div>
+                    
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-red-300 transition-colors">Thần Thoại Việt Nam</h3>
+                    <p class="text-sm text-gray-400 leading-relaxed">
+                        Khởi đầu từ Lạc Long Quân & Âu Cơ. Trăm Trứng nở trăm con. Thế giới phân tách thành Núi & Biển.
+                    </p>
+                    
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="px-2 py-1 rounded bg-gray-800 text-xs font-mono text-gray-300 border border-gray-700">Trăm Trứng</span>
+                        <span class="px-2 py-1 rounded bg-gray-800 text-xs font-mono text-gray-300 border border-gray-700">Hero Bifurcation</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2 Header -->
+        <h2 class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400 mb-6 border-b border-gray-700 pb-2 flex items-center gap-2">
+            <span class="text-2xl">🌍</span> Bước 2: Chọn Preset Thế Giới
+        </h2>
         <!-- Other fields are now in the Mixing Panel -->
 
         <!-- Preset Cards by Category -->
@@ -240,6 +305,39 @@
 </div>
 
 <script>
+function selectOrigin(card, type) {
+    // Update hidden input
+    document.getElementById('origin_type').value = type;
+
+    // Visual update
+    document.querySelectorAll('.origin-card').forEach(c => {
+        c.classList.remove('active', 'border-indigo-400', 'border-red-500', 'ring-2', 'ring-offset-2');
+        c.classList.add('border-gray-700');
+        
+        // Hide check icons
+        const check = c.querySelector('.origin-check');
+        if(check) {
+            check.classList.remove('opacity-100');
+            check.classList.add('opacity-0');
+        }
+    });
+
+    // Active state
+    card.classList.remove('border-gray-700');
+    if (type === 'vietnamese') {
+        card.classList.add('border-red-500', 'active');
+    } else {
+        card.classList.add('border-indigo-400', 'active');
+    }
+
+    // Show check icon
+    const check = card.querySelector('.origin-check');
+    if(check) {
+        check.classList.remove('opacity-0');
+        check.classList.add('opacity-100');
+    }
+}
+
 function selectPreset(card) {
     // Remove selection from all
     document.querySelectorAll('.preset-card').forEach(c => {

@@ -20,8 +20,16 @@ class FactionAgent
     /**
      * Run the agent's turn.
      */
-    public function executeTurn(Faction $faction, World $world, int $turn): void
-    {
+    /**
+     * Run the agent's turn.
+     */
+    public function executeTurn(
+        Faction $faction, 
+        World $world, 
+        int $turn,
+        ?\App\Domains\Cosmic\ValueObjects\CosmicState $cosmic = null,
+        ?\App\Domains\Cosmic\ValueObjects\CivilizationState $civ = null
+    ): void {
         // 0. Apply Historical Drift (Scars)
         $drift = $this->scarService->calculateFactionIdeologyDrift($faction, $turn);
         $this->applyIdeologyDrift($faction, $drift);
@@ -33,7 +41,7 @@ class FactionAgent
         $this->encounterService->checkEncounter($faction);
 
         // 2. Decide next intent
-        $intentScores = $this->decisionEngine->scoreIntents($faction, $world);
+        $intentScores = $this->decisionEngine->scoreIntents($faction, $world, $cosmic, $civ);
         $bestIntentValue = array_key_first($intentScores);
         $bestIntent = FactionIntentType::from($bestIntentValue);
 

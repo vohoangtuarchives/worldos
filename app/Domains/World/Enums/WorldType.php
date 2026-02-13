@@ -13,6 +13,7 @@ enum WorldType: string
     case WUXIA = 'WUXIA';
     case MODERN_FANTASY = 'MODERN_FANTASY';
     case POST_APOCALYPTIC = 'POST_APOCALYPTIC';
+    case AUTO_GENERATED = 'AUTO_GENERATED';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum WorldType: string
             self::WUXIA => '🗡️ Wuxia',
             self::MODERN_FANTASY => '🌃 Modern Fantasy',
             self::POST_APOCALYPTIC => '💀 Post-Apocalyptic',
+            self::AUTO_GENERATED => '🤖 Auto Generated',
         };
     }
 }

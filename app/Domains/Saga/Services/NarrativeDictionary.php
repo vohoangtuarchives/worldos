@@ -5,6 +5,50 @@ namespace App\Domains\Saga\Services;
 class NarrativeDictionary
 {
     /**
+     * Arcs: Thematic sequences that follow a logical progression.
+     * Each step is meant to follow the previous one.
+     */
+    public static function getArcs(): array
+    {
+        return [
+            'resistance_cycle' => [
+                'name' => 'Vòng xoáy Kháng chiến',
+                'description' => 'Sự trỗi dậy của lòng tự tôn dân tộc trước áp lực ngoại bang.',
+                'steps' => [
+                    'Những lời thì thầm về tự do bắt đầu lan tỏa trong các đình làng.',
+                    'Dân binh âm thầm luyện tập dưới bóng những rặng tre già.',
+                    'Một tiếng hô vang dậy, hiệu lệnh khởi nghĩa đã được phát ra.',
+                    'Máu và lửa nhuộm đỏ những cánh đồng, nhưng ý chí không hề lay chuyển.',
+                    'Những bước chân hành quân thần tốc làm rung chuyển cả đại địa.',
+                    'Khải hoàn ca vang dội, bờ cõi được thu hồi trong niềm tự hào vô hạn.',
+                ]
+            ],
+            'dynastic_cycle' => [
+                'name' => 'Hưng suy Triều đại',
+                'description' => 'Chu kỳ từ thịnh trị đến suy tàn của một triều đình.',
+                'steps' => [
+                    'Sắc lệnh mới được ban bố, mở đầu cho một thời kỳ thái bình thịnh trị.',
+                    'Kinh đô sầm uất, ngựa xe như nước, áo quần như nêm.',
+                    'Những vết nứt đầu tiên xuất hiện trong bộ máy quan liêu.',
+                    'Triều đình xa hoa lãng phí trong khi lòng dân bắt đầu ly tán.',
+                    'Loạn lạc nổi lên khắp nơi, ánh hào quang cũ chỉ còn là dĩ vãng.',
+                ]
+            ],
+            'monsoon_cycle' => [
+                'name' => 'Nhịp sống Giao mùa',
+                'description' => 'Sự luân chuyển của thiên nhiên và đời sống nông nghiệp.',
+                'steps' => [
+                    'Tiếng sấm đầu mùa báo hiệu những cơn mưa rào tưới mát ruộng đồng.',
+                    'Nông dân hối hả ra đồng, gieo xuống niềm hy vọng vào một vụ mùa mới.',
+                    'Cánh đồng lúa chuyển mình sang màu vàng óng dưới nắng tháng mười.',
+                    'Lễ tạ ơn thần nông được tổ chức rộn ràng sau một mùa gặt bội thu.',
+                    'Đất đai nghỉ ngơi, chờ đợi một chu kỳ sinh trưởng mới.',
+                ]
+            ]
+        ];
+    }
+
+    /**
      * Get all templates organized by category and severity.
      * Severity: 1 (Low), 2 (Medium), 3 (High/Collapse)
      */
@@ -221,6 +265,134 @@ class NarrativeDictionary
                     'Ngày hội non sông thống nhất, muôn dân reo hò.',
                 ]
             ],
+            'scientific_breakthrough' => [
+                1 => [
+                    'Các học giả tranh luận sôi nổi về một lý thuyết mới.',
+                    'Một công cụ đo lường tinh xảo được giới thiệu tại triều đình.',
+                    'Những bản vẽ kỹ thuật mới lạ xuất hiện trong các xưởng thợ.',
+                    'Các nhà giả kim thuật tuyên bố một bước tiến nhỏ.',
+                ],
+                2 => [
+                    'Một phát minh mới thay đổi cách người dân canh tác.',
+                    'Học viện hoàng gia công bố bản đồ chi tiết của bầu trời.',
+                    'Thuốc súng hoặc một dạng năng lượng mới được thuần hóa.',
+                    'Kiến trúc sư xây dựng được những vòm mái không cần cột đỡ.',
+                    'Y thuật đạt được bước tiến lớn; tuổi thọ trung bình tăng lên.',
+                ],
+                3 => [
+                    'Sự thật về vũ trụ được phơi bày, làm rung chuyển các tín điều cũ.',
+                    'Một cỗ máy khổng lồ thay thế sức lao động của hàng nghìn người.',
+                    'Con người bắt đầu chinh phục bầu trời bằng những cỗ máy bay.',
+                    'Ranh giới giữa ma thuật và công nghệ bị xóa nhòa.',
+                    'Kỷ nguyên khai sáng bắt đầu; bóng tối của sự ngu dốt bị đẩy lùi.',
+                ]
+            ],
+            'religious_schism' => [
+                1 => [
+                    'Những lời thì thầm về sự thay đổi lan truyền trong các đền thờ.',
+                    'Một giáo phái nhỏ bắt đầu ra giảng những điều lạ lùng.',
+                    'Các tăng lữ tranh cãi về ý nghĩa của một đoạn kinh cổ.',
+                ],
+                2 => [
+                    'Một vị giám mục tuyên bố ly khai khỏi giáo hội trung ương.',
+                    'Những cuộc biểu tình tôn giáo nổ ra tại các quảng trường lớn.',
+                    'Tượng thẩn bị đập phá bởi những kẻ cuồng tín.',
+                    'Hai phe phái tôn giáo xung đột công khai trên đường phố.',
+                ],
+                3 => [
+                    'Thánh chiến bùng nổ; máu nhuộm đỏ các thánh đường.',
+                    'Giáo hội cũ sụp đổ; một trật tự thần quyền mới trỗi dậy.',
+                    'Vương quốc bị chia cắt bởi đức tin; anh em tàn sát lẫn nhau.',
+                    'Một "Đấng Tiên Tri" mới được tôn sùng như thần thánh sống.',
+                ]
+            ],
+            'cultural_renaissance' => [
+                1 => [
+                    'Các quán thơ ca mọc lên khắp nơi.',
+                    'Trang phục của người dân trở nên sặc sỡ và tinh tế hơn.',
+                    'Âm nhạc đường phố trở nên phong phú và đa dạng.',
+                ],
+                2 => [
+                    'Những kiệt tác hội họa ra đời, ca ngợi vẻ đẹp con người.',
+                    'Triết học nở rộ; các trường phái tư tưởng tranh đua.',
+                    'Kiến trúc đạt đến đỉnh cao của sự hài hòa và tráng lệ.',
+                    'Văn học phát triển rực rỡ; chữ viết được phổ cập.',
+                ],
+                3 => [
+                    'Một kỷ nguyên vàng son của nghệ thuật và trí tuệ.',
+                    'Tên tuổi của các đại thi hào sẽ được lưu danh muôn thuở.',
+                    'Vẻ đẹp và chân lý trở thành lẽ sống của toàn xã hội.',
+                    'Nhân loại chạm tay vào sự hoàn mỹ của thần linh.',
+                ]
+            ],
+            'resource_crisis' => [
+                1 => [
+                    'Nước sạch trở nên khan hiếm tại các giếng làng.',
+                    'Rừng bị chặt phá quá mức; gỗ trở nên đắt đỏ.',
+                    'Các mỏ khoáng sản bắt đầu có dấu hiệu cạn kiệt.',
+                ],
+                2 => [
+                    'Cuộc chiến tranh giành nguồn nước nổ ra giữa các làng.',
+                    'Đất đai bạc màu; không còn canh tác được.',
+                    'Khan hiếm nhiên liệu khiến mùa đông trở nên chết chóc.',
+                    'Muối và sắt trở thành những mặt hàng xa xỉ phẩm.',
+                ],
+                3 => [
+                    'Hệ sinh thái sụp đổ; thiên nhiên quay lại trừng phạt con người.',
+                    'Đại địa trơ trọi; không còn gì để khai thác.',
+                    'Nền văn minh lụi tàn vì không còn năng lượng để duy trì.',
+                    'Con người quay lại thời kỳ đồ đá vì cạn kiệt tài nguyên.',
+                ]
+            ],
+            'merchant_uprising' => [
+                1 => [
+                    'Các thương nhân bắt đầu phô trương sự giàu có của mình.',
+                    'Hội thương gia yêu cầu có tiếng nói hơn trong triều đình.',
+                    'Tiền tệ mới bắt đầu được lưu hành bởi các phường hội.',
+                ],
+                2 => [
+                    'Các thành phố ven biển tuyên bố tự trị về kinh tế.',
+                    'Thương nhân từ chối nộp thuế cho triều đình.',
+                    'Khống chế các tuyến đường vận chuyển lương thực, các thương nhân nắm giữ huyết mạch vương quốc.',
+                ],
+                3 => [
+                    'Tầng lớp thương nhân lật đổ chính quyền cũ, thiết lập chế độ tài phiệt.',
+                    'Đồng tiền thay thế thanh kiếm để cai trị đại địa.',
+                    'Các trung tâm thương mại trở thành những pháo đài quyền lực mới.',
+                ]
+            ],
+            'nobility_collapse' => [
+                1 => [
+                    'Các gia tộc quý tộc bắt đầu tranh giành những vùng đất cằn cỗi.',
+                    'Lễ nghi cung đình bị cắt giảm vì thiếu kinh phí.',
+                ],
+                2 => [
+                    'Nhiều dòng họ lâu đời lâm vào cảnh nợ nần và suy vong.',
+                    'Lãnh chúa không còn khả năng bảo vệ thần dân của mình.',
+                    'Các lâu đài cổ bị bỏ hoang hoặc bị cướp bóc.',
+                ],
+                3 => [
+                    'Trật tự phong kiến sụp đổ hoàn toàn; quý tộc chỉ còn là cái danh hão.',
+                    'Gia phả hoàng tộc bị đốt sạch trong những cuộc nổi loạn.',
+                    'Sự kế thừa máu mủ bị xóa bỏ bởi làn sóng của thời đại mới.',
+                ]
+            ],
+            'warrior_dominance' => [
+                1 => [
+                    'Binh lính xuất hiện nhiều hơn tại các ngã đường.',
+                    'Võ quan bắt đầu nắm giữ các vị trí hành chính quan trọng.',
+                ],
+                2 => [
+                    'Thiết quân luật được ban bố tại nhiều tỉnh thành.',
+                    'Ngân sách vương quốc đổ dồn vào việc rèn đúc vũ khí.',
+                    'Tiếng gươm đao át tiếng kinh cầu và thi ca.',
+                ],
+                3 => [
+                    'Các tướng lĩnh quân đội nắm quyền tối cao; xã hội biến thành một trại lính khổng lồ.',
+                    'Luật pháp được viết bằng lưỡi kiếm và máu.',
+                    'Toàn bộ vương quốc bị cuốn vào vòng xoáy chiến tranh liên miên.',
+                ]
+            ],
             'default' => [
                 1 => [
                     'Một năm yên tĩnh trôi qua.',
@@ -228,6 +400,9 @@ class NarrativeDictionary
                     'Cuộc sống vẫn tiếp diễn bình thản trong các thôn xóm.',
                     'Một vụ mùa bội thu được tổ chức ăn mừng.',
                     'Trẻ em vui đùa hồn nhiên trên các đường phố.',
+                    'Mưa thuận gió hòa, lòng dân an định.',
+                    'Tiếng chuông chùa ngân vang trong buổi chiều tà.',
+                    'Những cánh cò bay lả bay la trên đồng ruộng.',
                 ],
                 2 => [
                     'Thế giới vẫn tiếp tục vận hành theo quỹ đạo của nó.',
@@ -236,6 +411,8 @@ class NarrativeDictionary
                     'Chu kỳ luân hồi tiếp tục không bị phá vỡ.',
                     'Sự thay đổi chậm rãi nhưng chắc chắn đang được cảm nhận.',
                     'Các bậc trưởng bối kể những câu chuyện cổ cho hậu thế.',
+                    'Lịch sử được ghi chép vào những cuộn thư phủ bụi thời gian.',
+                    'Dòng chảy của định mệnh cuộn cuộn không ngừng.',
                 ],
                 3 => [
                     'Hòa bình ngự trị, dù còn mong manh.',
@@ -243,7 +420,42 @@ class NarrativeDictionary
                     'Một thời kỳ hoàng kim dường như đang mở ra.',
                     'Sự thịnh vượng chạm đến cả những người nghèo khổ nhất.',
                     'Thần linh dường như mỉm cười với đại địa này.',
+                    'Giang sơn sừng sững, xã tắc vững bền qua muôn đời.',
                 ]
+            ],
+            // --- VIETNAMESE CULTURAL BEATS ---
+            'vn_intros' => [
+                'architectural' => [
+                    'Dưới mái đình rêu phong cổ kính,',
+                    'Bên cạnh những dòng sông đỏ nặng phù sa,',
+                    'Trong sự tĩnh lặng của những ngôi chùa cổ,',
+                    'Đứng trước cổng làng rêu phong theo năm tháng,',
+                    'Giữa những dãy núi đá vôi trùng điệp,',
+                ],
+                'philosophical' => [
+                    'Tuân theo đạo lý của tổ tiên để lại,',
+                    'Trong sự hài hòa giữa con người và thiên nhiên,',
+                    'Khi những lời sấm truyền cũ dần ứng nghiệm,',
+                    'Dưới sự chứng kiến của anh linh các bậc tiền nhân,',
+                    'Thấm nhuần tư tưởng lấy dân làm gốc,',
+                ]
+            ],
+            'vn_sensory' => [
+                'Hương hoa cau thơm nồng nàn trong gió đêm.',
+                'Tiếng ve kêu ran ran báo hiệu một mùa hè rực lửa.',
+                'Màu vàng óng của những cánh đồng lúa chín trải dài vô tận.',
+                'Không khí mang theo vị mặn mòi của biển cả và gió ngàn.',
+                'Tiếng gãy gọn của những khóm tre đen trong đêm vắng.',
+                'Khói bếp tỏa ra từ những mái nhà tranh, mang theo mùi nếp mới.',
+                'Ánh trăng tan vào dòng nước, lấp lánh như dát bạc.',
+            ],
+            'vn_environmental' => [
+                'Những rặng tre già nghiêng mình trong nắng chiều.',
+                'Dòng Mekong cuộn chảy, mang theo nhựa sống của đại địa.',
+                'Núi rừng Tây Bắc mờ ảo trong làn sương sớm.',
+                'Những con thuyền lênh đênh trên mặt nước phẳng lặng.',
+                'Mưa rào mùa hạ bất chợt đổ xuống, gội sạch bụi trần.',
+                'Gió biển thổi vào, mang theo sự tươi mát và sức sống.',
             ],
         ];
     }

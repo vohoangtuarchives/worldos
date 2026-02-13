@@ -72,13 +72,13 @@
                             </div>
                         </div>
                         <div class="flex space-x-1 leading-none">
-                            <button onclick="document.getElementById('mutateModal{{ $instance->id }}').classList.remove('hidden')" 
+                            <button onclick="document.getElementById('forceMutateModal{{ $instance->id }}').classList.remove('hidden')" 
                                     class="p-2 rounded-lg bg-gray-700/50 text-gray-400 hover:text-yellow-400 hover:bg-gray-700 transition-all leading-none" title="Đột biến">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg>
                             </button>
-                            <form method="POST" action="{{ route('materials.retire', $instance->id) }}" onsubmit="return confirm('Bạn có chắc muốn thu hồi quy luật vật chất này?')">
+                            <form method="POST" action="{{ route('writer.materials.retire', $instance->id) }}" onsubmit="return confirm('Bạn có chắc muốn thu hồi quy luật vật chất này?')">
                                 @csrf
                                 <button type="submit" class="p-2 rounded-lg bg-gray-700/50 text-gray-400 hover:text-red-400 hover:bg-gray-700 transition-all leading-none" title="Thu hồi">
                                     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -182,7 +182,7 @@
         <div class="fixed inset-0 bg-gray-900/90 backdrop-blur-sm transition-opacity leading-none" aria-hidden="true" onclick="document.getElementById('activateModal').classList.add('hidden')"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen leading-none" aria-hidden="true">&#8203;</span>
         <div class="inline-block align-middle bg-gray-800 rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-white/10 leading-none">
-            <form method="POST" action="{{ route('materials.activate', $world->id) }}">
+            <form method="POST" action="{{ route('writer.materials.activate', $world->id) }}">
                 @csrf
                 <div class="px-6 py-6 sm:px-8 leading-none">
                     <div class="flex items-center justify-between mb-6 leading-none">

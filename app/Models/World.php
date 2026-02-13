@@ -8,14 +8,63 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class World extends Model
 {
-    protected $fillable = ['name', 'type', 'description', 'law_profile', 'config', 'tags', 'parent_id', 'status', 'health_status', 'tick', 'genre'];
+    protected $fillable = [
+        'name',
+        'type',
+        'description',
+        'law_profile',
+        'config',
+        'tags',
+        'parent_id',
+        'status',
+        'health_status',
+        'tick',
+        'genre',
+        'preset',
+        'gene_vector',
+        'physics_profile',
+        'current_time',
+        'calendar_system',
+        'entropy',
+        'current_tick',
+        'autonomous', // Added for simulation control
+        
+        // Vietnamese Origin & Yggdrasil Multiverse
+        'origin_type',
+        'origin_metadata',
+        'initial_entropy',
+        'initial_energy',
+        'initial_stability',
+        'cosmic_energy',
+        'cosmic_entropy',
+        'cosmic_stability',
+        'yggdrasil_realm',
+        'current_era',
+        'bifurcation_era',
+        'bifurcation_type',
+        'bifurcation_trigger',
+    ];
 
     protected $casts = [
         'law_profile' => 'array',
+        'physics_profile' => 'array', // Will be cast to PhysicsProfile via accessor
         'config' => 'array',
         'tags' => 'array',
+        'gene_vector' => 'array',
+        'autonomous' => 'boolean',
         'health_status' => \App\Domains\World\Enums\WorldHealthStatus::class,
         'type' => \App\Domains\World\Enums\WorldType::class,
+        
+        // Vietnamese Origin & Yggdrasil
+        'origin_metadata' => 'array',
+        'initial_entropy' => 'float',
+        'initial_energy' => 'float',
+        'initial_stability' => 'float',
+        'cosmic_energy' => 'float',
+        'cosmic_entropy' => 'float',
+        'cosmic_stability' => 'float',
+        'current_era' => 'integer',
+        'bifurcation_era' => 'integer',
     ];
 
     public function getLawProfileAttribute($value): \App\Domains\World\ValueObjects\WorldLawProfile
@@ -66,5 +115,48 @@ class World extends Model
     public function powerProfile(): HasOne
     {
         return $this->hasOne(WorldPowerProfile::class);
+    }
+
+    public function cosmicSnapshots(): HasMany
+    {
+        return $this->hasMany(CosmicSnapshot::class)->orderBy('year');
+    }
+
+    public function cosmicEvents(): HasMany
+    {
+        return $this->hasMany(CosmicEvent::class)->orderBy('year');
+    }
+
+    public function getPhysicsProfileAttribute($value)
+    {
+        if (is_string($value)) {
+            $value = json_decode($value, true);
+        }
+        
+        return $value 
+            ? \App\Domains\World\ValueObjects\PhysicsProfile::fromArray($value) 
+            : \App\Domains\World\ValueObjects\PhysicsProfile::standard();
+    }
+
+    public function setPhysicsProfileAttribute($value)
+    {
+        if ($value instanceof \App\Domains\World\ValueObjects\PhysicsProfile) {
+            $this->attributes['physics_profile'] = json_encode($value->toArray());
+        } else {
+            $this->attributes['physics_profile'] = is_array($value) ? json_encode($value) : $value;
+        }
+    }
+
+    public function getTickAttribute(): int
+    {
+        return (int)($this->attributes['current_tick'] ?? 0);
+    }
+
+    /**
+     * Check if the world is running autonomously (auto-simulating).
+     */
+    public function isAutonomous(): bool
+    {
+        return (bool)($this->attributes['autonomous'] ?? false);
     }
 }

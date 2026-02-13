@@ -31,6 +31,14 @@ class AuthorPersona
     }
 
     /**
+     * Get all signature flourishes.
+     */
+    public function getFlourishes(): array
+    {
+        return $this->signatureFlourishes;
+    }
+
+    /**
      * Get a random signature flourish to sprinkle into the prose.
      */
     public function getRandomFlourish(): ?string

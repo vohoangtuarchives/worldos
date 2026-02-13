@@ -167,6 +167,30 @@ Route::prefix('admin/wmcp')->group(function () {
     // Governance Audit Log (Advanced Observability)
     Route::get('/audit', [\App\Http\Controllers\Admin\WMCP\AuditController::class, 'index'])->name('admin.wmcp.audit.index');
 
+    // God Console — Cosmic Observatory & Control (Phase 9-12)
+    Route::prefix('god-console/{worldId}')->group(function () {
+        // Dashboard view
+        Route::get('/', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'index'])->name('admin.wmcp.god-console.index');
+
+        // Observe
+        Route::get('/metrics', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'metrics'])->name('admin.wmcp.god-console.metrics');
+        Route::get('/trajectory', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'trajectory'])->name('admin.wmcp.god-console.trajectory');
+        Route::get('/attractors', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'attractors'])->name('admin.wmcp.god-console.attractors');
+
+        // Monitor
+        Route::get('/alerts', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'alerts'])->name('admin.wmcp.god-console.alerts');
+        Route::post('/alerts/{alertId}/acknowledge', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'acknowledgeAlert'])->name('admin.wmcp.god-console.alerts.ack');
+
+        // Control
+        Route::post('/control/freeze', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'freeze'])->name('admin.wmcp.god-console.freeze');
+        Route::post('/control/resume', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'resume'])->name('admin.wmcp.god-console.resume');
+        Route::post('/control/step', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'step'])->name('admin.wmcp.god-console.step');
+        Route::post('/control/rollback', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'rollback'])->name('admin.wmcp.god-console.rollback');
+
+        // Emergency
+        Route::post('/emergency/{action}', [\App\Http\Controllers\Admin\WMCP\GodConsoleController::class, 'emergency'])->name('admin.wmcp.god-console.emergency');
+    });
+
     // Historian Research Platform (Phase 5)
     Route::prefix('historian')->name('admin.historian.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Admin\Historian\DashboardController::class, 'index'])->name('dashboard');
@@ -206,11 +230,22 @@ Route::middleware(['auth', 'verified'])->prefix('writer')->name('writer.')->grou
     Route::get('/sagas', [SagaExplorerController::class, 'index'])->name('sagas.index');
     Route::get('/sagas/{saga}', [SagaExplorerController::class, 'show'])->name('sagas.show');
     Route::get('/sagas/{saga}/worlds/{worldSequence}', [SagaExplorerController::class, 'showWorld'])->name('sagas.worlds.show');
+    Route::get('/sagas/{saga}/tree', [SagaExplorerController::class, 'tree'])->name('sagas.tree');
     Route::post('/sagas/{saga}/run', [SagaExplorerController::class, 'run'])->name('sagas.run');
 
     // Canonization
     Route::post('/canon/events', [CanonController::class, 'store'])->name('canon.events.store');
-    
+
+    // World Hub (Unified World Page — 5-tab view)
+    Route::get('/worlds/{worldId}', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'show'])->name('worlds.hub');
+    Route::post('/worlds/{worldId}/inject', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'injectEvent'])->name('worlds.inject');
+    Route::post('/worlds/{worldId}/scar', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'createScar'])->name('worlds.scar');
+    Route::post('/worlds/{worldId}/freeze', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'freeze'])->name('worlds.freeze');
+    Route::post('/worlds/{worldId}/resume', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'resume'])->name('worlds.resume');
+    Route::post('/worlds/{worldId}/step', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'step'])->name('worlds.step');
+    Route::post('/worlds/{worldId}/rollback', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'rollback'])->name('worlds.rollback');
+    Route::post('/worlds/{worldId}/emergency/{action}', [\App\Http\Controllers\WriterConsole\WorldHubController::class, 'emergency'])->name('worlds.emergency');
+
     // Material Intervention (Writer Tools)
     Route::get('/worlds/{worldId}/materials', [\App\Http\Controllers\WriterConsole\MaterialInterventionController::class, 'index'])->name('materials.state-viewer');
     Route::post('/worlds/{worldId}/materials/activate', [\App\Http\Controllers\WriterConsole\MaterialInterventionController::class, 'activate'])->name('materials.activate');

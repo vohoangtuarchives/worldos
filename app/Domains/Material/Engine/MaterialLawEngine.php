@@ -66,9 +66,10 @@ class MaterialLawEngine
      * 
      * @param int $worldId
      * @param int $epoch Current epoch/tick number
+     * @param float $deltaTime Time passed in this tick (in years)
      * @return array Tick results
      */
-    public function processTick(int $worldId, int $epoch): array
+    public function processTick(int $worldId, int $epoch, float $deltaTime): array
     {
         $instances = $this->repository->getInstancesForWorld($worldId);
         
@@ -76,6 +77,7 @@ class MaterialLawEngine
             'epoch' => $epoch,
             'world_id' => $worldId,
             'timestamp' => now()->toIso8601String(),
+            'delta_time' => $deltaTime,
             'state_evaluation' => [],
             'activations' => [],
             'compatibility_resolutions' => [],
@@ -105,7 +107,7 @@ class MaterialLawEngine
         // $tickResults['compatibility_resolutions'] = $resolutions;
 
         // STEP 4: Apply Effects
-        $effectResults = $this->effectApplier->apply($activeMaterials, $worldState['pressure_levels']);
+        $effectResults = $this->effectApplier->apply($activeMaterials, $worldState['pressure_levels'], $deltaTime);
         $tickResults['effects'] = $effectResults;
 
         // STEP 5: Process Decay
@@ -115,7 +117,7 @@ class MaterialLawEngine
                 continue; // Skip already retired
             }
 
-            $decayResult = $this->decayProcessor->processDecay($instance, $worldState['pressure_levels']);
+            $decayResult = $this->decayProcessor->processDecay($instance, $worldState['pressure_levels'], $deltaTime);
             $decayResults[] = $decayResult;
 
             // Update instance

@@ -20,6 +20,8 @@ class WorldSeeder extends Seeder
                 'description' => 'A world for the Material Law Engine simulation',
                 'current_epoch' => 0,
                 'status' => 'active',
+                'preset' => 'myth',
+                'gene_vector' => [],
             ]
         );
 

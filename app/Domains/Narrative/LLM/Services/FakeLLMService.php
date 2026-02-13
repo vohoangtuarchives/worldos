@@ -31,9 +31,26 @@ class FakeLLMService implements LLMProvider
             ];
         }
 
+        if (str_contains($userPrompt, 'Aggressor World')) {
+            return [
+                'description' => 'Một vết nứt màu tím rực rỡ hiện ra trên bầu trời, mang theo hơi thở của một thực tại khác lạ đang xâm chiếm nơi đây.',
+                'type' => 'REVEAL',
+                'confidence' => 0.99
+            ];
+        }
+
+        if (str_contains($userPrompt, 'Entropy')) {
+            return [
+                'description' => 'Không gian xung quanh trở nên mờ ảo và nóng nực, như thể những hạt hạ nguyên tử đang khiêu vũ trong vũ điệu của sự hủy diệt.',
+                'type' => 'REVEAL',
+                'confidence' => 0.99
+            ];
+        }
+
         // Default response
         return [
             'type' => 'IDLE',
+            'description' => 'Một sự kiện chấn động đang diễn ra trong dòng chảy thực tại.',
             'payload' => ['thought' => 'Nothing to say.'],
             'confidence' => 0.5
         ];

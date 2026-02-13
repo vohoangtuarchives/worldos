@@ -196,6 +196,11 @@
               ⚙️ Simulation
             </a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link {{ request()->routeIs('admin.wmcp.god-console.*') ? 'active' : '' }}" href="{{ \App\Models\World::first() ? route('admin.wmcp.god-console.index', \App\Models\World::first()->id) : '#' }}">
+              🔮 God Console
+            </a>
+          </li>
         </ul>
       </div>
     </nav>
@@ -211,5 +216,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+@stack('scripts')
 </body>
 </html>

@@ -37,7 +37,7 @@ class RunSagaSimulationJob implements ShouldQueue
         Log::info("Starting Saga Simulation Job for Saga ID: {$this->saga->id}");
 
         try {
-            $sagaRunner->start($this->saga);
+            $sagaRunner->runSync($this->saga);
             Log::info("Saga Simulation Job completed for Saga ID: {$this->saga->id}");
         } catch (\Exception $e) {
             Log::error("Saga Simulation Job failed for Saga ID: {$this->saga->id}", [
