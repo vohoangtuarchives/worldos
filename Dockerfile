@@ -1,0 +1,1 @@
+RUN if [ -f .env.example ]; then cp .env.example .env; fi

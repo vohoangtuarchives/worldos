@@ -1,0 +1,50 @@
+[supervisord]
+nodaemon=true
+loglevel=info
+
+[program:php-fpm]
+command=/usr/local/sbin/php-fpm
+autostart=true
+autorestart=true
+priority=100
+stdout_logfile=/dev/stdout
+stderr_logfile=/dev/stderr
+
+[program:nginx]
+command=/usr/sbin/nginx -g "daemon off;"
+autostart=true
+autorestart=true
+priority=200
+stdout_logfile=/dev/stdout
+stderr_logfile=/dev/stderr
+
+[program:laravel-broadcast]
+command=php /var/www/html/artisan reverb:start --host=0.0.0.0 --port=6001
+autostart=true
+autorestart=true
+user=www-data
+priority=300
+redirect_stderr=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+
+[program:laravel-schedule]
+command=php /var/www/html/artisan schedule:work
+autostart=true
+autorestart=true
+user=www-data
+priority=400
+redirect_stderr=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+
+[program:horizon]
+command=php /var/www/html/artisan horizon
+autostart=true
+autorestart=true
+user=www-data
+priority=500
+redirect_stderr=true
+stdout_logfile=/dev/stdout
+stdout_logfile_maxbytes=0
+stopwaitsecs=3600
