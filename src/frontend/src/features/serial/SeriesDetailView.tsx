@@ -1,0 +1,55 @@
+"use client";
+
+import Link from "next/link";
+import { useSeries, useGenerateNextChapter, useGenerateOutline } from "./useSerialApi";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+export function SeriesDetailView({ seriesId }: { seriesId: number }) {
+  const { data: series, isLoading, error } = useSeries(seriesId);
+  const genChapter = useGenerateNextChapter(seriesId);
+  const genOutline = useGenerateOutline(seriesId);
+  if (isLoading) return <p className="text-muted-foreground">Loading…</p>;
+  if (error) return <p className="text-destructive">Failed to load series.</p>;
+  if (!series) return null;
+  const chapters = (series as { chapters?: { id: number; chapter_index: number; title?: string }[] }).chapters ?? [];
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>{series.title}</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Genre: {series.genre_key ?? "—"} · Chapters: {series.total_chapters_generated ?? 0}
+          </p>
+        </CardHeader>
+        <CardContent className="flex flex-wrap gap-2">
+          <Button size="sm" disabled={genChapter.isPending} onClick={() => genChapter.mutate()}>
+            Generate next chapter
+          </Button>
+          <Button size="sm" variant="outline" disabled={genOutline.isPending} onClick={() => genOutline.mutate()}>
+            Generate outline
+          </Button>
+          <Button size="sm" variant="outline" asChild>
+            <Link href={"/serial/series/" + seriesId + "/story-bible"}>Story Bible</Link>
+          </Button>
+        </CardContent>
+      </Card>
+      {chapters.length > 0 && (
+        <Card>
+          <CardHeader><CardTitle>Chapters</CardTitle></CardHeader>
+          <CardContent>
+            <ul className="list-disc list-inside text-sm">
+              {chapters.map((c) => (
+                <li key={c.id}>
+                  <Link href={"/serial/series/" + seriesId + "/chapters/" + c.id} className="text-primary hover:underline">
+                    Ch. {c.chapter_index}: {c.title ?? "Untitled"}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
+    </div>
+  );
+}

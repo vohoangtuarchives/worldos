@@ -1,0 +1,10 @@
+---
+description: Giải thích và tóm tắt cho người dùng bằng tiếng Việt khi được yêu cầu hoặc khi gửi kế hoạch/ quyết định quan trọng
+alwaysApply: true
+---
+
+# Giải thích bằng tiếng Việt
+
+- Khi người dùng yêu cầu giải thích bằng tiếng Việt ("viết giải thích bằng tiếng Việt", "giải thích tiếng Việt", v.v.), hãy trả lời toàn bộ phần giải thích/ tóm tắt **bằng tiếng Việt**.
+- Khi gửi kế hoạch (plan), tóm tắt quyết định kỹ thuật, hoặc giải thích thay đổi quan trọng, ưu tiên cung cấp **bản tóm tắt hoặc giải thích bằng tiếng Việt** (có thể kèm nội dung gốc tiếng Anh nếu cần).
+- Code (biến, hàm, comment trong repo) giữ nguyên theo quy ước dự án; chỉ phần giao tiếp với người dùng (explanations, summaries, plan descriptions) dùng tiếng Việt khi phù hợp.

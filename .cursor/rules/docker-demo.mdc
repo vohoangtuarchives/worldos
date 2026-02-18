@@ -1,0 +1,19 @@
+---
+description: Chạy lệnh backend trong môi trường demo (Docker)
+alwaysApply: true
+---
+
+# Docker demo — Backend
+
+Dự án đang chạy qua Docker. Khi cần **tương tác với hệ thống demo** (chạy lệnh trong backend, ví dụ artisan, composer, migrate, seed, tinker):
+
+- Luôn chạy qua container backend:
+  ```bash
+  docker compose exec backend <command>
+  ```
+- Ví dụ:
+  - `docker compose exec backend php artisan migrate`
+  - `docker compose exec backend php artisan db:seed`
+  - `docker compose exec backend php artisan tinker`
+
+Không chạy `php artisan` hay `composer` trực tiếp từ host trừ khi user chỉ rõ môi trường local không-Docker.

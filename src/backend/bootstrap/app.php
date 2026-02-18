@@ -12,7 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // Trust all proxies (Docker / Next.js rewrite proxy)
+        $middleware->trustProxies(at: '*');
+
+        // Token-based auth via Sanctum — no session/CSRF middleware needed.
+        // Every request authenticates via Authorization: Bearer {token}.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

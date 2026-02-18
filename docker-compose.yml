@@ -90,6 +90,7 @@ services:
       - "${FRONTEND_PORT:-3000}:3000"
     environment:
       - NODE_ENV=${NODE_ENV:-development}
+      - INTERNAL_API_URL=http://backend
       - NEXT_TELEMETRY_DISABLED=1
       - WATCHPACK_POLLING=true
       - CHOKIDAR_USEPOLLING=true
