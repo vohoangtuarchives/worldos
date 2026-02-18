@@ -10,6 +10,13 @@ export function useSagas() {
   });
 }
 
+export function useSagaStats() {
+  return useQuery({
+    queryKey: ["writer", "sagas", "stats"],
+    queryFn: () => writerApi.sagas.stats(),
+  });
+}
+
 export function useSaga(sagaId: string | null, options?: { refetchInterval?: number }) {
   return useQuery({
     queryKey: ["writer", "saga", sagaId],
@@ -102,6 +109,35 @@ export function useUniverseMetrics(universeId: string | null, options?: { refetc
   });
 }
 
+export function useUniverseFork() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ universeId, tick, sagaId }: { universeId: string, tick: number, sagaId?: string }) =>
+      writerApi.universes.fork(universeId, tick, sagaId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["writer", "sagas"] });
+      qc.invalidateQueries({ queryKey: ["writer", "worlds"] });
+    },
+  });
+}
+
+export function useUniverseEvaluate() {
+  return useMutation({
+    mutationFn: (universeId: string) => writerApi.universes.evaluate(universeId),
+  });
+}
+
+export function useUniverseApplyPressure() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ universeId, type, intensity }: { universeId: string, type: string, intensity: number }) =>
+      writerApi.universes.applyPressure(universeId, type, intensity),
+    onSuccess: (_, { universeId }) => {
+      qc.invalidateQueries({ queryKey: ["writer", "universes", universeId, "metrics"] });
+    },
+  });
+}
+
 export function useWorldSnapshots(worldId: string | null) {
   return useQuery({
     queryKey: ["writer", "worlds", worldId, "snapshots"],
@@ -179,11 +215,42 @@ export function useGenesisPresets() {
 export function useCreateGenesis() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (body: { name: string; preset_key?: string; [key: string]: unknown }) =>
+    mutationFn: (body: { name: string; preset_key?: string;[key: string]: unknown }) =>
       writerApi.genesis.create(body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["writer", "sagas"] });
       qc.invalidateQueries({ queryKey: ["writer", "worlds"] });
     },
+  });
+}
+
+export function useAIMetrics(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "ai", "metrics"],
+    queryFn: () => writerApi.ai.getMetrics(),
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
+export function useAIGenerations(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "ai", "generations"],
+    queryFn: () => writerApi.ai.getGenerations(),
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
+export function useAIAgents(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "ai", "agents"],
+    queryFn: () => writerApi.ai.getAgents(),
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
+export function useAIIntervene() {
+  return useMutation({
+    mutationFn: ({ worldId, instruction }: { worldId: string, instruction: string }) =>
+      writerApi.ai.intervene(worldId, instruction),
   });
 }

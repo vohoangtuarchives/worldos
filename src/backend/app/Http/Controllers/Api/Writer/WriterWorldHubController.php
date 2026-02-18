@@ -99,7 +99,7 @@ class WriterWorldHubController extends Controller
             'permanence' => 'required|numeric|min:0|max:1',
             'visibility' => 'required|string',
         ]);
-        $data['world_id'] = (int) $id;
+        $data['world_id'] = (string) $id;
         $result = $this->eventGate->processEvent($id, $data);
         if ($result['allowed'] ?? false) {
             return response()->json(['success' => true, 'message' => 'Event injected: ' . ($result['action'] ?? 'ok')]);
@@ -118,30 +118,48 @@ class WriterWorldHubController extends Controller
             'constraint_rule' => 'required|string',
             'severity' => 'required|numeric|min:0|max:1',
         ]);
-        $data['world_id'] = (int) $id;
+        $data['world_id'] = (string) $id;
         Scar::create($data);
         return response()->json(['success' => true, 'message' => 'Divine Scar branded upon the world.']);
     }
 
+    /**
+     * WorldOS v3: Emergency interventions target the active Universe (state_vector)
+     * instead of the legacy cosmic_snapshots table.
+     */
     public function emergency(Request $request, string $id, string $action): JsonResponse
     {
         $world = World::find($id);
         if (!$world) {
             return response()->json(['error' => 'World not found'], 404);
         }
-        $snapshot = $world->cosmicSnapshots()->latest('year')->first();
-        if (!$snapshot) {
-            return response()->json(['error' => 'No cosmic snapshot found for this world.'], 422);
+
+        // V3: Find the active Universe for this World
+        $universe = \App\Models\UniverseModel::where('world_id', $id)
+            ->where('is_archived', false)
+            ->first();
+
+        if (!$universe) {
+            return response()->json(['error' => 'No active universe found for this world. Create a Universe instance first.'], 422);
         }
+
         try {
-            match ($action) {
-                'entropy-shock' => $this->emergencyService->injectEntropyShock($snapshot, (float) $request->input('magnitude', 0.15)),
-                'reduce-rigidity' => $this->emergencyService->reduceRigidityGlobally($snapshot, (float) $request->input('reduction', 0.1)),
-                'force-collapse' => $this->emergencyService->forceCollapse($snapshot),
-                'toggle-emergent' => $this->emergencyService->setEmergentArchetypesDisabled((bool) $request->input('disabled', false)),
+            $result = match ($action) {
+                'entropy-shock' => $this->emergencyService->injectEntropyShockV3($universe, (float) $request->input('magnitude', 0.15)),
+                'reduce-rigidity' => $this->emergencyService->reduceRigidityV3($universe, (float) $request->input('reduction', 0.1)),
+                'force-collapse' => $this->emergencyService->forceCollapseV3($universe),
+                'toggle-emergent' => (function () use ($request) {
+                    $this->emergencyService->setEmergentArchetypesDisabled((bool) $request->input('disabled', false));
+                    return null;
+                })(),
                 default => throw new \InvalidArgumentException('Unknown action'),
             };
-            return response()->json(['success' => true, 'message' => "Emergency '{$action}' executed."]);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Emergency '{$action}' executed on Universe " . substr($universe->id, 0, 8) . ".",
+                'universe_id' => $universe->id,
+            ]);
         } catch (\Throwable $e) {
             return response()->json(['error' => $e->getMessage()], 422);
         }

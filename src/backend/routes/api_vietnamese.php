@@ -9,7 +9,7 @@ use App\Http\Controllers\Api\Writer\WriterWorldHubController;
 use App\Http\Controllers\Api\Writer\WriterGenesisController;
 use App\Http\Controllers\Api\Writer\WriterGodConsoleController;
 use App\Http\Controllers\Api\Writer\WriterWorldSnapshotController;
-use App\Http\Controllers\Api\Writer\WriterUniverseController;
+use App\Http\Controllers\Api\Writer\WriterAIAgentController;
 use App\Http\Controllers\Api\SerialController;
 use App\Http\Controllers\Api\StoryBibleController;
 use App\Http\Controllers\Api\ClusterController;
@@ -36,6 +36,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // Sagas
     Route::get('sagas',                    [WriterSagaController::class, 'index']);
+    Route::get('sagas/stats',              [WriterSagaController::class, 'getStats']);
     Route::get('sagas/{sagaId}',          [WriterSagaController::class, 'show']);
     Route::post('sagas/create-from-active',[WriterSagaController::class, 'createFromActive']);
     Route::get('saga/{sagaId}/tree',       [WriterSagaController::class, 'tree']);
@@ -74,6 +75,14 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     // Genesis
     Route::get('genesis/presets',          [WriterGenesisController::class, 'presets']);
     Route::post('genesis',                 [WriterGenesisController::class, 'store']);
+
+    // AI Mission Control
+    Route::prefix('ai')->group(function () {
+        Route::get('metrics',     [WriterAIAgentController::class, 'getMetrics']);
+        Route::get('generations', [WriterAIAgentController::class, 'getGenerations']);
+        Route::get('agents',      [WriterAIAgentController::class, 'getAgents']);
+        Route::post('intervene',  [WriterAIAgentController::class, 'intervene']);
+    });
 });
 
 /*

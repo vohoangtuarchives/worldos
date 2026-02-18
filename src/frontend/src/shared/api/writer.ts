@@ -111,11 +111,12 @@ export type WorldEventItem = {
   created_at?: string;
 };
 
-export type GenesisPreset = { id: string; name: string; [key: string]: unknown };
+export type GenesisPreset = { id: string; name: string;[key: string]: unknown };
 
 export const writerApi = {
   sagas: {
     list: () => api.get<Saga[]>("/api/writer/sagas"),
+    stats: () => api.get<{ success: boolean; data: any }>("/api/writer/sagas/stats").then(r => r.data),
     show: (sagaId: string) => api.get<SagaDetail>(`/api/writer/sagas/${sagaId}`),
     createFromActive: () => api.post<Saga>("/api/writer/sagas/create-from-active"),
     tree: (id: string) => api.get<{ nodes: SagaTreeNode[] }>(`/api/writer/saga/${id}/tree`),
@@ -130,6 +131,12 @@ export const writerApi = {
       api.get<{ tick: number; state_vector: Record<string, number>; entropy?: number | null; stability_index?: number | null; phase: string }>(
         `/api/writer/universes/${universeId}/metrics`
       ),
+    fork: (universeId: string, tick: number, sagaId?: string) =>
+      api.post<{ success: boolean; message: string; data: { id: string, name: string } }>(`/api/writer/universes/${universeId}/fork`, { tick, saga_id: sagaId }),
+    evaluate: (universeId: string) =>
+      api.post<{ success: boolean; data: { recommendation: string; ip_score: number; suggestion?: { type: string; intensity: number } } }>(`/api/writer/universes/${universeId}/evaluate`),
+    applyPressure: (universeId: string, type: string, intensity: number) =>
+      api.post<{ success: boolean; message: string }>(`/api/writer/universes/${universeId}/pressure`, { type, intensity }),
   },
   worlds: {
     list: () => api.get<World[]>("/api/writer/worlds"),
@@ -172,7 +179,17 @@ export const writerApi = {
   },
   genesis: {
     presets: () => api.get<{ categories?: Record<string, GenesisPreset[]> }>("/api/writer/genesis/presets"),
-    create: (body: { name: string; preset_key?: string; [key: string]: unknown }) =>
+    create: (body: { name: string; preset_key?: string;[key: string]: unknown }) =>
       api.post<{ saga_id: string; name: string; message: string }>("/api/writer/genesis", body),
+  },
+  ai: {
+    getMetrics: () =>
+      api.get<{ success: boolean; data: { tokens: { prompt: number; completion: number; total: number }; estimated_cost_usd: number; generations_count: number; success_rate: number } }>("/api/writer/ai/metrics").then(r => r.data),
+    getGenerations: () =>
+      api.get<{ success: boolean; data: any[] }>("/api/writer/ai/generations").then(r => r.data),
+    getAgents: () =>
+      api.get<{ success: boolean; data: { summary: any[]; roster: any[] } }>("/api/writer/ai/agents").then(r => r.data),
+    intervene: (worldId: string, instruction: string) =>
+      api.post<{ success: boolean; message: string }>("/api/writer/ai/intervene", { world_id: worldId, instruction }),
   },
 };

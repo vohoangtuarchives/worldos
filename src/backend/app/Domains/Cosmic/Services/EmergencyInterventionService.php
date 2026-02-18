@@ -6,18 +6,15 @@ namespace App\Domains\Cosmic\Services;
 
 use App\Domains\Cosmic\ValueObjects\CosmicState;
 use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use App\Models\UniverseModel;
 
 /**
  * EmergencyInterventionService — god-mode interventions.
  *
- * 4 emergency actions:
- *   1. injectEntropyShock()        — spike entropy by configurable amount
- *   2. reduceRigidityGlobally()    — lower all attractor rigidity thresholds
- *   3. forceCollapse()             — trigger immediate CTI threshold breach
- *   4. disableEmergentArchetypes() — temporarily block new archetype creation
+ * WorldOS v3: V3 methods operate on UniverseModel (state_vector) instead of WorldSnapshot.
+ * Legacy WorldSnapshot methods kept for WriterConsole backward compatibility.
  *
  * Every intervention is logged with full parameter capture.
- * Interventions return modified WorldSnapshot — caller must persist.
  */
 class EmergencyInterventionService
 {
@@ -26,12 +23,101 @@ class EmergencyInterventionService
 
     private bool $emergentArchetypesDisabled = false;
 
+    // =====================================================================
+    // V3 Methods — operate on UniverseModel (state_vector JSON)
+    // =====================================================================
+
     /**
-     * Inject entropy shock — spike entropy to destabilize locked systems.
-     *
-     * @param WorldSnapshot $snapshot Current state
-     * @param float $shockMagnitude Entropy increase (0.05 to 0.3)
-     * @return WorldSnapshot Modified snapshot
+     * V3: Inject entropy shock directly on a Universe's state_vector.
+     */
+    public function injectEntropyShockV3(UniverseModel $universe, float $shockMagnitude = 0.15): UniverseModel
+    {
+        $shockMagnitude = max(0.05, min(0.3, $shockMagnitude));
+        $sv = $universe->state_vector ?? [];
+
+        $oldEntropy = (float) ($sv['entropy'] ?? 0.0);
+        $oldOrder = (float) ($sv['order'] ?? 1.0);
+        $sv['entropy'] = round(min(1.0, $oldEntropy + $shockMagnitude), 6);
+        $sv['order'] = round(max(0.0, $oldOrder - $shockMagnitude * 0.3), 6);
+
+        $universe->update([
+            'state_vector' => $sv,
+            'entropy' => $sv['entropy'],
+        ]);
+
+        $this->log('ENTROPY_SHOCK_V3', (int) ($universe->age ?? 0), [
+            'universe_id' => $universe->id,
+            'magnitude' => $shockMagnitude,
+            'entropy_before' => $oldEntropy,
+            'entropy_after' => $sv['entropy'],
+        ]);
+
+        return $universe->fresh();
+    }
+
+    /**
+     * V3: Reduce rigidity on a Universe's state_vector.
+     */
+    public function reduceRigidityV3(UniverseModel $universe, float $reduction = 0.1): UniverseModel
+    {
+        $reduction = max(0.05, min(0.2, $reduction));
+        $sv = $universe->state_vector ?? [];
+
+        $oldEntropy = (float) ($sv['entropy'] ?? 0.0);
+        $sv['entropy'] = round(min(1.0, $oldEntropy + $reduction * 0.2), 6);
+        // Reduce tech_progress slightly (proxy for institutional rigidity)
+        if (isset($sv['tech_progress'])) {
+            $sv['tech_progress'] = round(max(0.0, (float) $sv['tech_progress'] - $reduction * 0.15), 6);
+        }
+
+        $universe->update([
+            'state_vector' => $sv,
+            'entropy' => $sv['entropy'],
+        ]);
+
+        $this->log('REDUCE_RIGIDITY_V3', (int) ($universe->age ?? 0), [
+            'universe_id' => $universe->id,
+            'reduction_factor' => $reduction,
+        ]);
+
+        return $universe->fresh();
+    }
+
+    /**
+     * V3: Force collapse on a Universe by spiking entropy and draining order/stability.
+     */
+    public function forceCollapseV3(UniverseModel $universe): UniverseModel
+    {
+        $sv = $universe->state_vector ?? [];
+
+        $sv['entropy'] = round(min(1.0, ((float) ($sv['entropy'] ?? 0.0)) + 0.4), 6);
+        $sv['order'] = round(max(0.0, ((float) ($sv['order'] ?? 1.0)) - 0.4), 6);
+        if (isset($sv['stability'])) {
+            $sv['stability'] = round(max(0.0, ((float) $sv['stability']) - 0.4), 6);
+        }
+
+        $universe->update([
+            'state_vector' => $sv,
+            'entropy' => $sv['entropy'],
+            'stability_index' => $sv['stability'] ?? null,
+            'status' => 'collapsed',
+        ]);
+
+        $this->log('FORCE_COLLAPSE_V3', (int) ($universe->age ?? 0), [
+            'universe_id' => $universe->id,
+            'entropy_after' => $sv['entropy'],
+            'order_after' => $sv['order'],
+        ]);
+
+        return $universe->fresh();
+    }
+
+    // =====================================================================
+    // Legacy Methods — operate on WorldSnapshot VO (for WriterConsole compat)
+    // =====================================================================
+
+    /**
+     * @deprecated V3: Use injectEntropyShockV3() instead.
      */
     public function injectEntropyShock(WorldSnapshot $snapshot, float $shockMagnitude = 0.15): WorldSnapshot
     {
@@ -55,8 +141,6 @@ class EmergencyInterventionService
             'magnitude' => $shockMagnitude,
             'entropy_before' => $cosmic->entropy,
             'entropy_after' => $newCosmic->entropy,
-            'strain_before' => $cosmic->strain,
-            'strain_after' => $newCosmic->strain,
         ]);
 
         return new WorldSnapshot(
@@ -68,20 +152,13 @@ class EmergencyInterventionService
     }
 
     /**
-     * Reduce rigidity globally — makes all attractors more flexible.
-     * This is applied as a stability reduction (proxy for rigidity).
-     *
-     * @param WorldSnapshot $snapshot Current state
-     * @param float $reduction Rigidity reduction factor (0.05 to 0.2)
-     * @return WorldSnapshot Modified snapshot
+     * @deprecated V3: Use reduceRigidityV3() instead.
      */
     public function reduceRigidityGlobally(WorldSnapshot $snapshot, float $reduction = 0.1): WorldSnapshot
     {
         $reduction = max(0.05, min(0.2, $reduction));
-
         $cosmic = $snapshot->cosmic;
 
-        // Reducing rigidity → increasing flexibility → slight entropy increase + strain decrease
         $newCosmic = new CosmicState(
             entropy: round(min(1.0, $cosmic->entropy + $reduction * 0.2), 6),
             energy: $cosmic->energy,
@@ -94,8 +171,6 @@ class EmergencyInterventionService
 
         $this->log('REDUCE_RIGIDITY', $snapshot->year, [
             'reduction_factor' => $reduction,
-            'strain_before' => $cosmic->strain,
-            'strain_after' => $newCosmic->strain,
         ]);
 
         return new WorldSnapshot(
@@ -107,11 +182,7 @@ class EmergencyInterventionService
     }
 
     /**
-     * Force collapse — trigger immediate CTI threshold breach.
-     * This forces the system into a collapse/rebirth cycle.
-     *
-     * @param WorldSnapshot $snapshot Current state
-     * @return WorldSnapshot Modified snapshot with high strain + entropy
+     * @deprecated V3: Use forceCollapseV3() instead.
      */
     public function forceCollapse(WorldSnapshot $snapshot): WorldSnapshot
     {
@@ -128,12 +199,7 @@ class EmergencyInterventionService
         );
 
         $this->log('FORCE_COLLAPSE', $snapshot->year, [
-            'entropy_before' => $cosmic->entropy,
             'entropy_after' => $newCosmic->entropy,
-            'stability_before' => $cosmic->stability,
-            'stability_after' => $newCosmic->stability,
-            'strain_before' => $cosmic->strain,
-            'strain_after' => $newCosmic->strain,
         ]);
 
         return new WorldSnapshot(
@@ -146,8 +212,6 @@ class EmergencyInterventionService
 
     /**
      * Toggle emergent archetype creation.
-     *
-     * @param bool $disabled True to disable, false to re-enable
      */
     public function setEmergentArchetypesDisabled(bool $disabled, int $epoch = 0): void
     {
@@ -159,25 +223,16 @@ class EmergencyInterventionService
         );
     }
 
-    /**
-     * Check if emergent archetypes are disabled.
-     */
     public function areEmergentArchetypesDisabled(): bool
     {
         return $this->emergentArchetypesDisabled;
     }
 
-    /**
-     * Get full intervention log.
-     */
     public function getInterventionLog(): array
     {
         return $this->interventionLog;
     }
 
-    /**
-     * Get count of interventions.
-     */
     public function getInterventionCount(): int
     {
         return count($this->interventionLog);
@@ -202,3 +257,4 @@ class EmergencyInterventionService
         ];
     }
 }
+

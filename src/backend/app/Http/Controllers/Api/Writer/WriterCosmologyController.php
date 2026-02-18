@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Writer;
 
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
+use App\Domains\Saga\Services\SagaService;
 use App\Http\Controllers\Controller;
 use App\Domains\Saga\Saga;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class WriterCosmologyController extends Controller
 
     public function __construct(
         \App\Domains\WriterConsole\HumanActionValidator $validator,
-        private readonly CosmologyRepository $cosmologyRepository
+        private readonly CosmologyRepository $cosmologyRepository,
+        private readonly SagaService $sagaService
     ) {
         $this->validator = $validator;
     }
@@ -56,9 +58,14 @@ class WriterCosmologyController extends Controller
         ]);
 
         foreach ($worldIds->values() as $idx => $worldId) {
+            $u = \App\Models\UniverseModel::where('world_id', (string) $worldId)
+                ->where('is_archived', false)
+                ->first();
+                
             \App\Domains\Saga\SagaWorld::create([
                 'saga_id' => $saga->id,
-                'world_id' => (int) $worldId,
+                'world_id' => (string) $worldId,
+                'universe_id' => $u?->id,
                 'status' => 'ACTIVE',
                 'sequence' => $idx + 1,
             ]);
@@ -77,19 +84,26 @@ class WriterCosmologyController extends Controller
         
         $nodes = $sagaWorlds->map(function ($sw) {
             $w = $sw->world;
-            if (!$w) {
-                return null;
-            }
-            $runtime = $this->cosmologyRepository->getRuntimeStateForWorld((int) $w->id);
+            $u = \App\Models\UniverseModel::find($sw->universe_id);
+            
+            // In V3, a node represents a Universe branch.
+            // ID = universe_id, Parent = parent_universe_id.
+            $nodeId = (string) ($sw->universe_id ?? ($w?->id ?? $sw->id));
+            $parentId = $u ? (string) $u->parent_universe_id : ($w?->parent_id ? (string) $w->parent_id : null);
+            
+            $runtime = $u ? ['age' => $u->age] : ($w ? $this->cosmologyRepository->getRuntimeStateForWorld((string) $w->id) : null);
             $currentYear = $runtime !== null ? $runtime['age'] : (int) ($w->current_time ?? 0);
+            
             return [
-                'id' => $w->id,
-                'parentId' => $w->parent_id,
-                'name' => $w->name,
+                'id' => $nodeId,
+                'parentId' => $parentId,
+                'name' => $u?->name ?? ($w?->name ?? 'Unknown Entity'),
                 'status' => $sw->status,
                 'current_era' => (int) floor($currentYear / 50),
                 'has_collapsed' => $sw->status === 'COLLAPSED',
                 'sequence' => $sw->sequence,
+                'universe_id' => $sw->universe_id,
+                'world_id' => $sw->world_id,
             ];
         })->filter();
 
@@ -101,6 +115,7 @@ class WriterCosmologyController extends Controller
 
     /**
      * Trigger saga simulation.
+     * WorldOS v3: Uses SagaService (Universe-centric) instead of legacy RunSagaSimulationJob.
      */
     public function runSaga($id)
     {
@@ -111,8 +126,8 @@ class WriterCosmologyController extends Controller
         }
 
         try {
-            \App\Jobs\RunSagaSimulationJob::dispatch($saga);
-            return response()->json(['message' => 'Simulation started in background']);
+            $this->sagaService->runBatchWithEvaluation($saga, 10);
+            return response()->json(['message' => 'Simulation completed via V3 pipeline.']);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }

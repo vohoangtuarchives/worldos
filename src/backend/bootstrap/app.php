@@ -47,6 +47,17 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($allowOrigin === null) {
                 return null;
             }
+
+            // Ensure the error is logged even if we render a custom response.
+            // This captures fatal errors that monolog might miss in certain Octane/Docker setups.
+            \Illuminate\Support\Facades\Log::error($e->getMessage(), [
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTraceAsString(),
+                'path' => $request->path(),
+            ]);
+
             $status = 500;
             if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
                 $status = $e->getStatusCode();

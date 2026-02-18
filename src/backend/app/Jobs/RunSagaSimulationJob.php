@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Domains\Saga\Saga;
-use App\Domains\Saga\SagaRunner;
+use App\Domains\Saga\Services\SagaService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -12,7 +12,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
 /**
- * @deprecated WorldOS v3: Writer Genesis uses SagaService::genesisV3; new sagas should not dispatch this job. Kept for legacy/fallback.
+ * WorldOS v3: Runs Saga simulation via SagaService (Universe-centric pipeline).
  */
 class RunSagaSimulationJob implements ShouldQueue
 {
@@ -29,26 +29,26 @@ class RunSagaSimulationJob implements ShouldQueue
      * Create a new job instance.
      */
     public function __construct(
-        public Saga $saga
+        public Saga $saga,
+        public int $ticksPerUniverse = 10
     ) {}
 
     /**
-     * Execute the job.
+     * Execute the job — V3: SagaService replaces SagaRunner.
      */
-    public function handle(SagaRunner $sagaRunner): void
+    public function handle(SagaService $sagaService): void
     {
-        Log::info("Starting Saga Simulation Job for Saga ID: {$this->saga->id}");
+        Log::info("Starting Saga Simulation Job (V3) for Saga ID: {$this->saga->id}");
 
         try {
-            $sagaRunner->runSync($this->saga);
-            Log::info("Saga Simulation Job completed for Saga ID: {$this->saga->id}");
+            $sagaService->runBatchWithEvaluation($this->saga, $this->ticksPerUniverse);
+            Log::info("Saga Simulation Job (V3) completed for Saga ID: {$this->saga->id}");
         } catch (\Exception $e) {
-            Log::error("Saga Simulation Job failed for Saga ID: {$this->saga->id}", [
+            Log::error("Saga Simulation Job (V3) failed for Saga ID: {$this->saga->id}", [
                 'error' => $e->getMessage(),
                 'trace' => $e->getTraceAsString()
             ]);
             
-            // Optionally fail the saga model if needed, but SagaRunner might handle it.
             if ($this->saga->refresh()->status !== 'failed') {
                 $this->saga->update(['status' => 'failed']);
             }

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth/AuthProvider";
-import { ProtectedNav } from "@/features/layout/ProtectedNav";
+import { Sidebar } from "@/features/layout/Sidebar";
 
 export default function ProtectedLayout({
   children,
@@ -33,9 +33,13 @@ export default function ProtectedLayout({
   if (!user) return null;
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <ProtectedNav user={user} />
-      <main className="flex-1">{children}</main>
+    <div className="flex h-screen overflow-hidden bg-background">
+      <Sidebar user={user} />
+      <main className="flex-1 overflow-y-auto bg-slate-50/50">
+        <div className="mx-auto p-8">
+          {children}
+        </div>
+      </main>
     </div>
   );
 }

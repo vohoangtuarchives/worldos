@@ -6,12 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\UniverseModel;
 use App\Models\UniverseSnapshot;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 /**
  * Writer API: Universe-scoped resources (v3 — snapshot-first, metrics per universe).
  */
 class WriterUniverseController extends Controller
 {
+    public function __construct(
+        private \App\Domains\Saga\Actions\ForkUniverseFromTickAction $forkAction,
+        private \App\Domains\Saga\Actions\EvaluateUniverseAction $evaluateAction,
+        private \App\Domains\Saga\Actions\ApplySelectionPressureAction $pressureAction
+    ) {}
+
     /**
      * GET /api/writer/universes/{universeId}/snapshots — list universe_snapshots by tick.
      */
@@ -59,5 +66,70 @@ class WriterUniverseController extends Controller
             'stability_index' => $universe->stability_index !== null ? (float) $universe->stability_index : null,
             'phase' => 'expansion',
         ]);
+    }
+
+    /**
+     * POST /api/writer/universes/{universeId}/fork — fork starting from a specific tick.
+     */
+    public function fork(Request $request, string $universeId): JsonResponse
+    {
+        $tick = (int) $request->input('tick');
+        $sagaId = $request->input('saga_id');
+        
+        try {
+            $newUniverse = $this->forkAction->execute($universeId, $tick, $sagaId);
+            return response()->json([
+                'success' => true,
+                'message' => "Universe forked from tick {$tick}.",
+                'data' => [
+                    'id' => $newUniverse->id,
+                    'name' => $newUniverse->name,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+    }
+
+    /**
+     * POST /api/writer/universes/{universeId}/evaluate — AI potential evaluation.
+     */
+    public function evaluate(string $universeId): JsonResponse
+    {
+        try {
+            $result = $this->evaluateAction->execute($universeId);
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'recommendation' => $result->recommendation,
+                    'ip_score' => $result->ipScore,
+                    'suggestion' => $result->mutationSuggestion ? [
+                        'type' => $result->mutationSuggestion->type,
+                        'intensity' => $result->mutationSuggestion->intensity,
+                    ] : null,
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
+    }
+
+    /**
+     * POST /api/writer/universes/{universeId}/pressure — manual kernel intervention.
+     */
+    public function applyPressure(Request $request, string $universeId): JsonResponse
+    {
+        $type = $request->input('type');
+        $intensity = (float) $request->input('intensity', 0.5);
+
+        try {
+            $this->pressureAction->execute($universeId, $type, $intensity);
+            return response()->json([
+                'success' => true,
+                'message' => "Applied {$type} pressure with intensity {$intensity}."
+            ]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 422);
+        }
     }
 }

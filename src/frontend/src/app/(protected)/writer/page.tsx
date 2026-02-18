@@ -1,48 +1,19 @@
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { SagaList } from "@/features/writer/SagaList";
-import { WorldList } from "@/features/writer/WorldList";
-import { CreateSagaButton } from "@/features/writer/CreateSagaButton";
-import { WriterMetricsDashboard } from "@/features/writer/WriterMetricsDashboard";
+import { NarrativeOrchestrator } from "@/features/writer/NarrativeOrchestrator";
 
 export default function WriterPage() {
   return (
-    <div className="p-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-foreground">Writer</h1>
-        <div className="flex gap-2">
-          <CreateSagaButton />
-          <Button asChild variant="outline" size="sm">
-            <Link href="/writer/genesis">Genesis</Link>
-          </Button>
-        </div>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      <div className="flex flex-col gap-2 mb-8">
+        <h1 className="text-4xl font-extrabold tracking-tighter text-slate-900 uppercase">
+          Narrative <span className="text-primary">Orchestrator</span>
+        </h1>
+        <p className="text-slate-500 font-medium">
+          Strategic gateway for managing autonomous sagas and parallel universe simulations.
+        </p>
       </div>
 
-      <section className="mb-8">
-        <WriterMetricsDashboard />
-      </section>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card id="sagas">
-          <CardHeader>
-            <CardTitle>Sagas</CardTitle>
-            <CardDescription>Yggdrasil sagas — tree view and run</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <SagaList />
-          </CardContent>
-        </Card>
-        <Card id="worlds">
-          <CardHeader>
-            <CardTitle>Worlds</CardTitle>
-            <CardDescription>Worlds and instances — Hub controls</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <WorldList />
-          </CardContent>
-        </Card>
-      </div>
+      <NarrativeOrchestrator />
     </div>
   );
 }

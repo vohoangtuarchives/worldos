@@ -1,17 +1,22 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { GenesisForm } from "@/features/writer/GenesisForm";
+import { Sparkles } from "lucide-react";
 
 export default function GenesisPage() {
   return (
-    <div className="p-6">
-      <div className="mb-4 flex items-center gap-4">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/writer">← Writer</Link>
-        </Button>
-        <h1 className="text-2xl font-semibold">Genesis</h1>
+    <div className="space-y-6">
+      <div className="flex flex-col gap-1">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <Sparkles className="h-6 w-6 text-primary" />
+          Quá Trình Khởi Nguyên (Genesis)
+        </h1>
+        <p className="text-sm text-muted-foreground uppercase tracking-wider font-medium">
+          Initiating World-Entity Seeding • Deep-Sim Protocol
+        </p>
       </div>
-      <GenesisForm />
+
+      <div className="glass-card p-8">
+        <GenesisForm />
+      </div>
     </div>
   );
 }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useSaga, useSagaAdvance } from "./useWriterApi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { SagaTreeView } from "./SagaTreeView";
 import type { SagaDetail, SagaWorld } from "@/shared/api/writer";
 
 function SagaWorldRow({ sw }: { sw: SagaWorld }) {
@@ -81,6 +82,7 @@ export function SagaDetailView({
           </CardContent>
         </Card>
       )}
+      <SagaTreeView sagaId={sagaId} />
       <div className="flex flex-wrap gap-2">
         <Button
           size="sm"

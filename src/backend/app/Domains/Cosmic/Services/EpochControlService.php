@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace App\Domains\Cosmic\Services;
 
 use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use App\Domains\Runtime\UniverseRuntimeService;
+use App\Domains\Saga\Services\SagaService;
+use App\Models\UniverseModel;
 use App\Models\World;
 use App\Domains\Saga\SagaWorld;
-use App\Jobs\RunSagaSimulationJob;
 
 /**
  * EpochControlService — freeze, resume, step, rollback the simulation.
  *
- * Now integrated with World/Saga models to persist state and dispatch jobs.
+ * WorldOS v3: Uses UniverseRuntimeService + SagaService (Universe-centric pipeline).
  */
 class EpochControlService
 {
@@ -24,8 +26,10 @@ class EpochControlService
     /** @var array<array> Action log */
     private array $actionLog = [];
 
-    public function __construct()
-    {
+    public function __construct(
+        private readonly UniverseRuntimeService $runtimeService,
+        private readonly SagaService $sagaService
+    ) {
     }
 
     /**
@@ -54,16 +58,17 @@ class EpochControlService
 
     /**
      * Resume the simulation.
+     * WorldOS v3: Advances via SagaService (Universe-centric) instead of dispatching legacy RunSagaSimulationJob.
      */
     public function resume(World $world, string $reason = 'manual'): array
     {
         $world->update(['autonomous' => true]);
         $this->frozen = false;
 
-        // Dispatch job if part of a saga
+        // V3: Advance saga by 1 tick on resume
         $sagaWorld = SagaWorld::where('world_id', $world->id)->first();
-        if ($sagaWorld && $sagaWorld->saga) {
-             RunSagaSimulationJob::dispatch($sagaWorld->saga);
+        if ($sagaWorld && $sagaWorld->saga && $sagaWorld->universe_id) {
+            $this->sagaService->runBatch($sagaWorld->saga, 1);
         }
 
         return $this->log('RESUME', $reason, $world->current_epoch ?? 0);
@@ -71,16 +76,21 @@ class EpochControlService
 
     /**
      * Step exactly one epoch (while frozen).
-     * Returns true if step is allowed.
+     * WorldOS v3: Ticks the active Universe via UniverseRuntimeService.
      */
     public function stepOne(World $world): array
     {
-        // For now, we only log this action as "requested"
-        // Actual single-step logic requires triggering the SagaRunner for exactly 1 tick
-        
-        // TODO: Implement actual step logic via SagaRunner or Job
-        
-        return $this->log('STEP_ONE', 'manual single-epoch advance', $world->current_epoch ?? 0);
+        // V3: Find active universe for this world, tick it
+        $universe = UniverseModel::where('world_id', $world->id)
+            ->where('is_archived', false)
+            ->first();
+
+        if ($universe) {
+            $result = $this->runtimeService->tick($universe->id);
+            return $this->log('STEP_ONE', 'Advanced 1 tick on Universe ' . substr($universe->id, 0, 8), (int) ($result->getAge()));
+        }
+
+        return $this->log('STEP_ONE', 'No active universe found for world', $world->current_epoch ?? 0);
     }
     
     /**
