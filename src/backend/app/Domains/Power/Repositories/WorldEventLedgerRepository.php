@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class WorldEventLedgerRepository
 {
-    public function save(int $worldId, WorldEvent $event): void
+    public function save(string $worldId, WorldEvent $event): void
     {
         DB::transaction(function () use ($worldId, $event) {
             // 1. Record the event
@@ -29,7 +29,7 @@ class WorldEventLedgerRepository
         });
     }
 
-    public function getHistory(int $worldId, int $limit = 50): array
+    public function getHistory(string $worldId, int $limit = 50): array
     {
         return DB::table('world_event_ledger')
             ->where('world_id', $worldId)
@@ -39,7 +39,7 @@ class WorldEventLedgerRepository
             ->toArray();
     }
 
-    public function getActiveEvents(int $worldId)
+    public function getActiveEvents(string $worldId)
     {
         return DB::table('world_event_ledger')
             ->where('world_id', $worldId)

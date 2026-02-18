@@ -14,7 +14,7 @@ return new class extends Migration
             return;
         }
         Schema::create('narrative_projections', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('universe_id', 36)->nullable();
             $table->unsignedBigInteger('tick')->default(0);
             $table->string('event_type', 64)->nullable();

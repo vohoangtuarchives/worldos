@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('story_seeds', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('story_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('story_id')->constrained('stories')->cascadeOnDelete();
             
             $table->string('type');      // POWER_GAP, SOCIAL_PRESSURE, etc.
             $table->string('dimension'); // personal, family, world...

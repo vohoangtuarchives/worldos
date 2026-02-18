@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('character_goals', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignUuid('character_id')->constrained('characters')->cascadeOnDelete();
             $table->text('description');
             $table->integer('priority'); // Higher is more important

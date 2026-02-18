@@ -68,7 +68,7 @@ class MaterialExtractionTemplate extends Model
     /**
      * Approve this template.
      */
-    public function approve(int $userId, ?string $notes = null): void
+    public function approve(string $userId, ?string $notes = null): void
     {
         $this->update([
             'status' => 'approved',
@@ -81,7 +81,7 @@ class MaterialExtractionTemplate extends Model
     /**
      * Reject this template.
      */
-    public function reject(int $userId, ?string $notes = null): void
+    public function reject(string $userId, ?string $notes = null): void
     {
         $this->update([
             'status' => 'rejected',

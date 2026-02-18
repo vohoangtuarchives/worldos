@@ -37,7 +37,7 @@ class WorldHubController extends Controller
      * GET /writer/worlds/{worldId}?tab=overview
      * Unified World Hub — 5-tab view.
      */
-    public function show(int $worldId, Request $request): View
+    public function show(string $worldId, Request $request): View
     {
         $world = World::findOrFail($worldId);
         $tab = $request->query('tab', 'overview');
@@ -370,7 +370,7 @@ class WorldHubController extends Controller
 
     // ─── CONTROL ACTIONS ─────────────────────────────────────────────
 
-    public function injectEvent(int $worldId, Request $request)
+    public function injectEvent(string $worldId, Request $request)
     {
         $data = $request->validate([
             'event_type' => 'required|string',
@@ -389,7 +389,7 @@ class WorldHubController extends Controller
         return back()->with('error', "Event Blocked: " . $result['reason']);
     }
 
-    public function createScar(int $worldId, Request $request)
+    public function createScar(string $worldId, Request $request)
     {
         $data = $request->validate([
             'location_scope' => 'required|string',
@@ -403,35 +403,35 @@ class WorldHubController extends Controller
         return back()->with('success', 'Divine Scar branded upon the world.');
     }
 
-    public function freeze(int $worldId)
+    public function freeze(string $worldId)
     {
         $world = World::findOrFail($worldId);
         $this->epochControl->freeze($world);
         return back()->with('success', 'World frozen.');
     }
 
-    public function resume(int $worldId)
+    public function resume(string $worldId)
     {
         $world = World::findOrFail($worldId);
         $this->epochControl->resume($world);
         return back()->with('success', 'World resumed.');
     }
 
-    public function step(int $worldId)
+    public function step(string $worldId)
     {
         $world = World::findOrFail($worldId);
         $result = $this->epochControl->stepEpoch($world);
         return back()->with('success', 'Stepped 1 epoch. New year: ' . ($result['epoch'] ?? '?'));
     }
 
-    public function rollback(int $worldId)
+    public function rollback(string $worldId)
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->epochControl->rollback($world);
         return back()->with('success', 'Rolled back to year ' . ($snapshot->year ?? '?'));
     }
 
-    public function emergency(int $worldId, string $action, Request $request)
+    public function emergency(string $worldId, string $action, Request $request)
     {
         $world = World::findOrFail($worldId);
         $snapshot = $world->cosmicSnapshots()->latest('year')->first();
@@ -463,7 +463,7 @@ class WorldHubController extends Controller
     /**
      * Frontend Trigger: Toggle Autonomous Mode
      */
-    public function toggleAutonomous(int $worldId)
+    public function toggleAutonomous(string $worldId)
     {
         $world = World::findOrFail($worldId);
         $world->autonomous = !$world->autonomous;
@@ -476,7 +476,7 @@ class WorldHubController extends Controller
     /**
      * Frontend Trigger: Manual Tick
      */
-    public function autonomousTick(int $worldId)
+    public function autonomousTick(string $worldId)
     {
         \Illuminate\Support\Facades\Artisan::call('autonomous:tick');
 

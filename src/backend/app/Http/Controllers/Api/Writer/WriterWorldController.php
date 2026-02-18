@@ -49,8 +49,11 @@ class WriterWorldController extends Controller
             return [
                 'id' => (string) $u->id,
                 'name' => $u->name,
-                'age' => $u->age,
+                'age' => (int) ($u->age ?? 0),
                 'state_vector' => $u->state_vector,
+                'entropy' => $u->entropy !== null ? (float) $u->entropy : null,
+                'stability_index' => $u->stability_index !== null ? (float) $u->stability_index : null,
+                'status' => $u->status ?? 'running',
                 'is_archived' => $u->is_archived ?? false,
                 'created_at' => $u->created_at?->toIso8601String(),
             ];

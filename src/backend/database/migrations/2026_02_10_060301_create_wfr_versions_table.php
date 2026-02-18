@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('wfr_versions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('version')->unique(); // 1.0.0, 1.1.0, 2.0.0
             $table->text('changelog');
             $table->timestamp('released_at');

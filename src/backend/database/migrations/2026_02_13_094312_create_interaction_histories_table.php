@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('interaction_histories', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('attractor_a_id');
             $table->uuid('attractor_b_id');
             $table->float('shared_survival')->default(0.0);

@@ -10,7 +10,7 @@ class LegendInjector
         private WorldEventLedgerRepository $ledgerRepository
     ) {}
 
-    public function inject(int $worldId, array &$promptCapsule): void
+    public function inject(string $worldId, array &$promptCapsule): void
     {
         $history = $this->ledgerRepository->getHistory($worldId, 5);
         

@@ -7,8 +7,26 @@ export type Saga = {
   status: string;
   world_count?: number;
   saga_worlds_count?: number;
+  current_universe_id?: string | null;
   created_at?: string;
   updated_at?: string;
+};
+
+export type SagaWorld = {
+  id: string;
+  world_id: string | null;
+  world_name: string;
+  universe_id: string | null;
+  sequence: number;
+  status: string;
+  universe_age: number | null;
+  universe_entropy: number | null;
+  universe_stability_index: number | null;
+  universe_status: string | null;
+};
+
+export type SagaDetail = Saga & {
+  saga_worlds: SagaWorld[];
 };
 
 export type SagaTreeNode = {
@@ -19,6 +37,9 @@ export type SagaTreeNode = {
   status?: string;
   has_collapsed?: boolean;
   sequence?: number;
+  universe_id?: string | null;
+  age?: number | null;
+  universe_status?: string | null;
 };
 
 /** World id: string (UUID or numeric string from API). */
@@ -34,8 +55,32 @@ export type World = {
   updated_at?: string;
 };
 
+/** Universe = runtime instance of a World (v3). */
+export type Universe = {
+  id: string;
+  name: string;
+  age: number;
+  state_vector?: Record<string, unknown>;
+  entropy?: number | null;
+  stability_index?: number | null;
+  status?: string;
+  is_archived?: boolean;
+  created_at?: string;
+};
+
+export type UniverseSnapshotItem = {
+  id: string;
+  universe_id: string;
+  tick: number;
+  state_vector?: Record<string, unknown>;
+  entropy?: number | null;
+  stability_index?: number | null;
+  metrics?: Record<string, unknown> | null;
+  created_at?: string;
+};
+
 export type WorldDetail = World & {
-  runtime_instances?: { id: string; name: string; age?: number; is_archived?: boolean }[];
+  runtime_instances?: Universe[];
 };
 
 export type WorldSnapshotItem = {
@@ -71,9 +116,20 @@ export type GenesisPreset = { id: string; name: string; [key: string]: unknown }
 export const writerApi = {
   sagas: {
     list: () => api.get<Saga[]>("/api/writer/sagas"),
+    show: (sagaId: string) => api.get<SagaDetail>(`/api/writer/sagas/${sagaId}`),
     createFromActive: () => api.post<Saga>("/api/writer/sagas/create-from-active"),
     tree: (id: string) => api.get<{ nodes: SagaTreeNode[] }>(`/api/writer/saga/${id}/tree`),
+    advance: (sagaId: string, ticks?: number) =>
+      api.post<{ success: boolean; message: string; ticks: number }>(`/api/writer/saga/${sagaId}/advance`, { ticks: ticks ?? 10 }),
     run: (id: string) => api.post(`/api/writer/saga/${id}/run`),
+  },
+  universes: {
+    snapshots: (universeId: string) =>
+      api.get<{ success: boolean; data: { snapshots: UniverseSnapshotItem[] } }>(`/api/writer/universes/${universeId}/snapshots`).then((r) => r.data?.snapshots ?? []),
+    metrics: (universeId: string) =>
+      api.get<{ tick: number; state_vector: Record<string, number>; entropy?: number | null; stability_index?: number | null; phase: string }>(
+        `/api/writer/universes/${universeId}/metrics`
+      ),
   },
   worlds: {
     list: () => api.get<World[]>("/api/writer/worlds"),
@@ -117,6 +173,6 @@ export const writerApi = {
   genesis: {
     presets: () => api.get<{ categories?: Record<string, GenesisPreset[]> }>("/api/writer/genesis/presets"),
     create: (body: { name: string; preset_key?: string; [key: string]: unknown }) =>
-      api.post("/api/writer/genesis", body),
+      api.post<{ saga_id: string; name: string; message: string }>("/api/writer/genesis", body),
   },
 };

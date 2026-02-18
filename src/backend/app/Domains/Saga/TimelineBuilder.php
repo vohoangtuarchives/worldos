@@ -20,10 +20,10 @@ class TimelineBuilder
      * 
      * @param array $events Detected saga events
      * @param int $epoch Current epoch
-     * @param int $worldId World ID
+     * @param string $worldId World ID
      * @return array Added node IDs
      */
-    public function addEvents(array $events, int $epoch, int $worldId): array
+    public function addEvents(array $events, int $epoch, string $worldId): array
     {
         $nodeIds = [];
 
@@ -38,7 +38,7 @@ class TimelineBuilder
     /**
      * Add single event node to timeline.
      */
-    private function addEventNode(array $event, int $epoch, int $worldId): string
+    private function addEventNode(array $event, int $epoch, string $worldId): string
     {
         $nodeData = [
             'type' => 'saga_event',
@@ -77,7 +77,7 @@ class TimelineBuilder
     /**
      * Get event timeline for epoch range.
      */
-    public function getEventTimeline(int $worldId, int $fromEpoch, int $toEpoch): array
+    public function getEventTimeline(string $worldId, int $fromEpoch, int $toEpoch): array
     {
         $nodes = $this->dag->getNodes();
         
@@ -92,7 +92,7 @@ class TimelineBuilder
     /**
      * Export timeline as JSON.
      */
-    public function exportTimeline(int $worldId, int $fromEpoch, int $toEpoch): string
+    public function exportTimeline(string $worldId, int $fromEpoch, int $toEpoch): string
     {
         $timeline = $this->getEventTimeline($worldId, $fromEpoch, $toEpoch);
         

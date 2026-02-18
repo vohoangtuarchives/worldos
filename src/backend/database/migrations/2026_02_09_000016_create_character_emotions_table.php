@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('character_emotions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignUuid('character_id')->constrained('characters')->cascadeOnDelete();
             $table->string('type'); // anger, fear, joy, trust...
             $table->float('intensity'); // 0.0 to 1.0

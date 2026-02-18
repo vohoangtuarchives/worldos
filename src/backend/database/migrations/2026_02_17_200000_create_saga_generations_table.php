@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('saga_generations', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('saga_id');
-            $table->unsignedBigInteger('world_id');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('sequence')->default(0);
             $table->json('objective_vector')->nullable();
             $table->string('archetype')->nullable();
@@ -19,7 +19,6 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('saga_id')->references('id')->on('sagas')->onDelete('cascade');
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
             $table->index(['saga_id', 'sequence']);
         });
     }

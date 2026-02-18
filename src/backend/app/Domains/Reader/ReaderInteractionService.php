@@ -23,7 +23,7 @@ class ReaderInteractionService
     /**
      * Get available choices for the current state.
      */
-    public function getChoices(int $worldId): array
+    public function getChoices(string $worldId): array
     {
         $state = $this->stateRepo->getCurrentState($worldId);
         // Assuming we store current epoch in world table or calculate it
@@ -38,7 +38,7 @@ class ReaderInteractionService
     /**
      * Apply a reader's choice to the world.
      */
-    public function applyChoice(int $worldId, string $choiceId, string $optionId, array $choices): void
+    public function applyChoice(string $worldId, string $choiceId, string $optionId, array $choices): void
     {
         // 1. Find the selected option
         $selectedOption = null;
@@ -94,7 +94,7 @@ class ReaderInteractionService
         $this->stateRepo->saveSnapshot($newState);
     }
 
-    private function getCurrentEpoch(int $worldId): int
+    private function getCurrentEpoch(string $worldId): int
     {
         // Simple query to get max epoch
         return DB::table('world_state_events')

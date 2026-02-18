@@ -14,7 +14,7 @@ class SimulationContext
         public array $seeds, // Active seeds
         public string $timelineId,
         public int $currentChapter,
-        public ?int $worldId = null,
+        public ?string $worldId = null,
         public bool $safeMode = false
     ) {}
 

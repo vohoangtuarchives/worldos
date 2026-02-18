@@ -10,11 +10,12 @@ class CosmologyRepository
 {
     /**
      * Return world_id for a universe (for cross-module read without holding Eloquent).
+     * world_id is UUID (string).
      */
-    public function getWorldIdForUniverse(string $id): ?int
+    public function getWorldIdForUniverse(string $id): ?string
     {
         $v = UniverseModel::where('id', $id)->value('world_id');
-        return $v !== null ? (int) $v : null;
+        return $v !== null ? (string) $v : null;
     }
 
     /**
@@ -23,7 +24,7 @@ class CosmologyRepository
      *
      * @return array{universe_id: string, age: int, entropy: float}|null
      */
-    public function getRuntimeStateForWorld(int $worldId): ?array
+    public function getRuntimeStateForWorld(string $worldId): ?array
     {
         $model = UniverseModel::where('world_id', $worldId)->whereNull('death_cause')->orderBy('id')->first();
         if ($model === null) {
@@ -66,7 +67,7 @@ class CosmologyRepository
         return new Universe($vector, $model->parameters ?? [], $id, (int) ($model->age ?? 0), $model->coords, $model->cosmic_faction_id);
     }
 
-    public function save(Universe $universe, ?int $worldId = null): void
+    public function save(Universe $universe, ?string $worldId = null): void
     {
         $state = $universe->getState();
 
@@ -116,7 +117,7 @@ class CosmologyRepository
 
     public function createCustom(string $id, array $data): Universe
     {
-        $worldId = (int) $data['world_id'];
+        $worldId = (string) $data['world_id'];
         if (!\App\Models\World::where('id', $worldId)->exists()) {
             throw new \InvalidArgumentException('Universe must belong to an existing World. world_id is required.');
         }

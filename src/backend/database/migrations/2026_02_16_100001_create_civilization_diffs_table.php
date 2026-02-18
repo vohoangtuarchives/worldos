@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('civilization_diffs', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('universe_id');
             $table->unsignedBigInteger('from_tick');
             $table->unsignedBigInteger('to_tick');

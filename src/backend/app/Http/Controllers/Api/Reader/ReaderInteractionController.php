@@ -23,7 +23,7 @@ class ReaderInteractionController extends Controller
      * 
      * GET /api/reader/worlds/{world}/choices/{epoch}
      */
-    public function getChoices(int $worldId, int $epoch): JsonResponse
+    public function getChoices(string $worldId, int $epoch): JsonResponse
     {
         try {
             $choices = $this->engine->getChoices($worldId, $epoch);
@@ -48,7 +48,7 @@ class ReaderInteractionController extends Controller
      * POST /api/reader/worlds/{world}/vote
      * Body: { "epoch": 42, "choice_id": "...", "option_id": "..." }
      */
-    public function vote(Request $request, int $worldId): JsonResponse
+    public function vote(Request $request, string $worldId): JsonResponse
     {
         $validated = $request->validate([
             'epoch' => 'required|integer',
@@ -94,7 +94,7 @@ class ReaderInteractionController extends Controller
      * POST /api/reader/worlds/{world}/react
      * Body: { "epoch": 42, "reaction_type": "support" }
      */
-    public function react(Request $request, int $worldId): JsonResponse
+    public function react(Request $request, string $worldId): JsonResponse
     {
         $validated = $request->validate([
             'epoch' => 'required|integer',
@@ -136,7 +136,7 @@ class ReaderInteractionController extends Controller
      * 
      * GET /api/reader/worlds/{world}/results/{epoch}
      */
-    public function getResults(int $worldId, int $epoch): JsonResponse
+    public function getResults(string $worldId, int $epoch): JsonResponse
     {
         try {
             $results = $this->logger->getResultsForEpoch($worldId, $epoch);

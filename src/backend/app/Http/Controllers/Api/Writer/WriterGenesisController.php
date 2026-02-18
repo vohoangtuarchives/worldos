@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Writer;
 use App\Http\Controllers\Controller;
 use App\Domains\Saga\Saga;
 use App\Domains\Saga\Services\GenesisPresetService;
-use App\Jobs\RunSagaSimulationJob;
+use App\Domains\Saga\Services\SagaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +17,8 @@ use Throwable;
 class WriterGenesisController extends Controller
 {
     public function __construct(
-        private GenesisPresetService $presetService
+        private GenesisPresetService $presetService,
+        private SagaService $sagaService
     ) {}
 
     /**
@@ -85,7 +86,7 @@ class WriterGenesisController extends Controller
             ],
         ]);
 
-        RunSagaSimulationJob::dispatch($saga);
+        $this->sagaService->genesisV3($saga, 10);
 
             return response()->json([
                 'saga_id' => $saga->id,

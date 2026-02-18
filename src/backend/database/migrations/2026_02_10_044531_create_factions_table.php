@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('factions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('name');
             $table->string('type'); // Sect, Clan, Guild, etc.
             $table->json('attributes')->nullable(); // cohesion, economy, memory, etc.

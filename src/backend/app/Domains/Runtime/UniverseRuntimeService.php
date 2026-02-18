@@ -5,6 +5,7 @@ namespace App\Domains\Runtime;
 use App\Domains\Cosmology\Cosmology;
 use App\Domains\Cosmology\Entities\Universe as CosmologyUniverse;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
+use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
 use App\Domains\Runtime\Events\UniverseTicked;
 use App\Domains\Saga\DTO\ShockParams;
 use App\Domains\Saga\Services\ShockInjector;
@@ -24,6 +25,7 @@ class UniverseRuntimeService
 {
     public function __construct(
         private CosmologyRepository $cosmologyRepository,
+        private UniverseSnapshotRepository $universeSnapshotRepository,
         private UniverseRuntimePolicy $policy,
         private EvolutionEngineInterface $evolutionEngine,
         private ?ShockInjector $shockInjector = null
@@ -80,6 +82,7 @@ class UniverseRuntimeService
             if ($world) {
                 $this->evolutionEngine->applyTick($universe, $shockParams);
                 $this->cosmologyRepository->save($universe, $model->world_id);
+                $this->universeSnapshotRepository->save($universe, []);
                 $this->dispatchTicked($universe, $model->world_id);
                 return $universe;
             }
@@ -90,11 +93,12 @@ class UniverseRuntimeService
         $cosmology->getFieldSpace()->addUniverse($universe);
         $cosmology->tick();
         $this->cosmologyRepository->save($universe, $model?->world_id);
+        $this->universeSnapshotRepository->save($universe, []);
         $this->dispatchTicked($universe, null);
         return $universe;
     }
 
-    private function dispatchTicked(CosmologyUniverse $universe, ?int $worldId): void
+    private function dispatchTicked(CosmologyUniverse $universe, ?string $worldId): void
     {
         $state = $universe->getState();
         UniverseTicked::dispatch(

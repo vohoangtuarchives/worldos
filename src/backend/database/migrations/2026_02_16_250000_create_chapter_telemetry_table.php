@@ -18,9 +18,9 @@ return new class extends Migration
         }
 
         Schema::create('chapter_telemetry', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('serial_chapter_id');
-            $table->uuid('narrative_series_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('serial_chapter_id')->constrained('serial_chapters')->cascadeOnDelete();
+            $table->foreignUuid('narrative_series_id')->constrained('narrative_series')->cascadeOnDelete();
             $table->string('emotional_beat', 64)->nullable();
             $table->float('tension')->nullable();
             $table->unsignedInteger('word_count')->default(0);
@@ -29,8 +29,6 @@ return new class extends Migration
             $table->unsignedInteger('total_tokens')->nullable();
             $table->timestamp('generated_at')->nullable();
             $table->timestamps();
-            $table->foreign('serial_chapter_id')->references('id')->on('serial_chapters')->cascadeOnDelete();
-            $table->foreign('narrative_series_id')->references('id')->on('narrative_series')->cascadeOnDelete();
             $table->index(['narrative_series_id', 'generated_at']);
         });
     }

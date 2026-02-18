@@ -11,8 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_dynamics', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('tick')->default(0);
             $table->float('entropy_level')->default(0.0);
             $table->float('instability_score')->default(0.0);

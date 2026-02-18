@@ -14,6 +14,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
+        // WorldOS v3: Universe evaluator (Phase 3)
+        $this->app->bind(
+            \App\Domains\Runtime\Evaluation\UniverseEvaluatorInterface::class,
+            \App\Domains\Runtime\Evaluation\StubUniverseEvaluator::class
+        );
+
         // LLM Provider binding
         $this->app->bind(
             \App\Domains\Narrative\LLM\Contracts\LLMProvider::class,
@@ -45,6 +51,15 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Domains\World\Repositories\ShockEventRepository::class,
             \App\Domains\World\Repositories\EloquentShockEventRepository::class
+        );
+
+        // Evolution engine (Runtime → World tick delegation).
+        // Closure ensures the implementation is resolved at runtime (avoids "not instantiable" when cache is stale).
+        $this->app->bind(
+            \App\Domains\World\Contracts\EvolutionEngineInterface::class,
+            function ($app) {
+                return $app->make(\App\Domains\World\Services\WorldEvolutionEngineAdapter::class);
+            }
         );
 
         // Continuous operation services

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('belief_myth', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('belief_id')->constrained('world_beliefs')->cascadeOnDelete();
-            $table->foreignId('myth_id')->constrained('world_myths')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('belief_id')->constrained('world_beliefs')->cascadeOnDelete();
+            $table->foreignUuid('myth_id')->constrained('world_myths')->cascadeOnDelete();
             $table->timestamps();
         });
     }

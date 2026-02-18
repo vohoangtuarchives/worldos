@@ -13,7 +13,7 @@ return new class extends Migration
     {
         if (!Schema::hasTable('world_states')) {
             Schema::create('world_states', function (Blueprint $table) {
-                $table->id();
+                $table->uuid('id')->primary();
                 $table->json('power_axis');
                 $table->json('resource_axis');
                 $table->json('perception_axis');

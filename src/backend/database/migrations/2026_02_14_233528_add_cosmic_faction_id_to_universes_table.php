@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('universes', function (Blueprint $table) {
-            $table->unsignedBigInteger('cosmic_faction_id')->nullable()->after('id');
-            $table->foreign('cosmic_faction_id')->references('id')->on('cosmic_factions')->onDelete('set null');
+            $table->foreignUuid('cosmic_faction_id')->nullable()->after('id')->constrained('cosmic_factions')->nullOnDelete();
         });
     }
 

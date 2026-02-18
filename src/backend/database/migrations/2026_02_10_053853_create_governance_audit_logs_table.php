@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('governance_audit_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->nullable()->constrained()->nullOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->nullable()->constrained('worlds')->nullOnDelete();
             $table->string('action_type'); // FORK, KILL_SWITCH, LAW_CHANGE, ALERT_RESOLVED, etc.
             $table->string('operator'); // auth()->user()->email
             $table->json('metadata')->nullable(); // Action details

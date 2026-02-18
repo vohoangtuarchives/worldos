@@ -19,7 +19,7 @@ return new class extends Migration
         }
 
         Schema::create('universe_attractors', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('universe_id');
             $table->string('name', 64);
             $table->json('centroid_jsonb');

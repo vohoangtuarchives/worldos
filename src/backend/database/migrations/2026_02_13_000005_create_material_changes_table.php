@@ -11,8 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('material_changes', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('instance_id');
             $table->enum('change_type', ['add', 'update', 'remove', 'transfer', 'degrade', 'upgrade', 'retire']);
             $table->json('old_state')->nullable();
@@ -26,9 +26,6 @@ return new class extends Migration
             $table->index(['instance_id', 'occurred_at']);
             $table->index(['change_type']);
             $table->index(['occurred_at']);
-            
-            // Foreign key constraints
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
         });
     }
 

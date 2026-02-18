@@ -25,7 +25,7 @@ return new class extends Migration
         // 2. Enhance World States (The State Vector)
         Schema::table('world_states', function (Blueprint $table) {
             // Linking to the World (Missing in original migration)
-            $table->foreignId('world_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignUuid('world_id')->nullable()->constrained('worlds')->cascadeOnDelete();
 
             // Adding the core mathematical vector
             $table->json('state_vector')->nullable(); // { "coherence": 0.8, "entropy": 0.2 ... }
@@ -40,7 +40,7 @@ return new class extends Migration
         // 3. Governance Logs (The Intervention History)
         Schema::create('governance_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('action_type'); // inject_resource, smite, mutate_genome
             $table->json('parameters')->nullable();
             $table->text('reasoning')->nullable(); // AI or Human reasoning

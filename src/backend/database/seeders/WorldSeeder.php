@@ -27,13 +27,15 @@ class WorldSeeder extends Seeder
 
         $this->command->info("World created: {$world->name}");
 
-        // 1. Initialize WorldState (Phase 13)
+        // 1. Initialize WorldState (Phase 13) — only if no snapshot exists yet
         $repository = app(\App\Domains\Material\State\WorldStateRepository::class);
-        $initialState = \App\Domains\Material\State\WorldState::createInitial($world->id);
-        
-        // Save initial snapshot
-        $repository->saveSnapshot($initialState);
-        $this->command->info("WorldState initialized for World {$world->id}");
+        if ($repository->getLatestSnapshot((string) $world->id) === null) {
+            $initialState = \App\Domains\Material\State\WorldState::createInitial((string) $world->id);
+            $repository->saveSnapshot($initialState);
+            $this->command->info("WorldState initialized for World {$world->id}");
+        } else {
+            $this->command->info("WorldState already exists for World {$world->id}, skipping.");
+        }
 
         // 2. Activate Materials (Phase 14)
         $materials = \App\Domains\Material\Material::all();

@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('observer_versions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('observer_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('observer_id')->constrained('observers')->cascadeOnDelete();
             $table->string('version'); // e.g., 'v1', 'draft', 'final'
             $table->json('rules');     // Rules for interpretation (tone, filters)
             $table->timestamps();

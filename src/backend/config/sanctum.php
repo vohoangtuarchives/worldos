@@ -27,13 +27,24 @@ return [
     | Expiration Minutes
     |--------------------------------------------------------------------------
     |
-    | Global token expiration (minutes). Tokens older than this are rejected
-    | by the auth:sanctum guard even if they still exist in the database.
-    | Acts as a safety net alongside per-token expires_at.
+    | Token expiration is validated in two places:
+    |
+    | 1. Per-token: createToken(..., $expiresAt) stores expires_at in DB.
+    |    The guard rejects the token if expires_at is in the past.
+    |
+    | 2. Global (this value): Guard also rejects tokens whose created_at is
+    |    older than (now - expiration minutes). Set to null to disable this
+    |    check (not recommended); otherwise use minutes, e.g. 10080 = 7 days.
     |
     */
 
-    'expiration' => (int) env('SANCTUM_TOKEN_EXPIRATION', 60 * 24 * 7), // 7 days
+    'expiration' => value(function () {
+        $v = env('SANCTUM_TOKEN_EXPIRATION');
+        if ($v === null || $v === '') {
+            return 60 * 24 * 7; // default 7 days
+        }
+        return (int) $v;
+    }),
 
     /*
     |--------------------------------------------------------------------------

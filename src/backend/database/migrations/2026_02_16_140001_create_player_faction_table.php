@@ -11,10 +11,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('player_faction', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->constrained('users')->cascadeOnDelete();
             $table->string('universe_id', 36);
-            $table->foreignId('faction_id')->constrained('cosmic_factions')->cascadeOnDelete();
+            $table->foreignUuid('faction_id')->constrained('cosmic_factions')->cascadeOnDelete();
             $table->timestamps();
 
             $table->unique(['user_id', 'universe_id']);

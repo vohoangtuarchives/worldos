@@ -15,7 +15,7 @@ class StageTransitionEngine
         PowerStage::STAGE_5_MYTHIC->value => 2.0,
     ];
 
-    public function evaluate(int $worldId): ?PowerStage
+    public function evaluate(string $worldId): ?PowerStage
     {
         $state = DB::table('world_power_stages')->where('world_id', $worldId)->first();
         if (!$state) return null;
@@ -37,7 +37,7 @@ class StageTransitionEngine
         return null;
     }
 
-    public function startPreTransition(int $worldId, PowerStage $targetStage): void
+    public function startPreTransition(string $worldId, PowerStage $targetStage): void
     {
         DB::table('world_power_stages')->where('world_id', $worldId)->update([
             'transition_phase' => 'pre',
@@ -48,7 +48,7 @@ class StageTransitionEngine
         // TODO: Dispatch Event: PotentialEvolutionDetected
     }
 
-    public function triggerMoment(int $worldId): void
+    public function triggerMoment(string $worldId): void
     {
         DB::table('world_power_stages')->where('world_id', $worldId)->update([
             'transition_phase' => 'moment',
@@ -58,7 +58,7 @@ class StageTransitionEngine
         // TODO: Dispatch Event: RealityBreakOccurring
     }
 
-    public function startStabilization(int $worldId): void
+    public function startStabilization(string $worldId): void
     {
         DB::table('world_power_stages')->where('world_id', $worldId)->update([
             'transition_phase' => 'post',
@@ -68,7 +68,7 @@ class StageTransitionEngine
         // TODO: Dispatch Event: RealityStabilizing
     }
 
-    public function completeTransition(int $worldId): void
+    public function completeTransition(string $worldId): void
     {
         $state = DB::table('world_power_stages')->where('world_id', $worldId)->first();
         

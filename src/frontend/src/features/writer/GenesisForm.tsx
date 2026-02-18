@@ -46,7 +46,15 @@ export function GenesisForm() {
               if (!presetId) return;
               create.mutate(
                 { name: name || "New World", preset_key: presetId || undefined },
-                { onSuccess: () => router.push("/writer") }
+                {
+                  onSuccess: (data) => {
+                    if (data?.saga_id) {
+                      router.push(`/writer/sagas/${data.saga_id}?created=1`);
+                    } else {
+                      router.push("/writer");
+                    }
+                  },
+                }
               );
             }}
           >

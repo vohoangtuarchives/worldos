@@ -17,17 +17,20 @@ use App\Domains\Cosmic\ValueObjects\Attractor;
 
 /**
  * Saga Runner
- * 
+ *
  * Meta-level orchestrator for running multiple worlds in sequence.
- * 
+ *
  * Key Responsibilities:
  * 1. Create worlds with archetype bias
  * 2. Extract legacy from completed worlds
  * 3. Transfer legacy to next world
  * 4. Observe patterns across saga
- * 
+ *
  * Constitutional Constraint:
- * Saga Runner sits ABOVE World Runtime, never modifies worlds directly
+ * Saga Runner sits ABOVE World Runtime, never modifies worlds directly.
+ *
+ * @deprecated WorldOS v3: Genesis and new flow use SagaService + UniverseRuntimeService.
+ *   This path (World + WorldEvolutionPipeline + cosmic_snapshots) is legacy. Use SagaService::genesisV3 and runBatch for new sagas.
  */
 class SagaRunner
 {
@@ -68,7 +71,8 @@ class SagaRunner
     }
 
     /**
-     * Run the saga synchronously (for web/prototype)
+     * Run the saga synchronously (for web/prototype).
+     * @deprecated WorldOS v3: Use SagaService::genesisV3 / runBatch instead.
      */
     public function runSync(Saga $saga): void
     {
@@ -135,7 +139,8 @@ class SagaRunner
     }
 
     /**
-     * Simulate a single world's timeline
+     * Simulate a single world's timeline.
+     * @deprecated WorldOS v3: Evolution flows through UniverseRuntimeService::advance; no longer use World + cosmic_snapshots for new flow.
      */
     private function simulateWorld(SagaWorld $sagaWorld): void
     {

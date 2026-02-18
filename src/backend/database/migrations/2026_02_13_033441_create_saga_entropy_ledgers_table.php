@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('saga_entropy_ledgers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignUuid('saga_id')->constrained('sagas');
-            $table->foreignId('world_id')->nullable()->constrained(); // Nullable for saga-wide events
+            $table->foreignUuid('world_id')->nullable()->constrained('worlds')->nullOnDelete(); // Nullable for saga-wide events
             $table->string('source_type'); // e.g. 'GATE_LEAK', 'DECAY', 'COLLAPSE'
             $table->float('delta_entropy');
             $table->unsignedBigInteger('tick');

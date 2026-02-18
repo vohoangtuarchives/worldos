@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ai_generations', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('prompt_hash')->index(); // For deduplication/search
             $table->text('system_prompt');
             $table->text('user_prompt');
@@ -22,8 +22,8 @@ return new class extends Migration
         });
 
         Schema::create('ai_extracted_claims', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('generation_id')->constrained('ai_generations')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('generation_id')->constrained('ai_generations')->cascadeOnDelete();
             $table->string('claim_type');
             $table->integer('magnitude')->nullable();
             $table->string('subject')->nullable();

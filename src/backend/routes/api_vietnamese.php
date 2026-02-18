@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\Writer\WriterWorldHubController;
 use App\Http\Controllers\Api\Writer\WriterGenesisController;
 use App\Http\Controllers\Api\Writer\WriterGodConsoleController;
 use App\Http\Controllers\Api\Writer\WriterWorldSnapshotController;
+use App\Http\Controllers\Api\Writer\WriterUniverseController;
 use App\Http\Controllers\Api\SerialController;
 use App\Http\Controllers\Api\StoryBibleController;
 use App\Http\Controllers\Api\ClusterController;
@@ -35,9 +36,15 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // Sagas
     Route::get('sagas',                    [WriterSagaController::class, 'index']);
+    Route::get('sagas/{sagaId}',          [WriterSagaController::class, 'show']);
     Route::post('sagas/create-from-active',[WriterSagaController::class, 'createFromActive']);
     Route::get('saga/{sagaId}/tree',       [WriterSagaController::class, 'tree']);
+    Route::post('saga/{sagaId}/advance',   [WriterSagaController::class, 'advance']);
     Route::post('saga/{sagaId}/run',       [WriterSagaController::class, 'run']);
+
+    // Universes (v3 snapshot-first, metrics)
+    Route::get('universes/{universeId}/snapshots', [WriterUniverseController::class, 'snapshots']);
+    Route::get('universes/{universeId}/metrics',   [WriterUniverseController::class, 'metrics']);
 
     // Worlds
     Route::get('worlds',                   [WriterWorldController::class, 'index']);

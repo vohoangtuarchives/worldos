@@ -21,6 +21,10 @@ class UniverseModel extends Model
         'name',
         'age',
         'state_vector',
+        'entropy',
+        'stability_index',
+        'status',
+        'parent_universe_id',
         'parameters',
         'is_archived',
         'death_cause',
@@ -33,6 +37,8 @@ class UniverseModel extends Model
         'state_vector' => 'array',
         'parameters' => 'array',
         'age' => 'integer',
+        'entropy' => 'float',
+        'stability_index' => 'float',
         'is_archived' => 'boolean',
         'coords' => 'array',
     ];
@@ -50,5 +56,15 @@ class UniverseModel extends Model
     public function fleets()
     {
         return $this->hasMany(Fleet::class, 'universe_id');
+    }
+
+    public function parentUniverse()
+    {
+        return $this->belongsTo(UniverseModel::class, 'parent_universe_id');
+    }
+
+    public function snapshots()
+    {
+        return $this->hasMany(UniverseSnapshot::class, 'universe_id');
     }
 }

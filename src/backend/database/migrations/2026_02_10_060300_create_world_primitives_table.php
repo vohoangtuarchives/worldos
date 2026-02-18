@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_primitives', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('domain'); // civilization, culture, economy, power, ontological
             $table->string('code')->unique(); // MONARCHY, HONOR_BASED, etc.
             $table->string('name'); // Human-readable name

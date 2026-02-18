@@ -6,7 +6,7 @@ use App\Domains\Power\Enums\PowerStage;
 
 class TransitionNarrativeRule
 {
-    public function getPhase(int $worldId, int $currentEpoch, array $ledgerHistory): string
+    public function getPhase(string $worldId, int $currentEpoch, array $ledgerHistory): string
     {
         foreach ($ledgerHistory as $event) {
             // If a high-magnitude event happened recently (within 5 epochs)

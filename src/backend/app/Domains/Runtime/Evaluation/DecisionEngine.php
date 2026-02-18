@@ -1,0 +1,53 @@
+<?php
+
+namespace App\Domains\Runtime\Evaluation;
+
+use App\Domains\Cosmology\Entities\Universe;
+use App\Domains\Cosmology\Repositories\CosmologyRepository;
+use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
+use App\Domains\Evolution\Kernel\WorldEvolutionKernel;
+use App\Domains\Saga\Services\SagaService;
+use App\Models\UniverseModel;
+use App\Models\World;
+
+/**
+ * WorldOS v3 Phase 3: Execute recommendation from EvaluationResult (fork / archive / continue).
+ */
+class DecisionEngine
+{
+    public function __construct(
+        private SagaService $sagaService,
+        private UniverseSnapshotRepository $snapshotRepository,
+        private CosmologyRepository $cosmologyRepository,
+        private WorldEvolutionKernel $kernel
+    ) {
+    }
+
+    public function execute(Universe $universe, EvaluationResult $result): string
+    {
+        if ($result->recommendation === EvaluationResult::RECOMMENDATION_ARCHIVE) {
+            $this->archive($universe);
+            return 'archive';
+        }
+        if ($result->recommendation === EvaluationResult::RECOMMENDATION_FORK) {
+            $snapshot = $this->snapshotRepository->getLatest($universe->getId());
+            $fromTick = $snapshot ? $snapshot->tick : 0;
+            $this->sagaService->fork($universe, $fromTick);
+            return 'fork';
+        }
+        if ($result->mutationSuggestion !== null) {
+            $model = UniverseModel::find($universe->getId());
+            $world = $model && $model->world_id ? World::find($model->world_id) : null;
+            if ($world && $this->kernel->validateMutation($world, $result->mutationSuggestion)) {
+                $this->kernel->applyPressure($universe, $result->mutationSuggestion->type, $result->mutationSuggestion->intensity);
+                $this->cosmologyRepository->save($universe, $model->world_id);
+            }
+        }
+        return 'continue';
+    }
+
+    private function archive(Universe $universe): void
+    {
+        UniverseModel::where('id', $universe->getId())->update(['status' => 'archived']);
+    }
+}

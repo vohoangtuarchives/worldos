@@ -20,8 +20,8 @@ return new class extends Migration
 
         // 1. World Myths (The Immutable Truths)
         Schema::create('world_myths', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->text('truth_statement'); // "Dragons are extinct"
             $table->decimal('rigidity', 3, 2)->default(1.0); // 1.0 = Absolute, 0.5 = Rumor
             $table->string('origin_event_id')->nullable();
@@ -32,8 +32,8 @@ return new class extends Migration
 
         // 2. World Scars (The Permanent Damage)
         Schema::create('world_scars', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('location_scope')->nullable(); // "Tokyo", "Global"
             $table->text('constraint_rule'); // "No magic here"
             $table->decimal('severity', 3, 2);
@@ -45,8 +45,8 @@ return new class extends Migration
 
         // 3. Contradiction Memories (The AI Learning)
         Schema::create('world_contradiction_memories', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('contradiction_id'); // "myth_vs_scar_01"
             $table->string('strategy_used'); // "deflection", "sacrifice"
             $table->decimal('effectiveness', 3, 2)->nullable();

@@ -11,8 +11,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('intelligence_reports', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id')->index();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('type'); // intelligence_type enum
             $table->string('source_id');
             $table->string('source_type'); // intelligence_source_type enum
@@ -37,8 +37,6 @@ return new class extends Migration
             $table->index(['age']);
             $table->index(['timestamp']);
             
-            // Foreign key constraints
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
         });
     }
 

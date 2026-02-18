@@ -19,7 +19,7 @@ class EventGate
         private ContradictionMemoryRepository $memoryRepo
     ) {}
 
-    public function processEvent(int $worldId, array $eventData): array
+    public function processEvent(string $worldId, array $eventData): array
     {
         // 1. Gate Check (Power Stage)
         $currentStageKey = DB::table('world_power_stages')->where('world_id', $worldId)->value('current_stage');
@@ -83,7 +83,7 @@ class EventGate
         ];
     }
 
-    private function resolveContradiction(int $worldId, array $eventData): array
+    private function resolveContradiction(string $worldId, array $eventData): array
     {
         $contradictionId = $eventData['contradiction_id'] ?? 'unknown';
         $severity = $eventData['severity'] ?? 'medium'; // low, medium, high, critical
@@ -112,7 +112,7 @@ class EventGate
         return $this->applyStrategy($worldId, $strategyName, $eventData, $contextHash);
     }
 
-    private function applyStrategy(int $worldId, string $strategy, array $eventData, string $hash): array
+    private function applyStrategy(string $worldId, string $strategy, array $eventData, string $hash): array
     {
         // Log decision immediately (Learning)
         $this->memoryRepo->logResolution($worldId, $eventData['contradiction_id'] ?? 'gen', $strategy, $hash);

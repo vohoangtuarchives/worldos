@@ -35,17 +35,22 @@ class AuthController extends Controller
         // Revoke all existing tokens (single-device policy)
         $user->tokens()->delete();
 
+        $expirationMinutes = config('sanctum.expiration');
+        $expiresAt = $expirationMinutes > 0
+            ? now()->addMinutes($expirationMinutes)
+            : now()->addYears(10); // fallback if expiration disabled
+
         $token = $user->createToken(
             'spa',
             ['*'],
-            now()->addDays(7),
+            $expiresAt,
         )->plainTextToken;
 
         return response()->json([
             'message'    => 'Authenticated',
             'user'       => $this->userPayload($user),
             'token'      => $token,
-            'expires_at' => now()->addDays(7)->toIso8601String(),
+            'expires_at' => $expiresAt->toIso8601String(),
         ]);
     }
 

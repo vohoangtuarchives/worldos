@@ -30,7 +30,7 @@ return new class extends Migration
 
         // 2. Meta Layer State (Singleton-like)
         Schema::create('meta_layer_states', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             // Core Physics
             $table->float('chaos_pool')->default(0);
             $table->float('entropy_pressure')->default(0);
@@ -58,7 +58,7 @@ return new class extends Migration
 
         // 3. Meta Eras History
         Schema::create('meta_eras', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->integer('era_index');
             $table->string('name')->nullable(); // e.g., "The Age of Fragmentation"
             $table->string('phase')->default('rise'); // rise, peak, decline, rebirth
@@ -85,8 +85,8 @@ return new class extends Migration
 
         // 5. World Impulse Inbox (Pull model)
         Schema::create('world_impulse_inbox', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->uuid('impulse_id');
             $table->boolean('applied')->default(false);
             $table->integer('applied_at_tick')->nullable();
@@ -120,9 +120,9 @@ return new class extends Migration
 
         // 7. World Snapshots V2 (Hybrid Storage for Replay)
         Schema::create('world_snapshots_v2', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('simulation_run_id')->index(); // Link to a playback session
-            $table->foreignId('world_id')->index();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('tick');
             
             // Structured Columns (Queryable)
@@ -147,7 +147,7 @@ return new class extends Migration
 
         // 8. Meta Snapshots (For Replay)
         Schema::create('meta_snapshots', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('simulation_run_id')->index();
             $table->integer('tick');
             

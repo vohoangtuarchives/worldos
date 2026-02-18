@@ -11,7 +11,7 @@ class AIGovernanceService
      * Log an AI Generation attempt.
      */
     public function logGeneration(
-        int $worldId,
+        string $worldId,
         string $systemPrompt,
         string $userPrompt,
         string $responseContent,

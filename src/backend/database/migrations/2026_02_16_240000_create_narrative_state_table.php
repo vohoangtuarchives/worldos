@@ -18,7 +18,7 @@ return new class extends Migration
         }
 
         Schema::create('narrative_state', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('narrative_series_id')->unique();
             $table->float('arc_progress')->default(0);
             $table->string('last_emotional_beat', 64)->default('');

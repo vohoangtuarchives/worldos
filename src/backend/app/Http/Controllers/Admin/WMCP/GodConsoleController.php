@@ -44,7 +44,7 @@ class GodConsoleController extends Controller
      * GET /admin/wmcp/god-console/{worldId}
      * Main God Console Blade view.
      */
-    public function index(int $worldId): View
+    public function index(string $worldId): View
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->getLatestSnapshot($world);
@@ -143,7 +143,7 @@ class GodConsoleController extends Controller
      * GET /admin/wmcp/god-console/{worldId}/metrics
      * Current MetricsSnapshot — all 18 KPIs.
      */
-    public function metrics(int $worldId): JsonResponse
+    public function metrics(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->getLatestSnapshot($world);
@@ -165,7 +165,7 @@ class GodConsoleController extends Controller
      * GET /admin/wmcp/god-console/{worldId}/trajectory
      * Recent trajectory — N snapshots for trend analysis.
      */
-    public function trajectory(Request $request, int $worldId): JsonResponse
+    public function trajectory(Request $request, string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $limit = min(200, max(10, (int)$request->input('limit', 50)));
@@ -193,7 +193,7 @@ class GodConsoleController extends Controller
      * GET /admin/wmcp/god-console/{worldId}/attractors
      * All attractor data for the inspector.
      */
-    public function attractors(int $worldId): JsonResponse
+    public function attractors(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->getLatestSnapshot($world);
@@ -230,7 +230,7 @@ class GodConsoleController extends Controller
      * GET /admin/wmcp/god-console/{worldId}/alerts
      * Active alerts based on current metrics.
      */
-    public function alerts(int $worldId): JsonResponse
+    public function alerts(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->getLatestSnapshot($world);
@@ -255,7 +255,7 @@ class GodConsoleController extends Controller
     /**
      * POST /admin/wmcp/god-console/{worldId}/alerts/{alertId}/acknowledge
      */
-    public function acknowledgeAlert(int $worldId, string $alertId): JsonResponse
+    public function acknowledgeAlert(string $worldId, string $alertId): JsonResponse
     {
         // In production: update alert status in DB
         return response()->json([
@@ -268,7 +268,7 @@ class GodConsoleController extends Controller
     /**
      * POST /admin/wmcp/god-console/{worldId}/control/freeze
      */
-    public function freeze(int $worldId): JsonResponse
+    public function freeze(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $entry = $this->epochControl->freeze($world, 'god_console');
@@ -284,7 +284,7 @@ class GodConsoleController extends Controller
     /**
      * POST /admin/wmcp/god-console/{worldId}/control/resume
      */
-    public function resume(int $worldId): JsonResponse
+    public function resume(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $entry = $this->epochControl->resume($world, 'god_console');
@@ -300,7 +300,7 @@ class GodConsoleController extends Controller
     /**
      * POST /admin/wmcp/god-console/{worldId}/control/step
      */
-    public function step(int $worldId): JsonResponse
+    public function step(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $entry = $this->epochControl->stepOne($world);
@@ -315,7 +315,7 @@ class GodConsoleController extends Controller
     /**
      * POST /admin/wmcp/god-console/{worldId}/control/rollback
      */
-    public function rollback(int $worldId): JsonResponse
+    public function rollback(string $worldId): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $restored = $this->epochControl->rollback($world);
@@ -338,7 +338,7 @@ class GodConsoleController extends Controller
      *
      * Supported actions: entropy-shock, reduce-rigidity, force-collapse, toggle-emergent
      */
-    public function emergency(Request $request, int $worldId, string $action): JsonResponse
+    public function emergency(Request $request, string $worldId, string $action): JsonResponse
     {
         $world = World::findOrFail($worldId);
         $snapshot = $this->getLatestSnapshot($world);

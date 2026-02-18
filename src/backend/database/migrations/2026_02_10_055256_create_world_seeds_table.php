@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_seeds', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('seed_template_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->foreignUuid('seed_template_id')->constrained('seed_templates')->cascadeOnDelete();
             $table->string('state')->default('DORMANT'); // DORMANT, ACTIVE, EXHAUSTED
             $table->unsignedBigInteger('activation_tick')->nullable();
             $table->unsignedBigInteger('exhaustion_tick')->nullable();

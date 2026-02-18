@@ -30,7 +30,7 @@ class UniverseMutationService
     /**
      * Commit mutation for the given universe. Applies shadow multiplier when !outcome->isConfirmed.
      */
-    public function commit(string $universeId, StoryOutcomeDTO $outcome, ?ArcType $arcType = null, ?int $worldId = null): void
+    public function commit(string $universeId, StoryOutcomeDTO $outcome, ?ArcType $arcType = null, ?string $worldId = null): void
     {
         $universe = $this->cosmologyRepository->find($universeId);
         if ($universe === null) {

@@ -16,7 +16,7 @@ namespace App\Domains\Material\State;
 class WorldState
 {
     public function __construct(
-        public readonly int $worldId,
+        public readonly string $worldId,
         public readonly int $epoch,
         public readonly CoreState $core,
         public readonly StructuralState $structural,
@@ -29,7 +29,7 @@ class WorldState
     /**
      * Create initial world state (neutral).
      */
-    public static function createInitial(int $worldId): self
+    public static function createInitial(string $worldId): self
     {
         return new self(
             worldId: $worldId,

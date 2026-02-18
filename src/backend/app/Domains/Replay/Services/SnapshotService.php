@@ -58,6 +58,7 @@ class SnapshotService
         $hash = $this->enableHashing ? hash('sha256', $hashString) : 'skipped';
 
         return MetaSnapshot::create([
+            'id' => (string) Str::uuid(),
             'simulation_run_id' => $simulationRunId,
             'tick' => $tick,
             'current_era_index' => $metaLayer->currentEraIndex,

@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_health_snapshots', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('health_status'); // STABLE, DEGRADED, CRITICAL, HALTED
             $table->integer('health_score')->nullable(); // Optional numeric score
             $table->unsignedBigInteger('tick')->nullable(); // Current tick

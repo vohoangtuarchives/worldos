@@ -15,7 +15,7 @@ class StoryAssembler
         private readonly TitleGenerator $titleGenerator
     ) {}
 
-    public function assemble(int $worldId, StoryMetadataDTO $metadata): Story
+    public function assemble(string $worldId, StoryMetadataDTO $metadata): Story
     {
         return DB::transaction(function () use ($worldId, $metadata) {
             

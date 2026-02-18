@@ -57,7 +57,7 @@ class OptimizedSimulator
     /**
      * Load factions from database with eager loading and caching.
      */
-    protected function loadFactionsFromDatabase(int $worldId): void
+    protected function loadFactionsFromDatabase(string $worldId): void
     {
         // Check cache first
         if (isset($this->factionCache[$worldId])) {

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chronicles', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('epoch');
             $table->text('content'); // The generated text
             $table->json('events')->nullable();

@@ -28,7 +28,7 @@ class GovernanceAuditLog extends Model
      * Static helper to log governance actions
      */
     public static function logAction(
-        ?int $worldId,
+        ?string $worldId,
         string $actionType,
         array $metadata = [],
         string $severity = 'INFO'

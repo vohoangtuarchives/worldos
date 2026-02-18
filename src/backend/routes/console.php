@@ -17,3 +17,6 @@ Schedule::command('autonomous:tick')->everyMinute();
 
 // Evolution Kernel Schedule (Physics Layer)
 Schedule::command('world:tick')->everyMinute();
+
+// Prune expired Sanctum tokens (validates expiration: DB cleanup)
+Schedule::command('sanctum:prune-expired', ['--hours' => 24])->daily();

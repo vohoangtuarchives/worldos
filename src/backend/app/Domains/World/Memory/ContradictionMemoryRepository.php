@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 
 class ContradictionMemoryRepository
 {
-    public function logResolution(int $worldId, string $contradictionId, string $strategy, string $contextHash): ContradictionMemory
+    public function logResolution(string $worldId, string $contradictionId, string $strategy, string $contextHash): ContradictionMemory
     {
         return ContradictionMemory::create([
             'world_id' => $worldId,
@@ -17,7 +17,7 @@ class ContradictionMemoryRepository
         ]);
     }
 
-    public function findSimilarContext(int $worldId, string $contextHash): ?ContradictionMemory
+    public function findSimilarContext(string $worldId, string $contextHash): ?ContradictionMemory
     {
         return ContradictionMemory::where('world_id', $worldId)
             ->where('context_hash', $contextHash)

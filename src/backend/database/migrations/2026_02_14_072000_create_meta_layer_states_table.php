@@ -13,7 +13,7 @@ return new class extends Migration
         }
 
         Schema::create('meta_layer_states', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             // Singleton usually has ID=1, no other unique constraints needed for now
             $table->float('chaos_pool')->default(0.0);
             $table->float('entropy_pressure')->default(0.0);

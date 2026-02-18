@@ -10,6 +10,15 @@ export function useSagas() {
   });
 }
 
+export function useSaga(sagaId: string | null, options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "saga", sagaId],
+    queryFn: () => writerApi.sagas.show(sagaId!),
+    enabled: sagaId != null,
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
 export function useSagaTree(id: string | null) {
   return useQuery({
     queryKey: ["writer", "saga", id, "tree"],
@@ -23,6 +32,20 @@ export function useCreateSagaFromActive() {
   return useMutation({
     mutationFn: () => writerApi.sagas.createFromActive(),
     onSuccess: () => qc.invalidateQueries({ queryKey: ["writer", "sagas"] }),
+  });
+}
+
+export function useSagaAdvance(sagaId: string | null) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (ticks?: number) => writerApi.sagas.advance(sagaId!, ticks),
+    onSuccess: (_, __, ___) => {
+      if (sagaId) {
+        qc.invalidateQueries({ queryKey: ["writer", "saga", sagaId] });
+        qc.invalidateQueries({ queryKey: ["writer", "saga", sagaId, "tree"] });
+        qc.invalidateQueries({ queryKey: ["writer", "sagas"] });
+      }
+    },
   });
 }
 
@@ -44,11 +67,12 @@ export function useWorlds() {
   });
 }
 
-export function useWorld(id: string | null) {
+export function useWorld(id: string | null, options?: { refetchInterval?: number }) {
   return useQuery({
     queryKey: ["writer", "worlds", id],
     queryFn: () => writerApi.worlds.show(id!),
     enabled: id != null,
+    refetchInterval: options?.refetchInterval ?? 0,
   });
 }
 
@@ -57,6 +81,23 @@ export function useWorldGodConsoleMetrics(worldId: string | null, options?: { re
     queryKey: ["writer", "worlds", worldId, "god-console", "metrics"],
     queryFn: () => writerApi.worlds.getGodConsoleMetrics(worldId!),
     enabled: worldId != null,
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
+export function useUniverseSnapshots(universeId: string | null) {
+  return useQuery({
+    queryKey: ["writer", "universes", universeId, "snapshots"],
+    queryFn: () => writerApi.universes.snapshots(universeId!),
+    enabled: universeId != null,
+  });
+}
+
+export function useUniverseMetrics(universeId: string | null, options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "universes", universeId, "metrics"],
+    queryFn: () => writerApi.universes.metrics(universeId!),
+    enabled: universeId != null,
     refetchInterval: options?.refetchInterval ?? 0,
   });
 }
@@ -138,7 +179,7 @@ export function useGenesisPresets() {
 export function useCreateGenesis() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (body: { name: string; preset_key?: string }) =>
+    mutationFn: (body: { name: string; preset_key?: string; [key: string]: unknown }) =>
       writerApi.genesis.create(body),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["writer", "sagas"] });

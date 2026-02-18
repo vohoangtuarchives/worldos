@@ -30,7 +30,7 @@ return new class extends Migration
         Schema::create('material_instances', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('material_id')->constrained('materials')->cascadeOnDelete();
-            $table->unsignedBigInteger('world_id');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('strength_level')->default(0);
             $table->json('mutation_state')->nullable();
             $table->integer('activation_epoch')->nullable();
@@ -38,8 +38,6 @@ return new class extends Migration
             $table->integer('degradation_level')->default(0);
             $table->timestamp('retired_at')->nullable();
             $table->timestamps();
-
-            $table->foreign('world_id')->references('id')->on('worlds')->cascadeOnDelete();
         });
     }
 

@@ -6,6 +6,7 @@ namespace App\Domains\Evolution\Kernel;
 
 use App\Domains\Cosmology\Entities\Universe as CosmologyUniverse;
 use App\Domains\Cosmology\Entities\WorldStateVector;
+use App\Domains\Runtime\Evaluation\MutationSuggestion;
 use App\Domains\Cosmology\Evolution\ArcPhase;
 use App\Domains\Saga\DTO\ShockParams;
 use App\Domains\Cosmology\Evolution\PresetDescriptor;
@@ -160,5 +161,66 @@ final class WorldEvolutionKernel
     private function clamp01(float $v): float
     {
         return max(0.0, min(1.0, $v));
+    }
+
+    /**
+     * WorldOS v3 Phase 3: Check mutation suggestion against World law_profile / mutation_rules.
+     */
+    public function validateMutation(World $world, MutationSuggestion $suggestion): bool
+    {
+        $raw = $world->getRawOriginal('law_profile');
+        $arr = is_string($raw) ? (json_decode($raw, true) ?? []) : (is_array($raw) ? $raw : []);
+        $allowed = $arr['mutation_types'] ?? ['military', 'resource', 'ideology', 'tech'];
+        if (is_string($allowed)) {
+            $allowed = [$allowed];
+        }
+        if (!in_array($suggestion->type, $allowed, true)) {
+            return false;
+        }
+        $maxIntensity = (float) ($arr['max_mutation_intensity'] ?? 1.0);
+        return $suggestion->intensity >= 0 && $suggestion->intensity <= $maxIntensity;
+    }
+
+    /**
+     * WorldOS v3 Phase 3: Apply selection pressure via kernel (no direct state overwrite by AI).
+     */
+    public function applyPressure(CosmologyUniverse $universe, string $selectionPressure, float $intensity): void
+    {
+        $state = $universe->getState();
+        $scale = 0.3 * max(0, min(1, $intensity));
+        $all = $state->getAll();
+
+        switch ($selectionPressure) {
+            case 'military':
+                $all[WorldStateVector::DIMENSION_MILITARY] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_MILITARY] ?? 0.2) + $scale
+                );
+                break;
+            case 'resource':
+                $all[WorldStateVector::DIMENSION_ENTROPY] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_ENTROPY] ?? 0.5) + $scale
+                );
+                $all[WorldStateVector::DIMENSION_RESOURCE_STOCK] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_RESOURCE_STOCK] ?? 0.5) - $scale
+                );
+                break;
+            case 'ideology':
+                $all[WorldStateVector::DIMENSION_ENTROPY] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_ENTROPY] ?? 0.5) + $scale * 0.5
+                );
+                $all[WorldStateVector::DIMENSION_COHESION] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_COHESION] ?? 0.5) - $scale
+                );
+                break;
+            case 'tech':
+                $all[WorldStateVector::DIMENSION_INNOVATION] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_INNOVATION] ?? 0.5) + $scale
+                );
+                break;
+            default:
+                return;
+        }
+
+        $universe->setState(WorldStateVector::fromArray($all));
     }
 }

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reader_reactions', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->foreignUuid('session_id')->constrained('reader_sessions')->cascadeOnDelete();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->unsignedBigInteger('tick');
             $table->string('type'); // candle, flower, dread, hope
             $table->timestamps();

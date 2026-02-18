@@ -64,12 +64,12 @@ class MaterialLawEngine
      * Process a single tick for all materials in a world.
      * This is the core physics loop.
      * 
-     * @param int $worldId
+     * @param string $worldId
      * @param int $epoch Current epoch/tick number
      * @param float $deltaTime Time passed in this tick (in years)
      * @return array Tick results
      */
-    public function processTick(int $worldId, int $epoch, float $deltaTime): array
+    public function processTick(string $worldId, int $epoch, float $deltaTime): array
     {
         $instances = $this->repository->getInstancesForWorld($worldId);
         

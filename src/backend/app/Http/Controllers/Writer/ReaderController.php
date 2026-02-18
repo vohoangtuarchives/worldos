@@ -31,7 +31,7 @@ class ReaderController extends Controller
         private GenreRegistry $genreRegistry
     ) {}
 
-    public function index(int $worldId)
+    public function index(string $worldId)
     {
         $world = World::find($worldId);
         if (!$world) abort(404);
@@ -72,7 +72,7 @@ class ReaderController extends Controller
     // ... rest of file
 
 
-    public function processChoice(Request $request, int $worldId)
+    public function processChoice(Request $request, string $worldId)
     {
         $validated = $request->validate([
             'choice_id' => 'required|string',
@@ -95,14 +95,14 @@ class ReaderController extends Controller
             ->with('success', 'Destiny updated.');
     }
 
-    public function advance(int $worldId)
+    public function advance(string $worldId)
     {
         $this->advanceTimestamp($worldId);
 
         return redirect()->route('reader.interact', $worldId);
     }
 
-    private function advanceTimestamp(int $worldId): void
+    private function advanceTimestamp(string $worldId): void
     {
         $nextEpoch = $this->getCurrentEpoch($worldId) + 1;
 
@@ -237,7 +237,7 @@ class ReaderController extends Controller
         ]);
     }
 
-    private function getCurrentEpoch(int $worldId): int
+    private function getCurrentEpoch(string $worldId): int
     {
         return DB::table('world_state_events')
             ->where('world_id', $worldId)

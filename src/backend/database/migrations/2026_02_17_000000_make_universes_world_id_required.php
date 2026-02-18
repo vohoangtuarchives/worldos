@@ -4,6 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -16,7 +17,9 @@ return new class extends Migration
         if ($nullCount > 0) {
             $legacyWorldId = DB::table('worlds')->orderBy('id')->value('id');
             if ($legacyWorldId === null) {
+                $legacyWorldId = (string) Str::uuid();
                 DB::table('worlds')->insert([
+                    'id' => $legacyWorldId,
                     'name' => 'Legacy (pre-world_id)',
                     'preset' => 'legacy',
                     'gene_vector' => json_encode([]),
@@ -26,14 +29,13 @@ return new class extends Migration
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-                $legacyWorldId = DB::table('worlds')->orderBy('id')->value('id');
             }
             DB::table('universes')->whereNull('world_id')->update(['world_id' => $legacyWorldId]);
         }
 
         Schema::table('universes', function (Blueprint $table) {
             $table->dropForeign(['world_id']);
-            $table->unsignedBigInteger('world_id')->nullable(false)->change();
+            $table->uuid('world_id')->nullable(false)->change();
             $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
         });
     }
@@ -42,7 +44,7 @@ return new class extends Migration
     {
         Schema::table('universes', function (Blueprint $table) {
             $table->dropForeign(['world_id']);
-            $table->unsignedBigInteger('world_id')->nullable()->change();
+            $table->uuid('world_id')->nullable()->change();
             $table->foreign('world_id')->references('id')->on('worlds')->onDelete('set null');
         });
     }

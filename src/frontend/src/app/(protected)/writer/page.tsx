@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { SagaList } from "@/features/writer/SagaList";
 import { WorldList } from "@/features/writer/WorldList";
 import { CreateSagaButton } from "@/features/writer/CreateSagaButton";
+import { WriterMetricsDashboard } from "@/features/writer/WriterMetricsDashboard";
 
 export default function WriterPage() {
   return (
@@ -17,8 +18,13 @@ export default function WriterPage() {
           </Button>
         </div>
       </div>
+
+      <section className="mb-8">
+        <WriterMetricsDashboard />
+      </section>
+
       <div className="grid gap-6 md:grid-cols-2">
-        <Card>
+        <Card id="sagas">
           <CardHeader>
             <CardTitle>Sagas</CardTitle>
             <CardDescription>Yggdrasil sagas — tree view and run</CardDescription>
@@ -27,7 +33,7 @@ export default function WriterPage() {
             <SagaList />
           </CardContent>
         </Card>
-        <Card>
+        <Card id="worlds">
           <CardHeader>
             <CardTitle>Worlds</CardTitle>
             <CardDescription>Worlds and instances — Hub controls</CardDescription>

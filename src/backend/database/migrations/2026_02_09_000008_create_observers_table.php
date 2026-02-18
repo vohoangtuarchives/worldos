@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('observers', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('role'); // e.g., chronicler, believer, skeptic
             $table->timestamps();

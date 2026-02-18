@@ -90,9 +90,9 @@ class LifecycleService
     /**
      * Spawn a new Universe belonging to the given World. world_id is required (no standalone Universe).
      *
-     * @param int $worldId Existing World id (must exist in worlds table)
+     * @param string $worldId Existing World id (must exist in worlds table)
      */
-    public function spawnNew(int $worldId): Universe
+    public function spawnNew(string $worldId): Universe
     {
         if (!\App\Models\World::where('id', $worldId)->exists()) {
             throw new \InvalidArgumentException('spawnNew requires an existing World. world_id must exist in worlds table.');

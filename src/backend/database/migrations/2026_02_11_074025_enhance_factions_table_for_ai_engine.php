@@ -21,8 +21,8 @@ return new class extends Migration
         });
 
         Schema::create('faction_history_logs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('faction_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('faction_id')->constrained('factions')->cascadeOnDelete();
             $table->integer('turn');
             $table->string('intent_type');
             $table->jsonb('reasoning')->nullable(); // Why the agent made this choice

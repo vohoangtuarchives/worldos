@@ -13,11 +13,12 @@ class SagaWorld extends Model
     protected $fillable = [
         'saga_id',
         'world_id',
+        'universe_id',
         'sequence',
         'archetype_legacy',
         'myth_legacy',
         'status',
-        'collapse_context'
+        'collapse_context',
     ];
 
     protected $casts = [
@@ -49,6 +50,14 @@ class SagaWorld extends Model
     public function world()
     {
         return $this->belongsTo(World::class);
+    }
+
+    /**
+     * WorldOS v3: Get the universe (when saga step = universe)
+     */
+    public function universe()
+    {
+        return $this->belongsTo(\App\Models\UniverseModel::class, 'universe_id');
     }
 
     /**

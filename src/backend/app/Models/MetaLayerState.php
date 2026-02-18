@@ -2,11 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 
 class MetaLayerState extends Model
 {
-    // Singleton-like table, usually just ID=1
+    use HasUuids;
+
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $table = 'meta_layer_states';
 
     protected $fillable = [
@@ -36,11 +41,15 @@ class MetaLayerState extends Model
     ];
 
     /**
-     * Get or create the Singleton instance
+     * Get or create the Singleton instance (single row; id is UUID).
      */
     public static function instance(): self
     {
-        return static::firstOrCreate(['id' => 1], [
+        $row = static::first();
+        if ($row !== null) {
+            return $row;
+        }
+        return static::create([
             'ideology_vector' => [
                 'order' => 0.5,
                 'chaos' => 0.5,

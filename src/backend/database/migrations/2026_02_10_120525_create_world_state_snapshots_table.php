@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_state_snapshots', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('epoch')->comment('Snapshot epoch');
             $table->json('core_state')->comment('CoreState component');
             $table->json('structural_state')->comment('StructuralState component');

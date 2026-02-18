@@ -16,7 +16,7 @@ class SimulationManager
     /**
      * Start a simulation run for a specific world.
      */
-    public function runSteps(int $worldId, int $steps): array
+    public function runSteps(string $worldId, int $steps): array
     {
         // 1. Load World
         $world = World::findOrFail($worldId);

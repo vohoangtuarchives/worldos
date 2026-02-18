@@ -12,8 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('universes', function (Blueprint $table) {
-            $table->unsignedBigInteger('world_id')->nullable()->after('id');
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('set null');
+            $table->foreignUuid('world_id')->nullable()->after('id')->constrained('worlds')->nullOnDelete();
             $table->index('world_id');
         });
     }

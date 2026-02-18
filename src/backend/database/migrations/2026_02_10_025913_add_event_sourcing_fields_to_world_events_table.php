@@ -17,7 +17,7 @@ return new class extends Migration
             // Make existing world_id nullable via change() if needed, but likely keeping it is fine.
             // However, Event Sourcing might not always need world_id if timeline_id implies it.
             // For now, let's keep world_id required and assume timeline_id is set for new events.
-            $table->unsignedBigInteger('world_id')->nullable()->change();
+            $table->uuid('world_id')->nullable()->change();
         });
     }
 

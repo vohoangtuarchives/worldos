@@ -3,13 +3,14 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
     public function up(): void
     {
         Schema::create('multiverse_meta', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->float('entropy_leak')->default(0.0);
             $table->float('shield_level')->default(0.0);
             $table->json('void_zones')->nullable(); // Store coordinates and radius of incursions
@@ -18,6 +19,7 @@ return new class extends Migration
 
         // Initialize with default record
         \DB::table('multiverse_meta')->insert([
+            'id' => (string) Str::uuid(),
             'entropy_leak' => 0.0,
             'shield_level' => 0.0,
             'void_zones' => json_encode([]),

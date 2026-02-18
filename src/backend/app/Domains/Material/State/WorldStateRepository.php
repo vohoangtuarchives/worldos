@@ -4,6 +4,7 @@ namespace App\Domains\Material\State;
 
 use App\Models\World;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 /**
  * WorldStateRepository - Persistence for WorldState
@@ -19,7 +20,7 @@ class WorldStateRepository
      * Save state event to log.
      */
     public function saveEvent(
-        int $worldId,
+        string $worldId,
         int $epoch,
         array $deltas,
         array $origins,
@@ -41,6 +42,7 @@ class WorldStateRepository
     public function saveSnapshot(WorldState $state): void
     {
         DB::table('world_state_snapshots')->insert([
+            'id' => (string) Str::uuid(),
             'world_id' => $state->worldId,
             'epoch' => $state->epoch,
             'core_state' => json_encode($state->core->toArray()),
@@ -56,7 +58,7 @@ class WorldStateRepository
     /**
      * Get latest snapshot for a world.
      */
-    public function getLatestSnapshot(int $worldId): ?WorldState
+    public function getLatestSnapshot(string $worldId): ?WorldState
     {
         $snapshot = DB::table('world_state_snapshots')
             ->where('world_id', $worldId)
@@ -82,7 +84,7 @@ class WorldStateRepository
     /**
      * Get events since a specific epoch.
      */
-    public function getEventsSince(int $worldId, int $sinceEpoch): array
+    public function getEventsSince(string $worldId, int $sinceEpoch): array
     {
         return DB::table('world_state_events')
             ->where('world_id', $worldId)
@@ -101,7 +103,7 @@ class WorldStateRepository
     /**
      * Reconstruct state from snapshot + events.
      */
-    public function reconstructState(int $worldId, int $targetEpoch): WorldState
+    public function reconstructState(string $worldId, int $targetEpoch): WorldState
     {
         // Get latest snapshot before target epoch
         $snapshot = DB::table('world_state_snapshots')
@@ -146,7 +148,7 @@ class WorldStateRepository
     /**
      * Get current state for a world.
      */
-    public function getCurrentState(int $worldId): WorldState
+    public function getCurrentState(string $worldId): WorldState
     {
         $latestEvent = DB::table('world_state_events')
             ->where('world_id', $worldId)

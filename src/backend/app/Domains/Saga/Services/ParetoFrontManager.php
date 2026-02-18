@@ -23,7 +23,7 @@ final class ParetoFrontManager
      */
     public function record(
         string $sagaId,
-        int $worldId,
+        string $worldId,
         int $sequence,
         array $objectiveVector,
         ?string $archetype = null

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('universe_id'); // Match universes.id type (string)
             
-            $table->unsignedBigInteger('faction_id')->nullable();
+            $table->foreignUuid('faction_id')->nullable()->constrained('cosmic_factions')->nullOnDelete();
             $table->string('commander_id')->nullable(); // Legendary Agent ID (stored in JSON)
             
             $table->string('name');

@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_primitive_bindings', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('world_primitive_id')->constrained('world_primitives');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->foreignUuid('world_primitive_id')->constrained('world_primitives')->cascadeOnDelete();
             $table->string('wfr_version'); // Locked to version at world creation
             $table->timestamps();
             

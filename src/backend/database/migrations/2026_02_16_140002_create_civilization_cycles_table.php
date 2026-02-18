@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('civilization_cycles', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('universe_id', 36);
             $table->unsignedInteger('cycle_number');
             $table->unsignedBigInteger('start_tick');

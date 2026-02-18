@@ -13,7 +13,7 @@ use App\Models\World;
 final class EvolutionContext
 {
     public function __construct(
-        public readonly int $worldId,
+        public readonly string $worldId,
         public readonly int $year,
         public readonly string $presetKey = 'default',
         public readonly array $config = []

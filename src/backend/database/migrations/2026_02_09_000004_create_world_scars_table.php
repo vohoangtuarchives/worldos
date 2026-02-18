@@ -9,9 +9,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_scars', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('source_event_id')->constrained('world_events');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->foreignUuid('source_event_id')->constrained('world_events')->cascadeOnDelete();
             $table->unsignedInteger('weight')->default(1);
             $table->timestamps();
 

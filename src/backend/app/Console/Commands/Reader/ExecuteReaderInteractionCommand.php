@@ -108,7 +108,7 @@ class ExecuteReaderInteractionCommand extends Command
     /**
      * Apply deltas to WorldState.
      */
-    private function applyDeltas(int $worldId, int $epoch, array $deltas): void
+    private function applyDeltas(string $worldId, int $epoch, array $deltas): void
     {
         $this->info('Applying deltas to WorldState...');
 

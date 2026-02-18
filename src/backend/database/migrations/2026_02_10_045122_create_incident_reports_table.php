@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('incident_reports', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('incident_id')->unique(); // e.g., INC-20261002-001
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             
             // Lifecycle
             $table->string('status')->default('DETECTED'); // DETECTED, CONTAINED, STABILIZED, ANALYZED, RESOLVED

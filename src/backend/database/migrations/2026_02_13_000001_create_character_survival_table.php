@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('character_survival', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('character_id')->unique();
             $table->float('base_survival_rate')->default(1.0);
             $table->json('risk_factors')->nullable(); // Stores RiskFactors

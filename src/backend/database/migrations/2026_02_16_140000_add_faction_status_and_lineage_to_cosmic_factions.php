@@ -12,7 +12,7 @@ return new class extends Migration
     {
         Schema::table('cosmic_factions', function (Blueprint $table) {
             $table->string('status', 32)->default('ACTIVE');
-            $table->foreignId('parent_faction_id')->nullable()->constrained('cosmic_factions')->nullOnDelete();
+            $table->foreignUuid('parent_faction_id')->nullable()->constrained('cosmic_factions')->nullOnDelete();
             $table->unsignedInteger('cycle_origin')->nullable();
             $table->unsignedInteger('cycles_survived')->default(0);
             $table->float('ideology_adaptability')->nullable();

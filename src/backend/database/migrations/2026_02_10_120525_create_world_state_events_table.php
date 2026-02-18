@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_state_events', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('epoch')->comment('Tick/year number');
             $table->json('deltas')->comment('State changes this tick');
             $table->json('origins')->comment('Material codes that caused deltas');

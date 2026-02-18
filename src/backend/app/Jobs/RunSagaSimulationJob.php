@@ -11,6 +11,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @deprecated WorldOS v3: Writer Genesis uses SagaService::genesisV3; new sagas should not dispatch this job. Kept for legacy/fallback.
+ */
 class RunSagaSimulationJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;

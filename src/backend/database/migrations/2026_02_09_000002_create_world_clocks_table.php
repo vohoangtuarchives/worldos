@@ -9,8 +9,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_clocks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->unsignedBigInteger('current_tick')->default(0);
             $table->timestamps();
 

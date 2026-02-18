@@ -141,3 +141,10 @@ Tức là: **Cluster/Writer** điều khiển World (freeze, step, rollback, inj
 - **Hai luồng chưa thống nhất**: SagaRunner không dùng Universe; nó dùng World + CosmicSnapshot. Khi cần “một kiến trúc duy nhất”, có thể chọn: hoặc SagaRunner chuyển sang tạo Universe cho mỗi World và tick qua UniverseRuntimeService, hoặc giữ Luồng A là chính và coi Luồng B cho API/Universe riêng.
 
 Tài liệu này mô tả đúng theo code và docs hiện tại; khi refactor (ví dụ Saga tick Universe, bỏ bớt path World-only) nên cập nhật lại doc cho khớp.
+
+## 7. WorldOS v3 (IP Foundry)
+
+- Universe là authority duy nhất; state và tick trên Universe + universe_snapshots.
+- Snapshot-first: ghi universe_snapshots mỗi tick; rollback/fork từ snapshot.
+- Saga chỉ orchestrator: SagaService.spawnUniverse, runBatch, evaluate, fork. Genesis gọi SagaService.genesisV3 (không dispatch RunSagaSimulationJob).
+- Luồng cũ (SagaRunner + cosmic_snapshots) deprecated. Chi tiết: WORLDOS_V3_ARCHITECTURE.md.

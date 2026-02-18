@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('world_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('name');
             $table->json('base_personality')->nullable(); // Static personality traits
             $table->timestamps();

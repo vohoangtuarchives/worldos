@@ -9,7 +9,7 @@ export default function WorldOverviewPage() {
   if (!id) return <p className="p-6 text-destructive">Invalid world.</p>;
   return (
     <div className="p-6">
-      <WorldHubView worldId={id} />
+      <WorldHubView worldId={id} refetchInterval={8000} />
     </div>
   );
 }

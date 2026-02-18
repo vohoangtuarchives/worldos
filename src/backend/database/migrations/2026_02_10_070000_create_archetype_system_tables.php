@@ -27,17 +27,12 @@ return new class extends Migration
         // World-specific archetype weights (mutable)
         Schema::create('archetype_weights', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('world_id');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('archetype_key');
             $table->float('weight'); // Current weight (0-1)
             $table->float('effective_weight')->nullable(); // After bias/trauma
             $table->json('drift_history')->nullable(); // Track weight changes
             $table->timestamps();
-            
-            $table->foreign('world_id')
-                  ->references('id')
-                  ->on('worlds')
-                  ->onDelete('cascade');
             
             $table->unique(['world_id', 'archetype_key']);
             $table->index('archetype_key');
@@ -46,18 +41,13 @@ return new class extends Migration
         // Archetype drift log (history tracking)
         Schema::create('archetype_drift_log', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->unsignedBigInteger('world_id');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('archetype_key');
             $table->float('drift_delta'); // Change amount
             $table->json('drift_sources'); // Which sources contributed
             $table->integer('tick')->nullable(); // Game tick
             $table->text('context')->nullable();
             $table->timestamps();
-            
-            $table->foreign('world_id')
-                  ->references('id')
-                  ->on('worlds')
-                  ->onDelete('cascade');
             
             $table->index(['world_id', 'archetype_key']);
             $table->index('created_at');
@@ -71,7 +61,7 @@ return new class extends Migration
             $table->string('variant_2'); // Second fork
             $table->string('trigger_type'); // EXTREME_COLLAPSE | MYTH_PARADOX | REPEATED_FAILURE
             $table->json('trigger_context'); // Collapse details, saga history, etc.
-            $table->unsignedBigInteger('origin_world_id')->nullable(); // Where it happened
+            $table->foreignUuid('origin_world_id')->nullable()->constrained('worlds')->nullOnDelete(); // Where it happened
             $table->uuid('origin_saga_id')->nullable(); // Which saga
             $table->boolean('irreversible')->default(true);
             $table->timestamps();

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('institutions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('name');
             $table->string('type'); // religious, academic, military, bureaucracy
             
@@ -27,8 +27,8 @@ return new class extends Migration
         });
 
         Schema::create('institutional_actions', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('institution_id')->constrained('institutions')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('institution_id')->constrained('institutions')->cascadeOnDelete();
             $table->string('action_type'); // HEAL, CENSOR, PROMOTE, SANCTION
             $table->jsonb('target_params'); // { "faction_id": "...", "scar_id": "..." }
             $table->float('resource_cost');
@@ -38,9 +38,9 @@ return new class extends Migration
         });
 
         Schema::create('healing_events', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('institution_id')->constrained('institutions')->cascadeOnDelete();
-            $table->foreignId('target_scar_id')->constrained('scars')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('institution_id')->constrained('institutions')->cascadeOnDelete();
+            $table->foreignUuid('target_scar_id')->constrained('scars')->cascadeOnDelete();
             
             $table->float('effectiveness_score'); // How much it reduced the scar
             $table->jsonb('methodology_vector'); // { "ritual": 0.8, "propaganda": 0.2 }

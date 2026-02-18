@@ -15,7 +15,7 @@ class InteractionLogger
      * Log reader vote.
      */
     public function logVote(
-        int $worldId,
+        string $worldId,
         int $epoch,
         string $choiceId,
         string $optionId,
@@ -39,7 +39,7 @@ class InteractionLogger
      * Log reader reaction.
      */
     public function logReaction(
-        int $worldId,
+        string $worldId,
         int $epoch,
         string $reactionType,
         ?int $readerId = null,
@@ -60,7 +60,7 @@ class InteractionLogger
     /**
      * Log choice result.
      */
-    public function logResult(int $worldId, int $epoch, array $result): void
+    public function logResult(string $worldId, int $epoch, array $result): void
     {
         DB::table('choice_results')->insert([
             'world_id' => $worldId,
@@ -78,7 +78,7 @@ class InteractionLogger
     /**
      * Get votes for epoch.
      */
-    public function getVotesForEpoch(int $worldId, int $epoch): array
+    public function getVotesForEpoch(string $worldId, int $epoch): array
     {
         return DB::table('reader_interactions')
             ->where('world_id', $worldId)
@@ -91,7 +91,7 @@ class InteractionLogger
     /**
      * Get reactions for epoch.
      */
-    public function getReactionsForEpoch(int $worldId, int $epoch): array
+    public function getReactionsForEpoch(string $worldId, int $epoch): array
     {
         return DB::table('reader_interactions')
             ->where('world_id', $worldId)
@@ -104,7 +104,7 @@ class InteractionLogger
     /**
      * Get choice results for epoch.
      */
-    public function getResultsForEpoch(int $worldId, int $epoch): array
+    public function getResultsForEpoch(string $worldId, int $epoch): array
     {
         return DB::table('choice_results')
             ->where('world_id', $worldId)

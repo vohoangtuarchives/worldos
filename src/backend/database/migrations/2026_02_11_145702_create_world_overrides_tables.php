@@ -38,7 +38,7 @@ return new class extends Migration
         // 2. World Material Overrides
         Schema::create('world_material_overrides', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignId('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             
             // Link to original material (nullable if it's a new local material)
             $table->foreignUuid('preset_material_id')->nullable()->constrained('preset_materials')->cascadeOnDelete();

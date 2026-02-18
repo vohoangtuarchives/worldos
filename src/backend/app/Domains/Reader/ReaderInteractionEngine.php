@@ -25,11 +25,11 @@ class ReaderInteractionEngine
     /**
      * Execute reader interaction cycle for an epoch.
      * 
-     * @param int $worldId
+     * @param string $worldId
      * @param int $epoch
      * @return array Interaction results
      */
-    public function execute(int $worldId, int $epoch): array
+    public function execute(string $worldId, int $epoch): array
     {
         // 1. Get current state
         $state = $this->stateRepository->getCurrentState($worldId);
@@ -115,7 +115,7 @@ class ReaderInteractionEngine
     /**
      * Get available choices for epoch (without executing).
      */
-    public function getChoices(int $worldId, int $epoch): array
+    public function getChoices(string $worldId, int $epoch): array
     {
         $state = $this->stateRepository->getCurrentState($worldId);
         return $this->presenter->generateChoices($state, $epoch);

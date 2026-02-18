@@ -35,7 +35,7 @@ class CompressedSnapshotRepository
     /**
      * Get latest snapshot (decompressed).
      */
-    public function getLatestSnapshot(int $worldId, int $maxEpoch): ?WorldState
+    public function getLatestSnapshot(string $worldId, int $maxEpoch): ?WorldState
     {
         $row = DB::table('world_state_snapshots')
             ->where('world_id', $worldId)
@@ -57,7 +57,7 @@ class CompressedSnapshotRepository
     /**
      * Prune old snapshots (keep every 10th, 100th, 1000th).
      */
-    public function pruneSnapshots(int $worldId): int
+    public function pruneSnapshots(string $worldId): int
     {
         $snapshots = DB::table('world_state_snapshots')
             ->where('world_id', $worldId)
@@ -89,7 +89,7 @@ class CompressedSnapshotRepository
     /**
      * Get compression statistics.
      */
-    public function getCompressionStats(int $worldId): array
+    public function getCompressionStats(string $worldId): array
     {
         $snapshots = DB::table('world_state_snapshots')
             ->where('world_id', $worldId)

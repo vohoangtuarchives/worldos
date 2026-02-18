@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('scars', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->uuid('origin_event_id')->index(); // The event that caused this scar
             $table->uuid('faction_id')->nullable()->index(); // If specific to a faction
             $table->uuid('character_id')->nullable()->index(); // If specific to a character
@@ -31,8 +31,8 @@ return new class extends Migration
         });
 
         Schema::create('scar_counterforces', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('scar_id')->constrained('scars')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('scar_id')->constrained('scars')->cascadeOnDelete();
             $table->uuid('origin_event_id'); // The healing event
             $table->jsonb('healing_vector'); // Impact on the scar
             $table->float('strength');

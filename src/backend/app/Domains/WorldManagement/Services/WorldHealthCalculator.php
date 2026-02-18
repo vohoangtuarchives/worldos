@@ -70,7 +70,7 @@ class WorldHealthCalculator
         return new HealthResult($status, $violations);
     }
 
-    protected function calculateRejectRate(int $worldId): float
+    protected function calculateRejectRate(string $worldId): float
     {
         // Look at last 100 generations (Operator Spec: rolling 100 events)
         $last100 = DB::table('ai_generations')

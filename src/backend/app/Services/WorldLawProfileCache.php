@@ -15,7 +15,7 @@ class WorldLawProfileCache
     /**
      * Get world law profile for a world, with caching.
      */
-    public function getProfile(int $worldId): ?WorldLawProfile
+    public function getProfile(string $worldId): ?WorldLawProfile
     {
         $cacheKey = self::PROFILE_KEY_PREFIX . $worldId;
         
@@ -37,7 +37,7 @@ class WorldLawProfileCache
     /**
      * Cache a world law profile.
      */
-    public function cacheProfile(int $worldId, WorldLawProfile $profile): void
+    public function cacheProfile(string $worldId, WorldLawProfile $profile): void
     {
         $cacheKey = self::PROFILE_KEY_PREFIX . $worldId;
         Cache::put($cacheKey, $profile, self::CACHE_TTL);
@@ -46,7 +46,7 @@ class WorldLawProfileCache
     /**
      * Invalidate cached profile for a world.
      */
-    public function invalidateProfile(int $worldId): void
+    public function invalidateProfile(string $worldId): void
     {
         $cacheKey = self::PROFILE_KEY_PREFIX . $worldId;
         Cache::forget($cacheKey);
@@ -95,7 +95,7 @@ class WorldLawProfileCache
     /**
      * Load profile from database.
      */
-    private function loadProfileFromDatabase(int $worldId): ?WorldLawProfile
+    private function loadProfileFromDatabase(string $worldId): ?WorldLawProfile
     {
         try {
             $world = \App\Models\World::find($worldId);

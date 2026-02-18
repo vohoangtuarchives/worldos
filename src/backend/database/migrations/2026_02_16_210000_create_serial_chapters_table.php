@@ -19,7 +19,7 @@ return new class extends Migration
         }
 
         Schema::create('serial_chapters', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('narrative_series_id');
             $table->unsignedSmallInteger('book_index');
             $table->unsignedSmallInteger('chapter_index');

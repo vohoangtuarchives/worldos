@@ -15,8 +15,8 @@ return new class extends Migration
         }
 
         Schema::create('attractor_centroid_history', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('attractor_id')->constrained('universe_attractors')->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('attractor_id')->constrained('universe_attractors')->cascadeOnDelete();
             $table->unsignedBigInteger('tick');
             $table->json('centroid_jsonb');
 

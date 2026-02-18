@@ -17,9 +17,12 @@ class Saga extends Model
         'status',
         'current_world_index',
         'metadata',
+        'strategy',
+        'evaluation_policy',
+        'current_universe_id',
         'started_at',
         'completed_at',
-        'genre'
+        'genre',
     ];
 
     protected $casts = [
@@ -28,6 +31,7 @@ class Saga extends Model
         'world_count' => 'integer',
         'current_world_index' => 'integer',
         'metadata' => 'array',
+        'evaluation_policy' => 'array',
         'started_at' => 'datetime',
         'completed_at' => 'datetime',
     ];
@@ -89,13 +93,22 @@ class Saga extends Model
     }
 
     /**
-     * Get current world
+     * Get current world (legacy)
      */
     public function getCurrentWorld(): ?SagaWorld
     {
         return $this->sagaWorlds()
             ->where('sequence', $this->current_world_index)
             ->first();
+    }
+
+    /**
+     * WorldOS v3: Get current universe from saga_worlds (first with universe_id by sequence).
+     */
+    public function getCurrentUniverse(): ?\App\Models\UniverseModel
+    {
+        $sw = $this->sagaWorlds()->whereNotNull('universe_id')->orderByDesc('sequence')->first();
+        return $sw ? $sw->universe : null;
     }
 
     /**

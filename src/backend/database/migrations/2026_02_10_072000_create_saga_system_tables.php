@@ -29,7 +29,7 @@ return new class extends Migration
         Schema::create('saga_worlds', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('saga_id');
-            $table->unsignedBigInteger('world_id');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('sequence')->default(0); // Order in saga
             $table->json('archetype_legacy')->nullable(); // Legacy from prev world
             $table->json('myth_legacy')->nullable(); // Myth residue carried forward
@@ -38,7 +38,6 @@ return new class extends Migration
             $table->timestamps();
             
             $table->foreign('saga_id')->references('id')->on('sagas')->onDelete('cascade');
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
             
             $table->index(['saga_id', 'sequence']);
         });

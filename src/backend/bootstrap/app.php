@@ -3,6 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -19,5 +21,42 @@ return Application::configure(basePath: dirname(__DIR__))
         // Every request authenticates via Authorization: Bearer {token}.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        // Ensure API error responses (e.g. 500) include CORS headers so the browser doesn't report "blocked by CORS".
+        $exceptions->renderable(function (\Throwable $e, Request $request): ?Response {
+            if (! str_starts_with($request->path(), 'api/')) {
+                return null;
+            }
+            $origin = $request->header('Origin');
+            if (! $origin) {
+                return null;
+            }
+            $allowed = config('cors.allowed_origins', []);
+            $patterns = config('cors.allowed_origins_patterns', []);
+            $allowOrigin = null;
+            if ($origin && in_array($origin, $allowed, true)) {
+                $allowOrigin = $origin;
+            }
+            if ($allowOrigin === null && $origin && ! empty($patterns)) {
+                foreach ($patterns as $pattern) {
+                    if (preg_match($pattern, $origin)) {
+                        $allowOrigin = $origin;
+                        break;
+                    }
+                }
+            }
+            if ($allowOrigin === null) {
+                return null;
+            }
+            $status = 500;
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpException) {
+                $status = $e->getStatusCode();
+            }
+            $response = $request->expectsJson()
+                ? response()->json(['message' => $e->getMessage(), 'exception' => get_debug_type($e)], $status)
+                : new Response($e->getMessage(), $status, ['Content-Type' => 'text/plain']);
+            $response->headers->set('Access-Control-Allow-Origin', $allowOrigin);
+            $response->headers->set('Access-Control-Allow-Credentials', 'true');
+            $response->headers->set('Access-Control-Expose-Headers', '');
+            return $response;
+        });
     })->create();

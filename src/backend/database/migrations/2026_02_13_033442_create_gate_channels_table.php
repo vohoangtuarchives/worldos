@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('gate_channels', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('source_world_id')->constrained('worlds');
-            $table->foreignId('target_world_id')->constrained('worlds');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('source_world_id')->constrained('worlds')->cascadeOnDelete();
+            $table->foreignUuid('target_world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('type')->default('WORMHOLE'); // WORMHOLE, LEAK, RIFT
             $table->float('stability')->default(1.0); // 0.0 - 1.0 (1.0 = Stable)
             $table->float('throughput')->default(0.0); // How much entropy flows per tick

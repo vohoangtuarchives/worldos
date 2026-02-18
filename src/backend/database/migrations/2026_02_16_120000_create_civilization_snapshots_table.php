@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('civilization_snapshots', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('universe_id');
             $table->unsignedBigInteger('tick');
             $table->string('stage', 64)->nullable();

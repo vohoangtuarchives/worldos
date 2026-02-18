@@ -11,7 +11,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('worlds', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->string('preset'); // martial, immortal, apocalypse, tech, myth
             $table->json('gene_vector'); // World genetic makeup

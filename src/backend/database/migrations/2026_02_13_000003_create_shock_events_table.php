@@ -11,9 +11,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('shock_events', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('event_id')->unique(); // UUID
-            $table->foreignId('world_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->integer('world_tick')->default(0);
             $table->string('event_type'); // plague, civil_war, magic_collapse, etc.
             $table->float('severity'); // 0.0 to 1.0

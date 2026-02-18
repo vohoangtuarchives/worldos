@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('worlds', function (Blueprint $table) {
             // Lineage
-            $table->foreignId('lineage_root_id')->nullable()->constrained('worlds')->nullOnDelete();
+            $table->foreignUuid('lineage_root_id')->nullable()->constrained('worlds')->nullOnDelete();
             $table->integer('generation')->default(0);
             
             // Prophet Status

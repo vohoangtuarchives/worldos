@@ -59,7 +59,7 @@ class StateManager
     /**
      * Load factions from database with caching.
      */
-    protected function loadFactionsFromDatabase(int $worldId, WorldState $world): void
+    protected function loadFactionsFromDatabase(string $worldId, WorldState $world): void
     {
         // Check cache first
         if (isset($this->factionCache[$worldId])) {

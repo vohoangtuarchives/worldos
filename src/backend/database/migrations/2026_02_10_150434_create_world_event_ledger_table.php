@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('world_event_ledger', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
             $table->string('event_type'); // e.g., 'seal_crack', 'spirit_surge'
             $table->decimal('magnitude', 5, 2); // 0.00 to 1.00
             $table->decimal('permanence', 5, 2); // 0.00 to 1.00
@@ -26,8 +26,8 @@ return new class extends Migration
         });
 
         Schema::create('world_power_stages', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('world_id')->unique();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('world_id')->unique()->constrained('worlds')->cascadeOnDelete();
             $table->string('current_stage');
             $table->decimal('accumulated_pressure', 8, 2)->default(0);
             $table->timestamps();

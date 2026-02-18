@@ -9,17 +9,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('chapters', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('story_id')->constrained()->cascadeOnDelete();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('story_id')->constrained('stories')->cascadeOnDelete();
             $table->unsignedInteger('order'); // Chapter number
             $table->string('title')->nullable();
             $table->text('content')->nullable();
             
-            // Logic linkage
-            $table->unsignedBigInteger('resolved_seed_id')->nullable(); 
-            // We can't constrain yet if seeds are created after? No, seed exists before resolution.
-            // But we might resolve a seed that is not yet persisted if simulation runs in memory?
-            // Let's assume seeds are persisted.
+            // Logic linkage (story_seeds created in next migration)
+            $table->uuid('resolved_seed_id')->nullable();
             
             $table->json('generated_seeds')->nullable(); // Snapshot of new seeds created in this chapter
             

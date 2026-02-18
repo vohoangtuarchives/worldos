@@ -12,12 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sagas', function (Blueprint $table) {
-            $table->unsignedBigInteger('world_id')->nullable()->after('id');
+            $table->foreignUuid('world_id')->nullable()->after('id')->constrained('worlds')->cascadeOnDelete();
             $table->string('anchor_stage')->default('mundane');
             $table->integer('anchor_epoch')->default(0);
             $table->string('power_scope')->default('local');
-
-            $table->foreign('world_id')->references('id')->on('worlds')->onDelete('cascade');
         });
     }
 

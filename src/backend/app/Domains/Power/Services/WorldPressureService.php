@@ -13,7 +13,7 @@ class WorldPressureService
         private PowerStageRegistry $stageRegistry
     ) {}
 
-    public function calculatePressure(int $worldId): float
+    public function calculatePressure(string $worldId): float
     {
         // 1. Fetch active events from ledger
         $events = $this->ledgerRepo->getActiveEvents($worldId);
@@ -30,7 +30,7 @@ class WorldPressureService
         return $totalPressure;
     }
 
-    public function syncPressure(int $worldId): float
+    public function syncPressure(string $worldId): float
     {
         $pressure = $this->calculatePressure($worldId);
         
@@ -42,7 +42,7 @@ class WorldPressureService
         return $pressure;
     }
 
-    public function checkTransition(int $worldId): ?\App\Domains\Power\Enums\PowerStage
+    public function checkTransition(string $worldId): ?\App\Domains\Power\Enums\PowerStage
     {
         $this->syncPressure($worldId);
         

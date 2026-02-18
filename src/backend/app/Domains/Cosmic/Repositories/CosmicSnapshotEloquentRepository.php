@@ -14,7 +14,7 @@ use App\Models\CosmicEvent;
 
 class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterface
 {
-    public function saveSnapshot(int $worldId, WorldSnapshot $snapshot): void
+    public function saveSnapshot(string $worldId, WorldSnapshot $snapshot): void
     {
         CosmicSnapshot::updateOrCreate(
             ['world_id' => $worldId, 'year' => $snapshot->year],
@@ -54,7 +54,7 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
         );
     }
 
-    public function saveEvent(int $worldId, array $event): void
+    public function saveEvent(string $worldId, array $event): void
     {
         CosmicEvent::create([
             'world_id' => $worldId,
@@ -67,7 +67,7 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
         ]);
     }
 
-    public function latestSnapshot(int $worldId): ?WorldSnapshot
+    public function latestSnapshot(string $worldId): ?WorldSnapshot
     {
         $model = CosmicSnapshot::where('world_id', $worldId)
             ->orderByDesc('year')
@@ -76,7 +76,7 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
         return $model ? $this->modelToSnapshot($model) : null;
     }
 
-    public function snapshotAt(int $worldId, int $year): ?WorldSnapshot
+    public function snapshotAt(string $worldId, int $year): ?WorldSnapshot
     {
         $model = CosmicSnapshot::where('world_id', $worldId)
             ->where('year', $year)
@@ -85,7 +85,7 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
         return $model ? $this->modelToSnapshot($model) : null;
     }
 
-    public function timeline(int $worldId, int $limit = 100): array
+    public function timeline(string $worldId, int $limit = 100): array
     {
         return CosmicSnapshot::where('world_id', $worldId)
             ->orderBy('year')
@@ -95,7 +95,7 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
             ->toArray();
     }
 
-    public function events(int $worldId): array
+    public function events(string $worldId): array
     {
         return CosmicEvent::where('world_id', $worldId)
             ->orderBy('year')
