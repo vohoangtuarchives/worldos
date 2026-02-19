@@ -8,21 +8,23 @@
 
 ## 4.2 Phương thức chính
 
-**spawnUniverse(World, ?parentUniverseId): Universe** — Tạo Universe từ World, ghi snapshot tick 0.
+**spawnUniverseFromPreset(World, presetKey): Universe** — Tạo Universe instance từ World, áp dụng cấu hình từ Preset, ghi snapshot tick 0.
 
-**runBatch(Saga, ticksPerUniverse): void** — Với mỗi saga_world có universe_id: advance(universe_id, ticksPerUniverse). Chỉ dùng UniverseRuntimeService.
+**createSagaFromActive(Universe): Saga** — Khởi tạo Saga quản lý Universe đã có.
 
-**evaluate(Universe): string** — Stub trả về 'continue'. Đầy đủ dùng MetricsExtractor + Evaluator + DecisionEngine (xem 05).
+**runBatch(Saga, ticksPerUniverse): void** — Advance universe hiện tại của Saga.
 
-**fork(Universe, fromTick): Universe** — Clone từ snapshot tại fromTick; Universe mới có parent_universe_id; ghi snapshot đầu.
+**evaluate(Universe): result** — Đánh giá tiềm năng Universe (AI/Rule-based).
 
-**genesisV3(Saga, ticksPerUniverse): void** — Tạo một World (preset từ GenesisPresetService), spawnUniverse, tạo SagaWorld (universe_id, sequence=1), cập nhật Saga current_universe_id và status RUNNING, runBatch. Không dispatch RunSagaSimulationJob.
+**fork(Universe, fromTick): Universe** — Clone từ snapshot.
 
-**runBatchWithEvaluation(Saga, ticksPerUniverse, evaluateEveryTicks): void** — runBatch rồi với mỗi universe: fromLatestSnapshot → evaluate → decisionEngine->execute (fork/archive/continue hoặc apply mutation).
+## 4.3 Genesis từ API (Split Flow)
 
-## 4.3 Genesis từ API
+Quy trình 3 bước tách biệt:
 
-Writer Genesis: GET presets, POST tạo Saga rồi gọi genesisV3 (hoặc endpoint start). Presets: GenesisPresetService::allByCategory(), find(preset_key).
+1. **POST /api/writer/genesis/world**: Tạo World Container (Physic Laws, Genre). Không dùng Preset.
+2. **POST /api/writer/genesis/universe**: Spawn Universe Instance vào World, sử dụng **Preset** (Scenario, History Seed).
+3. **POST /api/writer/sagas/create-from-active**: Tạo Saga (Story Orchestrator) để quản lý/advance Universe đó.
 
 ## 4.4 Saga không có
 

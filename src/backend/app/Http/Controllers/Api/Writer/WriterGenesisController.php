@@ -33,74 +33,47 @@ class WriterGenesisController extends Controller
     /**
      * POST /api/writer/genesis — create Saga from preset/custom config (same as Blade storeGenesis).
      */
-    public function store(Request $request): JsonResponse
+    /**
+     * POST /api/writer/genesis/world — Step 1: Create World Container (No preset).
+     */
+    public function storeWorld(Request $request): JsonResponse
     {
-        try {
-            $validated = $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'preset_key' => 'nullable|string',
             'genre' => 'nullable|string',
-            'power_system' => 'nullable|string',
-            'power_ceiling' => 'nullable|string',
-            'tech_level' => 'nullable|string',
-            'environment' => 'nullable|string',
-            'social_structure' => 'nullable|string',
-            'starting_crisis' => 'nullable|string',
-            'power_ranking' => 'nullable|string',
             'origin_type' => 'nullable|string',
-            'world_count' => 'integer|min:1|max:20',
-            'carry_legacy' => 'boolean',
+            // Physics/Meta configs can be added here
         ]);
 
-        $config = [];
-        if (!empty($validated['preset_key'])) {
-            $preset = $this->presetService->find($validated['preset_key']);
-            if ($preset) {
-                $config = $preset;
-            }
-        }
-
-        foreach (['genre', 'power_system', 'power_ceiling', 'tech_level', 'environment', 'social_structure', 'starting_crisis', 'power_ranking'] as $field) {
-            if (!empty($validated[$field])) {
-                $config[$field] = $validated[$field];
-            }
-        }
-
-        // Default 1 world per saga; multi-world (Pareto/evolution) is opt-in via world_count > 1
-        $saga = Saga::create([
-            'name' => $validated['name'],
-            'world_count' => $validated['world_count'] ?? 1,
-            'carry_legacy' => $validated['carry_legacy'] ?? true,
-            'genre' => $config['genre'] ?? 'xianxia',
-            'status' => Saga::STATUS_PENDING,
-            'metadata' => [
-                'origin_type' => $validated['origin_type'] ?? 'cosmic',
-                'genesis_preset' => $validated['preset_key'] ?? 'custom',
-                'power_system' => $config['power_system'] ?? 'NONE',
-                'power_ceiling' => $config['power_ceiling'] ?? 'HUMAN',
-                'tech_level' => $config['tech_level'] ?? 'DYNASTIC',
-                'environment' => $config['environment'] ?? 'CONTINENTAL',
-                'social_structure' => $config['social_structure'] ?? 'EMPIRE',
-                'starting_crisis' => $config['starting_crisis'] ?? 'NONE',
-                'power_ranking' => $config['power_ranking'] ?? 'NATURAL',
-            ],
+        $world = $this->sagaService->createWorldContainer($validated['name'], [
+            'genre' => $validated['genre'] ?? 'historical',
+            'origin_type' => $validated['origin_type'] ?? 'cosmic',
         ]);
 
-        $this->sagaService->genesisV3($saga, 10);
+        return response()->json([
+            'world_id' => $world->id,
+            'name' => $world->name,
+            'message' => 'World Container initialized. Ready for Universe Seeding.',
+        ], 201);
+    }
 
-            return response()->json([
-                'saga_id' => $saga->id,
-                'name' => $saga->name,
-                'message' => 'Khai Thiên Tịch Địa! Thế giới mới đã được sáng tạo và đang bắt đầu mô phỏng.',
-            ], 201);
-        } catch (Throwable $e) {
-            Log::error('WriterGenesisController::store failed', [
-                'message' => $e->getMessage(),
-                'file' => $e->getFile(),
-                'line' => $e->getLine(),
-            ]);
-            $message = config('app.debug') ? $e->getMessage() : 'Tạo Saga thất bại. Xem storage/logs/laravel.log.';
-            return response()->json(['error' => $message], 500);
-        }
+    /**
+     * POST /api/writer/genesis/universe — Step 2: Spawn Universe from Preset.
+     */
+    public function storeUniverse(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'world_id' => 'required|exists:worlds,id',
+            'preset_key' => 'required|string',
+        ]);
+
+        $world = \App\Models\World::find($validated['world_id']);
+        $universe = $this->sagaService->spawnUniverseFromPreset($world, $validated['preset_key']);
+
+        return response()->json([
+            'universe_id' => $universe->getId(),
+            'name' => $universe->getName(),
+            'message' => "Universe spawned using preset: {$validated['preset_key']}",
+        ], 201);
     }
 }

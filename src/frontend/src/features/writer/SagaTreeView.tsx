@@ -1,3 +1,5 @@
+"use client";
+
 import { useSagaTree } from "./useWriterApi";
 import { GitBranch, Orbit, Activity, ShieldAlert, Archive } from "lucide-react";
 import { cn } from "@/lib/utils";

@@ -20,6 +20,15 @@ class WriterUniverseController extends Controller
     ) {}
 
     /**
+     * GET /api/writer/universes — list all universes (for selection).
+     */
+    public function index(): JsonResponse
+    {
+        $universes = UniverseModel::orderByDesc('created_at')->get(['id', 'name', 'created_at', 'status', 'world_id']);
+        return response()->json($universes);
+    }
+
+    /**
      * GET /api/writer/universes/{universeId}/snapshots — list universe_snapshots by tick.
      */
     public function snapshots(string $universeId): JsonResponse

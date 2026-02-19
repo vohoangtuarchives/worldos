@@ -41,12 +41,16 @@
 - Tick **World** trực tiếp (WorldEvolutionKernel::evolve(World, years)) — dùng cho legacy hoặc công cụ nội bộ, không phải luồng Saga v3.
 - Flow v3: **chỉ** advance **Universe** qua UniverseRuntimeService → Kernel::tickUniverse → snapshot.
 
-## 3.5 Sơ đồ luồng (v3)
+## 3.5 Sơ đồ luồng (v3 - Split Genesis)
 
-```
-SagaService::runBatch(saga, N)
-  → với mỗi saga_world có universe_id:
-      UniverseRuntimeService::advance(universe_id, N)
+1. **Genesis Phase**:
+   - `createWorldContainer(name, config)` -> World
+   - `spawnUniverseFromPreset(world, preset)` -> Universe (Tick 0)
+   - `createSagaFromActive(universe)` -> Saga (RUNNING)
+
+2. **Simulation Phase**:
+   - `SagaService::runBatch(saga, N)`
+   - → `UniverseRuntimeService::advance(universe_id, N)`
         → for i = 0..N-1:
             tick(universe_id, sagaId, startYear + i)
               → evolutionEngine->applyTick(universe, shock?)

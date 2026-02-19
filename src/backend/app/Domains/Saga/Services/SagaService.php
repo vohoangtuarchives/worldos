@@ -124,39 +124,66 @@ class SagaService
      * WorldOS v3 Genesis: create one World, spawn one Universe, link to Saga, then run batch.
      * Does not dispatch RunSagaSimulationJob or call SagaRunner.
      */
-    public function genesisV3(Saga $saga, int $ticksPerUniverse = 10): void
+    /**
+     * Create a World Container (Physical/Meta rules only, no Universe yet).
+     */
+    public function createWorldContainer(string $name, array $config): World
     {
-        $presetKey = $saga->metadata['genesis_preset'] ?? $saga->metadata['preset_key'] ?? 'cuu_trong_thien';
-        $preset = app(GenesisPresetService::class)->find($presetKey) ?? [];
-        $baseName = $saga->name . ' - World 1';
-        $name = $baseName;
+        // Enforce unique name if needed, or just append timestamp
+        $baseName = $name;
         $counter = 1;
         while (World::where('name', $name)->exists()) {
             $name = "{$baseName} ({$counter})";
             $counter++;
         }
 
-        $world = World::create([
+        return World::create([
             'name' => $name,
             'status' => 'active',
             'tick' => 0,
             'autonomous' => true,
-            'preset' => $presetKey,
-            'gene_vector' => $preset['gene_vector'] ?? [],
-            'origin_type' => $saga->metadata['origin_type'] ?? 'cosmic',
-            'genre' => $preset['genre'] ?? $saga->genre ?? 'historical',
-            'config' => [
-                'preset_key' => $presetKey,
-                'current_stage' => $preset['power_stage'] ?? 'mundane',
-                'archetype' => $preset['archetype'] ?? 'BALANCED',
-            ],
+            'preset' => null, // World container doesn't use preset in V3 split flow
+            'gene_vector' => [],
+            'origin_type' => $config['origin_type'] ?? 'cosmic',
+            'genre' => $config['genre'] ?? 'historical',
+            'config' => $config, // Store raw config like physics profile headers
         ]);
+    }
 
+    /**
+     * Spawn a Universe from a Preset within a World.
+     */
+    public function spawnUniverseFromPreset(World $world, string $presetKey): Universe
+    {
+        $preset = app(GenesisPresetService::class)->find($presetKey) ?? [];
+        
+        // Apply preset config to World if it's the first universe (optional, but good for consistency)
         if (!empty($preset)) {
+            // Note: In split flow, World might already be configured. 
+            // We only bootstrap if the world is "raw". 
+            // For now, let's assume specific Universe logic applies here.
             app(\App\Domains\World\Services\WorldPowerProfileService::class)->bootstrapProfile($world, $preset);
         }
 
-        $universe = $this->spawnUniverse($world, null);
+        return $this->spawnUniverse($world, null);
+    }
+
+    /**
+     * WorldOS v3 Genesis: (Legacy Wrapper)
+     */
+    public function genesisV3(Saga $saga, int $ticksPerUniverse = 10): void
+    {
+        $presetKey = $saga->metadata['genesis_preset'] ?? $saga->metadata['preset_key'] ?? 'cuu_trong_thien';
+        $baseName = $saga->name . ' - World 1';
+        
+        $worldConfig = [
+            'origin_type' => $saga->metadata['origin_type'] ?? 'cosmic',
+            'genre' => $saga->genre ?? 'historical',
+        ];
+
+        $world = $this->createWorldContainer($baseName, $worldConfig);
+        $universe = $this->spawnUniverseFromPreset($world, $presetKey);
+
         SagaWorld::create([
             'saga_id' => $saga->id,
             'world_id' => $world->id,

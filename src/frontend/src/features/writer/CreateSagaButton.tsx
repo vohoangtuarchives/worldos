@@ -1,24 +1,16 @@
 "use client";
 
-import { useCreateSagaFromActive } from "./useWriterApi";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { CreateSagaDialog } from "./CreateSagaDialog";
+import { Sparkles } from "lucide-react";
 
 export function CreateSagaButton() {
-  const router = useRouter();
-  const create = useCreateSagaFromActive();
   return (
-    <Button
-      size="sm"
-      disabled={create.isPending}
-      onClick={() =>
-        create.mutate(undefined, {
-          onSuccess: (data) => data?.id && router.push(`/writer/sagas/${data.id}`),
-          onError: () => {},
-        })
-      }
-    >
-      {create.isPending ? "Creating…" : "Create saga from active"}
-    </Button>
+    <CreateSagaDialog>
+      <Button size="sm" className="gap-2 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 border-0">
+        <Sparkles className="w-4 h-4" />
+        Create Saga from Active
+      </Button>
+    </CreateSagaDialog>
   );
 }

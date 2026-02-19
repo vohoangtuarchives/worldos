@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import {
     LayoutDashboard,
-    Activity,
-    Globe,
     Orbit,
     Sparkles,
     Settings,
@@ -14,8 +12,11 @@ import {
     ChevronRight,
     ShieldCheck,
     BookOpen,
-    Zap,
-    Bot
+    Bot,
+    PenTool,
+    Library,
+    Cpu,
+    Activity
 } from "lucide-react";
 import { useAuth, type User } from "@/lib/auth/AuthProvider";
 import { Button } from "@/components/ui/button";
@@ -24,114 +25,117 @@ interface SidebarProps {
     user: User;
 }
 
-const navGroups = [
+const navModules = [
     {
-        label: "Hệ Thống (Cluster)",
+        key: "system",
+        label: "System",
         items: [
-            { name: "Tổng Quan", href: "/cluster", icon: LayoutDashboard },
-            { name: "Điều Hành (Governor)", href: "/cluster/governor", icon: ShieldCheck },
-            { name: "Hệ Thống AI", href: "/cluster/ai", icon: Bot },
-            { name: "Sự Kiện", href: "/cluster/events", icon: Activity },
+            { name: "Dashboard", href: "/cluster", icon: LayoutDashboard },
+            { name: "Governor", href: "/cluster/governor", icon: ShieldCheck },
+            { name: "AI Cluster", href: "/cluster/ai", icon: Cpu },
         ]
     },
     {
-        label: "Dòng Đời (Universe)",
+        key: "writer",
+        label: "Writer (Saga)",
         items: [
-            { name: "Tổng Quan (Admin)", href: "/admin", icon: Orbit },
-            { name: "AI Config", href: "/admin/ai", icon: Bot },
-            { name: "Bách Khoa (Wiki)", href: "/wiki", icon: BookOpen },
+            { name: "Orchestrator", href: "/writer", icon: GlobeIcon },
+            { name: "Genesis", href: "/writer/genesis", icon: Sparkles },
         ]
     },
     {
-        label: "Sáng Tác (Writer)",
+        key: "serial",
+        label: "Serial (Story)",
         items: [
-            { name: "Sagas", href: "/writer", icon: Globe },
-            { name: "Serial", href: "/serial", icon: Globe },
+            { name: "Series List", href: "/serial", icon: Library },
+            // { name: "Factory", href: "/serial/factory", icon: PenTool }, // Merged into List Page action
         ]
     },
     {
-        label: "Khởi Nguyên (Genesis)",
+        key: "admin",
+        label: "Admin & Evolution",
         items: [
-            { name: "Tạo Thế Giới", href: "/writer/genesis", icon: Sparkles },
+            { name: "Evolution", href: "/admin", icon: Orbit },
+            { name: "Wiki", href: "/wiki", icon: BookOpen },
+            { name: "Settings", href: "/admin/settings", icon: Settings },
         ]
     }
 ];
+
+function GlobeIcon(props: any) {
+    return <Orbit {...props} />; // Placeholder
+}
 
 export function Sidebar({ user }: SidebarProps) {
     const pathname = usePathname();
     const { logout } = useAuth();
 
     return (
-        <aside className="flex h-screen w-64 flex-col border-r border-border/50 bg-card/50 backdrop-blur-xl">
+        <aside className="flex h-screen w-64 flex-col border-r border-border/50 bg-card/50 backdrop-blur-xl transition-all duration-300">
             <div className="flex h-14 items-center border-b border-border/50 px-6">
-                <Link href="/cluster" className="flex items-center gap-2 font-bold text-primary">
-                    <Orbit className="h-6 w-6" />
-                    <span className="tracking-tight text-xl">WorldOS</span>
+                <Link href="/cluster" className="flex items-center gap-2 font-bold text-primary hover:opacity-80 transition-opacity">
+                    <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Orbit className="h-5 w-5" />
+                    </div>
+                    <span className="tracking-tight text-lg">WorldOS</span>
                 </Link>
             </div>
 
-            <div className="flex-1 overflow-y-auto py-4">
-                {navGroups.map((group, i) => (
-                    <div key={i} className="mb-6 px-4">
-                        <h3 className="mb-2 px-2 text-[10px] uppercase font-bold tracking-widest text-muted-foreground/70">
-                            {group.label}
+            <div className="flex-1 overflow-y-auto py-6 px-3 space-y-6">
+                {navModules.map((module) => (
+                    <div key={module.key}>
+                        <h3 className="mb-2 px-3 text-[10px] uppercase font-bold tracking-widest text-muted-foreground/60">
+                            {module.label}
                         </h3>
-                        <div className="space-y-1">
-                            {group.items.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={cn(
-                                        "group flex items-center justify-between rounded-md px-2 py-1.5 text-sm font-medium transition-colors",
-                                        pathname === item.href
-                                            ? "bg-primary/10 text-primary"
-                                            : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                                    )}
-                                >
-                                    <div className="flex items-center gap-2.5">
-                                        <item.icon className={cn(
-                                            "h-4 w-4",
-                                            pathname === item.href ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
-                                        )} />
-                                        {item.name}
-                                    </div>
-                                    {pathname === item.href && <ChevronRight className="h-3 w-3" />}
-                                </Link>
-                            ))}
+                        <div className="space-y-0.5">
+                            {module.items.map((item) => {
+                                const isActive = pathname === item.href || pathname?.startsWith(item.href + "/");
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className={cn(
+                                            "group flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition-all duration-200",
+                                            isActive
+                                                ? "bg-primary/10 text-primary shadow-sm"
+                                                : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                                        )}
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <item.icon className={cn(
+                                                "h-4 w-4 transition-colors",
+                                                isActive ? "text-primary" : "text-muted-foreground group-hover:text-foreground"
+                                            )} />
+                                            {item.name}
+                                        </div>
+                                        {isActive && <div className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />}
+                                    </Link>
+                                );
+                            })}
                         </div>
                     </div>
                 ))}
             </div>
 
-            <div className="border-t border-border/50 p-4">
-                <div className="glass-card-accent mb-4 p-3">
-                    <div className="flex items-center justify-between mb-2">
-                        <span className="metric-label">System Pressure</span>
-                        <span className="text-[10px] font-mono font-bold text-success">LỰC 0.12</span>
-                    </div>
-                    <div className="h-1 w-full rounded-full bg-muted overflow-hidden">
-                        <div className="h-full w-12 bg-primary status-glow-running" />
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-3 px-2 mb-4">
-                    <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+            <div className="border-t border-border/50 p-4 bg-muted/20">
+                <div className="flex items-center gap-3 mb-4">
+                    <div className="h-9 w-9 rounded-full bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-primary font-bold text-xs shadow-inner">
                         {user.email?.[0].toUpperCase()}
                     </div>
                     <div className="flex-1 overflow-hidden">
-                        <p className="text-xs font-bold text-foreground truncate">{user.email}</p>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-widest">Administrator</p>
+                        <p className="text-xs font-bold text-foreground truncate">{user.name || 'Admin'}</p>
+                        <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
                     </div>
                 </div>
 
                 <Button
-                    variant="ghost"
+                    variant="outline"
                     size="sm"
-                    className="w-full justify-start gap-2 text-muted-foreground hover:text-destructive"
+                    className="w-full justify-start gap-2 h-8 text-xs font-normal"
                     onClick={() => void logout()}
                 >
-                    <LogOut className="h-4 w-4" />
-                    Logout
+                    <LogOut className="h-3.5 w-3.5" />
+                    Sign Out
                 </Button>
             </div>
         </aside>

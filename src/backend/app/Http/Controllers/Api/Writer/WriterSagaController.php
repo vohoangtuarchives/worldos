@@ -87,19 +87,58 @@ class WriterSagaController extends Controller
 
     /**
      * POST /api/writer/sagas/create-from-active.
+     * WorldOS v3: Saga orchestrates an EXISTING Universe (from Genesis).
      */
-    public function createFromActive(): JsonResponse
+    public function createFromActive(Request $request): JsonResponse
     {
+        // 1. Resolve Universe (from request or latest orphan)
+        $universeId = $request->input('universe_id');
+        
+        if ($universeId) {
+            $universe = \App\Models\UniverseModel::find($universeId);
+        } else {
+            // "Active" heuristics: Latest universe created.
+            // Ideally should filter out those already in a Saga, but for now taking latest is safe for single-user flow.
+            $universe = \App\Models\UniverseModel::orderBy('created_at', 'desc')->first();
+        }
+
+        if (!$universe) {
+            return response()->json([
+                'error' => 'No active Universe found. Please run Genesis first.',
+                'hint' => 'Saga acts as a container for a valid Universe.'
+            ], 422);
+        }
+
+        // 2. Create Saga Container
         $saga = $this->createSagaAction->execute(
-            'Saga ' . now()->format('Y-m-d H:i'),
-            5
+            'Saga of ' . $universe->name,
+            5 // Default world count target
         );
 
+        // 3. Attach Universe to Saga (SagaWorld)
+        // V3: Saga manages this Universe.
+        $sagaWorld = new \App\Domains\Saga\SagaWorld([
+            'id' => \Illuminate\Support\Str::uuid(),
+            'saga_id' => $saga->id,
+            'universe_id' => $universe->id,
+            'world_id' => $universe->world_id, // Link to the template used
+            'sequence' => 1,
+            'status' => \App\Domains\Saga\SagaWorld::STATUS_RUNNING,
+        ]);
+        $sagaWorld->save();
+
+        // 4. Update Saga Context
+        $saga->current_universe_id = $universe->id;
+        $saga->status = \App\Domains\Saga\Saga::STATUS_RUNNING;
+        $saga->genre = $universe->world?->genre ?? 'unknown';
+        $saga->save();
+
         return response()->json([
-            'id'      => $saga->id,
-            'name'    => $saga->name,
-            'status'  => $saga->status,
-            'message' => 'Saga created.',
+            'id' => $saga->id,
+            'name' => $saga->name,
+            'status' => $saga->status,
+            'message' => "Saga initialized from Universe: {$universe->name}",
+            'universe_id' => $universe->id
         ], 201);
     }
 
@@ -149,6 +188,8 @@ class WriterSagaController extends Controller
                 'ticks'   => $ticks,
             ]);
         } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("Saga Advance Error: " . $e->getMessage());
+            file_put_contents(storage_path('logs/saga_debug.log'), date('Y-m-d H:i:s') . " Advance Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n", FILE_APPEND);
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
@@ -173,6 +214,8 @@ class WriterSagaController extends Controller
                 'message' => "Simulation completed: {$ticks} tick(s) advanced via V3 pipeline.",
             ]);
         } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error("Saga Run Error: " . $e->getMessage());
+            file_put_contents(storage_path('logs/saga_debug.log'), date('Y-m-d H:i:s') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n", FILE_APPEND);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

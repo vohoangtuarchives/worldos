@@ -59,6 +59,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::post('saga/{sagaId}/run',       [WriterSagaController::class, 'run']);
 
     // Universes (v3 snapshot-first, metrics)
+    Route::get('universes',                        [WriterUniverseController::class, 'index']);
     Route::get('universes/{universeId}/snapshots', [WriterUniverseController::class, 'snapshots']);
     Route::get('universes/{universeId}/metrics',   [WriterUniverseController::class, 'metrics']);
 
@@ -100,7 +101,8 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // Genesis
     Route::get('genesis/presets',          [WriterGenesisController::class, 'presets']);
-    Route::post('genesis',                 [WriterGenesisController::class, 'store']);
+    Route::post('genesis/world',           [WriterGenesisController::class, 'storeWorld']);
+    Route::post('genesis/universe',        [WriterGenesisController::class, 'storeUniverse']);
 
     // AI Mission Control
     Route::prefix('ai')->group(function () {

@@ -231,13 +231,14 @@ export const writerApi = {
     list: () => api.get<Saga[]>("/api/writer/sagas"),
     stats: () => api.get<{ success: boolean; data: Record<string, unknown> }>("/api/writer/sagas/stats").then(r => r.data),
     show: (sagaId: string) => api.get<SagaDetail>(`/api/writer/sagas/${sagaId}`),
-    createFromActive: () => api.post<Saga>("/api/writer/sagas/create-from-active"),
+    createFromActive: (body?: { universe_id?: string }) => api.post<Saga>("/api/writer/sagas/create-from-active", body),
     tree: (id: string) => api.get<{ nodes: SagaTreeNode[] }>(`/api/writer/saga/${id}/tree`),
     advance: (sagaId: string, ticks?: number) =>
       api.post<{ success: boolean; message: string; ticks: number }>(`/api/writer/saga/${sagaId}/advance`, { ticks: ticks ?? 10 }),
     run: (id: string) => api.post(`/api/writer/saga/${id}/run`),
   },
   universes: {
+    list: () => api.get<Universe[]>("/api/writer/universes"),
     snapshots: (universeId: string) =>
       api.get<{ success: boolean; data: { snapshots: UniverseSnapshotItem[] } }>(`/api/writer/universes/${universeId}/snapshots`).then((r) => r.data?.snapshots ?? []),
     metrics: (universeId: string) =>
@@ -313,8 +314,10 @@ export const writerApi = {
   },
   genesis: {
     presets: () => api.get<{ categories?: Record<string, GenesisPreset[]> }>("/api/writer/genesis/presets"),
-    create: (body: { name: string; preset_key?: string;[key: string]: unknown }) =>
-      api.post<{ saga_id: string; name: string; message: string }>("/api/writer/genesis", body),
+    createWorld: (body: { name: string; genre?: string; origin_type?: string }) =>
+      api.post<{ world_id: string; name: string; message: string }>("/api/writer/genesis/world", body),
+    createUniverse: (body: { world_id: string; preset_key: string }) =>
+      api.post<{ universe_id: string; name: string; message: string }>("/api/writer/genesis/universe", body),
   },
   ai: {
     getMetrics: () =>
