@@ -6,7 +6,6 @@ import { useWorld, useWorldAction, useWorldEmergency } from "./useWriterApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
-  Activity,
   Orbit,
   Pause,
   Play,
@@ -20,7 +19,6 @@ import {
   ToggleLeft,
   ToggleRight,
   AlertTriangle,
-  ChevronRight
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { WorldHeroesCard } from "./WorldHeroesCard";
@@ -60,7 +58,15 @@ export function WorldHubView({ worldId, refetchInterval }: { worldId: string; re
   const liveEntropy = activeUniverse?.entropy ?? 0;
   const liveStability = activeUniverse?.stability_index ?? 0;
   const liveAge = activeUniverse?.age ?? 0;
-  const universeCount = world.runtime_instances?.length ?? 0;
+  const runtimeInstances = world.runtime_instances ?? [];
+  const universeCount = runtimeInstances.length;
+  const activeCount = runtimeInstances.filter((u) => u.status === "active").length;
+  const collapsedCount = runtimeInstances.filter((u) => u.status === "collapsed").length;
+  const archivedCount = runtimeInstances.filter((u) => u.is_archived).length;
+  const trackedEntropies = runtimeInstances.map((u) => u.entropy).filter((v): v is number => typeof v === "number");
+  const trackedStability = runtimeInstances.map((u) => u.stability_index).filter((v): v is number => typeof v === "number");
+  const avgEntropy = trackedEntropies.length > 0 ? trackedEntropies.reduce((sum, item) => sum + item, 0) / trackedEntropies.length : 0;
+  const avgStability = trackedStability.length > 0 ? trackedStability.reduce((sum, item) => sum + item, 0) / trackedStability.length : 0;
 
   return (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -109,6 +115,72 @@ export function WorldHubView({ worldId, refetchInterval }: { worldId: string; re
             <span className="metric-label">Instances</span>
             <p className="text-2xl font-bold metric-value text-primary">{universeCount}</p>
           </div>
+        </div>
+      </div>
+
+      <div className="glass-card p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 className="font-bold text-sm uppercase tracking-wider">Universe Tracking Board</h3>
+            <p className="text-xs text-muted-foreground">Theo dõi realtime để thấy rõ runtime V3 đang chạy ra sao, không còn cảm giác &quot;đen hộp&quot;.</p>
+          </div>
+          <Badge variant="outline" className="text-[10px] uppercase">{activeCount} active • {collapsedCount} collapsed</Badge>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          <div className="rounded-lg border border-border/50 p-3 bg-muted/20">
+            <p className="metric-label">Avg Entropy</p>
+            <p className={cn("text-xl font-bold", avgEntropy > 0.65 ? "text-error" : "text-foreground")}>{avgEntropy.toFixed(3)}</p>
+          </div>
+          <div className="rounded-lg border border-border/50 p-3 bg-muted/20">
+            <p className="metric-label">Avg Stability</p>
+            <p className={cn("text-xl font-bold", avgStability < 0.45 ? "text-error" : "text-success")}>{(avgStability * 100).toFixed(1)}%</p>
+          </div>
+          <div className="rounded-lg border border-border/50 p-3 bg-muted/20">
+            <p className="metric-label">Archived</p>
+            <p className="text-xl font-bold text-muted-foreground">{archivedCount}</p>
+          </div>
+          <div className="rounded-lg border border-border/50 p-3 bg-muted/20">
+            <p className="metric-label">Tick</p>
+            <p className="text-xl font-bold">{world.current_tick ?? 0}</p>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto rounded-xl border border-border/40">
+          <table className="w-full text-xs">
+            <thead className="bg-muted/30">
+              <tr className="text-left uppercase tracking-wider text-muted-foreground">
+                <th className="px-3 py-2">Universe</th>
+                <th className="px-3 py-2">Status</th>
+                <th className="px-3 py-2">Age</th>
+                <th className="px-3 py-2">Entropy</th>
+                <th className="px-3 py-2">Stability</th>
+                <th className="px-3 py-2 text-right">Inspect</th>
+              </tr>
+            </thead>
+            <tbody>
+              {runtimeInstances.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-3 py-4 text-center text-muted-foreground">Chưa có runtime universe nào để theo dõi.</td>
+                </tr>
+              ) : runtimeInstances.map((u) => (
+                <tr key={u.id} className="border-t border-border/40">
+                  <td className="px-3 py-2 font-medium">{u.name}</td>
+                  <td className="px-3 py-2">
+                    <Badge variant="outline" className={cn("text-[10px]", u.status === "active" ? "text-success border-success/30" : u.status === "collapsed" ? "text-error border-error/30" : "")}>{u.status ?? "unknown"}</Badge>
+                  </td>
+                  <td className="px-3 py-2 font-mono">{u.age ?? 0}</td>
+                  <td className="px-3 py-2 font-mono">{u.entropy?.toFixed(3) ?? "—"}</td>
+                  <td className="px-3 py-2 font-mono">{u.stability_index?.toFixed(3) ?? "—"}</td>
+                  <td className="px-3 py-2 text-right">
+                    <Button asChild variant="ghost" size="sm" className="h-7 text-[11px]">
+                      <Link href={`/world/${worldId}?universe=${u.id}`}>Open</Link>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
@@ -317,59 +389,6 @@ export function WorldHubView({ worldId, refetchInterval }: { worldId: string; re
         )}
       </div>
 
-      {/* Universes List (Runtime Instances) */}
-      {world.runtime_instances && world.runtime_instances.length > 0 && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between px-2">
-            <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-              <Orbit className="h-4 w-4 text-primary" />
-              Runtime Universes
-            </h3>
-            <span className="text-[10px] font-bold text-muted-foreground uppercase">{world.runtime_instances.length} ACTIVE</span>
-          </div>
-
-          <div className="grid gap-4">
-            {world.runtime_instances.map((u) => (
-              <div key={u.id} className="glass-card group flex items-center justify-between p-4 hover:border-primary/30 transition-all">
-                <div className="flex items-center gap-4">
-                  <div className="h-10 w-10 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                    <Activity className="h-5 w-5" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-foreground text-sm">{u.name}</p>
-                    <div className="flex items-center gap-2 mt-0.5 font-mono text-[9px] text-muted-foreground uppercase tracking-wider">
-                      <span>Age: {u.age ?? 0}</span>
-                      <span>•</span>
-                      <span className={u.status === 'active' ? 'text-success' : u.status === 'collapsed' ? 'text-error' : ''}>{u.status}</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-8 px-8">
-                  <div className="flex flex-col items-center">
-                    <span className="metric-label">Entropy</span>
-                    <span className={cn("text-xs font-mono font-bold", (u.entropy ?? 0) > 0.7 ? "text-error" : "")}>
-                      {u.entropy?.toFixed(3) ?? '0.000'}
-                    </span>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <span className="metric-label">Stability</span>
-                    <span className={cn("text-xs font-mono font-bold", (u.stability_index ?? 0) > 0.7 ? "text-success" : "text-warning")}>
-                      {u.stability_index?.toFixed(3) ?? '0.000'}
-                    </span>
-                  </div>
-                </div>
-
-                <Button asChild variant="ghost" size="sm" className="gap-2 font-bold group-hover:bg-primary/5">
-                  <Link href={`/world/${worldId}?universe=${u.id}`}>
-                    Inspect <ChevronRight className="h-3 w-3" />
-                  </Link>
-                </Button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }
