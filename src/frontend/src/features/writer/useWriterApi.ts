@@ -116,6 +116,14 @@ export function useUniverseMetrics(universeId: string | null, options?: { refetc
   });
 }
 
+export function useUniverseStyle(universeId: string | null) {
+  return useQuery({
+    queryKey: ["writer", "universes", universeId, "style"],
+    queryFn: () => writerApi.universes.style(universeId!),
+    enabled: universeId != null,
+  });
+}
+
 export function useUniverseFork() {
   const qc = useQueryClient();
   return useMutation({
@@ -342,5 +350,33 @@ export function useAIRequestLogDetail(id?: string) {
     queryKey: ["writer", "ai", "request-log", id],
     queryFn: () => writerApi.ai.getRequestLogDetail(id as string),
     enabled: Boolean(id),
+  });
+}
+
+export function useStyleProposals(worldId: string | null) {
+  return useQuery({
+    queryKey: ["writer", "governance", "proposals", worldId],
+    queryFn: () => writerApi.governance.proposals(worldId!),
+    enabled: worldId != null,
+  });
+}
+
+export function useApproveStyleProposal() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => writerApi.governance.approve(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["writer", "governance", "proposals"] });
+    },
+  });
+}
+
+export function useRejectStyleProposal() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => writerApi.governance.reject(id),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["writer", "governance", "proposals"] });
+    },
   });
 }

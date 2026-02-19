@@ -62,4 +62,15 @@ class XianxiaDefinition implements GenreDefinition
     {
         return "Rewrite the following historical event in the style of a Xianxia/Cultivation novel (like 'Renegade Immortal'). Use terms like 'Qi', 'Dao', 'Tribulation', 'Realms'. Emphasize the scale of power, the ruthlessness of the cultivation world, and the insignificance of mortals.";
     }
+
+    public function getPhysicsBias(): array
+    {
+        return [
+            'order_bias' => 0.8,
+            'chaos_sensitivity' => 0.2,
+            'entropy_decay_rate' => 0.05,
+            'innovation_burst_probability' => 0.1,
+            'hierarchy_rigidity' => 0.9,
+        ];
+    }
 }

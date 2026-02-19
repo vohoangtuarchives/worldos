@@ -62,4 +62,15 @@ class SurvivalGenre implements GenreDefinition
     {
         return "Rewrite the following historical event in the style of a gritty Survival/Apocalypse novel (like 'The Road'). Emphasize scarcity, desperation, the harshness of the environment, and the fragility of life.";
     }
+
+    public function getPhysicsBias(): array
+    {
+        return [
+            'order_bias' => 0.3,
+            'chaos_sensitivity' => 0.7,
+            'entropy_decay_rate' => -0.1, // Entropy increases faster
+            'innovation_burst_probability' => 0.05,
+            'resource_scarcity' => 0.9,
+        ];
+    }
 }

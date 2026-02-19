@@ -60,6 +60,19 @@ class SerialArcPlanner
         $preset = SerialGenrePreset::get($genreKey);
         $count = $count ?: $preset['books_count'];
         $templates = $config['arc_templates'] ?? $preset['arc_templates'];
+
+        // Phase 7: Emergent Arc Detection from World State Tension
+        $tension = $worldState['tension'] ?? 0.0;
+        if ($tension > 0.75) {
+            return [
+                [
+                    'book_index' => 0,
+                    'title' => 'The Great Upheaval',
+                    'one_line' => "High world tension ({$tension}) has triggered an emergent arc of conflict and transformation.",
+                ]
+            ];
+        }
+
         if ($templates === []) {
             $templates = ['Arc'];
         }

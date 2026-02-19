@@ -48,6 +48,11 @@ class WorldTickService
         // $snapshotService->captureWorld($world, 'auto-run');
         
         Log::info("World {$world->id} processed tick {$tick}. Entropy: {$world->entropy}");
+
+        // 10. AI Advisor (Phase 6)
+        if ($tick % 50 === 0) {
+            \App\Jobs\Cosmology\RunStyleAdvisorJob::dispatch($world->id);
+        }
     }
 
     private function generateHistory(World $world, int $tick): void

@@ -14,9 +14,22 @@ import {
     ArrowUpRight,
     ArrowDownRight,
     Lock,
-    RefreshCw
+    RefreshCw,
+    BrainCircuit,
+    Check,
+    X
 } from "lucide-react";
-import { useClusterGovernor, useClusterSystem, useClusterEmergencyFreeze } from "./useClusterApi";
+import {
+    useClusterGovernor,
+    useClusterSystem,
+    useClusterEmergencyFreeze
+} from "./useClusterApi";
+import {
+    useStyleProposals,
+    useApproveStyleProposal,
+    useRejectStyleProposal,
+    useWorlds
+} from "@/features/writer/useWriterApi";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +40,13 @@ export function GovernorDetail() {
     const { data: governor } = useClusterGovernor();
     const { data: system } = useClusterSystem();
     const emergencyFreeze = useClusterEmergencyFreeze();
+
+    const { data: worldsData } = useWorlds();
+    const activeWorldId = worldsData?.[0]?.id ?? null; // For demo, use first world
+
+    const { data: proposalsRes, isLoading: proposalsLoading } = useStyleProposals(activeWorldId);
+    const approveProposal = useApproveStyleProposal();
+    const rejectProposal = useRejectStyleProposal();
 
     const [throttle, setThrottle] = React.useState(50);
 
@@ -154,6 +174,64 @@ export function GovernorDetail() {
                         <div className="flex justify-between mt-4 px-2">
                             <span className="text-[9px] font-bold text-muted-foreground uppercase">T-60MIN</span>
                             <span className="text-[9px] font-bold text-muted-foreground uppercase tracking-tighter">CURRENT_CYCLE</span>
+                        </div>
+                    </div>
+
+                    {/* AI Advisor Proposals Section */}
+                    <div className="glass-panel p-6 border-primary/10">
+                        <div className="flex items-center justify-between mb-6">
+                            <div className="flex items-center gap-2">
+                                <BrainCircuit className="h-5 w-5 text-primary" />
+                                <h3 className="font-black text-xs uppercase tracking-widest">AI Advisor Proposals</h3>
+                            </div>
+                            <Badge variant="secondary" className="text-[9px] font-bold">
+                                {(proposalsRes?.data as any)?.data?.length ?? 0} PENDING
+                            </Badge>
+                        </div>
+
+                        <div className="space-y-4">
+                            {proposalsLoading ? (
+                                <p className="text-xs text-muted-foreground animate-pulse text-center py-8 italic uppercase font-bold tracking-widest">Scanning Governance Layer...</p>
+                            ) : ((proposalsRes?.data as any)?.data?.length ?? 0) === 0 ? (
+                                <div className="p-8 border border-dashed border-border rounded-lg text-center">
+                                    <p className="text-xs text-muted-foreground italic uppercase font-bold tracking-widest">No active style proposals from Advisor.</p>
+                                </div>
+                            ) : (
+                                ((proposalsRes?.data as any)?.data ?? []).map((p: any) => (
+                                    <div key={p.id} className="p-4 rounded-lg bg-white/40 border border-primary/10 space-y-3 relative group overflow-hidden">
+                                        <div className="absolute top-0 left-0 w-1 h-full bg-primary/20 group-hover:bg-primary transition-colors" />
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <p className="text-[10px] font-black text-primary uppercase mb-1">Physics Mutation Proposal</p>
+                                                <h4 className="text-sm font-black text-slate-800 uppercase tracking-tight">Predicted GI Improvement: +{(p.predicted_improvement * 100).toFixed(1)}%</h4>
+                                            </div>
+                                            <Badge variant="outline" className="text-[9px] font-mono">{(p.created_at as string).split('T')[0]}</Badge>
+                                        </div>
+                                        <p className="text-xs text-slate-600 line-clamp-2 italic">"{p.reasoning}"</p>
+
+                                        <div className="flex gap-2 mt-4 pt-4 border-t border-primary/5">
+                                            <Button
+                                                variant="default"
+                                                size="sm"
+                                                className="h-8 flex-1 font-bold text-[10px] uppercase gap-2 shadow-lg shadow-primary/10"
+                                                onClick={() => approveProposal.mutate(p.id)}
+                                                disabled={approveProposal.isPending}
+                                            >
+                                                <Check className="h-3 w-3" /> Execute Mutation
+                                            </Button>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                className="h-8 flex-1 font-bold text-[10px] uppercase gap-2"
+                                                onClick={() => rejectProposal.mutate(p.id)}
+                                                disabled={rejectProposal.isPending}
+                                            >
+                                                <X className="h-3 w-3" /> Dismiss
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

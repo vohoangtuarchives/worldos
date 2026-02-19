@@ -9,6 +9,34 @@ use DateTime;
 
 class WorldAggregate
 {
+    public static function create(
+        string $name,
+        string $preset,
+        GeneVector $geneVector,
+        EntropyScore $entropy,
+        int $tick = 0,
+        bool $autonomous = false
+    ): self {
+        $id = 'world_' . bin2hex(random_bytes(8));
+        $aggregate = new self(
+            $id,
+            $name,
+            $preset,
+            $geneVector,
+            $entropy,
+            $tick,
+            $autonomous,
+            null,
+            new DateTime(),
+            new DateTime()
+        );
+
+        // Dispatch Event
+        \App\Domains\World\Events\WorldDefined::dispatch($id, $name);
+
+        return $aggregate;
+    }
+
     public function __construct(
         private string $id,
         private string $name,

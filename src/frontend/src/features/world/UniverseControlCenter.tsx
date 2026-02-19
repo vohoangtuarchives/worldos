@@ -6,7 +6,8 @@ import {
     useUniverseFork,
     useUniverseEvaluate,
     useUniverseApplyPressure,
-    useUniverseMetrics
+    useUniverseMetrics,
+    useUniverseStyle
 } from "@/features/writer/useWriterApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +22,8 @@ import {
     ShieldAlert,
     ChevronRight,
     Sparkles,
-    Settings
+    Settings,
+    Palette
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { UniverseSnapshotItem } from "@/shared/api/writer";
@@ -55,6 +57,8 @@ export function UniverseControlCenter({ worldId, universeId, sagaId }: UniverseC
             onSuccess: (res) => setEvalResult(res.data)
         });
     };
+
+    const { data: styleData } = useUniverseStyle(universeId);
 
     const handleApplyPressure = () => {
         applyPressure.mutate({ universeId, type: pressureType, intensity: pressureIntensity });
@@ -158,6 +162,44 @@ export function UniverseControlCenter({ worldId, universeId, sagaId }: UniverseC
                         >
                             <Zap className="h-4 w-4" /> Apply Selection Pressure
                         </Button>
+                    </CardContent>
+                </Card>
+
+                {/* Style Visualization Card */}
+                <Card className="glass-card border-primary/20">
+                    <CardHeader className="pb-2">
+                        <CardTitle className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
+                            <Palette className="h-4 w-4 text-primary" />
+                            Universe Style
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {styleData ? (
+                            <div className="space-y-3">
+                                <div className="flex justify-between items-center bg-muted/30 p-2 rounded border border-border/50">
+                                    <span className="text-xs font-bold uppercase">{styleData.name}</span>
+                                    <Badge variant="outline" className="text-[10px]">v{styleData.version}</Badge>
+                                </div>
+                                <div className="space-y-2">
+                                    {Object.entries(styleData.style_vector).map(([key, val]) => (
+                                        <div key={key} className="space-y-1">
+                                            <div className="flex justify-between text-[9px] uppercase font-bold text-muted-foreground">
+                                                <span>{key}</span>
+                                                <span>{((val as number) * 100).toFixed(0)}%</span>
+                                            </div>
+                                            <div className="h-1 bg-muted rounded-full overflow-hidden">
+                                                <div
+                                                    className="h-full bg-primary"
+                                                    style={{ width: `${(val as number) * 100}%` }}
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-xs text-muted-foreground italic text-center py-4">Loading universe style...</p>
+                        )}
                     </CardContent>
                 </Card>
             </div>

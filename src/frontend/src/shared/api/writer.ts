@@ -251,6 +251,16 @@ export const writerApi = {
       api.post<{ success: boolean; data: { recommendation: string; ip_score: number; suggestion?: { type: string; intensity: number } } }>(`/api/writer/universes/${universeId}/evaluate`),
     applyPressure: (universeId: string, type: string, intensity: number) =>
       api.post<{ success: boolean; message: string }>(`/api/writer/universes/${universeId}/pressure`, { type, intensity }),
+    style: (universeId: string) =>
+      api.get<{ success: boolean; data: { id: string; name: string; style_vector: Record<string, number>; version: number } }>(`/api/writer/universes/${universeId}/style`).then(r => r.data),
+  },
+  governance: {
+    proposals: (worldId: string) =>
+      api.get<{ success: boolean; data: any[] }>(`/api/writer/governance/proposals/${worldId}`).then(r => r.data),
+    approve: (id: string) =>
+      api.post<{ success: boolean; message: string }>(`/api/writer/governance/proposals/${id}/approve`),
+    reject: (id: string) =>
+      api.post<{ success: boolean; message: string }>(`/api/writer/governance/proposals/${id}/reject`),
   },
   worlds: {
     list: () => api.get<World[]>("/api/writer/worlds"),

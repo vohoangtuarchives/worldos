@@ -45,5 +45,11 @@ interface GenreDefinition
      * Get the narrative prompt template for AI.
      */
     public function getNarrativePrompt(): string;
+
+    /**
+     * Get style/physics bias for this genre.
+     * e.g. ['entropy_decay' => 0.1, 'order_bias' => 0.8]
+     */
+    public function getPhysicsBias(): array;
 }
 

@@ -141,4 +141,24 @@ class WriterUniverseController extends Controller
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
+
+    /**
+     * GET /api/writer/universes/{universeId}/style — get the active style of the world.
+     */
+    public function style(string $universeId): JsonResponse
+    {
+        $universe = UniverseModel::find($universeId);
+        if (!$universe) {
+            return response()->json(['error' => 'Universe not found.'], 404);
+        }
+
+        $style = \App\Models\UniverseStyle::where('world_id', $universe->world_id)
+            ->where('is_active', true)
+            ->first();
+
+        return response()->json([
+            'success' => true,
+            'data' => $style
+        ]);
+    }
 }

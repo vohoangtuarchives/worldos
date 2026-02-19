@@ -58,6 +58,14 @@ export function useGenerateOutline(seriesId: string) {
   });
 }
 
+export function useGenerateChapters(seriesId: string) {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (count: number) => serialApi.series.generateChapters(seriesId, count),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["serial", "series", seriesId] }),
+  });
+}
+
 export function useStoryBible(seriesId: string | null) {
   return useQuery({
     queryKey: ["serial", "story-bible", seriesId],

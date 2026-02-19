@@ -64,6 +64,8 @@ export const serialApi = {
       api.post("/api/serial/series/" + id + "/generate-next-chapter"),
     generateOutline: (id: string) =>
       api.post("/api/serial/series/" + id + "/outline/generate"),
+    generateChapters: (id: string, count: number) =>
+      api.post("/api/serial/series/" + id + "/generate-chapters", { count }),
     arcs: (id: string) =>
       api.get<{ success: boolean; data?: { arcs: unknown[] } }>("/api/serial/series/" + id + "/arcs").then((r) => r.data?.arcs ?? []),
   },

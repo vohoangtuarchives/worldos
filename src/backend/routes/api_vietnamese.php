@@ -62,6 +62,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::get('universes',                        [WriterUniverseController::class, 'index']);
     Route::get('universes/{universeId}/snapshots', [WriterUniverseController::class, 'snapshots']);
     Route::get('universes/{universeId}/metrics',   [WriterUniverseController::class, 'metrics']);
+    Route::get('universes/{universeId}/style',     [WriterUniverseController::class, 'style']);
 
     // Worlds
     Route::get('worlds',                   [WriterWorldController::class, 'index']);
@@ -117,6 +118,11 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
         Route::get('request-logs/{id}',        [WriterAIAgentController::class, 'getRequestLogDetail']);
         Route::post('intervene',               [WriterAIAgentController::class, 'intervene']);
     });
+
+    // Governance / Proposals
+    Route::get('governance/proposals/{worldId}',  [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'proposals']);
+    Route::post('governance/proposals/{id}/approve', [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'approve']);
+    Route::post('governance/proposals/{id}/reject',  [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'reject']);
 });
 
 /*

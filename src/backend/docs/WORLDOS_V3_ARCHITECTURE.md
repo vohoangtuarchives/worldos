@@ -15,6 +15,7 @@
 World (rule preset, immutable)
    └── Universe (runtime state machine, single authority)
           ├── UniverseSnapshot (tick, state_vector, entropy, metrics)
+          ├── UniverseStyle (style_vector, name, version, is_active)
           └── (Fork → parent_universe_id)
 
 Saga (experiment orchestrator)
@@ -42,6 +43,10 @@ AI
 | **MetricsExtractor** | Từ UniverseSnapshot → UniverseMetrics (entropy_trend, complexity_index, stability_score, …). Không đưa raw state_vector vào LLM. |
 | **UniverseEvaluatorInterface** | evaluate(UniverseMetrics) → EvaluationResult (ip_score, recommendation: fork\|continue\|archive, mutation_suggestion). Stub + LLM impl. |
 | **WorldEvolutionKernel** | tickUniverse(World, Universe); validateMutation(World, MutationSuggestion); applyPressure(Universe, selectionPressure, intensity). |
+| **UniverseStyle** | Model: world_id, style_vector, name, version. Định nghĩa "vật lý" đặc thù cho genre. |
+| **StyleAdvisorService** | Phân tích trajectory → ProposeStyleChangeAction (Governance). Chạy mỗi 50 ticks. |
+| **DigestArcAction** | Narrative: arc completed → StoryBible entry (Long-term memory). |
+| **SerialArcPlanner** | Emergent planning dựa trên Tension spikes (> 0.75). |
 | **DecisionEngine** | Từ EvaluationResult → fork (SagaService.fork), archive (Universe.status = archived), hoặc continue (optional applyPressure). |
 
 ---
