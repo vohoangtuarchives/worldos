@@ -22,11 +22,11 @@ export function AdminDashboard() {
           {stats && (
             <dl className="grid gap-2 text-sm md:grid-cols-2">
               <dt className="text-muted-foreground">Total universes</dt>
-              <dd>{Number(stats.total_universes) ?? 0}</dd>
+              <dd>{Number(stats.total_universes || 0)}</dd>
               <dt className="text-muted-foreground">Active</dt>
-              <dd>{Number(stats.active_universes) ?? 0}</dd>
+              <dd>{Number(stats.active_universes || 0)}</dd>
               <dt className="text-muted-foreground">Archived</dt>
-              <dd>{Number(stats.archived_universes) ?? 0}</dd>
+              <dd>{Number(stats.archived_universes || 0)}</dd>
             </dl>
           )}
         </CardContent>
@@ -38,7 +38,7 @@ export function AdminDashboard() {
           {universes && universes.length === 0 && <p className="text-muted-foreground">No universes.</p>}
           {universes && universes.length > 0 && (
             <ul className="space-y-2">
-              {(universes as { id: number; name?: string; parameters?: { is_locked?: boolean } }[]).map((u) => (
+              {(universes as { id: string; name?: string; parameters?: { is_locked?: boolean } }[]).map((u) => (
                 <li key={u.id} className="flex items-center justify-between rounded border border-border px-3 py-2">
                   <span>{u.name ?? "Universe #" + u.id}</span>
                   <Button

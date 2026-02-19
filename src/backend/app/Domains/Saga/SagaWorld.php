@@ -10,6 +10,9 @@ class SagaWorld extends Model
 {
     use HasUuids;
 
+    public $incrementing = false;
+    protected $keyType = 'string';
+
     protected $fillable = [
         'saga_id',
         'world_id',

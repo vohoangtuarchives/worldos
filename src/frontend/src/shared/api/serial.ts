@@ -1,7 +1,7 @@
 import { api } from "./client";
 
 export type SerialSeries = {
-  id: number;
+  id: string;
   title: string;
   genre_key?: string;
   universe_id?: string;
@@ -25,8 +25,8 @@ export type SerialUniverseOption = {
 };
 
 export type SerialChapter = {
-  id: number;
-  series_id: number;
+  id: string;
+  series_id: string;
   chapter_index: number;
   title?: string;
   content?: string;
@@ -39,10 +39,10 @@ export const serialApi = {
   series: {
     list: () =>
       api.get<{ success: boolean; data: { series: SerialSeries[] } }>("/api/serial/series").then((r) => r.data.series),
-    show: (id: number) =>
+    show: (id: string) =>
       api.get<{ success: boolean; data: { series: SerialSeries & { chapters?: SerialChapter[] } } }>("/api/serial/series/" + id).then((r) => r.data.series),
     create: (body: { title: string; genre_key?: string; universe_id?: string }) =>
-      api.post("/api/serial/series", body),
+      api.post<{ success: boolean; data: { series: SerialSeries } }>("/api/serial/series", body).then((r) => r.data.series),
     genres: () =>
       api
         .get<{ success: boolean; data: { genres: string[]; emergent_description?: string } }>("/api/serial/genres")
@@ -51,21 +51,21 @@ export const serialApi = {
       api
         .get<{ success: boolean; data: { universes: SerialUniverseOption[] } }>("/api/serial/universes")
         .then((r) => r.data?.universes ?? []),
-    update: (id: number, body: Partial<SerialSeries>) =>
+    update: (id: string, body: Partial<SerialSeries>) =>
       api.patch("/api/serial/series/" + id, body),
-    generateNextChapter: (id: number) =>
+    generateNextChapter: (id: string) =>
       api.post("/api/serial/series/" + id + "/generate-next-chapter"),
-    generateOutline: (id: number) =>
+    generateOutline: (id: string) =>
       api.post("/api/serial/series/" + id + "/outline/generate"),
-    arcs: (id: number) =>
+    arcs: (id: string) =>
       api.get<{ success: boolean; data?: { arcs: unknown[] } }>("/api/serial/series/" + id + "/arcs").then((r) => r.data?.arcs ?? []),
   },
   storyBible: {
-    show: (seriesId: number) =>
+    show: (seriesId: string) =>
       api.get("/api/serial/series/" + seriesId + "/story-bible"),
-    update: (seriesId: number, body: unknown) =>
+    update: (seriesId: string, body: unknown) =>
       api.put("/api/serial/series/" + seriesId + "/story-bible", body),
-    generateFromPremise: (seriesId: number, body?: { premise?: string }) =>
+    generateFromPremise: (seriesId: string, body?: { premise?: string }) =>
       api.post("/api/serial/series/" + seriesId + "/story-bible/generate-from-premise", body ?? {}),
   },
 };

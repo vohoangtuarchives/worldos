@@ -5,14 +5,14 @@ import { useSeries, useGenerateNextChapter, useGenerateOutline } from "./useSeri
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export function SeriesDetailView({ seriesId }: { seriesId: number }) {
+export function SeriesDetailView({ seriesId }: { seriesId: string }) {
   const { data: series, isLoading, error } = useSeries(seriesId);
   const genChapter = useGenerateNextChapter(seriesId);
   const genOutline = useGenerateOutline(seriesId);
   if (isLoading) return <p className="text-muted-foreground">Loading…</p>;
   if (error) return <p className="text-destructive">Failed to load series.</p>;
   if (!series) return null;
-  const chapters = (series as { chapters?: { id: number; chapter_index: number; title?: string }[] }).chapters ?? [];
+  const chapters = (series as { chapters?: { id: string; chapter_index: number; title?: string }[] }).chapters ?? [];
   return (
     <div className="space-y-6">
       <Card>

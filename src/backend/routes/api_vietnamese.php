@@ -31,6 +31,17 @@ Route::middleware('auth:sanctum')->group(function () {
 
 /*
 |--------------------------------------------------------------------------
+| Admin API
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
+    Route::get('stats', [\App\Http\Controllers\Api\AdminController::class, 'stats']);
+    Route::get('universes', [\App\Http\Controllers\Api\AdminController::class, 'universes']);
+    Route::post('universe/{id}/lock', [\App\Http\Controllers\Api\AdminController::class, 'toggleLock']);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Writer API — protected by Sanctum
 |--------------------------------------------------------------------------
 */
