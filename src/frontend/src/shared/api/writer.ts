@@ -192,10 +192,44 @@ export type MaterialTimelineEvent = {
   timestamp?: string;
 };
 
+
+
+type AIFeatureConfig = {
+  id: string;
+  feature_key: string;
+  agent_name: string;
+  provider: string;
+  model: string | null;
+  system_prompt: string | null;
+  options?: { temperature?: number };
+  enabled: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
+
+type AIRequestLogItem = {
+  id: string;
+  provider: string;
+  model: string | null;
+  feature_key: string | null;
+  agent_name: string | null;
+  status: string;
+  http_status: number | null;
+  duration_ms: number | null;
+  created_at: string;
+};
+
+type AIRequestLogDetail = AIRequestLogItem & {
+  system_prompt?: string | null;
+  user_prompt?: string | null;
+  request_payload?: string | null;
+  response_payload?: string | null;
+};
+
 export const writerApi = {
   sagas: {
     list: () => api.get<Saga[]>("/api/writer/sagas"),
-    stats: () => api.get<{ success: boolean; data: any }>("/api/writer/sagas/stats").then(r => r.data),
+    stats: () => api.get<{ success: boolean; data: Record<string, unknown> }>("/api/writer/sagas/stats").then(r => r.data),
     show: (sagaId: string) => api.get<SagaDetail>(`/api/writer/sagas/${sagaId}`),
     createFromActive: () => api.post<Saga>("/api/writer/sagas/create-from-active"),
     tree: (id: string) => api.get<{ nodes: SagaTreeNode[] }>(`/api/writer/saga/${id}/tree`),
@@ -286,9 +320,29 @@ export const writerApi = {
     getMetrics: () =>
       api.get<{ success: boolean; data: { tokens: { prompt: number; completion: number; total: number }; estimated_cost_usd: number; generations_count: number; success_rate: number } }>("/api/writer/ai/metrics").then(r => r.data),
     getGenerations: () =>
-      api.get<{ success: boolean; data: any[] }>("/api/writer/ai/generations").then(r => r.data),
+      api.get<{ success: boolean; data: Array<Record<string, unknown>> }>("/api/writer/ai/generations").then(r => r.data),
     getAgents: () =>
-      api.get<{ success: boolean; data: { summary: any[]; roster: any[] } }>("/api/writer/ai/agents").then(r => r.data),
+      api.get<{ success: boolean; data: { summary: Array<Record<string, unknown>>; roster: Array<Record<string, unknown>> } }>("/api/writer/ai/agents").then(r => r.data),
+    getFeatureConfigs: () =>
+      api.get<{ success: boolean; data: AIFeatureConfig[] }>("/api/writer/ai/feature-configs").then(r => r.data),
+    upsertFeatureConfig: (payload: { feature_key: string; agent_name: string; provider: string; model?: string; system_prompt?: string; temperature?: number; enabled?: boolean }) =>
+      api.post<{ success: boolean; message: string; data: AIFeatureConfig }>("/api/writer/ai/feature-configs", payload).then(r => r.data),
+    deleteFeatureConfig: (featureKey: string) =>
+      api.delete<{ success: boolean; deleted: boolean; feature_key: string }>(`/api/writer/ai/feature-configs/${encodeURIComponent(featureKey)}`).then(r => r.data),
+    getRequestLogFilters: () =>
+      api.get<{ success: boolean; data: { feature_keys: string[]; agent_names: string[]; statuses: string[] } }>("/api/writer/ai/request-logs/filters").then(r => r.data),
+    getRequestLogs: (params?: { feature_key?: string; agent_name?: string; status?: string; per_page?: number; page?: number }) => {
+      const sp = new URLSearchParams();
+      if (params?.feature_key) sp.set('feature_key', params.feature_key);
+      if (params?.agent_name) sp.set('agent_name', params.agent_name);
+      if (params?.status) sp.set('status', params.status);
+      if (params?.per_page != null) sp.set('per_page', String(params.per_page));
+      if (params?.page != null) sp.set('page', String(params.page));
+      const q = sp.toString();
+      return api.get<{ success: boolean; data: { data: AIRequestLogItem[]; current_page: number; last_page: number; total: number } }>(`/api/writer/ai/request-logs${q ? `?${q}` : ''}`).then(r => r.data);
+    },
+    getRequestLogDetail: (id: string) =>
+      api.get<{ success: boolean; data: AIRequestLogDetail }>(`/api/writer/ai/request-logs/${id}`).then(r => r.data),
     intervene: (worldId: string, instruction: string) =>
       api.post<{ success: boolean; message: string }>("/api/writer/ai/intervene", { world_id: worldId, instruction }),
   },

@@ -27,3 +27,23 @@ export function useAdminToggleLock() {
     },
   });
 }
+
+
+export function useAdminEvolutionOverview(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["admin", "evolution", "overview"],
+    queryFn: () => adminApi.evolutionOverview(),
+    refetchInterval: options?.refetchInterval ?? 10000,
+  });
+}
+
+export function useAdminToggleAIEvolution() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (enabled: boolean) => adminApi.toggleAIEvolution(enabled),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["admin", "evolution", "overview"] });
+      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
+    },
+  });
+}

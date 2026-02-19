@@ -1,4 +1,5 @@
 import { AgentDashboard } from "@/features/writer/AgentDashboard";
+import { AIAgentManagementPanel } from "@/features/writer/AIAgentManagementPanel";
 
 export default function AIMissionControlPage() {
     return (
@@ -12,7 +13,10 @@ export default function AIMissionControlPage() {
                 </p>
             </div>
 
-            <AgentDashboard />
+            <div className="space-y-8">
+                <AgentDashboard />
+                <AIAgentManagementPanel />
+            </div>
         </div>
     );
 }

@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
 */
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('stats', [\App\Http\Controllers\Api\AdminController::class, 'stats']);
+    Route::get('evolution/overview', [\App\Http\Controllers\Api\AdminController::class, 'evolutionOverview']);
+    Route::post('evolution/ai-toggle', [\App\Http\Controllers\Api\AdminController::class, 'toggleAI']);
     Route::get('universes', [\App\Http\Controllers\Api\AdminController::class, 'universes']);
     Route::post('universe/{id}/lock', [\App\Http\Controllers\Api\AdminController::class, 'toggleLock']);
 });
@@ -102,10 +104,16 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // AI Mission Control
     Route::prefix('ai')->group(function () {
-        Route::get('metrics',     [WriterAIAgentController::class, 'getMetrics']);
-        Route::get('generations', [WriterAIAgentController::class, 'getGenerations']);
-        Route::get('agents',      [WriterAIAgentController::class, 'getAgents']);
-        Route::post('intervene',  [WriterAIAgentController::class, 'intervene']);
+        Route::get('metrics',                  [WriterAIAgentController::class, 'getMetrics']);
+        Route::get('generations',              [WriterAIAgentController::class, 'getGenerations']);
+        Route::get('agents',                   [WriterAIAgentController::class, 'getAgents']);
+        Route::get('feature-configs',          [WriterAIAgentController::class, 'getFeatureConfigs']);
+        Route::post('feature-configs',         [WriterAIAgentController::class, 'upsertFeatureConfig']);
+        Route::delete('feature-configs/{featureKey}', [WriterAIAgentController::class, 'deleteFeatureConfig']);
+        Route::get('request-logs/filters',     [WriterAIAgentController::class, 'getRequestLogFilters']);
+        Route::get('request-logs',             [WriterAIAgentController::class, 'getRequestLogs']);
+        Route::get('request-logs/{id}',        [WriterAIAgentController::class, 'getRequestLogDetail']);
+        Route::post('intervene',               [WriterAIAgentController::class, 'intervene']);
     });
 });
 

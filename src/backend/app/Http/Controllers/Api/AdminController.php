@@ -7,6 +7,7 @@ use App\Models\UniverseModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AdminController extends Controller
 {
@@ -18,6 +19,54 @@ class AdminController extends Controller
             'archived_universes' => UniverseModel::where('is_archived', true)->count(),
             // innovative metric: total 'energy' or 'complexity' across all universes?
             'total_complexity' => DB::table('universes')->sum('entropy') ?? 0,
+        ]);
+    }
+
+
+    public function evolutionOverview(): JsonResponse
+    {
+        $now = now();
+        $lastHour = $now->copy()->subHour();
+
+        $generationsLastHour = DB::table('ai_generations')
+            ->where('created_at', '>=', $lastHour)
+            ->count();
+
+        $totalGenerations = DB::table('ai_generations')->count();
+        $failedGenerations = DB::table('ai_generations')
+            ->whereIn('status', ['FAILED', 'REJECTED'])
+            ->count();
+
+        $collapseRate = $totalGenerations > 0
+            ? round(($failedGenerations / $totalGenerations) * 100, 2)
+            : 0.0;
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'generations_per_hour' => $generationsLastHour,
+                'collapse_rate_percent' => $collapseRate,
+                'frontier_size' => DB::table('universes')->where('is_archived', false)->count(),
+                'ai_enabled' => (bool) Cache::get('admin:ai_enabled', (bool) config('ai.enabled', false)),
+                'updated_at' => $now->toISOString(),
+            ],
+        ]);
+    }
+
+    public function toggleAI(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'enabled' => 'required|boolean',
+        ]);
+
+        Cache::forever('admin:ai_enabled', (bool) $validated['enabled']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'ai_enabled' => (bool) $validated['enabled'],
+            ],
+            'message' => $validated['enabled'] ? 'AI enabled.' : 'AI disabled.',
         ]);
     }
 
