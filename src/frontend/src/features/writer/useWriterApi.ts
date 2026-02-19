@@ -274,3 +274,55 @@ export function useAIIntervene() {
       writerApi.ai.intervene(worldId, instruction),
   });
 }
+
+
+export function useAIFeatureConfigs(options?: { refetchInterval?: number }) {
+  return useQuery({
+    queryKey: ["writer", "ai", "feature-configs"],
+    queryFn: () => writerApi.ai.getFeatureConfigs(),
+    refetchInterval: options?.refetchInterval ?? 0,
+  });
+}
+
+export function useUpsertAIFeatureConfig() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: { feature_key: string; agent_name: string; provider: string; model?: string; system_prompt?: string; temperature?: number; enabled?: boolean }) =>
+      writerApi.ai.upsertFeatureConfig(payload),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["writer", "ai", "feature-configs"] });
+    },
+  });
+}
+
+export function useDeleteAIFeatureConfig() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (featureKey: string) => writerApi.ai.deleteFeatureConfig(featureKey),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["writer", "ai", "feature-configs"] });
+    },
+  });
+}
+
+export function useAIRequestLogFilters() {
+  return useQuery({
+    queryKey: ["writer", "ai", "request-logs", "filters"],
+    queryFn: () => writerApi.ai.getRequestLogFilters(),
+  });
+}
+
+export function useAIRequestLogs(params: { feature_key?: string; agent_name?: string; status?: string; per_page?: number; page?: number }) {
+  return useQuery({
+    queryKey: ["writer", "ai", "request-logs", params],
+    queryFn: () => writerApi.ai.getRequestLogs(params),
+  });
+}
+
+export function useAIRequestLogDetail(id?: string) {
+  return useQuery({
+    queryKey: ["writer", "ai", "request-log", id],
+    queryFn: () => writerApi.ai.getRequestLogDetail(id as string),
+    enabled: Boolean(id),
+  });
+}

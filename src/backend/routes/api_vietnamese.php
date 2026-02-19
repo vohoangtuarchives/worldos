@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
 */
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('stats', [\App\Http\Controllers\Api\AdminController::class, 'stats']);
+    Route::get('evolution/overview', [\App\Http\Controllers\Api\AdminController::class, 'evolutionOverview']);
+    Route::post('evolution/ai-toggle', [\App\Http\Controllers\Api\AdminController::class, 'toggleAI']);
     Route::get('universes', [\App\Http\Controllers\Api\AdminController::class, 'universes']);
     Route::post('universe/{id}/lock', [\App\Http\Controllers\Api\AdminController::class, 'toggleLock']);
 });
