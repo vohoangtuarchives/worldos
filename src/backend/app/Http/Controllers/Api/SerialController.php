@@ -164,6 +164,22 @@ class SerialController extends Controller
     }
 
     /**
+     * Delete series. DELETE /serial/series/{id}
+     */
+    public function destroy(string $id): JsonResponse
+    {
+        $series = NarrativeSeries::find($id);
+        if ($series === null) {
+            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+        }
+        $series->delete();
+        return response()->json([
+            'success' => true,
+            'message' => 'Series deleted.',
+        ]);
+    }
+
+    /**
      * Chi tiết series + danh sách arc đã plan.
      */
     public function show(string $id): JsonResponse

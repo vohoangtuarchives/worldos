@@ -39,7 +39,7 @@ export function CreateSeriesButton() {
                   },
                   {
                     onSuccess: (result: unknown) => {
-                      const data = result as { data?: { series?: { id: number } } };
+                      const data = result as { data?: { series?: { id: string } } };
                       const id = data?.data?.series?.id;
                       if (id) router.push("/serial/series/" + id);
                       setOpen(false);

@@ -84,8 +84,8 @@ export type WorldDetail = World & {
 };
 
 export type WorldSnapshotItem = {
-  id: number;
-  world_id: number;
+  id: string;
+  world_id: string;
   year: number;
   entropy?: number;
   stability?: number;
@@ -94,7 +94,7 @@ export type WorldSnapshotItem = {
 };
 
 export type WorldSnapshotPayload = {
-  id: number;
+  id: string;
   year: number;
   entropy?: number;
   stability?: number;
@@ -104,7 +104,7 @@ export type WorldSnapshotPayload = {
 };
 
 export type WorldEventItem = {
-  id: number;
+  id: string;
   tick: number;
   type: string;
   payload?: unknown;

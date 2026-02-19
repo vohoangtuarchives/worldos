@@ -138,6 +138,7 @@ Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::post('series',                   [SerialController::class, 'store']);
     Route::get('series/{id}',               [SerialController::class, 'show']);
     Route::patch('series/{id}',             [SerialController::class, 'update']);
+    Route::delete('series/{id}',            [SerialController::class, 'destroy']);
     Route::post('series/{id}/generate-next-chapter', [SerialController::class, 'generateNextChapter']);
     Route::post('series/{id}/generate-chapters',    [SerialController::class, 'generateChapters']);
     Route::get('series/{id}/arcs',          [SerialController::class, 'arcs']);

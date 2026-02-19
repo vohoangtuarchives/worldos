@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,7 +13,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class SerialChapter extends Model
 {
+    use HasUuids;
+
     protected $table = 'serial_chapters';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'narrative_series_id',
