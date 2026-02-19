@@ -10,6 +10,7 @@ use App\Domains\Narrative\LLM\Services\ContextBuilder;
 use App\Domains\Narrative\LLM\Services\IntentParser;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use App\Services\AI\AIAgentContext;
 
 class DialogueEngine
 {
@@ -46,7 +47,7 @@ class DialogueEngine
         $userPrompt = "It is your turn to act. Select intent.";
 
         try {
-            $rawJson = $this->llm->generate($systemPrompt, $userPrompt);
+            $rawJson = app(AIAgentContext::class)->runWith('narrative.dialogue', fn () => $this->llm->generate($systemPrompt, $userPrompt));
             
             // 4. Parse Intent
             $intent = $this->intentParser->parse($rawJson);

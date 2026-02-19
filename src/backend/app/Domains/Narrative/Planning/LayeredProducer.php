@@ -7,6 +7,7 @@ namespace App\Domains\Narrative\Planning;
 use App\Domains\Narrative\DTO\BeatSpec;
 use App\Domains\Narrative\DTO\MemorySnapshot;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
+use App\Services\AI\AIAgentContext;
 use App\Domains\Narrative\Serial\SerialGenrePreset;
 
 /**
@@ -81,7 +82,7 @@ class LayeredProducer
 
     private function callLlm(string $systemPrompt, string $userPrompt): string
     {
-        $response = $this->llm->generate($systemPrompt, $userPrompt);
+        $response = app(AIAgentContext::class)->runWith('narrative.layered_producer', fn () => $this->llm->generate($systemPrompt, $userPrompt));
         if (isset($response['content']) && is_string($response['content'])) {
             return trim($response['content']);
         }

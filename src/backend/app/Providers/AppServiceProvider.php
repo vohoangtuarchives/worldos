@@ -42,7 +42,9 @@ class AppServiceProvider extends ServiceProvider
                 return new \App\Domains\Narrative\LLM\Services\OpenAIService(
                     $apiKey,
                     config('services.openai.model'),
-                    $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class)
+                    $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class),
+                    $app->make(\App\Services\AI\AIAgentContext::class),
+                    $app->make(\App\Services\AI\AIFeatureAgentResolver::class)
                 );
             }
         );

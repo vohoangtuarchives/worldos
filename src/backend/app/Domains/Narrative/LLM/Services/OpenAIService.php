@@ -4,6 +4,8 @@ namespace App\Domains\Narrative\LLM\Services;
 
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use App\Domains\Narrative\LLM\Support\AIProviderRequestLogger;
+use App\Services\AI\AIAgentContext;
+use App\Services\AI\AIFeatureAgentResolver;
 use Exception;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -15,20 +17,29 @@ class OpenAIService implements LLMProvider
         protected string $apiKey,
         protected string $model = 'gpt-4-turbo-preview',
         protected ?AIProviderRequestLogger $requestLogger = null,
+        protected ?AIAgentContext $agentContext = null,
+        protected ?AIFeatureAgentResolver $agentResolver = null,
     ) {}
 
     public function generate(string $systemPrompt, string $userPrompt): array
     {
         $start = microtime(true);
+        $featureKey = ($this->agentContext ?? app(AIAgentContext::class))->get();
+        $agentConfig = ($this->agentResolver ?? app(AIFeatureAgentResolver::class))->resolve($featureKey);
+
+        $resolvedModel = $agentConfig['model'] ?: $this->model;
+        $resolvedSystemPrompt = $agentConfig['system_prompt'] ?: $systemPrompt;
+        $resolvedOptions = $agentConfig['options'] ?? [];
+
         $endpoint = 'https://api.openai.com/v1/chat/completions';
         $requestBody = [
-            'model' => $this->model,
+            'model' => $resolvedModel,
             'messages' => [
-                ['role' => 'system', 'content' => $systemPrompt],
+                ['role' => 'system', 'content' => $resolvedSystemPrompt],
                 ['role' => 'user', 'content' => $userPrompt],
             ],
             'response_format' => ['type' => 'json_object'],
-            'temperature' => 0.7,
+            'temperature' => $resolvedOptions['temperature'] ?? 0.7,
         ];
 
         $response = null;
@@ -54,26 +65,32 @@ class OpenAIService implements LLMProvider
 
             $this->logHistory(
                 status: 'SUCCESS',
-                systemPrompt: $systemPrompt,
+                systemPrompt: $resolvedSystemPrompt,
                 userPrompt: $userPrompt,
                 requestBody: $requestBody,
                 endpoint: $endpoint,
                 response: $response,
                 errorMessage: null,
                 startTime: $start,
+                featureKey: $agentConfig['feature_key'] ?? $featureKey,
+                agentName: $agentConfig['agent_name'] ?? null,
+                model: $resolvedModel,
             );
 
             return $data;
         } catch (Exception $e) {
             $this->logHistory(
                 status: 'FAILED',
-                systemPrompt: $systemPrompt,
+                systemPrompt: $resolvedSystemPrompt,
                 userPrompt: $userPrompt,
                 requestBody: $requestBody,
                 endpoint: $endpoint,
                 response: $response,
                 errorMessage: $e->getMessage(),
                 startTime: $start,
+                featureKey: $agentConfig['feature_key'] ?? $featureKey,
+                agentName: $agentConfig['agent_name'] ?? null,
+                model: $resolvedModel,
             );
 
             Log::error('LLM Generation Error: ' . $e->getMessage());
@@ -90,13 +107,18 @@ class OpenAIService implements LLMProvider
         ?Response $response,
         ?string $errorMessage,
         float $startTime,
+        ?string $featureKey,
+        ?string $agentName,
+        ?string $model,
     ): void {
         $logger = $this->requestLogger ?? app(AIProviderRequestLogger::class);
 
         $logger->log([
             'provider' => 'openai',
-            'model' => $this->model,
+            'model' => $model,
             'endpoint' => $endpoint,
+            'feature_key' => $featureKey,
+            'agent_name' => $agentName,
             'system_prompt' => $systemPrompt,
             'user_prompt' => $userPrompt,
             'request_payload' => $this->encodePayload($requestBody),

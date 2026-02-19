@@ -7,6 +7,7 @@ namespace App\Domains\Narrative\Planning;
 use App\Domains\Narrative\DTO\BeatSpec;
 use App\Domains\Narrative\DTO\MemorySnapshot;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
+use App\Services\AI\AIAgentContext;
 use App\Domains\Narrative\Serial\SerialGenrePreset;
 
 /**
@@ -194,7 +195,7 @@ class ChapterProducer
     private function callLlm(string $systemPrompt, string $userPrompt, array $blueprint, string $objective): string
     {
         if ($this->llm !== null) {
-            $response = $this->llm->generate($systemPrompt, $userPrompt);
+            $response = app(AIAgentContext::class)->runWith('narrative.chapter_producer', fn () => $this->llm->generate($systemPrompt, $userPrompt));
             if (isset($response['content']) && is_string($response['content'])) {
                 return $response['content'];
             }
@@ -217,7 +218,7 @@ class ChapterProducer
     private function callLlmWithUsage(string $systemPrompt, string $userPrompt, array $blueprint, string $objective): array
     {
         if ($this->llm !== null) {
-            $response = $this->llm->generate($systemPrompt, $userPrompt);
+            $response = app(AIAgentContext::class)->runWith('narrative.chapter_producer', fn () => $this->llm->generate($systemPrompt, $userPrompt));
             $content = null;
             if (isset($response['content']) && is_string($response['content'])) {
                 $content = $response['content'];

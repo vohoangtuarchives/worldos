@@ -102,10 +102,16 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // AI Mission Control
     Route::prefix('ai')->group(function () {
-        Route::get('metrics',     [WriterAIAgentController::class, 'getMetrics']);
-        Route::get('generations', [WriterAIAgentController::class, 'getGenerations']);
-        Route::get('agents',      [WriterAIAgentController::class, 'getAgents']);
-        Route::post('intervene',  [WriterAIAgentController::class, 'intervene']);
+        Route::get('metrics',                  [WriterAIAgentController::class, 'getMetrics']);
+        Route::get('generations',              [WriterAIAgentController::class, 'getGenerations']);
+        Route::get('agents',                   [WriterAIAgentController::class, 'getAgents']);
+        Route::get('feature-configs',          [WriterAIAgentController::class, 'getFeatureConfigs']);
+        Route::post('feature-configs',         [WriterAIAgentController::class, 'upsertFeatureConfig']);
+        Route::delete('feature-configs/{featureKey}', [WriterAIAgentController::class, 'deleteFeatureConfig']);
+        Route::get('request-logs/filters',     [WriterAIAgentController::class, 'getRequestLogFilters']);
+        Route::get('request-logs',             [WriterAIAgentController::class, 'getRequestLogs']);
+        Route::get('request-logs/{id}',        [WriterAIAgentController::class, 'getRequestLogDetail']);
+        Route::post('intervene',               [WriterAIAgentController::class, 'intervene']);
     });
 });
 

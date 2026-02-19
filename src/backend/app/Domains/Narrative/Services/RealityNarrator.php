@@ -7,6 +7,7 @@ use App\Models\WorldEvent;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use App\Domains\World\ValueObjects\PhysicsProfile;
 use Illuminate\Support\Facades\Log;
+use App\Services\AI\AIAgentContext;
 
 class RealityNarrator
 {
@@ -31,7 +32,7 @@ class RealityNarrator
         Describe the immediate visual and physical effects at the point of impact.";
 
         try {
-            $result = $this->llm->generate($systemPrompt, $userPrompt);
+            $result = app(AIAgentContext::class)->runWith('narrative.reality_narrator', fn () => $this->llm->generate($systemPrompt, $userPrompt));
             return $result['description'] ?? "Thực tại bắt đầu rạn nứt khi luồng năng lượng ngoại lai áp đảo quy tắc bản địa.";
         } catch (\Exception $e) {
             Log::error("RealityNarrator Error: " . $e->getMessage());
@@ -54,7 +55,7 @@ class RealityNarrator
         Describe the sensory experience of this chaos.";
 
         try {
-            $result = $this->llm->generate($systemPrompt, $userPrompt);
+            $result = app(AIAgentContext::class)->runWith('narrative.reality_narrator', fn () => $this->llm->generate($systemPrompt, $userPrompt));
             return $result['description'] ?? "Sức nóng của sự hỗn loạn bắt đầu làm mờ nhạt ranh giới của vật chất.";
         } catch (\Exception $e) {
             return "Áp lực entropy tăng cao, tạo ra những biến động không xác định trong thực tại.";

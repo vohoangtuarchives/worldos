@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Narrative\Planning;
 
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
+use App\Services\AI\AIAgentContext;
 
 /**
  * Phase 5.4: Rule-based checks and AI evaluator (8-point rubric); refinement loop.
@@ -42,7 +43,7 @@ class QualityControlEngine
     {
         if ($this->llm !== null) {
             $systemPrompt = 'Rate this narrative 0-10 on emotional thickness, subtext, rhythm, atmosphere. Reply JSON: {"score": float, "weak_points": []}';
-            $response = $this->llm->generate($systemPrompt, $draft);
+            $response = app(AIAgentContext::class)->runWith('narrative.quality_control', fn () => $this->llm->generate($systemPrompt, $draft));
             $text = $response['description'] ?? $response['content'] ?? json_encode($response);
             if (preg_match('/"score"\s*:\s*([\d.]+)/', $text, $m)) {
                 $score = (float) $m[1];
