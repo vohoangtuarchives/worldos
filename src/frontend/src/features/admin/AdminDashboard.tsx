@@ -12,7 +12,8 @@ export function AdminDashboard() {
   return (
     <div className="space-y-6">
       <p className="text-sm text-muted-foreground">
-        <Link href="/admin/evolution" className="underline hover:text-foreground">Evolution Lab</Link> (placeholder)
+        <Link href="/admin/evolution" className="underline hover:text-foreground">Evolution Lab</Link> · {" "}
+        <Link href="/admin/ai" className="underline hover:text-foreground">AI Config Center</Link>
       </p>
       <Card>
         <CardHeader><CardTitle>Stats</CardTitle></CardHeader>
