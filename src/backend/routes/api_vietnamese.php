@@ -123,6 +123,7 @@ Route::middleware('auth:sanctum')->prefix('cluster')->group(function () {
 Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::get('series',                    [SerialController::class, 'index']);
     Route::get('genres',                    [SerialController::class, 'genres']);
+    Route::get('universes',                 [SerialController::class, 'universes']);
     Route::post('series',                   [SerialController::class, 'store']);
     Route::get('series/{id}',               [SerialController::class, 'show']);
     Route::patch('series/{id}',             [SerialController::class, 'update']);

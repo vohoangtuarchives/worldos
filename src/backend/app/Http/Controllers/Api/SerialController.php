@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Jobs\GenerateSerialChapterJob;
 use App\Models\NarrativeArcOutline;
 use App\Models\NarrativeSeries;
+use App\Models\UniverseModel;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
@@ -67,6 +68,32 @@ class SerialController extends Controller
                 'genres' => SerialGenrePreset::supportedGenres(),
                 'presets' => $presets,
                 'emergent_description' => 'Tự phát sinh từ world (thể loại và arc do universe quyết định). Gắn universe_id khi tạo series.',
+            ],
+        ]);
+    }
+
+
+    /**
+     * Danh sách universe có sẵn để bind vào series (worldOS v3).
+     */
+    public function universes(): JsonResponse
+    {
+        $universes = UniverseModel::query()
+            ->orderByDesc('updated_at')
+            ->limit(200)
+            ->get(['id', 'name', 'world_id', 'status', 'is_archived', 'updated_at']);
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'universes' => $universes->map(fn ($u) => [
+                    'id' => $u->id,
+                    'name' => $u->name,
+                    'world_id' => $u->world_id,
+                    'status' => $u->status,
+                    'is_archived' => (bool) ($u->is_archived ?? false),
+                    'updated_at' => $u->updated_at?->format(\DateTimeInterface::ATOM),
+                ]),
             ],
         ]);
     }
