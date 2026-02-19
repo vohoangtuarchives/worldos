@@ -239,4 +239,37 @@ return [
         'detailed_logging' => env('AI_DETAILED_LOGGING', false),
         'test_mode' => env('AI_TEST_MODE', false),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Agent Registry (Per Feature)
+    |--------------------------------------------------------------------------
+    */
+    'agent_registry' => [
+        'global.default' => [
+            'agent_name' => 'Core Agent',
+            'provider' => 'openai',
+            'model' => env('OPENAI_MODEL', 'gpt-4-turbo-preview'),
+            'options' => ['temperature' => 0.7],
+        ],
+        'narrative.chronicler' => [
+            'agent_name' => 'Narrative Agent',
+            'provider' => 'openai',
+            'model' => env('OPENAI_MODEL', 'gpt-4-turbo-preview'),
+            'options' => ['temperature' => 0.7],
+        ],
+        'narrative.dialogue' => [
+            'agent_name' => 'Dialogue Agent',
+            'provider' => 'openai',
+            'model' => env('OPENAI_MODEL', 'gpt-4-turbo-preview'),
+            'options' => ['temperature' => 0.8],
+        ],
+        'runtime.universe_evaluator' => [
+            'agent_name' => 'Universe Evaluator Agent',
+            'provider' => 'openai',
+            'model' => env('OPENAI_MODEL', 'gpt-4-turbo-preview'),
+            'options' => ['temperature' => 0.3],
+        ],
+    ],
+
 ];

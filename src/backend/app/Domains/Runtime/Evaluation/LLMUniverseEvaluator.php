@@ -6,6 +6,7 @@ namespace App\Domains\Runtime\Evaluation;
 
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use Illuminate\Support\Facades\Log;
+use App\Services\AI\AIAgentContext;
 
 /**
  * WorldOS v3: LLM-powered universe evaluator.
@@ -61,7 +62,7 @@ PROMPT;
             'metrics' => $metrics->toArray(),
         ]);
 
-        $response = $this->llm->generate(self::SYSTEM_PROMPT, $userPrompt);
+        $response = app(AIAgentContext::class)->runWith('runtime.universe_evaluator', fn () => $this->llm->generate(self::SYSTEM_PROMPT, $userPrompt));
 
         Log::info('LLMUniverseEvaluator: raw LLM response', [
             'response' => $response,
