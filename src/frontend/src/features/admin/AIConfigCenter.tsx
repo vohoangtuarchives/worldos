@@ -133,6 +133,80 @@ export function AIConfigCenter() {
       <Card>
         <CardHeader>
           <CardTitle>0) Runtime Monitoring (Live)</CardTitle>
+          <p className="text-sm text-muted-foreground">Từ phản hồi vận hành: cần nhìn thấy AI/simulation có thực sự chạy hay không theo thời gian thực.</p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-3 md:grid-cols-4">
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">AI Evolution</p>
+              <p className="text-lg font-semibold">{overviewData?.ai_enabled ? "Enabled" : "Disabled"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Generations/h</p>
+              <p className="text-lg font-semibold">{overviewData?.generations_per_hour ?? "—"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Collapse rate</p>
+              <p className="text-lg font-semibold">{overviewData?.collapse_rate_percent != null ? `${overviewData.collapse_rate_percent}%` : "—"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Frontier size</p>
+              <p className="text-lg font-semibold">{overviewData?.frontier_size ?? "—"}</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant={overviewData?.ai_enabled ? "destructive" : "default"}
+              disabled={toggleEvolution.isPending}
+              onClick={() => toggleEvolution.mutate(!(overviewData?.ai_enabled ?? false))}
+            >
+              {toggleEvolution.isPending ? "Đang cập nhật..." : overviewData?.ai_enabled ? "Tắt AI Evolution" : "Bật AI Evolution"}
+            </Button>
+            <p className="text-xs text-muted-foreground">Cập nhật gần nhất: {overviewData?.updated_at ?? "chưa có dữ liệu runtime"}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>0) Runtime Monitoring (Live)</CardTitle>
+          <p className="text-sm text-muted-foreground">Từ phản hồi vận hành: cần nhìn thấy AI/simulation có thực sự chạy hay không theo thời gian thực.</p>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid gap-3 md:grid-cols-4">
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">AI Evolution</p>
+              <p className="text-lg font-semibold">{overviewData?.ai_enabled ? "Enabled" : "Disabled"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Generations/h</p>
+              <p className="text-lg font-semibold">{overviewData?.generations_per_hour ?? "—"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Collapse rate</p>
+              <p className="text-lg font-semibold">{overviewData?.collapse_rate_percent != null ? `${overviewData.collapse_rate_percent}%` : "—"}</p>
+            </div>
+            <div className="rounded border border-border p-3">
+              <p className="text-xs text-muted-foreground">Frontier size</p>
+              <p className="text-lg font-semibold">{overviewData?.frontier_size ?? "—"}</p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-3">
+            <Button
+              variant={overviewData?.ai_enabled ? "destructive" : "default"}
+              disabled={toggleEvolution.isPending}
+              onClick={() => toggleEvolution.mutate(!(overviewData?.ai_enabled ?? false))}
+            >
+              {toggleEvolution.isPending ? "Đang cập nhật..." : overviewData?.ai_enabled ? "Tắt AI Evolution" : "Bật AI Evolution"}
+            </Button>
+            <p className="text-xs text-muted-foreground">Cập nhật gần nhất: {overviewData?.updated_at ?? "chưa có dữ liệu runtime"}</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>0) Runtime Monitoring (Live)</CardTitle>
           <p className="text-sm text-muted-foreground">Theo dõi evolution engine theo thời gian thực và bật/tắt AI enrichment.</p>
         </CardHeader>
         <CardContent className="space-y-4">
