@@ -1,7 +1,9 @@
 "use client";
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminApi } from "@/shared/api/admin";
+import { adminApi, type AdminUniverseItem } from "@/shared/api/admin";
+
+export type { AdminUniverseItem };
 
 export function useAdminStats() {
   return useQuery({
@@ -16,18 +18,6 @@ export function useAdminUniverses() {
     queryFn: () => adminApi.universes(),
   });
 }
-
-export function useAdminToggleLock() {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => adminApi.toggleLock(id),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin", "universes"] });
-      qc.invalidateQueries({ queryKey: ["admin", "stats"] });
-    },
-  });
-}
-
 
 export function useAdminEvolutionOverview(options?: { refetchInterval?: number }) {
   return useQuery({
