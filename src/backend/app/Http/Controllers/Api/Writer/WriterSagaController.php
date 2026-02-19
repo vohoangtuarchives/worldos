@@ -188,8 +188,6 @@ class WriterSagaController extends Controller
                 'ticks'   => $ticks,
             ]);
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Saga Advance Error: " . $e->getMessage());
-            file_put_contents(storage_path('logs/saga_debug.log'), date('Y-m-d H:i:s') . " Advance Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n", FILE_APPEND);
             return response()->json(['error' => $e->getMessage()], 422);
         }
     }
@@ -214,8 +212,6 @@ class WriterSagaController extends Controller
                 'message' => "Simulation completed: {$ticks} tick(s) advanced via V3 pipeline.",
             ]);
         } catch (\Throwable $e) {
-            \Illuminate\Support\Facades\Log::error("Saga Run Error: " . $e->getMessage());
-            file_put_contents(storage_path('logs/saga_debug.log'), date('Y-m-d H:i:s') . " Error: " . $e->getMessage() . "\n" . $e->getTraceAsString() . "\n\n", FILE_APPEND);
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }

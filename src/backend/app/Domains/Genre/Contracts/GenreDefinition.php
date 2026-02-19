@@ -36,6 +36,14 @@ interface GenreDefinition
     /**
      * Get the validator enforcement logic for this genre.
      */
+    /**
+     * Get the validator enforcement logic for this genre.
+     */
     public function validator(): GenreValidator;
+
+    /**
+     * Get the narrative prompt template for AI.
+     */
+    public function getNarrativePrompt(): string;
 }
 

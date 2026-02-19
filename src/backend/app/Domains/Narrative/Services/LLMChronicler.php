@@ -18,8 +18,9 @@ class LLMChronicler implements ChroniclerInterface
 {
     private NarrativeBridge $bridge;
     private ?LLMProvider $llm;
+    private ?\App\Domains\Genre\GenreRegistry $registry;
 
-    public function __construct(NarrativeBridge $bridge, ?LLMProvider $llm = null)
+    public function __construct(NarrativeBridge $bridge, ?LLMProvider $llm = null, ?\App\Domains\Genre\GenreRegistry $registry = null)
     {
         $this->bridge = $bridge;
         $this->llm = $llm ?? (function () {
@@ -28,6 +29,7 @@ class LLMChronicler implements ChroniclerInterface
             }
             return null;
         })();
+        $this->registry = $registry ?? (app()->bound(\App\Domains\Genre\GenreRegistry::class) ? app(\App\Domains\Genre\GenreRegistry::class) : null);
     }
 
     public function chronicle(Universe $universe): string
@@ -40,7 +42,18 @@ class LLMChronicler implements ChroniclerInterface
 
         if ($this->llm !== null) {
             try {
-                $text = $this->generateViaLLM($state, $age, $rich, $milestones);
+                // Try to find specific genre prompt from parameters or bridge context
+                $genreKey = $params['genre'] ?? $rich['genre'] ?? null;
+                $genrePrompt = null;
+                
+                if ($genreKey && $this->registry) {
+                    $def = $this->registry->get($genreKey);
+                    if ($def) {
+                        $genrePrompt = $def->getNarrativePrompt();
+                    }
+                }
+
+                $text = $this->generateViaLLM($state, $age, $rich, $milestones, $genrePrompt);
                 if ($text !== null && $text !== '') {
                     return $text;
                 }
@@ -52,9 +65,15 @@ class LLMChronicler implements ChroniclerInterface
         return $this->bridge->buildChronicleParagraph($state, $age);
     }
 
-    private function generateViaLLM(WorldStateVector $state, int $age, array $rich, array $milestones): ?string
+    private function generateViaLLM(WorldStateVector $state, int $age, array $rich, array $milestones, ?string $genrePrompt = null): ?string
     {
-        $systemPrompt = "Bạn là người viết biên niên sử cho một thế giới mô phỏng. Nhiệm vụ: trả về đúng một đối tượng JSON với đúng một khóa 'chronicle'. Giá trị của 'chronicle' là một đoạn văn (1–3 câu) bằng tiếng Việt, văn phong biên niên, giàu hình ảnh, mô tả tình hình thế giới tại chu kỳ đã cho. Chỉ trả về JSON, không giải thích thêm.";
+        $baseSystemPrompt = "Bạn là người viết biên niên sử cho một thế giới mô phỏng. Nhiệm vụ: trả về đúng một đối tượng JSON với đúng một khóa 'chronicle'. Giá trị của 'chronicle' là một đoạn văn (1–3 câu) bằng tiếng Việt, văn phong biên niên, giàu hình ảnh, mô tả tình hình thế giới tại chu kỳ đã cho. Chỉ trả về JSON, không giải thích thêm.";
+        
+        $systemPrompt = $baseSystemPrompt;
+        if ($genrePrompt) {
+            $systemPrompt .= "\n\nGENRE INSTRUCTION: " . $genrePrompt;
+        }
+
         $situationPhrases = array_map(fn ($s) => $s['phrase'], $rich['situations']);
         $milestoneLines = [];
         foreach (array_slice($milestones, -5) as $m) {

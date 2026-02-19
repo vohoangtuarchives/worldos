@@ -24,7 +24,8 @@ use Illuminate\Validation\Rule;
 class SerialController extends Controller
 {
     public function __construct(
-        private readonly SerialStoryService $serialService
+        private readonly SerialStoryService $serialService,
+        private readonly \App\Domains\Narrative\Services\NarrativeFeedbackService $feedbackService
     ) {
     }
 
@@ -396,9 +397,51 @@ class SerialController extends Controller
             ], 200);
         } catch (\Throwable $e) {
             return response()->json([
-                'success' => false,
-                'message' => 'Generate outline failed: ' . $e->getMessage(),
             ], 502);
         }
     }
+        /**
+     * Canonize a chapter (mark as published and trigger feedback loop).
+     * POST /serial/series/{id}/chapters/{chapterId}/canonize
+     */
+    public function canonizeChapter(string $id, string $chapterId): JsonResponse
+    {
+        $chapter = \App\Models\SerialChapter::where('narrative_series_id', $id)
+            ->where('id', $chapterId)
+            ->firstOrFail();
+
+        if ($chapter->canonized_at !== null) {
+            return response()->json(['success' => false, 'message' => 'Chapter already canonized.'], 400);
+        }
+
+        // 1. Mark as canon
+        $chapter->update([
+            'canonized_at' => now(),
+            'needs_review' => false,
+            'impact_status' => 'processing'
+        ]);
+
+        // 2. Trigger Feedback Loop
+        try {
+            $series = NarrativeSeries::with('universe')->find($id);
+            if ($series && $series->universe) {
+                // Determine universe to impact (series universe)
+                // We should pass the universe model to the service
+                $this->feedbackService->processCanonization($chapter, $series->universe);
+                $chapter->update(['impact_status' => 'processed']);
+            }
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error('Feedback loop failed', ['error' => $e->getMessage()]);
+            $chapter->update(['impact_status' => 'failed']);
+            // We don't fail the request, just log it
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'chapter' => $chapter->fresh(),
+                'message' => 'Chapter canonized and feedback loop triggered.',
+            ],
+        ]);
+        }
 }

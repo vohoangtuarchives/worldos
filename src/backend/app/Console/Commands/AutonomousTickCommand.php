@@ -8,6 +8,9 @@ use App\Models\World;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
 
+/**
+ * @deprecated V3: Use SagaService + WorldEvolutionKernel (Macro-Sim) instead of this Micro-Sim.
+ */
 class AutonomousTickCommand extends Command
 {
     protected $signature = 'autonomous:tick {--force}';

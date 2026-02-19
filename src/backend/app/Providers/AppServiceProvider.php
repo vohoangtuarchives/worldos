@@ -76,6 +76,20 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
+        // Explicitly bind WorldEvolutionKernel to inject BasePhysicsEngine
+        $this->app->bind(
+            \App\Domains\Evolution\Kernel\WorldEvolutionKernel::class,
+            function ($app) {
+                return new \App\Domains\Evolution\Kernel\WorldEvolutionKernel(
+                    $app->make(\App\Domains\Evolution\Engine\VectorDynamicsEngine::class),
+                    $app->make(\App\Domains\Evolution\Kernel\StateLoader::class),
+                    $app->make(\App\Domains\Cosmology\Services\BasePhysicsEngine::class),
+                    $app->make(\App\Domains\Cosmology\Services\StructuralMutationEngine::class),
+                    $app->make(\App\Domains\Material\MaterialWorldBridge::class)
+                );
+            }
+        );
+
         // Continuous operation services
         $this->app->singleton(\App\Services\World\ContinuousWorldService::class);
         $this->app->singleton(\App\Domains\Intelligence\Services\WorldIntelligenceService::class);
@@ -154,6 +168,16 @@ class AppServiceProvider extends ServiceProvider
 
         // SagaDirector binding
         $this->app->singleton(\App\Domains\Saga\Services\SagaDirector::class);
+
+        // Cosmology Bindings (Consolidated from Cosmic)
+        $this->app->bind(
+            \App\Domains\Cosmology\Contracts\CosmicSnapshotRepositoryInterface::class,
+            \App\Domains\Cosmology\Repositories\CosmicSnapshotEloquentRepository::class
+        );
+        $this->app->bind(
+            \App\Domains\Cosmology\Contracts\AttractorRepositoryInterface::class,
+            \App\Domains\Cosmology\Repositories\AttractorEloquentRepository::class
+        );
     }
 
     /**

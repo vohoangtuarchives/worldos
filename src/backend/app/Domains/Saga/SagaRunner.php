@@ -7,13 +7,13 @@ use App\Domains\Material\MaterialSeeder;
 use App\Domains\Material\MaterialWorldBridge;
 use App\Domains\Material\MaterialArchetypeCoupler;
 use App\Models\World;
-use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
-use App\Domains\Cosmic\Contracts\CosmicSnapshotRepositoryInterface;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\Attractor;
+use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
+use App\Domains\Cosmology\Contracts\CosmicSnapshotRepositoryInterface;
+use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use App\Domains\Cosmology\ValueObjects\CosmicState;
+use App\Domains\Cosmology\ValueObjects\EnvironmentState;
+use App\Domains\Cosmology\ValueObjects\CivilizationState;
+use App\Domains\Cosmology\ValueObjects\Attractor;
 
 /**
  * Saga Runner
@@ -516,7 +516,7 @@ class SagaRunner
         // 5. Social Class Dynamics
         foreach ($civ->socialClasses as $class) {
             // Merchant Uprising (High Power + Low Contentment)
-            if ($class->type === \App\Domains\Cosmic\Enums\SocialClassType::MERCHANT && $class->power > 0.7 && $class->contentment < 0.3) {
+            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::MERCHANT && $class->power > 0.7 && $class->contentment < 0.3) {
                 if (rand(1, 100) <= 25) {
                     $events[] = [
                         'type' => 'merchant_uprising',
@@ -526,7 +526,7 @@ class SagaRunner
                 }
             }
             // Nobility Collapse (Low Power in Chaos)
-            if ($class->type === \App\Domains\Cosmic\Enums\SocialClassType::NOBILITY && $class->power < 0.2 && $cosmic->entropy > 0.7) {
+            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::NOBILITY && $class->power < 0.2 && $cosmic->entropy > 0.7) {
                  $events[] = [
                     'type' => 'nobility_collapse',
                     'severity' => 2,
@@ -534,7 +534,7 @@ class SagaRunner
                 ];
             }
             // Warrior Dominance (High Power in Instability)
-            if ($class->type === \App\Domains\Cosmic\Enums\SocialClassType::WARRIOR && $class->power > 0.8 && $cosmic->stability < 0.4) {
+            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::WARRIOR && $class->power > 0.8 && $cosmic->stability < 0.4) {
                  $events[] = [
                     'type' => 'warrior_dominance',
                     'severity' => 3,

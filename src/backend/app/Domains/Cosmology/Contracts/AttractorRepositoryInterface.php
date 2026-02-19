@@ -4,34 +4,43 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Contracts;
 
-/**
- * Per-universe attractors (centroid + origin) for drift and mutation.
- */
+use App\Domains\Cosmology\Aggregates\AttractorAggregate;
+use App\Domains\Cosmology\ValueObjects\AttractorIncarnation;
+
 interface AttractorRepositoryInterface
 {
     /**
-     * @return array{id: int, universe_id: string, name: string, centroid_jsonb: array, origin_centroid_jsonb: array, birth_tick: int, mutation_count: int, active: bool}|null
+     * Find an attractor by its code (e.g., "EQUILIBRIUM", "CHAOS").
      */
-    public function getByUniverseAndName(string $universeId, string $name): ?array;
+    public function findByCode(string $code): ?AttractorAggregate;
 
     /**
-     * @return list<array{id: int, universe_id: string, name: string, centroid_jsonb: array, origin_centroid_jsonb: array, birth_tick: int, mutation_count: int, active: bool}>
+     * Find an attractor by its ID.
      */
-    public function getActiveByUniverse(string $universeId): array;
+    public function findById(string $id): ?AttractorAggregate;
 
     /**
-     * Create or update attractor. Returns id.
+     * Save or update an attractor aggregate.
      */
-    public function upsert(
-        string $universeId,
-        string $name,
-        array $centroid,
-        array $originCentroid,
-        int $birthTick = 0,
-        int $mutationCount = 0
-    ): int;
+    public function save(AttractorAggregate $attractor): void;
 
-    public function recordCentroidHistory(int $attractorId, int $tick, array $centroid): void;
+    /**
+     * Save a new incarnation for an attractor.
+     */
+    public function saveIncarnation(AttractorIncarnation $incarnation): void;
 
-    public function incrementMutationCount(int $attractorId): void;
+    /**
+     * Get the current active incarnation for an attractor.
+     */
+    public function getCurrentIncarnation(string $attractorId): ?AttractorIncarnation;
+
+    /**
+     * Get all incarnations for an attractor (full tree).
+     */
+    public function getIncarnationTree(string $attractorId): array;
+
+    /**
+     * Close (set end_tick) for an incarnation.
+     */
+    public function closeIncarnation(string $incarnationId, int $endTick): void;
 }

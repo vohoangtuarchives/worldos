@@ -42,4 +42,46 @@ final class Attractor
         $v = WorldStateVector::fromArray($this->centroid);
         return $state->distance($v);
     }
+
+    /**
+     * @return array<string, Attractor>
+     */
+    public static function catalog(): array
+    {
+        // Default Centroid (Middle of everything)
+        $default = [
+            WorldStateVector::DIMENSION_ORDER => 0.5,
+            WorldStateVector::DIMENSION_ENTROPY => 0.5,
+            WorldStateVector::DIMENSION_COHESION => 0.5,
+            WorldStateVector::DIMENSION_LEGITIMACY => 0.5,
+            WorldStateVector::DIMENSION_INNOVATION => 0.5,
+            WorldStateVector::DIMENSION_MILITARY => 0.5,
+            WorldStateVector::DIMENSION_INEQUALITY => 0.5,
+            WorldStateVector::DIMENSION_TRAUMA => 0.5,
+            WorldStateVector::DIMENSION_ELITE_COHESION => 0.5,
+            WorldStateVector::DIMENSION_RESOURCE_STOCK => 0.5,
+        ];
+
+        return [
+            'EQUILIBRIUM' => new self('EQUILIBRIUM', $default, $default),
+            'CHAOS' => new self('CHAOS', array_merge($default, [
+                WorldStateVector::DIMENSION_ORDER => 0.1,
+                WorldStateVector::DIMENSION_ENTROPY => 0.9,
+                WorldStateVector::DIMENSION_COHESION => 0.1,
+                WorldStateVector::DIMENSION_TRAUMA => 0.8,
+            ]), $default),
+            'GOLDEN_AGE' => new self('GOLDEN_AGE', array_merge($default, [
+                WorldStateVector::DIMENSION_ORDER => 0.8,
+                WorldStateVector::DIMENSION_ENTROPY => 0.2,
+                WorldStateVector::DIMENSION_INNOVATION => 0.9,
+                WorldStateVector::DIMENSION_COHESION => 0.9,
+            ]), $default),
+            'DARK_AGE' => new self('DARK_AGE', array_merge($default, [
+                WorldStateVector::DIMENSION_INNOVATION => 0.1,
+                WorldStateVector::DIMENSION_ENTROPY => 0.7,
+                WorldStateVector::DIMENSION_INEQUALITY => 0.9,
+                WorldStateVector::DIMENSION_TRAUMA => 0.7,
+            ]), $default),
+        ];
+    }
 }

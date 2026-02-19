@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Models\World;
 
+/**
+ * @deprecated V3: Logic moved to BasePhysicsEngine (Macro-State). Agent simulation removed for MVP.
+ */
 final class TickWorldAction
 {
     private const ENTROPY_TICK_INCREMENT = 0.02;

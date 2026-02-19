@@ -28,6 +28,8 @@ class SerialChapter extends Model
         'structured_summary',
         'needs_review',
         'consistency_notes',
+        'canonized_at',
+        'impact_status',
     ];
 
     protected $casts = [

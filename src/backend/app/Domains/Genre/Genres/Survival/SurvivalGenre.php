@@ -54,6 +54,12 @@ class SurvivalGenre implements GenreDefinition
             'no_system' => true,
             'environment_is_hostile' => true,
             'magic_level' => 'none',
+            'magic_level' => 'none',
         ];
+    }
+
+    public function getNarrativePrompt(): string
+    {
+        return "Rewrite the following historical event in the style of a gritty Survival/Apocalypse novel (like 'The Road'). Emphasize scarcity, desperation, the harshness of the environment, and the fragility of life.";
     }
 }

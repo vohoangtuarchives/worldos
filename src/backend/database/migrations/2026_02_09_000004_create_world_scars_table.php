@@ -11,8 +11,17 @@ return new class extends Migration
         Schema::create('world_scars', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('world_id')->constrained('worlds')->cascadeOnDelete();
-            $table->foreignUuid('source_event_id')->constrained('world_events')->cascadeOnDelete();
-            $table->unsignedInteger('weight')->default(1);
+            
+            // Source of the scar (Myth or Event)
+            $table->uuid('source_myth_id')->nullable(); 
+            $table->uuid('source_event_id')->nullable();
+            
+            // Snapshot of the world when the scar formed (frozen history)
+            $table->jsonb('snapshot_data')->nullable(); 
+            
+            // Physics impact
+            $table->float('inertia_weight')->default(1.0);
+            
             $table->timestamps();
 
             $table->index('world_id');

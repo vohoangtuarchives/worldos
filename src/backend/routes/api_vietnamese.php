@@ -160,6 +160,7 @@ Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::post('series/{id}/story-bible/generate-from-premise', [StoryBibleController::class, 'generateFromPremise']);
     Route::get('series/{id}/story-bible/characters', [StoryBibleController::class, 'indexCharacters']);
     Route::post('series/{id}/story-bible/characters', [StoryBibleController::class, 'storeCharacter']);
+    Route::post('series/{id}/chapters/{chapterId}/canonize', [SerialController::class, 'canonizeChapter']);
 });
 
 /*

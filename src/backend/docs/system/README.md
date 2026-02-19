@@ -2,17 +2,32 @@
 
 Bộ tài liệu này mô tả **WorldOS v3** — kiến trúc simulation-first, IP Foundry. Đây là tài liệu chính thức cho phát triển; các tài liệu cũ nằm ngoài `docs/system/` có thể sai lệch và sẽ bị thay thế dần.
 
-## Cấu trúc tài liệu
+## System Documentation (V3 Standard)
 
-| Tài liệu | Nội dung |
-|----------|----------|
-| [01-overview-and-principles.md](01-overview-and-principles.md) | Mục tiêu, ba luật sắt, IP Foundry vs story tool |
-| [02-domain-model.md](02-domain-model.md) | World, Universe, UniverseSnapshot, Saga — schema và quan hệ |
-| [03-simulation-flow.md](03-simulation-flow.md) | Entry point, Kernel, luồng tick, ghi snapshot |
-| [04-saga-orchestrator.md](04-saga-orchestrator.md) | SagaService, Genesis v3, runBatch, fork, evaluate |
-| [05-ai-evaluation-layer.md](05-ai-evaluation-layer.md) | Metrics, Evaluator, DecisionEngine, Kernel validate/applyPressure |
-| [06-api-and-integration.md](06-api-and-integration.md) | API, routes, Genesis, Writer |
-| [07-legacy-and-migration.md](07-legacy-and-migration.md) | Legacy deprecated, cosmic_snapshots, migration path |
+### 1. Foundation (The Stage)
+- [01 Architecture Overview](01-architecture-overview.md)
+- [02 Core Concepts (World, Universe, Saga)](02-core-concepts.md)
+- [03 Simulation Loop](03-simulation-loop.md)
+
+### 2. Physics Layer (The Engine)
+- [04 Physics Engine](04-physics-engine.md)
+- [08 Governance System](08-governance-system.md)
+- [09 Material System](09-material-system.md)
+
+### 3. Narrative Layer (The Story)
+- [05 Narrative Engine (Resonance)](05-narrative-engine.md)
+- [10 Genre System](10-genre-system.md)
+- [11 IP Factory (Feedback Loop)](11-ip-factory.md)
+- [12 Narrative Series System](12-narrative-series.md)
+- [13 AI Neuro System](13-ai-neuro-system.md)
+
+- [14 Future Roadmap](14-future-roadmap.md)
+
+### 4. Reference
+- [07 API & Metrics](07-api-reference.md)
+- [06 Legacy Systems (Deprecated)](06-legacy-systems.md)
+- [Gap Analysis (V3 vs Vision)](../../../../.gemini/antigravity/brain/d7a26bc4-6f03-4186-863d-c6efe75f4980/gap_analysis.md)
+- [Foundation Analysis (Rules Check)](../../../../.gemini/antigravity/brain/d7a26bc4-6f03-4186-863d-c6efe75f4980/foundation_analysis.md)
 
 ## Nguyên tắc đọc
 

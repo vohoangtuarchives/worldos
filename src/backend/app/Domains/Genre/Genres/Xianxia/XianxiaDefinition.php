@@ -54,6 +54,12 @@ class XianxiaDefinition implements GenreDefinition
             'flight_requires_foundation_establishment' => true,
             'soul_exists_separately' => true,
             'karma_is_real' => true,
+            'karma_is_real' => true,
         ];
+    }
+
+    public function getNarrativePrompt(): string
+    {
+        return "Rewrite the following historical event in the style of a Xianxia/Cultivation novel (like 'Renegade Immortal'). Use terms like 'Qi', 'Dao', 'Tribulation', 'Realms'. Emphasize the scale of power, the ruthlessness of the cultivation world, and the insignificance of mortals.";
     }
 }

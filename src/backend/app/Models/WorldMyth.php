@@ -10,8 +10,19 @@ class WorldMyth extends Model
     protected $fillable = [
         'world_id',
         'name',
+        'description',
         'status',
         'strength',
+        'origin_universe_id',
+        'genre_origin',
+        'affected_materials',
+        'canonized_at',
+    ];
+
+    protected $casts = [
+        'affected_materials' => 'array',
+        'canonized_at' => 'datetime',
+        'strength' => 'float',
     ];
 
     public function beliefs(): BelongsToMany
