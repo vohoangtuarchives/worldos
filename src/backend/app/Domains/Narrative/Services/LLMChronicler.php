@@ -8,6 +8,7 @@ use App\Domains\Narrative\Contracts\ChroniclerInterface;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Support\Facades\Log;
+use App\Services\AI\AIAgentContext;
 
 /**
  * Biên niên sử từ trạng thái mô phỏng: ưu tiên LLM nếu có, không thì dùng template giàu từ vựng.
@@ -67,7 +68,7 @@ class LLMChronicler implements ChroniclerInterface
         }
         $userPrompt .= "Hãy viết một đoạn biên niên ngắn (khóa 'chronicle') phản ánh trạng thái này.";
 
-        $out = $this->llm->generate($systemPrompt, $userPrompt);
+        $out = app(AIAgentContext::class)->runWith('narrative.chronicler', fn () => $this->llm->generate($systemPrompt, $userPrompt));
         if (is_array($out) && isset($out['chronicle']) && is_string($out['chronicle'])) {
             return trim($out['chronicle']);
         }
