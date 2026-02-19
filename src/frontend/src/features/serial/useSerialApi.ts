@@ -18,6 +18,21 @@ export function useSeries(id: number | null) {
   });
 }
 
+
+export function useSeriesGenres() {
+  return useQuery({
+    queryKey: ["serial", "genres"],
+    queryFn: () => serialApi.series.genres(),
+  });
+}
+
+export function useAvailableUniverses() {
+  return useQuery({
+    queryKey: ["serial", "universes"],
+    queryFn: () => serialApi.series.universes(),
+  });
+}
+
 export function useCreateSeries() {
   const qc = useQueryClient();
   return useMutation({

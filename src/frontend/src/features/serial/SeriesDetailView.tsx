@@ -19,15 +19,15 @@ export function SeriesDetailView({ seriesId }: { seriesId: number }) {
         <CardHeader>
           <CardTitle>{series.title}</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Genre: {series.genre_key ?? "—"} · Chapters: {series.total_chapters_generated ?? 0}
+            Genre: {series.genre_key ?? "auto"} · Chapters: {series.total_chapters_generated ?? 0} · Universe: {series.universe_id ?? "unbound"}
           </p>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button size="sm" disabled={genChapter.isPending} onClick={() => genChapter.mutate()}>
-            Generate next chapter
+            Sinh chương tiếp (v3)
           </Button>
           <Button size="sm" variant="outline" disabled={genOutline.isPending} onClick={() => genOutline.mutate()}>
-            Generate outline
+            Sinh outline
           </Button>
           <Button size="sm" variant="outline" asChild>
             <Link href={"/serial/series/" + seriesId + "/story-bible"}>Story Bible</Link>

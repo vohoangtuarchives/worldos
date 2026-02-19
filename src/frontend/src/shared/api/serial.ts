@@ -10,6 +10,20 @@ export type SerialSeries = {
   updated_at?: string;
 };
 
+export type SerialGenreCatalog = {
+  genres: string[];
+  emergent_description?: string;
+};
+
+export type SerialUniverseOption = {
+  id: string;
+  name?: string;
+  world_id?: string;
+  status?: string;
+  is_archived?: boolean;
+  updated_at?: string;
+};
+
 export type SerialChapter = {
   id: number;
   series_id: number;
@@ -29,6 +43,14 @@ export const serialApi = {
       api.get<{ success: boolean; data: { series: SerialSeries & { chapters?: SerialChapter[] } } }>("/api/serial/series/" + id).then((r) => r.data.series),
     create: (body: { title: string; genre_key?: string; universe_id?: string }) =>
       api.post("/api/serial/series", body),
+    genres: () =>
+      api
+        .get<{ success: boolean; data: { genres: string[]; emergent_description?: string } }>("/api/serial/genres")
+        .then((r) => ({ genres: r.data?.genres ?? [], emergent_description: r.data?.emergent_description })),
+    universes: () =>
+      api
+        .get<{ success: boolean; data: { universes: SerialUniverseOption[] } }>("/api/serial/universes")
+        .then((r) => r.data?.universes ?? []),
     update: (id: number, body: Partial<SerialSeries>) =>
       api.patch("/api/serial/series/" + id, body),
     generateNextChapter: (id: number) =>

@@ -8,7 +8,7 @@ export function SerialSeriesList() {
   const { data: series, isLoading, error } = useSeriesList();
   if (isLoading) return <p className="text-muted-foreground">Loading…</p>;
   if (error) return <p className="text-destructive">Failed to load series.</p>;
-  if (!series?.length) return <p className="text-muted-foreground">No series yet.</p>;
+  if (!series?.length) return <p className="text-muted-foreground">Chưa có series nào. Hãy khởi tạo bằng Series Factory.</p>;
   return (
     <div className="grid gap-4 md:grid-cols-2">
       {series.map((s) => (
@@ -20,7 +20,7 @@ export function SerialSeriesList() {
               </Link>
             </CardTitle>
             <p className="text-xs text-muted-foreground">
-              {s.genre_key ?? "—"} · Chapters: {s.total_chapters_generated ?? 0}
+              {s.genre_key ?? "auto"} · Chapters: {s.total_chapters_generated ?? 0} · Universe: {s.universe_id ?? "unbound"}
             </p>
           </CardHeader>
         </Card>
