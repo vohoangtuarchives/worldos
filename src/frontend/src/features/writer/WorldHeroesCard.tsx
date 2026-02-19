@@ -2,10 +2,10 @@
 
 import { useWorldHeroes } from "./useWriterApi";
 import { Badge } from "@/components/ui/badge";
-import { Swords, Crown, BookOpen, Scale, MessageSquare, Zap } from "lucide-react";
+import { Swords, Crown, BookOpen, Scale, MessageSquare, Zap, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ARCHETYPE_ICONS: Record<string, any> = {
+const ARCHETYPE_ICONS: Record<string, LucideIcon> = {
     'LEGENDARY_GENERAL': Swords,
     'FOUNDING_KING': Crown,
     'CULTURAL_HERO': BookOpen,
@@ -30,10 +30,13 @@ export function WorldHeroesCard({ worldId }: { worldId: string }) {
                 <span className="text-[10px] font-bold text-muted-foreground uppercase">{heroes.length} HEROES</span>
             </div>
 
-            <ScrollArea className="w-full whitespace-nowrap rounded-xl border border-border/40 bg-background/40 backdrop-blur">
+            <div className="w-full whitespace-nowrap rounded-xl border border-border/40 bg-background/40 backdrop-blur overflow-x-auto">
                 <div className="flex w-max space-x-4 p-4">
                     {heroes.map((hero) => {
                         const Icon = ARCHETYPE_ICONS[hero.archetype] || Crown;
+                        const dimensions = Object.entries(hero.dimensions ?? {});
+                        const sortedDimensions = [...dimensions].sort(([, a], [, b]) => Number(b) - Number(a));
+                        const topDimension = sortedDimensions[0];
                         return (
                             <div key={hero.id} className="glass-card w-[280px] p-4 flex flex-col gap-3 hover:border-purple-500/30 transition-all group">
                                 <div className="flex items-start justify-between">
@@ -68,29 +71,35 @@ export function WorldHeroesCard({ worldId }: { worldId: string }) {
                                     </div>
                                 </div>
 
-                                {/* Dimensions Mini-Bars */}
-                                {hero.dimensions && (
-                                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
-                                        {Object.entries(hero.dimensions).slice(0, 4).map(([key, val]) => (
-                                            <div key={key} className="flex items-center gap-2">
-                                                <span className="text-[9px] text-muted-foreground uppercase w-8 truncate">{key.substring(0, 3)}</span>
-                                                <div className="h-1 w-12 bg-muted/30 rounded-full overflow-hidden">
-                                                    <div className="h-full bg-foreground/50" style={{ width: `${Number(val) * 100}%` }} />
+                                {/* Dimensions: show all axes so operators can inspect 7/10D vectors */}
+                                {dimensions.length > 0 && (
+                                    <details className="rounded-lg border border-border/40 bg-muted/20 p-2">
+                                        <summary className="cursor-pointer list-none text-[10px] font-bold uppercase tracking-wider text-muted-foreground">
+                                            Dimension Vector ({dimensions.length})
+                                            {topDimension ? ` • peak ${topDimension[0]} ${(Number(topDimension[1]) * 100).toFixed(0)}%` : ""}
+                                        </summary>
+                                        <div className="mt-2 grid grid-cols-1 gap-1.5">
+                                            {sortedDimensions.map(([key, val]) => (
+                                                <div key={key} className="flex items-center gap-2">
+                                                    <span className="text-[9px] text-muted-foreground uppercase w-20 truncate">{key.replace(/_/g, " ")}</span>
+                                                    <div className="h-1.5 flex-1 bg-muted/40 rounded-full overflow-hidden">
+                                                        <div className="h-full bg-foreground/60" style={{ width: `${Math.min(100, Number(val) * 100)}%` }} />
+                                                    </div>
+                                                    <span className="w-8 text-right text-[9px] font-mono">{(Number(val) * 100).toFixed(0)}</span>
                                                 </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    </details>
                                 )}
 
                                 <div className="text-[10px] text-muted-foreground italic truncate mt-1">
-                                    "{hero.biography?.substring(0, 40)}..."
+                                    &quot;{hero.biography?.substring(0, 40)}...&quot;
                                 </div>
                             </div>
                         );
                     })}
                 </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            </div>
         </div>
     );
 }

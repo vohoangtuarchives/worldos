@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useAdminStats, useAdminUniverses, useAdminToggleLock } from "./useAdminApi";
+import { useAdminStats, useAdminUniverses, type AdminUniverseItem } from "./useAdminApi";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-type UniverseItem = {
-  id: string;
-  name?: string;
-  parameters?: {
-    is_locked?: boolean;
-  };
-};
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 function StatItem({ label, value }: { label: string; value: number }) {
   return (
@@ -25,16 +19,15 @@ function StatItem({ label, value }: { label: string; value: number }) {
 export function AdminDashboard() {
   const { data: stats, isLoading: statsLoading } = useAdminStats();
   const { data: universes, isLoading: universesLoading } = useAdminUniverses();
-  const toggleLock = useAdminToggleLock();
 
-  const list = (universes ?? []) as UniverseItem[];
+  const list = (universes ?? []) as AdminUniverseItem[];
 
   return (
     <div className="space-y-6">
       <Card>
         <CardHeader>
           <CardTitle>Admin Control Center</CardTitle>
-          <p className="text-sm text-muted-foreground">Điều hướng nhanh các module quản trị hệ thống.</p>
+          <p className="text-sm text-muted-foreground">Điều hướng nhanh các module quản trị runtime/evolution/AI.</p>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           <Button variant="outline" asChild>
@@ -64,7 +57,8 @@ export function AdminDashboard() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Universe Lock Manager</CardTitle>
+          <CardTitle>Universe Runtime Registry</CardTitle>
+          <p className="text-sm text-muted-foreground">Hiển thị dữ liệu thực từ `/api/admin/universes` để kiểm soát runtime instance.</p>
         </CardHeader>
         <CardContent>
           {universesLoading && <p className="text-sm text-muted-foreground">Loading…</p>}
@@ -78,14 +72,19 @@ export function AdminDashboard() {
                     <p className="font-medium">{universe.name ?? `Universe #${universe.id}`}</p>
                     <p className="text-xs text-muted-foreground">ID: {universe.id}</p>
                   </div>
-                  <Button
-                    size="sm"
-                    variant={universe.parameters?.is_locked ? "default" : "outline"}
-                    disabled={toggleLock.isPending}
-                    onClick={() => toggleLock.mutate(universe.id)}
-                  >
-                    {universe.parameters?.is_locked ? "Unlock" : "Lock"}
-                  </Button>
+                  <div className="flex items-center gap-3">
+                    <Badge
+                      variant="outline"
+                      className={cn(
+                        "text-[10px] uppercase",
+                        universe.status === "active" && "border-success/40 text-success",
+                        universe.status === "collapsed" && "border-destructive/40 text-destructive"
+                      )}
+                    >
+                      {universe.status ?? "unknown"}
+                    </Badge>
+                    <span className="text-[10px] text-muted-foreground">Updated: {universe.updated_at ?? "—"}</span>
+                  </div>
                 </li>
               ))}
             </ul>
