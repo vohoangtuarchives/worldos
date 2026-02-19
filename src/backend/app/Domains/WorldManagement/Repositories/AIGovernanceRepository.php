@@ -3,9 +3,9 @@
 namespace App\Domains\WorldManagement\Repositories;
 
 use App\Models\AiGeneration;
-use App\Models\ChapterTelemetry;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+
 
 class AIGovernanceRepository
 {
@@ -49,19 +49,34 @@ class AIGovernanceRepository
 
     public function getAgentStats(): array
     {
-        // Grouping by context_type if available, or using a stub for now
-        $stats = DB::table('ai_generations')
+        $summary = DB::table('ai_generations')
             ->select('status', DB::raw('count(*) as count'))
             ->groupBy('status')
             ->get();
 
+        $roster = DB::table('ai_provider_request_histories')
+            ->select('agent_name')
+            ->selectRaw('COUNT(*) as requests')
+            ->selectRaw('AVG(COALESCE(duration_ms, 0)) as avg_duration_ms')
+            ->whereNotNull('agent_name')
+            ->groupBy('agent_name')
+            ->orderByDesc('requests')
+            ->limit(20)
+            ->get()
+            ->map(function ($row) {
+                return [
+                    'name' => $row->agent_name,
+                    'status' => ((int) $row->requests) > 0 ? 'active' : 'idle',
+                    'requests' => (int) $row->requests,
+                    'avg_duration_ms' => round((float) $row->avg_duration_ms, 1),
+                ];
+            })
+            ->values();
+
         return [
-            'summary' => $stats,
-            'roster' => [
-                ['name' => 'Chronicler', 'status' => 'idle', 'throughput' => '0.5 tps'],
-                ['name' => 'Critic', 'status' => 'active', 'throughput' => '1.2 tps'],
-                ['name' => 'Planner', 'status' => 'idle', 'throughput' => '0.2 tps'],
-            ]
+            'summary' => $summary,
+            'roster' => $roster,
         ];
     }
 }
+

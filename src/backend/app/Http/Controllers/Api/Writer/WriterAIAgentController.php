@@ -162,12 +162,40 @@ class WriterAIAgentController extends Controller
 
     public function intervene(Request $request): JsonResponse
     {
-        $worldId = $request->input('world_id');
-        $instruction = $request->input('instruction');
+        $validated = $request->validate([
+            'world_id' => 'required|string',
+            'instruction' => 'required|string|min:3|max:4000',
+        ]);
+
+        $record = AIProviderRequestHistory::query()->create([
+            'provider' => 'system',
+            'model' => null,
+            'endpoint' => 'writer.ai.intervene',
+            'feature_key' => 'writer.ai.intervene',
+            'agent_name' => 'human-operator',
+            'system_prompt' => null,
+            'user_prompt' => $validated['instruction'],
+            'request_payload' => json_encode([
+                'world_id' => $validated['world_id'],
+                'instruction' => $validated['instruction'],
+            ], JSON_UNESCAPED_UNICODE),
+            'response_payload' => json_encode([
+                'accepted' => true,
+            ], JSON_UNESCAPED_UNICODE),
+            'http_status' => 202,
+            'status' => 'ACCEPTED',
+            'error_message' => null,
+            'duration_ms' => 0,
+        ]);
 
         return response()->json([
             'success' => true,
-            'message' => "Divine Inspiration transmitted to World {$worldId}: \"{$instruction}\"",
-        ]);
+            'message' => 'Intervention accepted and recorded for audit.',
+            'data' => [
+                'accepted' => true,
+                'request_log_id' => $record->id,
+                'world_id' => $validated['world_id'],
+            ],
+        ], 202);
     }
 }
