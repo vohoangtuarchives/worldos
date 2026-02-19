@@ -4,12 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VietnameseHeroController;
 use App\Http\Controllers\Api\Writer\WriterSagaController;
+use App\Http\Controllers\Api\Writer\WriterUniverseController;
 use App\Http\Controllers\Api\Writer\WriterWorldController;
 use App\Http\Controllers\Api\Writer\WriterWorldHubController;
 use App\Http\Controllers\Api\Writer\WriterGenesisController;
 use App\Http\Controllers\Api\Writer\WriterGodConsoleController;
 use App\Http\Controllers\Api\Writer\WriterWorldSnapshotController;
 use App\Http\Controllers\Api\Writer\WriterAIAgentController;
+use App\Http\Controllers\Api\Writer\WriterMaterialController;
 use App\Http\Controllers\Api\SerialController;
 use App\Http\Controllers\Api\StoryBibleController;
 use App\Http\Controllers\Api\ClusterController;
@@ -51,6 +53,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::get('worlds',                   [WriterWorldController::class, 'index']);
     Route::get('worlds/{id}',              [WriterWorldController::class, 'show']);
     Route::post('worlds/{id}/instances',   [WriterWorldController::class, 'storeInstance']);
+    Route::get('worlds/{id}/heroes',       [\App\Http\Controllers\Api\Writer\WriterWorldHeroController::class, 'index']);
 
     // World Hub actions
     Route::post('worlds/{id}/freeze',      [WriterWorldHubController::class, 'freeze']);
@@ -71,6 +74,16 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::post('worlds/{id}/snapshots',             [WriterWorldSnapshotController::class, 'store']);
     Route::get('worlds/{id}/events',                 [WriterWorldSnapshotController::class, 'events']);
     Route::post('worlds/{id}/events/replay',         [WriterWorldSnapshotController::class, 'replay']);
+
+    // Material Wiki — catalog + per-world instances/analytics
+    Route::get('materials/catalog',                  [WriterMaterialController::class, 'catalog']);
+    Route::get('materials/{code}/detail',            [WriterMaterialController::class, 'detail']);
+    Route::get('worlds/{id}/materials',              [WriterMaterialController::class, 'index']);
+    Route::get('worlds/{id}/materials/timeline',     [WriterMaterialController::class, 'timeline']);
+    Route::get('worlds/{id}/materials/analytics',    [WriterMaterialController::class, 'worldAnalytics']);
+    Route::post('worlds/{id}/materials/activate',    [WriterMaterialController::class, 'activate']);
+    Route::patch('materials/{instanceId}/strength',  [WriterMaterialController::class, 'adjustStrength']);
+    Route::post('materials/{instanceId}/retire',     [WriterMaterialController::class, 'retire']);
 
     // Genesis
     Route::get('genesis/presets',          [WriterGenesisController::class, 'presets']);

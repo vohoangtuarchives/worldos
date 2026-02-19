@@ -172,6 +172,14 @@ export function useWorldEvents(worldId: string | null, params?: { page?: number;
   });
 }
 
+export function useWorldHeroes(worldId: string | null) {
+  return useQuery({
+    queryKey: ["writer", "worlds", worldId, "heroes"],
+    queryFn: () => writerApi.worlds.getHeroes(worldId!),
+    enabled: worldId != null,
+  });
+}
+
 export function useWorldEventsReplay(worldId: string | null) {
   const qc = useQueryClient();
   return useMutation({
@@ -201,6 +209,18 @@ export function useWorldAction(
     onSuccess: (_, worldId: string) => {
       qc.invalidateQueries({ queryKey: ["writer", "worlds"] });
       qc.invalidateQueries({ queryKey: ["writer", "worlds", worldId] });
+    },
+  });
+}
+
+export function useWorldEmergency() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ worldId, action, params }: { worldId: string; action: string; params?: Record<string, unknown> }) =>
+      writerApi.worlds.emergency(worldId, action, params),
+    onSuccess: (_, { worldId }) => {
+      qc.invalidateQueries({ queryKey: ["writer", "worlds", worldId] });
+      qc.invalidateQueries({ queryKey: ["writer", "worlds"] });
     },
   });
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Saga\Saga;
 use App\Domains\Historian\SagaAnalyzer;
 use App\Domains\WriterConsole\WriterFacingAPI;
-use App\Domains\Saga\SagaRunner;
+
 use App\Models\GateChannel;
 use App\Domains\World\ValueObjects\PhysicsProfile;
 
@@ -14,18 +14,15 @@ class SagaExplorerController extends Controller
 {
     private SagaAnalyzer $analyzer;
     private WriterFacingAPI $writerApi;
-    private SagaRunner $sagaRunner;
     private \App\Domains\Material\Contracts\MaterialRepositoryInterface $materialRepo;
 
     public function __construct(
         SagaAnalyzer $analyzer, 
         WriterFacingAPI $writerApi,
-        SagaRunner $sagaRunner,
         \App\Domains\Material\Contracts\MaterialRepositoryInterface $materialRepo
     ) {
         $this->analyzer = $analyzer;
         $this->writerApi = $writerApi;
-        $this->sagaRunner = $sagaRunner;
         $this->materialRepo = $materialRepo;
     }
 

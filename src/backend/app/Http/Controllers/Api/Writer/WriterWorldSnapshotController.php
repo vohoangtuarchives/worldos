@@ -6,19 +6,24 @@ namespace App\Http\Controllers\Api\Writer;
 
 use App\Http\Controllers\Controller;
 use App\Models\World;
-use App\Models\CosmicSnapshot;
+use App\Models\UniverseModel;
+use App\Models\UniverseSnapshot;
 use App\Models\WorldEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 /**
- * Writer API: World snapshots (list, compare) and events (list, replay stub).
+ * Writer API: World snapshots (V3: reads from universe_snapshots) and events.
+ *
+ * WorldOS V3: Snapshots are universe-level (universe_snapshots table).
+ * This controller bridges world_id → universe_ids → snapshots for backward compatibility.
  */
 class WriterWorldSnapshotController extends Controller
 {
     /**
      * GET /api/writer/worlds/{id}/snapshots
-     * List cosmic snapshots for world (ordered by year).
+     * List universe snapshots for all universes belonging to this world.
+     * V3: Reads from universe_snapshots instead of cosmic_snapshots.
      */
     public function index(string $id): JsonResponse
     {
@@ -27,16 +32,21 @@ class WriterWorldSnapshotController extends Controller
             return response()->json(['error' => 'World not found'], 404);
         }
 
-        $snapshots = CosmicSnapshot::where('world_id', $world->id)
-            ->orderBy('year')
+        $universeIds = UniverseModel::where('world_id', $world->id)
+            ->pluck('id');
+
+        $snapshots = UniverseSnapshot::whereIn('universe_id', $universeIds)
+            ->orderBy('tick')
+            ->limit(200)
             ->get()
             ->map(fn ($s) => [
                 'id' => $s->id,
-                'world_id' => $s->world_id,
-                'year' => (int) $s->year,
+                'universe_id' => $s->universe_id,
+                'tick' => (int) $s->tick,
                 'entropy' => $s->entropy,
-                'stability' => $s->stability,
-                'energy' => $s->energy,
+                'stability_index' => $s->stability_index,
+                'state_vector' => $s->state_vector,
+                'metrics' => $s->metrics,
                 'created_at' => $s->created_at?->format(\DateTimeInterface::ATOM),
             ]);
 
@@ -47,8 +57,9 @@ class WriterWorldSnapshotController extends Controller
     }
 
     /**
-     * GET /api/writer/worlds/{id}/snapshots/compare?year_a=1&year_b=2
-     * Return two snapshots for diff.
+     * GET /api/writer/worlds/{id}/snapshots/compare?tick_a=1&tick_b=2&universe_id=...
+     * Compare two snapshots by tick for a specific universe.
+     * V3: Uses universe_snapshots instead of cosmic_snapshots.
      */
     public function compare(Request $request, string $id): JsonResponse
     {
@@ -57,20 +68,32 @@ class WriterWorldSnapshotController extends Controller
             return response()->json(['error' => 'World not found'], 404);
         }
 
-        $yearA = (int) $request->query('year_a', 0);
-        $yearB = (int) $request->query('year_b', 0);
+        $universeId = $request->query('universe_id');
+        $tickA = (int) $request->query('tick_a', $request->query('year_a', 0));
+        $tickB = (int) $request->query('tick_b', $request->query('year_b', 0));
 
-        $a = CosmicSnapshot::where('world_id', $world->id)->where('year', $yearA)->first();
-        $b = CosmicSnapshot::where('world_id', $world->id)->where('year', $yearB)->first();
+        // If no universe_id provided, use the first active universe for this world
+        if (!$universeId) {
+            $universeId = UniverseModel::where('world_id', $world->id)
+                ->where('is_archived', false)
+                ->value('id');
+        }
 
-        $toPayload = fn (?CosmicSnapshot $s) => $s ? [
+        if (!$universeId) {
+            return response()->json(['error' => 'No active universe for this world'], 404);
+        }
+
+        $a = UniverseSnapshot::where('universe_id', $universeId)->where('tick', $tickA)->first();
+        $b = UniverseSnapshot::where('universe_id', $universeId)->where('tick', $tickB)->first();
+
+        $toPayload = fn (?UniverseSnapshot $s) => $s ? [
             'id' => $s->id,
-            'year' => (int) $s->year,
+            'universe_id' => $s->universe_id,
+            'tick' => (int) $s->tick,
             'entropy' => $s->entropy,
-            'stability' => $s->stability,
-            'energy' => $s->energy,
-            'tension' => $s->tension,
-            'resonance' => $s->resonance,
+            'stability_index' => $s->stability_index,
+            'state_vector' => $s->state_vector,
+            'metrics' => $s->metrics,
         ] : null;
 
         return response()->json([
@@ -84,7 +107,7 @@ class WriterWorldSnapshotController extends Controller
 
     /**
      * POST /api/writer/worlds/{id}/snapshots
-     * Create/capture snapshot. Stub: returns message; wire to pipeline later to persist current state.
+     * Capture snapshot for the active universe of this world.
      */
     public function store(string $id): JsonResponse
     {

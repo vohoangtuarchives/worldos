@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WorldOS V3: The God Console 🖥️
 
-## Getting Started
+The Frontend for WorldOS V3 is a sophisticated **God Console** designed for Writers and World Builders to observe, intervene, and analyze their simulations in real-time.
 
-First, run the development server:
+## 🏗 Architecture
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Built on **Next.js 14 (App Router)** with a Feature-based architecture.
+
+### Tech Stack
+- **Framework**: Next.js 14 (React 18)
+- **State Management**: React Query (TanStack Query)
+- **Styling**: TailwindCSS + Shadcn/UI (Radix Primitives)
+- **Icons**: Lucide React
+- **Visuals**: Glassmorphism UI Kit
+
+---
+
+## 🌟 Key Views & Features
+
+### 1. World Hub (`/world/[id]`)
+The central command center for a specific world.
+- **Live Metrics**: Real-time display of Entropy, Stability, and Population.
+- **Intervention Console**: Buttons to Freeze, Resume, Step, or Rollback the simulation.
+- **Emergency Actions**: Inject "Entropy Shock" or "Force Collapse" to test resilience.
+- **Active Heroes**: A scrollable roster of currently active Heroes (Historical & Procedural) with their impact scores.
+
+### 2. Material Wiki (`/wiki`)
+An interactive encyclopedia of all Materials in the system.
+- **Catalog**: Filterable list of all concepts (Physics, Civics, Philosophy).
+- **Graph View**: Visualizes mutation pathways and prerequisites.
+
+### 3. Saga Tree (`/saga/[id]`)
+Visualizes the branching timelines of the multiverse.
+- **Tree Visualization**: Shows forks, dead ends, and active timeline branches.
+- **Time Travel**: Allows jumping back to previous epochs to fork new realities.
+
+---
+
+## 📂 Project Structure
+
+```
+src/
+├── app/                  # Next.js App Router Pages
+├── features/             # Feature-based Modules
+│   ├── writer/           # Main Writer Interface
+│   │   ├── components/   # Feature-specific components
+│   │   ├── WorldHubView.tsx
+│   │   ├── MaterialWikiView.tsx
+│   │   └── useWriterApi.ts
+│   └── reader/           # Reader-facing Interface
+├── shared/               # Shared Utilities
+│   ├── api/              # API Clients (Axios)
+│   └── components/       # Common UI Components
+└── lib/                  # Utils & Helpers
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Installation
+```bash
+npm install
+# or
+pnpm install
+```
 
-## Learn More
+### Development
+```bash
+npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+The app will be available at `http://localhost:3000`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Environment Variables
+Create a `.env.local` file:
+```
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```

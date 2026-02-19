@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Writer;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Material\Contracts\MaterialRepositoryInterface;
+use App\Domains\Material\Analytics\MaterialAnalytics;
 use App\Domains\Material\Material;
 use App\Models\World;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,8 @@ use Illuminate\Http\Request;
 class WriterMaterialController extends Controller
 {
     public function __construct(
-        private MaterialRepositoryInterface $repository
+        private MaterialRepositoryInterface $repository,
+        private MaterialAnalytics $analytics
     ) {}
 
     /**
@@ -194,5 +196,112 @@ class WriterMaterialController extends Controller
             'retired_at' => $retiredAt instanceof \DateTimeInterface ? $retiredAt->format('c') : $retiredAt,
             'mutation_state' => $instance->mutation_state ?? [],
         ];
+    }
+    /**
+     * GET /api/writer/materials/catalog
+     * Full material wiki catalog grouped by ontology → function.
+     */
+    public function catalog(): JsonResponse
+    {
+        $materials = Material::all();
+
+        $grouped = [];
+        foreach ($materials as $m) {
+            $ontology = $m->ontology?->value ?? 'unknown';
+            $function = $m->function?->value ?? 'unknown';
+
+            $grouped[$ontology][$function][] = [
+                'id' => $m->id,
+                'code' => $m->code ?? $m->id,
+                'ontology' => $ontology,
+                'function' => $function,
+                'default_lifecycle' => $m->default_lifecycle?->value ?? null,
+                'preconditions' => $m->preconditions ?? [],
+                'incompatible_with' => $m->incompatible_with ?? [],
+                'mutation_axes' => $m->mutation_axes ?? [],
+            ];
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'catalog' => $grouped,
+                'totals' => [
+                    'materials' => $materials->count(),
+                    'by_ontology' => $materials->groupBy(fn($m) => $m->ontology?->value ?? 'unknown')->map->count(),
+                    'by_function' => $materials->groupBy(fn($m) => $m->function?->value ?? 'unknown')->map->count(),
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * GET /api/writer/materials/{code}/detail
+     * Detail of a single material including mutation pathways and affinity data.
+     */
+    public function detail(string $code): JsonResponse
+    {
+        $material = $this->repository->findByCode($code);
+
+        if (!$material) {
+            return response()->json(['success' => false, 'error' => 'Material not found'], 404);
+        }
+
+        // Load mutation pathways
+        $mutationPathways = [];
+        $pathwaysFile = base_path('app/Domains/Material/Mutation/Data/mutation_pathways.json');
+        if (file_exists($pathwaysFile)) {
+            $allPathways = json_decode(file_get_contents($pathwaysFile), true) ?? [];
+            $mutationPathways = $allPathways[$material->code ?? ''] ?? [];
+        }
+
+        // Load affinity data
+        $affinityData = [];
+        $affinityFile = base_path('app/Domains/Material/Data/affinity_matrix.json');
+        if (file_exists($affinityFile)) {
+            $allAffinity = json_decode(file_get_contents($affinityFile), true) ?? [];
+            $affinityData = $allAffinity[$material->code ?? ''] ?? [];
+        }
+
+        // Count world usage
+        $instanceCount = $material->instances()->count();
+        $activeCount = $material->instances()->whereNull('retired_at')->whereNotNull('activation_epoch')->count();
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'id' => $material->id,
+                'code' => $material->code ?? $material->id,
+                'ontology' => $material->ontology?->value,
+                'function' => $material->function?->value,
+                'default_lifecycle' => $material->default_lifecycle?->value,
+                'preconditions' => $material->preconditions ?? [],
+                'pressure_inputs' => $material->pressure_inputs ?? [],
+                'pressure_outputs' => $material->pressure_outputs ?? [],
+                'incompatible_with' => $material->incompatible_with ?? [],
+                'mutation_axes' => $material->mutation_axes ?? [],
+                'mutation_pathways' => $mutationPathways,
+                'affinity' => $affinityData,
+                'usage' => [
+                    'total_instances' => $instanceCount,
+                    'active_instances' => $activeCount,
+                ],
+            ],
+        ]);
+    }
+
+    /**
+     * GET /api/writer/worlds/{id}/materials/analytics
+     * Comprehensive material analytics for a world.
+     */
+    public function worldAnalytics(string $id): JsonResponse
+    {
+        $world = World::findOrFail($id);
+        $analytics = $this->analytics->getWorldAnalytics($world);
+
+        return response()->json([
+            'success' => true,
+            'data' => $analytics,
+        ]);
     }
 }

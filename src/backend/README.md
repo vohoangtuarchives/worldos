@@ -1,59 +1,100 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# WorldOS V3: The Simulation Engine 🌍
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+**WorldOS** is a high-fidelity simulation engine designed to model the evolution of civilizations, historical resonance, and material dynamics. Version 3 introduces a robust Event-Driven Architecture and Domain-Driven Design to handle complex interactions between historical figures (Heroes) and societal forces (Materials).
 
-## About Laravel
+## 🏗 Architecture
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The system is built on **Laravel 11** and follows a strict **Domain-Driven Design (DDD)** approach.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Domains
+- **Evolution**: The core simulation loop (`WorldEvolutionKernel`). Handles physics, time ticks, and state transitions.
+- **Cosmology**: Manages the `WorldStateVector` (Entropy, Order, Cohesion, Stability) and Universe snapshots.
+- **Material**: Handles the existence, mutation, and interaction of "Materials" (societal concepts like *Nation State*, *Gunpowder*, *Confucianism*).
+- **Vietnamese**: Captures the specific historical context, Hero archetypes (`VietnameseHero`), and cultural resonance.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Key Patterns
+- **Event-Driven**: The simulation enables loose coupling.
+    - `WorldTicked`: Dispatched after every tick. Listeners check for spawn conditions.
+    - `MaterialMutated`: Dispatched when a material evolves.
+- **Bridge Pattern**: Services like `HeroMaterialBridge` and `MaterialWorldBridge` connect isolated domains without tight coupling.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## 🚀 Key Features
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### 1. The Material Engine
+Materials are not just resources; they are **active agents** of change.
+- **Pressure System**: Materials exert pressure on the world (e.g., *Gunpowder* increases *Violence*).
+- **Mutation**: Materials evolve over time (e.g., *Oral Tradition* -> *Writing System* -> *Printing Press*).
+- **Seeders**: `AdvancedMaterialSeeder` populates the world with historical concepts.
 
-## Laravel Sponsors
+### 2. Hero-Material Resonance (HMR)
+A bi-directional interaction system where the Zeitgeist creates Heroes, and Heroes shape the Zeitgeist.
+- **Spawning**:
+    - High **Entropy** (>0.8) spawns `REBEL_LEADER` or `EMERGENCY_SAVIOR`.
+    - High **Order** (>0.9) spawns `FOUNDING_KING` or `PHILOSOPHER_KING`.
+    - Low **Cohesion** (<0.3) spawns `CULTURAL_HERO`.
+- **Impact**: Heroes apply immediate modifiers to Materials (e.g., a *Legendary General* boosts *Patriotism* and *Violence*).
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Procedural Generation
+When historical heroes are exhausted, the system generates new unique figures:
+- **VietnameseNameGenerator**: Creates authentic Hán Việt names (Họ + Đệm + Tên) with meanings.
+- **HeroFactory**: Generates stats (Military, Governance, etc.) dynamically based on the current World State.
 
-### Premium Partners
+### 4. World Evolution Kernel
+The heartbeat of the simulation.
+- **Tick Rate**: Configurable (real-time or turn-based).
+- **State Vector**: A multi-dimensional representation of the world's condition.
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+---
 
-## Contributing
+## 🛠 Tech Stack
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+- **Framework**: Laravel 11 (PHP 8.2+)
+- **Database**: PostgreSQL (JSONB heavy usage for flexible state)
+- **Queue**: Redis (for async event processing)
+- **Search**: Meilisearch (optional, for wiki)
 
-## Code of Conduct
+---
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## 🔧 Setup & Commands
 
-## Security Vulnerabilities
+### Prerequisites
+- Docker & Docker Compose
+- PHP 8.2+
+- Composer
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Installation
+```bash
+cp .env.example .env
+composer install
+php artisan key:generate
+php artisan migrate
+php artisan db:seed --class=AdvancedMaterialSeeder
+```
 
-## License
+### Running the Engine
+```bash
+# Start the simulation loop worker
+php artisan queue:work
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Manually tick a world
+php artisan world:tick {world_id}
+```
+
+---
+
+## 📂 Directory Structure
+
+```
+app/
+├── Domains/
+│   ├── Cosmology/    # State Vectors, Universes
+│   ├── Evolution/    # Kernel, Physics Engines
+│   ├── Material/     # Material Entities, Mutations
+│   └── Vietnamese/   # Heroes, NameGen, Resonance Listeners
+├── Http/
+│   ├── Controllers/  # API Endpoints
+│   └── Resources/    # API Transformers
+└── Models/           # Eloquent Models
+```

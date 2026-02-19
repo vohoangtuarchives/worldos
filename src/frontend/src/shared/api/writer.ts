@@ -111,7 +111,86 @@ export type WorldEventItem = {
   created_at?: string;
 };
 
+export type WorldHero = {
+  id: string;
+  world_id: string;
+  name: string;
+  other_names?: string[];
+  archetype: string;
+  dimensions?: Record<string, number>;
+  impact_score: number;
+  biography?: string;
+  era?: string;
+  is_generated: boolean;
+  status: string;
+  spawned_at_tick: number;
+  created_at?: string;
+};
+
 export type GenesisPreset = { id: string; name: string;[key: string]: unknown };
+
+/** Material template (wiki entry). */
+export type MaterialTemplate = {
+  id: string;
+  code: string;
+  ontology: string;
+  function: string;
+  default_lifecycle?: string | null;
+  preconditions?: string[];
+  incompatible_with?: string[];
+  mutation_axes?: string[];
+};
+
+/** Material instance in a world. */
+export type MaterialInstanceItem = {
+  id: string;
+  material_code: string;
+  ontology?: string;
+  function?: string;
+  strength_level: number;
+  degradation_level?: number;
+  activation_epoch?: number | null;
+  is_active: boolean;
+  is_retired: boolean;
+  mutation_state?: Record<string, unknown>;
+  historical_traces?: unknown[];
+};
+
+/** Mutation pathway. */
+export type MutationPathway = {
+  target_code: string;
+  trigger_condition: string;
+  strength_transfer: number;
+  description: string;
+};
+
+/** Material detail response. */
+export type MaterialDetail = MaterialTemplate & {
+  pressure_inputs?: Record<string, unknown>;
+  pressure_outputs?: Record<string, unknown>;
+  mutation_pathways?: MutationPathway[];
+  affinity?: { archetypes?: string[]; drift_modifier?: number; activation_threshold?: number; character_archetypes?: string[] };
+  usage?: { total_instances: number; active_instances: number };
+};
+
+/** Material catalog response. */
+export type MaterialCatalog = {
+  catalog: Record<string, Record<string, MaterialTemplate[]>>;
+  totals: { materials: number; by_ontology: Record<string, number>; by_function: Record<string, number> };
+};
+
+/** Material timeline event. */
+export type MaterialTimelineEvent = {
+  type: 'activation' | 'mutation' | 'deactivation';
+  epoch: number;
+  material_code?: string;
+  description: string;
+  from?: string;
+  to?: string;
+  pathway?: string;
+  icon?: string;
+  timestamp?: string;
+};
 
 export const writerApi = {
   sagas: {
@@ -152,6 +231,8 @@ export const writerApi = {
       ),
     intervene: (id: string, body: { action: string }) =>
       api.post(`/api/writer/worlds/${id}/god-console/intervene`, body),
+    emergency: (id: string, action: string, params?: Record<string, unknown>) =>
+      api.post<{ success: boolean; message: string; universe_id?: string }>(`/api/writer/worlds/${id}/emergency/${action}`, params),
     snapshots: {
       list: (id: string) =>
         api.get<{ success: boolean; data: { snapshots: WorldSnapshotItem[] } }>(`/api/writer/worlds/${id}/snapshots`).then((r) => r.data?.snapshots ?? []),
@@ -176,6 +257,25 @@ export const writerApi = {
       replay: (id: string, fromTick: number) =>
         api.post(`/api/writer/worlds/${id}/events/replay`, { from_tick: fromTick }),
     },
+    getHeroes: (id: string) => api.get<{ data: WorldHero[] }>(`/api/writer/worlds/${id}/heroes`).then(r => r.data),
+  },
+  materials: {
+    catalog: () =>
+      api.get<{ success: boolean; data: MaterialCatalog }>("/api/writer/materials/catalog").then(r => r.data),
+    detail: (code: string) =>
+      api.get<{ success: boolean; data: MaterialDetail }>(`/api/writer/materials/${code}/detail`).then(r => r.data),
+    worldInstances: (worldId: string) =>
+      api.get<{ success: boolean; data: { world_id: string; world_name: string; instances: MaterialInstanceItem[]; lifecycle: Record<string, number>; total: number } }>(`/api/writer/worlds/${worldId}/materials`).then(r => r.data),
+    worldAnalytics: (worldId: string) =>
+      api.get<{ success: boolean; data: Record<string, unknown> }>(`/api/writer/worlds/${worldId}/materials/analytics`).then(r => r.data),
+    timeline: (worldId: string) =>
+      api.get<{ events: MaterialTimelineEvent[] }>(`/api/writer/worlds/${worldId}/materials/timeline`),
+    activate: (worldId: string, materialId: string, strengthLevel: number) =>
+      api.post(`/api/writer/worlds/${worldId}/materials/activate`, { material_id: materialId, strength_level: strengthLevel }),
+    adjustStrength: (instanceId: string, strengthLevel: number) =>
+      api.patch(`/api/writer/materials/${instanceId}/strength`, { strength_level: strengthLevel }),
+    retire: (instanceId: string) =>
+      api.post(`/api/writer/materials/${instanceId}/retire`),
   },
   genesis: {
     presets: () => api.get<{ categories?: Record<string, GenesisPreset[]> }>("/api/writer/genesis/presets"),

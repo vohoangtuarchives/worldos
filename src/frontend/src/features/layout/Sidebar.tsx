@@ -13,6 +13,7 @@ import {
     LogOut,
     ChevronRight,
     ShieldCheck,
+    BookOpen,
     Zap,
     Bot
 } from "lucide-react";
@@ -37,7 +38,7 @@ const navGroups = [
         label: "Dòng Đời (Universe)",
         items: [
             { name: "Tổng Quan (Admin)", href: "/admin", icon: Orbit },
-            { name: "Cộng Đồng", href: "/marketplace", icon: Zap },
+            { name: "Bách Khoa (Wiki)", href: "/wiki", icon: BookOpen },
         ]
     },
     {

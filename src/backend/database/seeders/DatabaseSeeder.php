@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AttractorSeeder::class,           // ← NEW: Seed cosmic attractors FIRST
             MaterialSeeder::class,
+            AdvancedMaterialSeeder::class, // ← NEW: Seed advanced mutation sources/targets
             TechnologyInteractionMaterialsSeeder::class,
             ArchetypeSeeder::class,
             WorldSeeder::class,

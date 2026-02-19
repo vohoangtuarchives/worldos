@@ -14,10 +14,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // WorldOS v3: Universe evaluator (Phase 3)
+        // WorldOS v3: Universe evaluator (Phase 3) — driver via WORLDOS_EVALUATOR_DRIVER
         $this->app->bind(
             \App\Domains\Runtime\Evaluation\UniverseEvaluatorInterface::class,
-            \App\Domains\Runtime\Evaluation\StubUniverseEvaluator::class
+            function ($app) {
+                $driver = config('worldos.evaluator_driver', 'stub');
+                if ($driver === 'llm') {
+                    return new \App\Domains\Runtime\Evaluation\LLMUniverseEvaluator(
+                        $app->make(\App\Domains\Narrative\LLM\Contracts\LLMProvider::class),
+                        new \App\Domains\Runtime\Evaluation\StubUniverseEvaluator()
+                    );
+                }
+                return new \App\Domains\Runtime\Evaluation\StubUniverseEvaluator();
+            }
         );
 
         // LLM Provider binding

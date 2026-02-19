@@ -16,7 +16,9 @@ use App\Domains\Cosmology\Services\StructuralMutationEngine;
 use App\Domains\Evolution\Engine\VectorDynamicsEngine;
 use App\Domains\Evolution\EvolutionContext;
 use App\Domains\Evolution\ValueObjects\BranchEvent;
+use App\Domains\Material\MaterialWorldBridge;
 use App\Models\World;
+use Illuminate\Support\Facades\Log;
 
 /**
  * WorldEvolutionKernel - Evolves world by stepping physics (BasePhysicsEngine when injected) or VectorDynamicsEngine; load/save at boundary.
@@ -28,7 +30,8 @@ final class WorldEvolutionKernel
         private readonly VectorDynamicsEngine $engine,
         private readonly StateLoader $stateLoader,
         private readonly ?BasePhysicsEngine $basePhysics = null,
-        private readonly ?StructuralMutationEngine $mutationEngine = null
+        private readonly ?StructuralMutationEngine $mutationEngine = null,
+        private readonly ?MaterialWorldBridge $materialBridge = null
     ) {
     }
 
@@ -80,6 +83,9 @@ final class WorldEvolutionKernel
             if ($signal !== null && $signal->shouldCollapse && $this->mutationEngine !== null) {
                 $state = $this->mutationEngine->mutate($state, $signal->pressure);
             }
+
+            // Material engine: apply historical-material effects
+            $state = $this->applyMaterialEffects($world, $state, 1.0);
         }
 
         $world->current_time = (int) ($world->current_time ?? 0) + $years;
@@ -108,6 +114,13 @@ final class WorldEvolutionKernel
             if ($shock !== null) {
                 $state = $this->applyShockPerturbation($state, $shock);
             }
+
+            // Material engine: apply historical-material effects
+            $state = $this->applyMaterialEffects($world, $state, 1.0);
+
+            // Dispatch WorldTicked event for listeners (e.g. Hero Spawning)
+            \App\Domains\Evolution\Events\WorldTicked::dispatch($world, $state);
+
             $universe->setState($state);
             $universe->setAge($universe->getAge() + 1);
             return;
@@ -161,6 +174,48 @@ final class WorldEvolutionKernel
     private function clamp01(float $v): float
     {
         return max(0.0, min(1.0, $v));
+    }
+
+    /**
+     * Apply material effects from MaterialWorldBridge as state deltas.
+     * Safe no-op when MaterialWorldBridge is not injected.
+     */
+    private function applyMaterialEffects(World $world, WorldStateVector $state, float $deltaTime): WorldStateVector
+    {
+        if ($this->materialBridge === null) {
+            return $state;
+        }
+
+        try {
+            $effects = $this->materialBridge->processTick($world, $deltaTime);
+            $all = $state->getAll();
+
+            // Map material effects → state vector dimensions
+            if (isset($effects['cohesion_modifier']) && $effects['cohesion_modifier'] != 0) {
+                $all[WorldStateVector::DIMENSION_COHESION] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_COHESION] ?? 0.5) + $effects['cohesion_modifier']
+                );
+            }
+            if (isset($effects['entropy_modifier']) && $effects['entropy_modifier'] != 0) {
+                $all[WorldStateVector::DIMENSION_ENTROPY] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_ENTROPY] ?? 0.5) + $effects['entropy_modifier']
+                );
+            }
+            if (isset($effects['fracture_risk']) && $effects['fracture_risk'] > 0.5) {
+                // High fracture risk reduces stability
+                $all[WorldStateVector::DIMENSION_ORDER] = $this->clamp01(
+                    ($all[WorldStateVector::DIMENSION_ORDER] ?? 0.5) - ($effects['fracture_risk'] * 0.1)
+                );
+            }
+
+            return WorldStateVector::fromArray($all);
+        } catch (\Throwable $e) {
+            Log::warning('WorldEvolutionKernel: material effects failed, continuing without', [
+                'world_id' => $world->id,
+                'error' => $e->getMessage(),
+            ]);
+            return $state;
+        }
     }
 
     /**

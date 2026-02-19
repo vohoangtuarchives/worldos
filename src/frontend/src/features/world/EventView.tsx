@@ -184,7 +184,7 @@ export function EventView({ worldId }: { worldId: string }) {
               >
                 {replay.isPending ? <Activity className="h-4 w-4 animate-spin" /> : <RotateCcw className="h-4 w-4" />}
                 REPLAY FROM TICK
-              </UIButton> { /* Wait, I still have UI Button in some places? No, replacing all with Button */}
+              </Button>
 
               <p className="text-[10px] text-muted-foreground leading-relaxed italic text-center px-2">
                 System will attempt to roll back the world state to the specified temporal signature and re-execute.
