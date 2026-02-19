@@ -33,7 +33,7 @@ class SerialController extends Controller
      */
     public function index(): JsonResponse
     {
-        $series = NarrativeSeries::orderBy('updated_at', 'desc')->get();
+        $series = NarrativeSeries::with('universe')->orderBy('updated_at', 'desc')->get();
 
         return response()->json([
             'success' => true,
@@ -43,6 +43,12 @@ class SerialController extends Controller
                     'title' => $s->title,
                     'genre_key' => $s->genre_key,
                     'universe_id' => $s->universe_id,
+                    'universe' => $s->universe ? [
+                        'id' => $s->universe->id,
+                        'name' => $s->universe->name,
+                        'status' => $s->universe->status,
+                        'entropy' => $s->universe->entropy ?? 0,
+                    ] : null,
                     'current_book_index' => $s->current_book_index,
                     'total_chapters_generated' => $s->total_chapters_generated,
                     'updated_at' => $s->updated_at?->format(\DateTimeInterface::ATOM),

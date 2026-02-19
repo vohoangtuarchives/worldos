@@ -51,4 +51,9 @@ class NarrativeSeries extends Model
     {
         return $this->hasMany(NarrativeArcOutline::class, 'narrative_series_id');
     }
+
+    public function universe(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(UniverseModel::class, 'universe_id');
+    }
 }

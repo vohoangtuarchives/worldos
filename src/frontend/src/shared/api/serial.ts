@@ -5,8 +5,15 @@ export type SerialSeries = {
   title: string;
   genre_key?: string;
   universe_id?: string;
-  current_book_index?: number;
-  total_chapters_generated?: number;
+  universe?: {
+    id: string;
+    name: string;
+    status: string;
+    entropy: number;
+  } | null;
+  config?: Record<string, unknown>;
+  current_book_index: number;
+  total_chapters_generated: number;
   updated_at?: string;
 };
 
