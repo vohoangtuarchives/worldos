@@ -38,6 +38,7 @@ const navGroups = [
         label: "Dòng Đời (Universe)",
         items: [
             { name: "Tổng Quan (Admin)", href: "/admin", icon: Orbit },
+            { name: "AI Config", href: "/admin/ai", icon: Bot },
             { name: "Bách Khoa (Wiki)", href: "/wiki", icon: BookOpen },
         ]
     },
