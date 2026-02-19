@@ -35,11 +35,14 @@ class AppServiceProvider extends ServiceProvider
             function ($app) {
                 $apiKey = config('services.openai.api_key');
                 if (empty($apiKey) || app()->environment('testing')) {
-                    return new \App\Domains\Narrative\LLM\Services\FakeLLMService();
+                    return new \App\Domains\Narrative\LLM\Services\FakeLLMService(
+                        $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class)
+                    );
                 }
                 return new \App\Domains\Narrative\LLM\Services\OpenAIService(
                     $apiKey,
-                    config('services.openai.model')
+                    config('services.openai.model'),
+                    $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class)
                 );
             }
         );
