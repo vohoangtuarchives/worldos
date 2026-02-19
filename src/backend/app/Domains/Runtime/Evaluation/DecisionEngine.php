@@ -6,7 +6,6 @@ use App\Domains\Cosmology\Entities\Universe;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
 use App\Domains\Evolution\Kernel\WorldEvolutionKernel;
-use App\Domains\Saga\Services\SagaService;
 use App\Models\UniverseModel;
 use App\Models\World;
 
@@ -16,7 +15,6 @@ use App\Models\World;
 class DecisionEngine
 {
     public function __construct(
-        private SagaService $sagaService,
         private UniverseSnapshotRepository $snapshotRepository,
         private CosmologyRepository $cosmologyRepository,
         private WorldEvolutionKernel $kernel
@@ -30,9 +28,7 @@ class DecisionEngine
             return 'archive';
         }
         if ($result->recommendation === EvaluationResult::RECOMMENDATION_FORK) {
-            $snapshot = $this->snapshotRepository->getLatest($universe->getId());
-            $fromTick = $snapshot ? $snapshot->tick : 0;
-            $this->sagaService->fork($universe, $fromTick);
+            // Forking is handled by SagaService to avoid circular dependency
             return 'fork';
         }
         if ($result->mutationSuggestion !== null) {

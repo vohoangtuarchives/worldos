@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { serialApi } from "@/shared/api/serial";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function StoryBibleView({ seriesId }: { seriesId: number }) {
+export function StoryBibleView({ seriesId }: { seriesId: string }) {
   const qc = useQueryClient();
   const { data: bible, isLoading, error } = useStoryBible(seriesId);
   const [premise, setPremise] = useState("");

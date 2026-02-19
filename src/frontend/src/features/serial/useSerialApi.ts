@@ -10,7 +10,7 @@ export function useSeriesList() {
   });
 }
 
-export function useSeries(id: number | null) {
+export function useSeries(id: string | null) {
   return useQuery({
     queryKey: ["serial", "series", id],
     queryFn: () => serialApi.series.show(id!),
@@ -42,7 +42,7 @@ export function useCreateSeries() {
   });
 }
 
-export function useGenerateNextChapter(seriesId: number) {
+export function useGenerateNextChapter(seriesId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: () => serialApi.series.generateNextChapter(seriesId),
@@ -50,7 +50,7 @@ export function useGenerateNextChapter(seriesId: number) {
   });
 }
 
-export function useGenerateOutline(seriesId: number) {
+export function useGenerateOutline(seriesId: string) {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: () => serialApi.series.generateOutline(seriesId),
@@ -58,7 +58,7 @@ export function useGenerateOutline(seriesId: number) {
   });
 }
 
-export function useStoryBible(seriesId: number | null) {
+export function useStoryBible(seriesId: string | null) {
   return useQuery({
     queryKey: ["serial", "story-bible", seriesId],
     queryFn: () => serialApi.storyBible.show(seriesId!),

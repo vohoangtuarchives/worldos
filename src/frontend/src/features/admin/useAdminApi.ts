@@ -20,7 +20,7 @@ export function useAdminUniverses() {
 export function useAdminToggleLock() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => adminApi.toggleLock(id),
+    mutationFn: (id: string) => adminApi.toggleLock(id),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ["admin", "universes"] });
       qc.invalidateQueries({ queryKey: ["admin", "stats"] });

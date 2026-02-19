@@ -187,7 +187,12 @@ class SagaService
             $result = $this->evaluator->evaluate($metrics);
             $universe = $this->cosmologyRepository->find($sw->universe_id);
             if ($universe !== null) {
-                $this->decisionEngine->execute($universe, $result);
+                $decision = $this->decisionEngine->execute($universe, $result);
+                if ($decision === 'fork') {
+                    $snapshot = $this->universeSnapshotRepository->getLatest($universe->getId());
+                    $fromTick = $snapshot ? $snapshot->tick : 0;
+                    $this->fork($universe, $fromTick);
+                }
             }
         }
     }
