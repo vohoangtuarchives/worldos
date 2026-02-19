@@ -24,7 +24,7 @@ type AgentConfig = {
   promptPreset: string;
 };
 
-const sourceConfigFiles = [
+const SOURCE_CONFIG_FILES = [
   "src/backend/config/ai.php",
   "src/backend/config/llm.php",
   "src/backend/config/worldos.php",
@@ -32,7 +32,7 @@ const sourceConfigFiles = [
   "src/backend/config/evolution.php",
 ];
 
-const initialProviders: ProviderConfig[] = [
+const INITIAL_PROVIDERS: ProviderConfig[] = [
   {
     id: "openai",
     name: "OpenAI",
@@ -56,7 +56,7 @@ const initialProviders: ProviderConfig[] = [
   },
 ];
 
-const initialAgents: AgentConfig[] = [
+const INITIAL_AGENTS: AgentConfig[] = [
   {
     key: "character",
     title: "AI Character",
@@ -86,78 +86,76 @@ const initialAgents: AgentConfig[] = [
   },
 ];
 
+function countConfiguredProviders(providers: ProviderConfig[]) {
+  return providers.filter((provider) => provider.enabled).length;
+}
+
 export function AIConfigCenter() {
-  const [providers, setProviders] = useState(initialProviders);
-  const [agents, setAgents] = useState(initialAgents);
+  const [providers, setProviders] = useState(INITIAL_PROVIDERS);
+  const [agents, setAgents] = useState(INITIAL_AGENTS);
   const [savedAt, setSavedAt] = useState<string | null>(null);
 
-  const activeProviderCount = useMemo(() => providers.filter((p) => p.enabled).length, [providers]);
+  const configuredProviderCount = useMemo(() => countConfiguredProviders(providers), [providers]);
 
   const updateProvider = (id: string, patch: Partial<ProviderConfig>) => {
-    setProviders((prev) => prev.map((p) => (p.id === id ? { ...p, ...patch } : p)));
+    setProviders((current) => current.map((provider) => (provider.id === id ? { ...provider, ...patch } : provider)));
   };
 
   const updateAgent = (key: string, patch: Partial<AgentConfig>) => {
-    setAgents((prev) => prev.map((a) => (a.key === key ? { ...a, ...patch } : a)));
+    setAgents((current) => current.map((agent) => (agent.key === key ? { ...agent, ...patch } : agent)));
   };
 
-  const saveConfig = () => {
-    // Placeholder: backend API quản lý config chưa được expose.
-    // Sau này có thể map sang /api/admin/ai/config.
+  const handleSave = () => {
     setSavedAt(new Date().toLocaleString("vi-VN"));
   };
 
   return (
     <div className="space-y-6 p-6">
-      <div className="flex items-center gap-4">
-        <Button variant="outline" size="sm" asChild>
-          <Link href="/admin">← Admin</Link>
-        </Button>
-        <div>
+      <header className="flex flex-wrap items-start justify-between gap-4 rounded-lg border border-border bg-card p-4">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" asChild>
+              <Link href="/admin">← Admin</Link>
+            </Button>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">AI Governance</p>
+          </div>
           <h1 className="text-2xl font-semibold">AI Agent Configuration Center</h1>
           <p className="text-sm text-muted-foreground">
-            Quản lý cấu hình AI Character, AI Writer, AI Provider và các cấu hình AI liên quan trong source code.
+            Refactor giao diện admin để quản lý gọn theo từng cụm: Provider, Agent Profile, và mapping file cấu hình.
           </p>
         </div>
-      </div>
+        <div className="grid min-w-52 grid-cols-2 gap-2 text-xs">
+          <div className="rounded border border-border p-2">
+            <p className="text-muted-foreground">Provider bật</p>
+            <p className="text-lg font-semibold">{configuredProviderCount}</p>
+          </div>
+          <div className="rounded border border-border p-2">
+            <p className="text-muted-foreground">AI Profiles</p>
+            <p className="text-lg font-semibold">{agents.length}</p>
+          </div>
+        </div>
+      </header>
 
       <Card>
         <CardHeader>
-          <CardTitle>Nguồn cấu hình trong source code</CardTitle>
-          <p className="text-sm text-muted-foreground">
-            Danh sách file backend cần đồng bộ khi nối API lưu cấu hình chính thức.
-          </p>
-        </CardHeader>
-        <CardContent>
-          <ul className="grid gap-2 text-sm">
-            {sourceConfigFiles.map((file) => (
-              <li key={file} className="rounded border border-border bg-muted/30 px-3 py-2 font-mono text-xs">
-                {file}
-              </li>
-            ))}
-          </ul>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>AI Provider</CardTitle>
-          <p className="text-sm text-muted-foreground">Bật/tắt provider và model mặc định cho từng provider.</p>
+          <CardTitle>1) AI Provider Configuration</CardTitle>
+          <p className="text-sm text-muted-foreground">Bật/tắt provider, chỉnh model mặc định và endpoint theo môi trường.</p>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-xs text-muted-foreground">Provider đang bật: {activeProviderCount}</p>
           {providers.map((provider) => (
-            <div key={provider.id} className="space-y-3 rounded border border-border p-3">
-              <div className="flex items-center justify-between">
-                <p className="font-medium">{provider.name}</p>
-                <label className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <input
-                    type="checkbox"
-                    checked={provider.enabled}
-                    onChange={(event) => updateProvider(provider.id, { enabled: event.target.checked })}
-                  />
-                  Enabled
-                </label>
+            <article key={provider.id} className="space-y-3 rounded border border-border p-3">
+              <div className="flex items-center justify-between gap-2">
+                <div>
+                  <p className="font-medium">{provider.name}</p>
+                  <p className="text-xs text-muted-foreground">ID: {provider.id}</p>
+                </div>
+                <Button
+                  variant={provider.enabled ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => updateProvider(provider.id, { enabled: !provider.enabled })}
+                >
+                  {provider.enabled ? "Enabled" : "Disabled"}
+                </Button>
               </div>
               <div className="grid gap-3 md:grid-cols-2">
                 <Input
@@ -171,21 +169,21 @@ export function AIConfigCenter() {
                   placeholder="Endpoint"
                 />
               </div>
-            </div>
+            </article>
           ))}
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle>AI Agent Profiles</CardTitle>
+          <CardTitle>2) AI Agent Profiles</CardTitle>
           <p className="text-sm text-muted-foreground">
-            Cấu hình cho AI Character, AI Writer và agent điều phối narrative.
+            Quản lý thông số cho AI Character, AI Writer và các agent điều phối.
           </p>
         </CardHeader>
         <CardContent className="space-y-4">
           {agents.map((agent) => (
-            <div key={agent.key} className="space-y-3 rounded border border-border p-3">
+            <article key={agent.key} className="space-y-3 rounded border border-border p-3">
               <div>
                 <p className="font-medium">{agent.title}</p>
                 <p className="text-xs text-muted-foreground">{agent.description}</p>
@@ -217,15 +215,35 @@ export function AIConfigCenter() {
                   placeholder="Prompt preset"
                 />
               </div>
-            </div>
+            </article>
           ))}
         </CardContent>
       </Card>
 
-      <div className="flex items-center gap-3">
-        <Button onClick={saveConfig}>Lưu cấu hình AI</Button>
-        {savedAt && <p className="text-xs text-muted-foreground">Đã lưu cục bộ lúc: {savedAt}</p>}
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>3) Source Config Mapping</CardTitle>
+          <p className="text-sm text-muted-foreground">
+            Các file cấu hình backend liên quan để đội vận hành đối chiếu nhanh khi rollout.
+          </p>
+        </CardHeader>
+        <CardContent>
+          <ul className="grid gap-2 text-sm md:grid-cols-2">
+            {SOURCE_CONFIG_FILES.map((file) => (
+              <li key={file} className="rounded border border-border bg-muted/30 px-3 py-2 font-mono text-xs">
+                {file}
+              </li>
+            ))}
+          </ul>
+        </CardContent>
+      </Card>
+
+      <footer className="flex flex-wrap items-center gap-3">
+        <Button onClick={handleSave}>Lưu cấu hình AI</Button>
+        <p className="text-xs text-muted-foreground">
+          {savedAt ? `Đã lưu cấu hình cục bộ lúc ${savedAt}.` : "Chưa có thay đổi nào được lưu."}
+        </p>
+      </footer>
     </div>
   );
 }
