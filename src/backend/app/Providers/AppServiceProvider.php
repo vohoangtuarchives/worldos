@@ -60,6 +60,12 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\World\Repositories\WorldRepository::class,
             \App\Domains\World\Repositories\EloquentWorldRepository::class
         );
+
+        // Tuzy: World repository (DDD port)
+        $this->app->bind(
+            \Tuzy\Domain\World\Repository\WorldRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\World\EloquentWorldRepository::class
+        );
         
         // Shock event repository binding
         $this->app->bind(

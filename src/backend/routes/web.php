@@ -46,7 +46,7 @@ Route::prefix('api/worlds')->name('api.worlds.')->group(function () {
     Route::get('/{worldId}/realtime', [WorldController::class, 'realtime'])->name('realtime');
 });
 
-Route::get('/story', StoryController::class);
+Route::get('/story', [StoryController::class, '__invoke']);
 
 // API Routes for Reader Interaction
 use App\Http\Controllers\ReactionController;
