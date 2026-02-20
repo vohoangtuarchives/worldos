@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Tuzy\Infrastructure\Persistence\Evolution;
 
 use App\Domains\Evolution\Models\EvolutionProfile as EvolutionProfileModel;
+use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\Evolution\Entity\EvolutionProfile;
+use Tuzy\Domain\Evolution\Event\EvolutionProfileCreated;
 use Tuzy\Domain\Evolution\Repository\EvolutionProfileRepositoryInterface;
 
 final class EloquentEvolutionProfileRepository implements EvolutionProfileRepositoryInterface
 {
+    public function __construct(
+        private readonly Dispatcher $dispatcher,
+    ) {
+    }
+
     public function findById(string $id): ?EvolutionProfile
     {
         $model = EvolutionProfileModel::find($id);
@@ -22,6 +29,7 @@ final class EloquentEvolutionProfileRepository implements EvolutionProfileReposi
     public function save(EvolutionProfile $profile): void
     {
         $model = EvolutionProfileModel::find($profile->getId());
+        $isNew = $model === null;
         if ($model === null) {
             $model = new EvolutionProfileModel();
             $model->id = $profile->getId();
@@ -32,5 +40,8 @@ final class EloquentEvolutionProfileRepository implements EvolutionProfileReposi
         }
         $model->name = $profile->getName();
         $model->save();
+        if ($isNew) {
+            $this->dispatcher->dispatch(new EvolutionProfileCreated($profile->getId(), $profile->getName()));
+        }
     }
 }

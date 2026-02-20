@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Tuzy\Infrastructure\Persistence\Vietnamese;
 
 use App\Domains\Vietnamese\Models\WorldHero as WorldHeroModel;
+use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\Vietnamese\Entity\WorldHero;
+use Tuzy\Domain\Vietnamese\Event\WorldHeroCreated;
 use Tuzy\Domain\Vietnamese\Repository\WorldHeroRepositoryInterface;
 
 final class EloquentWorldHeroRepository implements WorldHeroRepositoryInterface
 {
+    public function __construct(
+        private readonly Dispatcher $dispatcher,
+    ) {
+    }
+
     public function findById(string $id): ?WorldHero
     {
         $model = WorldHeroModel::find($id);
@@ -26,6 +33,7 @@ final class EloquentWorldHeroRepository implements WorldHeroRepositoryInterface
     public function save(WorldHero $worldHero): void
     {
         $model = WorldHeroModel::find($worldHero->getId());
+        $isNew = $model === null;
         if ($model === null) {
             $model = new WorldHeroModel();
             $model->id = $worldHero->getId();
@@ -35,5 +43,13 @@ final class EloquentWorldHeroRepository implements WorldHeroRepositoryInterface
         }
         $model->name = $worldHero->getName();
         $model->save();
+
+        if ($isNew) {
+            $this->dispatcher->dispatch(new WorldHeroCreated(
+                $worldHero->getId(),
+                $worldHero->getName(),
+                $worldHero->getWorldId(),
+            ));
+        }
     }
 }

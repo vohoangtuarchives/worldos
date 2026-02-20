@@ -7,6 +7,7 @@ use App\Models\UniverseModel;
 use App\Models\UniverseSnapshot;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 
 /**
  * Writer API: Universe-scoped resources (v3 — snapshot-first, metrics per universe).
@@ -34,8 +35,8 @@ class WriterUniverseController extends Controller
     public function snapshots(string $universeId): JsonResponse
     {
         $universe = UniverseModel::find($universeId);
-        if (!$universe) {
-            return response()->json(['error' => 'Universe not found.'], 404);
+        if (! $universe) {
+            throw UniverseNotFoundException::withId($universeId);
         }
 
         $snapshots = UniverseSnapshot::where('universe_id', $universeId)
@@ -64,8 +65,8 @@ class WriterUniverseController extends Controller
     public function metrics(string $universeId): JsonResponse
     {
         $universe = UniverseModel::find($universeId);
-        if (!$universe) {
-            return response()->json(['error' => 'Universe not found.'], 404);
+        if (! $universe) {
+            throw UniverseNotFoundException::withId($universeId);
         }
 
         return response()->json([
