@@ -21,6 +21,9 @@ use App\Http\Controllers\Api\ClusterController;
 | Auth — Sanctum Token (Bearer)
 |--------------------------------------------------------------------------
 */
+// Tuzy DDD — Create World (pilot)
+Route::post('v4/tuzy/worlds', \Tuzy\Presentation\Http\Controllers\World\CreateWorldController::class);
+
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
