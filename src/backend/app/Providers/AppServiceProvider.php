@@ -84,6 +84,12 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Domain\Cosmology\Repository\UniverseStyleRepositoryInterface::class,
             \Tuzy\Infrastructure\Persistence\Cosmology\EloquentUniverseStyleRepository::class
         );
+
+        // Tuzy: EvolutionProfile repository (Evolution)
+        $this->app->bind(
+            \Tuzy\Domain\Evolution\Repository\EvolutionProfileRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Evolution\EloquentEvolutionProfileRepository::class
+        );
         
         // Shock event repository binding
         $this->app->bind(
