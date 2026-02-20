@@ -159,9 +159,19 @@ class SagaService
         
         // Apply preset config to World if it's the first universe (optional, but good for consistency)
         if (!empty($preset)) {
-            // Note: In split flow, World might already be configured. 
-            // We only bootstrap if the world is "raw". 
-            // For now, let's assume specific Universe logic applies here.
+            $worldConfig = is_array($world->config) ? $world->config : [];
+            $worldConfig['preset_key'] = $presetKey;
+            $worldConfig['archetype'] = $preset['archetype'] ?? null;
+            $worldConfig['seed_vector'] = $preset['seed_vector'] ?? null;
+            $worldConfig['drift_profile'] = $preset['drift_profile'] ?? null;
+            $world->config = $worldConfig;
+
+            $geneVector = is_array($world->gene_vector) ? $world->gene_vector : [];
+            $geneVector['archetype'] = $preset['archetype'] ?? null;
+            $geneVector['seed_vector'] = $preset['seed_vector'] ?? null;
+            $world->gene_vector = $geneVector;
+            $world->save();
+
             app(\App\Domains\World\Services\WorldPowerProfileService::class)->bootstrapProfile($world, $preset);
         }
 

@@ -1,4 +1,4 @@
-??php
+<?php
 
 namespace Tests\Unit;
 
@@ -27,5 +27,8 @@ class WorldPowerProfileServiceTest extends TestCase
         $this->assertEquals($world->id, $profile->world_id);
         $this->assertEquals('cuu_trong_thien', $profile->schema_key);
         $this->assertEquals('SPIRITUAL_QI', $profile->parameters['power_system']);
+        $this->assertEquals('ascension_mysticism', $profile->parameters['archetype']);
+        $this->assertArrayHasKey('seed_vector', $profile->parameters);
+        $this->assertArrayHasKey('drift_profile', $profile->parameters);
     }
 }

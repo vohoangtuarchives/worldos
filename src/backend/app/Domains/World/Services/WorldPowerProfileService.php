@@ -26,6 +26,9 @@ class WorldPowerProfileService
                     'power_ceiling' => $preset['power_ceiling'] ?? null,
                     'tech_level' => $preset['tech_level'] ?? null,
                     'social_structure' => $preset['social_structure'] ?? null,
+                    'archetype' => $preset['archetype'] ?? null,
+                    'seed_vector' => $preset['seed_vector'] ?? null,
+                    'drift_profile' => $preset['drift_profile'] ?? null,
                 ],
                 'material_affinities' => Arr::get($schema, 'resources.material_tags', []),
                 'progression_state' => [
