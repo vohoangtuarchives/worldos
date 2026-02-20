@@ -78,6 +78,12 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Domain\Saga\Repository\SagaRepositoryInterface::class,
             \Tuzy\Infrastructure\Persistence\Saga\EloquentSagaRepository::class
         );
+
+        // Tuzy: UniverseStyle repository (Cosmology)
+        $this->app->bind(
+            \Tuzy\Domain\Cosmology\Repository\UniverseStyleRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Cosmology\EloquentUniverseStyleRepository::class
+        );
         
         // Shock event repository binding
         $this->app->bind(
