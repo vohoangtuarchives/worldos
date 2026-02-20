@@ -21,8 +21,9 @@ use App\Http\Controllers\Api\ClusterController;
 | Auth — Sanctum Token (Bearer)
 |--------------------------------------------------------------------------
 */
-// Tuzy DDD — Create World (pilot)
+// Tuzy DDD — World & Runtime (pilot)
 Route::post('v4/tuzy/worlds', \Tuzy\Presentation\Http\Controllers\World\CreateWorldController::class);
+Route::post('v4/tuzy/universes', \Tuzy\Presentation\Http\Controllers\Runtime\CreateUniverseController::class);
 
 Route::post('login', [AuthController::class, 'login']);
 

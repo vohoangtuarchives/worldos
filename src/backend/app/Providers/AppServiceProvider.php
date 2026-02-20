@@ -66,6 +66,12 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Domain\World\Repository\WorldRepositoryInterface::class,
             \Tuzy\Infrastructure\Persistence\World\EloquentWorldRepository::class
         );
+
+        // Tuzy: Universe repository (Runtime context)
+        $this->app->bind(
+            \Tuzy\Domain\Runtime\Repository\UniverseRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Runtime\EloquentUniverseRepository::class
+        );
         
         // Shock event repository binding
         $this->app->bind(
