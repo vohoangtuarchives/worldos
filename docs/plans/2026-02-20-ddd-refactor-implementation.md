@@ -274,6 +274,7 @@ Break into tasks per module (e.g. Task 3.1: Migrate World API to Tuzy; Task 3.2:
 - **Phase 3:** AdminWorldController::store uses CreateWorldHandler; WriterWorldController, WriterUniverseController, WriterCosmologyController, WriterMaterialController use domain exceptions (WorldNotFoundException, UniverseNotFoundException, SagaNotFoundException) instead of findOrFail / manual 404.
 - **Phase 4:** *Created events and *NotFoundException per context; Eloquent repositories dispatch events on create; `bootstrap/app.php` maps all Tuzy exceptions to 404 JSON.
 - **Bootstrap:** Added `"App\\": "app/"` to `composer.json` to fix ChapterGeneratedListener redeclare; `php artisan test` and Tuzy + CreateWorldEndpointTest run successfully.
+- **Listeners:** `App\Listeners\TuzyCreatedEventSubscriber` subscribes to all Tuzy *Created events (World, Universe, Saga, UniverseStyle, EvolutionProfile, NarrativeSeries, WorldHero) and logs at debug for audit; registered in `AppServiceProvider::boot()`.
 
 ---
 

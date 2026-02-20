@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Listeners\TuzyCreatedEventSubscriber;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -227,6 +229,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Event::subscribe(TuzyCreatedEventSubscriber::class);
+
         // Custom response macros
         Response::macro('success', function ($data = null, string $message = 'Success', int $status = 200) {
             return Response::json([
