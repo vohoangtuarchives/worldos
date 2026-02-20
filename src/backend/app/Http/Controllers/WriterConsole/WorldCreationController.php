@@ -63,7 +63,6 @@ class WorldCreationController extends Controller
             'carry_legacy' => 'boolean',
         ]);
 
-        // If a preset was selected, load its defaults
         $config = [];
         if (!empty($validated['preset_key'])) {
             $preset = $this->presetService->find($validated['preset_key']);
@@ -72,7 +71,6 @@ class WorldCreationController extends Controller
             }
         }
 
-        // Override with any custom values from the form (mixing)
         foreach (['genre', 'power_system', 'power_ceiling', 'tech_level', 'environment', 'social_structure', 'starting_crisis', 'power_ranking'] as $field) {
             if (!empty($validated[$field])) {
                 $config[$field] = $validated[$field];
@@ -95,15 +93,17 @@ class WorldCreationController extends Controller
                 'social_structure' => $config['social_structure'] ?? 'EMPIRE',
                 'starting_crisis' => $config['starting_crisis'] ?? 'NONE',
                 'power_ranking' => $config['power_ranking'] ?? 'NATURAL',
-        ],
-    ]);
+                'archetype' => $config['archetype'] ?? null,
+                'seed_vector' => $config['seed_vector'] ?? null,
+                'drift_profile' => $config['drift_profile'] ?? null,
+            ],
+        ]);
 
-    // Auto-trigger simulation
-    RunSagaSimulationJob::dispatch($saga);
+        RunSagaSimulationJob::dispatch($saga);
 
-    return redirect()->route('writer.sagas.show', $saga->id)
-        ->with('success', 'Khai Thiên Tịch Địa! Thế giới mới đã được sáng tạo và đang bắt đầu mô phỏng.');
-}
+        return redirect()->route('writer.sagas.show', $saga->id)
+            ->with('success', 'Khai Thiên Tịch Địa! Thế giới mới đã được sáng tạo và đang bắt đầu mô phỏng.');
+    }
 
     /**
      * Create/Seed a new Saga (World Series)
