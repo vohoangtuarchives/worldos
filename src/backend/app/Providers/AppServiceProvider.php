@@ -72,6 +72,12 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Domain\Runtime\Repository\UniverseRepositoryInterface::class,
             \Tuzy\Infrastructure\Persistence\Runtime\EloquentUniverseRepository::class
         );
+
+        // Tuzy: Saga repository
+        $this->app->bind(
+            \Tuzy\Domain\Saga\Repository\SagaRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Saga\EloquentSagaRepository::class
+        );
         
         // Shock event repository binding
         $this->app->bind(
