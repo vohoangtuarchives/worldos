@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tuzy\Application\World\CreateWorld\CreateWorldCommand;
+use Tuzy\Application\World\CreateWorld\CreateWorldHandler;
 
 /**
  * Admin API: Worlds CRUD (list, create, show, update).
+ * Create flow uses Tuzy CreateWorldHandler (Phase 3).
  */
 class AdminWorldController extends Controller
 {
@@ -53,7 +56,7 @@ class AdminWorldController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request, CreateWorldHandler $createWorldHandler): JsonResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -63,34 +66,35 @@ class AdminWorldController extends Controller
             'tags.*' => 'string',
         ]);
 
-        $world = World::create([
-            'name' => $validated['name'],
-            'type' => $validated['type'] ?? \App\Domains\World\Enums\WorldType::FANTASY,
-            'description' => $validated['description'] ?? null,
-            'tags' => $validated['tags'] ?? [],
-            'status' => 'ACTIVE',
-            'health_status' => \App\Domains\World\Enums\WorldHealthStatus::STABLE,
-        ]);
+        $result = $createWorldHandler->handle(new CreateWorldCommand($validated['name']));
 
-        try {
-            if (method_exists($world, 'clock') && class_exists(\App\Models\WorldClock::class)) {
-                $world->clock()->create(['current_tick' => 0]);
+        $world = World::find($result->id);
+        if ($world) {
+            $world->update([
+                'type' => $validated['type'] ?? \App\Domains\World\Enums\WorldType::FANTASY,
+                'description' => $validated['description'] ?? null,
+                'tags' => $validated['tags'] ?? [],
+                'status' => 'ACTIVE',
+                'health_status' => \App\Domains\World\Enums\WorldHealthStatus::STABLE,
+            ]);
+            try {
+                if (method_exists($world, 'clock') && class_exists(\App\Models\WorldClock::class)) {
+                    $world->clock()->create(['current_tick' => 0]);
+                }
+            } catch (\Throwable $e) {
+                // clock table may not exist
             }
-        } catch (\Throwable $e) {
-            // clock table may not exist
-        }
-
-        // Phase 2: Ensure World has at least one Universe (runtime instance)
-        try {
-            app(\App\Domains\Runtime\UniverseFactory::class)->spawnFromWorld($world);
-        } catch (\Throwable $e) {
-            // Non-fatal: World created; Universe can be created later
+            try {
+                app(\App\Domains\Runtime\UniverseFactory::class)->spawnFromWorld($world);
+            } catch (\Throwable $e) {
+                // Non-fatal: World created; Universe can be created later
+            }
         }
 
         return response()->json([
-            'id' => $world->id,
-            'name' => $world->name,
-            'message' => "World '{$world->name}' created successfully.",
+            'id' => $result->id,
+            'name' => $result->name,
+            'message' => "World '{$result->name}' created successfully.",
         ], 201);
     }
 

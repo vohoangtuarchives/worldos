@@ -5,11 +5,18 @@ declare(strict_types=1);
 namespace Tuzy\Infrastructure\Persistence\World;
 
 use App\Models\World as WorldModel;
+use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\World\Entity\World;
+use Tuzy\Domain\World\Event\WorldCreated;
 use Tuzy\Domain\World\Repository\WorldRepositoryInterface;
 
 final class EloquentWorldRepository implements WorldRepositoryInterface
 {
+    public function __construct(
+        private readonly Dispatcher $dispatcher,
+    ) {
+    }
+
     public function findById(string $id): ?World
     {
         $model = WorldModel::find($id);
@@ -22,6 +29,7 @@ final class EloquentWorldRepository implements WorldRepositoryInterface
     public function save(World $world): void
     {
         $model = WorldModel::find($world->getId());
+        $isNew = $model === null;
         if ($model === null) {
             $model = new WorldModel();
             $model->id = $world->getId();
@@ -30,5 +38,9 @@ final class EloquentWorldRepository implements WorldRepositoryInterface
         }
         $model->name = $world->getName();
         $model->save();
+
+        if ($isNew) {
+            $this->dispatcher->dispatch(new WorldCreated($world->getId(), $world->getName()));
+        }
     }
 }
