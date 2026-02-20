@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\UniverseModel;
 use App\Models\WorldAlert;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 use App\Models\GovernanceAuditLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -48,7 +49,10 @@ class AdminCosmologyController extends Controller
      */
     public function toggleLock($id)
     {
-        $u = UniverseModel::findOrFail($id);
+        $u = UniverseModel::find($id);
+        if (!$u) {
+            throw UniverseNotFoundException::withId((string) $id);
+        }
         // Assuming we add a 'is_locked' column or use state
         // For now, let's just log it as a simulation of the action if column doesn't exist
         // or toggle a temporary status in parameters.

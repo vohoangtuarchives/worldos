@@ -7,6 +7,7 @@ use App\Domains\Cosmology\Services\ArtifactService;
 use App\Models\Artifact;
 use App\Models\UniverseModel;
 use Illuminate\Http\Request;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 
 class MarketplaceController extends Controller
 {
@@ -35,7 +36,10 @@ class MarketplaceController extends Controller
         ]);
 
         $artifact = Artifact::findOrFail($id);
-        $target = UniverseModel::findOrFail($data['target_universe_id']);
+        $target = UniverseModel::find($data['target_universe_id']);
+        if (!$target) {
+            throw UniverseNotFoundException::withId($data['target_universe_id']);
+        }
 
         if ($this->artifactService->infuse($artifact, $target)) {
             return response()->json([

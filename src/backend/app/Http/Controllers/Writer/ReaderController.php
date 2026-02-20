@@ -8,6 +8,7 @@ use App\Domains\Material\Engine\MaterialLawEngine;
 use App\Domains\Saga\SagaExecutor;
 use App\Models\World;
 use App\Domains\Material\State\WorldStateRepository;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -34,7 +35,9 @@ class ReaderController extends Controller
     public function index(string $worldId)
     {
         $world = World::find($worldId);
-        if (!$world) abort(404);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
 
         $currentEpoch = $this->getCurrentEpoch($worldId);
         
@@ -125,6 +128,9 @@ class ReaderController extends Controller
         // But SagaExecutor result doesn't explicitly return genre. 
         // Let's use the one from index() logic or re-fetch.
         $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $genreKey = $world->genre ?? 'historical';
 
         $genre = $this->genreRegistry->get($genreKey);

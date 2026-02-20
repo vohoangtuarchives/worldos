@@ -12,6 +12,7 @@ use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\JsonResponse;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -46,7 +47,10 @@ class GodConsoleController extends Controller
      */
     public function index(string $worldId): View
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->getLatestSnapshot($world);
 
         // Defaults for empty world
@@ -145,7 +149,10 @@ class GodConsoleController extends Controller
      */
     public function metrics(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->getLatestSnapshot($world);
 
         if (!$snapshot) {
@@ -167,7 +174,10 @@ class GodConsoleController extends Controller
      */
     public function trajectory(Request $request, string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $limit = min(200, max(10, (int)$request->input('limit', 50)));
 
         $snapshots = $world->cosmicSnapshots()
@@ -195,7 +205,10 @@ class GodConsoleController extends Controller
      */
     public function attractors(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->getLatestSnapshot($world);
 
         if (!$snapshot) {
@@ -232,7 +245,10 @@ class GodConsoleController extends Controller
      */
     public function alerts(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->getLatestSnapshot($world);
 
         if (!$snapshot) {
@@ -270,7 +286,10 @@ class GodConsoleController extends Controller
      */
     public function freeze(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $entry = $this->epochControl->freeze($world, 'god_console');
 
         return response()->json([
@@ -286,7 +305,10 @@ class GodConsoleController extends Controller
      */
     public function resume(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $entry = $this->epochControl->resume($world, 'god_console');
 
         return response()->json([
@@ -302,7 +324,10 @@ class GodConsoleController extends Controller
      */
     public function step(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $entry = $this->epochControl->stepOne($world);
 
         return response()->json([
@@ -317,7 +342,10 @@ class GodConsoleController extends Controller
      */
     public function rollback(string $worldId): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $restored = $this->epochControl->rollback($world);
 
         if (!$restored) {
@@ -340,7 +368,10 @@ class GodConsoleController extends Controller
      */
     public function emergency(Request $request, string $worldId, string $action): JsonResponse
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->getLatestSnapshot($world);
 
         if (!$snapshot) {

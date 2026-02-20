@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Writer;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Domains\Cosmic\Services\EpochControlService;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use App\Domains\Cosmic\Services\EmergencyInterventionService;
 use App\Domains\World\Scar;
 use App\Domains\World\Services\EventGate;
@@ -26,7 +27,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         try {
             $this->epochControl->freeze($world);
@@ -40,7 +41,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         try {
             $this->epochControl->resume($world);
@@ -54,7 +55,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         try {
             $result = $this->epochControl->stepEpoch($world);
@@ -72,7 +73,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         try {
             $snapshot = $this->epochControl->rollback($world);
@@ -90,7 +91,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         $data = $request->validate([
             'event_type' => 'required|string',
@@ -111,7 +112,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
         $data = $request->validate([
             'location_scope' => 'required|string',
@@ -131,7 +132,7 @@ class WriterWorldHubController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         // V3: Find the active Universe for this World

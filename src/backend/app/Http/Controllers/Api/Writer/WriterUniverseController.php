@@ -150,7 +150,7 @@ class WriterUniverseController extends Controller
     {
         $universe = UniverseModel::find($universeId);
         if (!$universe) {
-            return response()->json(['error' => 'Universe not found.'], 404);
+            throw UniverseNotFoundException::withId($universeId);
         }
 
         $style = \App\Models\UniverseStyle::where('world_id', $universe->world_id)

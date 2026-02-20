@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SeedTemplate;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 class SeedController extends Controller
 {
@@ -80,7 +81,10 @@ class SeedController extends Controller
     public function inject(Request $request, $templateId, $worldId)
     {
         $template = SeedTemplate::findOrFail($templateId);
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
 
         // Governance Validation
         $validator = new \App\Domains\World\Services\SeedGovernanceValidator();
@@ -139,7 +143,10 @@ class SeedController extends Controller
 
     public function active($worldId)
     {
-        $world = World::with('clock')->findOrFail($worldId);
+        $world = World::with('clock')->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $seeds = \App\Models\WorldSeed::where('world_id', $worldId)
             ->with('template')
             ->orderBy('created_at', 'desc')
@@ -150,7 +157,10 @@ class SeedController extends Controller
 
     public function forceExhaust(Request $request, $worldId, $seedId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $seed = \App\Models\WorldSeed::findOrFail($seedId);
 
         if ($seed->world_id !== $world->id) {

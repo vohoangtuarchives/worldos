@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Api\Writer;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Models\UniverseModel;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use App\Models\UniverseSnapshot;
 use App\Models\WorldEvent;
 use Illuminate\Http\JsonResponse;
@@ -29,7 +30,7 @@ class WriterWorldSnapshotController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         $universeIds = UniverseModel::where('world_id', $world->id)
@@ -65,7 +66,7 @@ class WriterWorldSnapshotController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         $universeId = $request->query('universe_id');
@@ -113,7 +114,7 @@ class WriterWorldSnapshotController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         return response()->json([
@@ -130,7 +131,7 @@ class WriterWorldSnapshotController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         $perPage = max(1, min(50, (int) $request->query('per_page', 20)));
@@ -172,7 +173,7 @@ class WriterWorldSnapshotController extends Controller
     {
         $world = World::find($id);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId($id);
         }
 
         $fromTick = (int) $request->input('from_tick', 0);

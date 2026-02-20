@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\World;
 use App\Models\ReaderSession;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use App\Models\ReaderReaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -21,7 +22,10 @@ class ReactionController extends Controller
             'session_id' => 'required|uuid', // In real app, this comes from cookie/header
         ]);
 
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
 
         // Find or create session
         $session = ReaderSession::firstOrCreate(

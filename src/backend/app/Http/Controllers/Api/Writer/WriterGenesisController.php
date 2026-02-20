@@ -68,6 +68,9 @@ class WriterGenesisController extends Controller
         ]);
 
         $world = \App\Models\World::find($validated['world_id']);
+        if (!$world) {
+            throw \Tuzy\Domain\World\Exception\WorldNotFoundException::withId((string) $validated['world_id']);
+        }
         $universe = $this->sagaService->spawnUniverseFromPreset($world, $validated['preset_key']);
 
         return response()->json([

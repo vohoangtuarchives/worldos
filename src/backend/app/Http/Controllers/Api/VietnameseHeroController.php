@@ -6,6 +6,7 @@ use App\Domains\Vietnamese\Models\VietnameseHero;
 use App\Domains\Vietnamese\Models\HeroEvent;
 use App\Domains\Vietnamese\Services\HeroScoringService;
 use Illuminate\Http\Request;
+use Tuzy\Domain\Vietnamese\Exception\WorldHeroNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -58,7 +59,10 @@ class VietnameseHeroController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $hero = VietnameseHero::with('events')->findOrFail($id);
+        $hero = VietnameseHero::with('events')->find($id);
+        if (!$hero) {
+            throw WorldHeroNotFoundException::withId($id);
+        }
 
         return response()->json([
             'hero' => $hero,
@@ -118,7 +122,10 @@ class VietnameseHeroController extends Controller
      */
     public function events(string $id): JsonResponse
     {
-        $hero = VietnameseHero::findOrFail($id);
+        $hero = VietnameseHero::find($id);
+        if (!$hero) {
+            throw WorldHeroNotFoundException::withId($id);
+        }
         $events = $hero->events()->orderBy('year')->get();
 
         return response()->json([

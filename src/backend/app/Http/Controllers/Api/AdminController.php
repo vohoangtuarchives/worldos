@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\UniverseModel;
 use Illuminate\Http\JsonResponse;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -82,7 +83,10 @@ class AdminController extends Controller
 
     public function toggleLock(string $id): JsonResponse
     {
-        $universe = UniverseModel::findOrFail($id);
+        $universe = UniverseModel::find($id);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
         // Assuming 'locked' logic or just state toggle
         // For now, let's just toggle state between active/paused if applicable, or log it.
         // Or if there is a 'is_locked' column. 

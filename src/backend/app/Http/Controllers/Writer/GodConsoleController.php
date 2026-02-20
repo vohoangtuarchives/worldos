@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Writer;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 class GodConsoleController extends Controller
 {
@@ -13,7 +14,10 @@ class GodConsoleController extends Controller
      */
     public function index($worldId)
     {
-        $world = World::with(['state', 'state.evolutionProfile'])->findOrFail($worldId);
+        $world = World::with(['state', 'state.evolutionProfile'])->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         
         // Ensure state exists (it should if created via Genesis)
         if (!$world->state) {
@@ -28,7 +32,10 @@ class GodConsoleController extends Controller
      */
     public function getMetrics($worldId)
     {
-        $world = World::with('state')->findOrFail($worldId);
+        $world = World::with('state')->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         
         return response()->json([
             'tick' => $world->current_tick,
@@ -42,7 +49,10 @@ class GodConsoleController extends Controller
      */
     public function intervene(Request $request, $worldId)
     {
-        $world = World::with('state')->findOrFail($worldId);
+        $world = World::with('state')->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $state = $world->state;
         
         $action = $request->input('action');

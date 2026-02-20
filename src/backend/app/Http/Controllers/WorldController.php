@@ -13,6 +13,7 @@ use App\Domains\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 final class WorldController extends Controller
 {
@@ -41,7 +42,7 @@ final class WorldController extends Controller
         $world = $this->worldRepository->findById($worldId);
         
         if (!$world) {
-            abort(404, 'World not found');
+            throw WorldNotFoundException::withId($worldId);
         }
 
         $characters = $this->characterRepository->findByWorldId($worldId);
@@ -67,7 +68,7 @@ final class WorldController extends Controller
         $world = $this->worldRepository->findById($worldId);
         
         if (!$world) {
-            abort(404, 'World not found');
+            throw WorldNotFoundException::withId($worldId);
         }
 
         return view('worlds.dashboard', [
@@ -81,7 +82,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $characters = $this->characterRepository->findByWorldId($worldId);
@@ -119,7 +120,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $world = $world->enableAutonomous();
@@ -148,7 +149,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $world = $world->disableAutonomous();
@@ -177,7 +178,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $characters = $this->characterRepository->findByWorldId($worldId);
@@ -218,7 +219,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $characters = $this->characterRepository->findByWorldId($worldId);
@@ -248,7 +249,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             $materials = $this->materialTracker->trackWorldMaterials($world);
@@ -274,7 +275,7 @@ final class WorldController extends Controller
             $world = $this->worldRepository->findById($worldId);
             
             if (!$world) {
-                return response()->json(['error' => 'World not found'], 404);
+                throw WorldNotFoundException::withId($worldId);
             }
 
             // Get real-time data

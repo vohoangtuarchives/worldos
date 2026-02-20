@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\WMCP;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Models\WorldHealthSnapshot;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use Illuminate\Http\Request;
 
 class HealthController extends Controller
@@ -33,7 +34,10 @@ class HealthController extends Controller
 
     public function show($worldId)
     {
-        $world = World::with('clock')->findOrFail($worldId);
+        $world = World::with('clock')->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         
         // Get historical snapshots (last 30 days or 100 records)
         $snapshots = WorldHealthSnapshot::where('world_id', $worldId)

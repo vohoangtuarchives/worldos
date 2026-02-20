@@ -14,6 +14,7 @@ use App\Models\NarrativeArcOutline;
 use App\Models\NarrativeSeries;
 use App\Models\UniverseModel;
 use Illuminate\Http\JsonResponse;
+use Tuzy\Domain\Narrative\Exception\NarrativeSeriesNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Validation\Rule;
@@ -150,7 +151,7 @@ class SerialController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'config' => 'nullable|array',
@@ -177,7 +178,7 @@ class SerialController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $series->delete();
         return response()->json([
@@ -271,7 +272,7 @@ class SerialController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'count' => 'required|integer|min:1|max:20',
@@ -373,7 +374,7 @@ class SerialController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'books_count' => 'nullable|integer|min:1|max:20',

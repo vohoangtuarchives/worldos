@@ -7,6 +7,7 @@ use App\Domains\Material\Contracts\MaterialRepositoryInterface;
 use App\Domains\Material\Material;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 class MaterialInterventionController extends Controller
 {
@@ -22,7 +23,10 @@ class MaterialInterventionController extends Controller
      */
     public function index(Request $request, string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $instances = $this->repository->getInstancesForWorld($worldId);
         $availableMaterials = Material::all();
 
@@ -43,7 +47,10 @@ class MaterialInterventionController extends Controller
             'strength_level' => 'required|integer|min:1|max:10',
         ]);
 
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $material = Material::findOrFail($request->material_id);
 
         // Check if material is already active
@@ -159,7 +166,10 @@ class MaterialInterventionController extends Controller
      */
     public function timeline(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $materials = Material::all();
         
         // Build events from material instances

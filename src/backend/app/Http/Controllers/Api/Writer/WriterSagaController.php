@@ -9,6 +9,7 @@ use App\Domains\Saga\Actions\AdvanceSagaAction;
 use App\Domains\Saga\Services\SagaService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 
 class WriterSagaController extends Controller
 {
@@ -102,6 +103,9 @@ class WriterSagaController extends Controller
             $universe = \App\Models\UniverseModel::orderBy('created_at', 'desc')->first();
         }
 
+        if ($universeId && !$universe) {
+            throw UniverseNotFoundException::withId($universeId);
+        }
         if (!$universe) {
             return response()->json([
                 'error' => 'No active Universe found. Please run Genesis first.',

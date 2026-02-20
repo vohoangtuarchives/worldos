@@ -13,6 +13,7 @@ use App\Domains\Runtime\UniverseRuntimeService;
 use App\Http\Controllers\Controller;
 use App\Models\UniverseModel;
 use App\Models\PlayerFaction;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -185,7 +186,7 @@ class CosmologyController extends Controller
         $id = ($id === 'latest' || $id === 'demo') ? 'demo-universe' : $id;
         $universe = $this->repository->find($id);
         if ($universe === null) {
-            return response()->json(['error' => 'Universe not found'], 404);
+            throw UniverseNotFoundException::withId($id);
         }
         $ticks = (int) $request->input('ticks', 1);
         $ticks = max(1, min(100, $ticks));
@@ -248,7 +249,9 @@ class CosmologyController extends Controller
     {
         $repo = app(CosmologyRepository::class);
         $universe = $repo->find($id);
-        if (!$universe) return response()->json(['error' => 'Not Found'], 404);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
 
         $model = UniverseModel::find($id);
         $worldId = $model?->world_id ? (string) $model->world_id : null;
@@ -272,7 +275,9 @@ class CosmologyController extends Controller
     {
         $repo = app(CosmologyRepository::class);
         $universe = $repo->find($id);
-        if (!$universe) return response()->json(['error' => 'Not Found'], 404);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
 
         $model = UniverseModel::find($id);
         $worldId = $model?->world_id ? (string) $model->world_id : null;
@@ -303,7 +308,9 @@ class CosmologyController extends Controller
         ]);
 
         $success = $defenseService->contribute($data['universe_id'], $data['amount']);
-        if ($success === null) return response()->json(['error' => 'Universe Not Found'], 404);
+        if ($success === null) {
+            throw UniverseNotFoundException::withId($data['universe_id']);
+        }
         if ($success === false) return response()->json(['error' => 'Insufficient Resources'], 400);
 
         return response()->json([
@@ -316,7 +323,9 @@ class CosmologyController extends Controller
     {
         $repo = app(CosmologyRepository::class);
         $universe = $repo->find($id);
-        if (!$universe) return response()->json(['error' => 'Not Found'], 404);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
 
         $laws = $request->validate([
             'order' => 'nullable|numeric|between:0,1',
@@ -384,7 +393,9 @@ class CosmologyController extends Controller
         // ... previous code ...
         // (Keeping existing code, just anchoring)
         $universe = $this->repository->find($id);
-        if (!$universe) return response()->json(['error' => 'Not Found'], 404);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
 
         $heroId = $request->input('hero_id');
         
@@ -418,7 +429,9 @@ class CosmologyController extends Controller
     public function buildFleet(Request $request, string $id, \App\Domains\Cosmology\Services\GalacticWarfareService $warfareService)
     {
         $universe = $this->repository->find($id);
-        if (!$universe) return response()->json(['error' => 'Not Found'], 404);
+        if (!$universe) {
+            throw UniverseNotFoundException::withId($id);
+        }
 
         $name = $request->input('name', 'Expeditionary Force ' . rand(100, 999));
         $cost = $request->input('cost', 10.0);
@@ -445,7 +458,7 @@ class CosmologyController extends Controller
         $id = ($id === 'latest' || $id === 'demo') ? 'demo-universe' : $id;
         $universe = $this->repository->find($id);
         if (!$universe) {
-            return response()->json(['error' => 'Universe not found'], 404);
+            throw UniverseNotFoundException::withId($id);
         }
         $userId = $request->user()?->id ?? $request->input('user_id');
         if ($userId === null) {
@@ -589,7 +602,7 @@ class CosmologyController extends Controller
         $id = ($id === 'latest' || $id === 'demo') ? 'demo-universe' : $id;
         $universe = $this->repository->find($id);
         if (!$universe) {
-            return response()->json(['error' => 'Universe not found'], 404);
+            throw UniverseNotFoundException::withId($id);
         }
 
         $worldState = $request->input('world_state');

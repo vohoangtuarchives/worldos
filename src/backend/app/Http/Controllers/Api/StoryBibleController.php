@@ -8,6 +8,7 @@ use App\Domains\Narrative\Services\WorldbuildingService;
 use App\Http\Controllers\Controller;
 use App\Models\NarrativeSeries;
 use App\Models\StoryBible;
+use Tuzy\Domain\Narrative\Exception\NarrativeSeriesNotFoundException;
 use App\Models\StoryBibleCharacter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ class StoryBibleController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $bible = $series->storyBible;
         if ($bible === null) {
@@ -60,7 +61,7 @@ class StoryBibleController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'premise' => 'required|string|max:10000',
@@ -101,7 +102,7 @@ class StoryBibleController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'braindump' => 'nullable|string|max:65535',
@@ -137,7 +138,7 @@ class StoryBibleController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $bible = $series->storyBible;
         if ($bible === null) {
@@ -161,7 +162,7 @@ class StoryBibleController extends Controller
     {
         $series = NarrativeSeries::find($id);
         if ($series === null) {
-            return response()->json(['success' => false, 'message' => 'Series not found.'], 404);
+            throw NarrativeSeriesNotFoundException::withId($id);
         }
         $bible = $series->storyBible;
         if ($bible === null) {

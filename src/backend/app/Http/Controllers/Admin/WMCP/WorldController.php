@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\WMCP;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 class WorldController extends Controller
 {
@@ -18,7 +19,10 @@ class WorldController extends Controller
     {
         $world = World::with(['clock', 'events' => function($q) {
             $q->latest()->limit(10);
-        }])->findOrFail($id);
+        }])->find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
 
         return view('admin.wmcp.worlds.show', compact('world'));
     }
@@ -81,13 +85,19 @@ class WorldController extends Controller
 
     public function edit($id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         return view('admin.wmcp.worlds.edit', compact('world'));
     }
 
     public function update(Request $request, $id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
 
         $validated = $request->validate([
             'description' => 'nullable|string',
@@ -117,7 +127,10 @@ class WorldController extends Controller
 
     public function fork(Request $request, $id, \App\Domains\World\Services\WorldForkService $forkService)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         $validated = $request->validate([
             'new_name' => 'required|string|max:255',
             'tick' => 'required|integer|min:0',
@@ -156,20 +169,30 @@ class WorldController extends Controller
 
     public function lock($id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         $world->update(['status' => 'LOCKED']);
         return back()->with('success', 'World locked successfully.');
     }
 
     public function unlock($id)
     {
-        World::findOrFail($id)->update(['status' => 'ACTIVE']);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
+        $world->update(['status' => 'ACTIVE']);
         return back()->with('success', 'World unlocked successfully.');
     }
 
     public function safeMode($id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         // Toggle Safe Mode (stored in status or separate column? User asked for SAFE_MODE state)
         // Let's use status 'SAFE_MODE' if currently ACTIVE
         
@@ -196,7 +219,10 @@ class WorldController extends Controller
 
     public function halt($id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         $world->update([
             'status' => 'LOCKED',
             'health_status' => \App\Domains\World\Enums\WorldHealthStatus::HALTED
@@ -225,14 +251,20 @@ class WorldController extends Controller
     }
     public function editLaws($id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
         return view('admin.wmcp.worlds.edit_laws', compact('world'));
     }
 
     public function updateLaws(Request $request, $id)
     {
-        $world = World::findOrFail($id);
-        
+        $world = World::find($id);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $id);
+        }
+
         $validated = $request->validate([
             'magic_system' => 'required|string',
             'power_ceiling' => 'required|string',

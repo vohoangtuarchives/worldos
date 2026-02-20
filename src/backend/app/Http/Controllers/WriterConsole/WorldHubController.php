@@ -5,6 +5,7 @@ namespace App\Http\Controllers\WriterConsole;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Domains\Cosmic\Services\MetricsSnapshotService;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use App\Domains\Cosmic\Services\AlertEvaluationEngine;
 use App\Domains\Cosmic\Services\EpochControlService;
 use App\Domains\Cosmic\Services\EmergencyInterventionService;
@@ -39,7 +40,10 @@ class WorldHubController extends Controller
      */
     public function show(string $worldId, Request $request): View
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $tab = $request->query('tab', 'overview');
 
         // Base data for all tabs
@@ -405,35 +409,50 @@ class WorldHubController extends Controller
 
     public function freeze(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $this->epochControl->freeze($world);
         return back()->with('success', 'World frozen.');
     }
 
     public function resume(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $this->epochControl->resume($world);
         return back()->with('success', 'World resumed.');
     }
 
     public function step(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $result = $this->epochControl->stepEpoch($world);
         return back()->with('success', 'Stepped 1 epoch. New year: ' . ($result['epoch'] ?? '?'));
     }
 
     public function rollback(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $this->epochControl->rollback($world);
         return back()->with('success', 'Rolled back to year ' . ($snapshot->year ?? '?'));
     }
 
     public function emergency(string $worldId, string $action, Request $request)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $snapshot = $world->cosmicSnapshots()->latest('year')->first();
 
         if (!$snapshot) {
@@ -465,7 +484,10 @@ class WorldHubController extends Controller
      */
     public function toggleAutonomous(string $worldId)
     {
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId($worldId);
+        }
         $world->autonomous = !$world->autonomous;
         $world->save();
 

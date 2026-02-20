@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\WMCP;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Models\WorldAlert;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use App\Models\WorldSeed;
 use App\Models\WorldMyth;
 use App\Models\WorldScar;
@@ -53,7 +54,10 @@ class DashboardController extends Controller
      */
     public function worldFactors($worldId)
     {
-        $world = World::with('clock')->findOrFail($worldId);
+        $world = World::with('clock')->find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
 
         // Foundation: Primitives bound to this world
         $primitives = WorldPrimitive::whereHas('worldBindings', function($q) use ($worldId) {

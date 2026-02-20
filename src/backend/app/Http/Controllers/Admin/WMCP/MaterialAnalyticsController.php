@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Domains\Material\Analytics\MaterialAnalytics;
 use App\Models\World;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 class MaterialAnalyticsController extends Controller
 {
@@ -30,7 +31,10 @@ class MaterialAnalyticsController extends Controller
             ]);
         }
 
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $analytics = $this->analytics->getWorldAnalytics($world);
 
         return view('admin.wmcp.materials.analytics', [
@@ -50,7 +54,10 @@ class MaterialAnalyticsController extends Controller
             return response()->json(['error' => 'world_id required'], 400);
         }
 
-        $world = World::findOrFail($worldId);
+        $world = World::find($worldId);
+        if (!$world) {
+            throw WorldNotFoundException::withId((string) $worldId);
+        }
         $analytics = $this->analytics->getWorldAnalytics($world);
 
         return response()->json($analytics);

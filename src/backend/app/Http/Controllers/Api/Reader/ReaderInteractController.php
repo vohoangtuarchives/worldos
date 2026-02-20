@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Reader;
 use App\Http\Controllers\Controller;
 use App\Models\World;
 use App\Domains\Reader\ReaderInteractionEngine;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 
@@ -22,7 +23,7 @@ class ReaderInteractController extends Controller
         $worldId = (int) $id;
         $world = World::find($worldId);
         if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+            throw WorldNotFoundException::withId((string) $worldId);
         }
 
         $currentEpoch = (int) (DB::table('world_state_events')->where('world_id', $worldId)->max('epoch') ?? $world->current_tick ?? 0);
