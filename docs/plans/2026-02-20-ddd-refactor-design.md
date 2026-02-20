@@ -10,6 +10,12 @@
 - **Clean Architecture**: Các lớp tương ứng Entities, Use Cases, Interface Adapters (Presentation + Infrastructure), Frameworks & Drivers (Laravel). Dependency hướng vào trong.
 - **Root namespace & thư mục**: **Tuzy** — code DDD và Presentation nằm trong `src/Tuzy/`, namespace `Tuzy\*`. Presentation layer thuộc Tuzy (không nằm `app/Http`).
 
+### Success criteria (kết quả cần đạt)
+
+- **Mọi logic nghiệp vụ và chức năng chạy qua Tuzy**: Entrypoint (HTTP, Console) chỉ gọi Tuzy Application (use case); không gọi trực tiếp `App\Domains\*` hay domain logic cũ.
+- **Không còn logic domain/application trong `app/Domains`**: Sau khi migrate xong, thư mục `app/Domains` có thể deprecate hoặc xóa; không để song song hai nơi chứa logic nghiệp vụ.
+- **`app/Models`** chỉ dùng cho persistence (Infrastructure đọc/ghi qua Eloquent); không chứa logic nghiệp vụ.
+
 ---
 
 ## 1. Kiến trúc tổng quan & layout
