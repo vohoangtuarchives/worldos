@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Tuzy\Application\World\CreateWorld\CreateWorldCommand;
 use Tuzy\Application\World\CreateWorld\CreateWorldHandler;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 /**
  * Admin API: Worlds CRUD (list, create, show, update).
@@ -39,8 +40,8 @@ class AdminWorldController extends Controller
     public function show(string $id): JsonResponse
     {
         $world = World::find($id);
-        if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
         }
         return response()->json([
             'id' => $world->id,
@@ -101,8 +102,8 @@ class AdminWorldController extends Controller
     public function update(Request $request, string $id): JsonResponse
     {
         $world = World::find($id);
-        if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
         }
         $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
