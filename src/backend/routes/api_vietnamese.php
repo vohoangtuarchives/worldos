@@ -27,6 +27,8 @@ Route::post('v4/tuzy/universes', \Tuzy\Presentation\Http\Controllers\Runtime\Cre
 Route::post('v4/tuzy/sagas', \Tuzy\Presentation\Http\Controllers\Saga\CreateSagaController::class);
 Route::post('v4/tuzy/universe-styles', \Tuzy\Presentation\Http\Controllers\Cosmology\CreateUniverseStyleController::class);
 Route::post('v4/tuzy/evolution-profiles', \Tuzy\Presentation\Http\Controllers\Evolution\CreateEvolutionProfileController::class);
+Route::post('v4/tuzy/narrative-series', \Tuzy\Presentation\Http\Controllers\Narrative\CreateNarrativeSeriesController::class);
+Route::post('v4/tuzy/world-heroes', \Tuzy\Presentation\Http\Controllers\Vietnamese\CreateWorldHeroController::class);
 
 Route::post('login', [AuthController::class, 'login']);
 

@@ -90,7 +90,19 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Domain\Evolution\Repository\EvolutionProfileRepositoryInterface::class,
             \Tuzy\Infrastructure\Persistence\Evolution\EloquentEvolutionProfileRepository::class
         );
-        
+
+        // Tuzy: NarrativeSeries repository (Narrative)
+        $this->app->bind(
+            \Tuzy\Domain\Narrative\Repository\NarrativeSeriesRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Narrative\EloquentNarrativeSeriesRepository::class
+        );
+
+        // Tuzy: WorldHero repository (Vietnamese)
+        $this->app->bind(
+            \Tuzy\Domain\Vietnamese\Repository\WorldHeroRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Vietnamese\EloquentWorldHeroRepository::class
+        );
+
         // Shock event repository binding
         $this->app->bind(
             \App\Domains\World\Repositories\ShockEventRepository::class,
