@@ -7,6 +7,8 @@ use App\Domains\Saga\Services\SagaService;
 use App\Http\Controllers\Controller;
 use App\Domains\Saga\Saga;
 use Illuminate\Http\Request;
+use Tuzy\Domain\Runtime\Exception\UniverseNotFoundException;
+use Tuzy\Domain\Saga\Exception\SagaNotFoundException;
 
 class WriterCosmologyController extends Controller
 {
@@ -79,7 +81,10 @@ class WriterCosmologyController extends Controller
      */
     public function getSagaTree($id)
     {
-        $saga = Saga::findOrFail($id);
+        $saga = Saga::find($id);
+        if (! $saga) {
+            throw SagaNotFoundException::withId((string) $id);
+        }
         $sagaWorlds = $saga->sagaWorlds()->with('world')->get();
         
         $nodes = $sagaWorlds->map(function ($sw) {
@@ -119,8 +124,10 @@ class WriterCosmologyController extends Controller
      */
     public function runSaga($id)
     {
-        $saga = Saga::findOrFail($id);
-        
+        $saga = Saga::find($id);
+        if (! $saga) {
+            throw SagaNotFoundException::withId((string) $id);
+        }
         if ($saga->status === 'COMPLETED') {
              return response()->json(['error' => 'Saga already completed'], 400);
         }
@@ -148,8 +155,10 @@ class WriterCosmologyController extends Controller
             return response()->json(['error' => $validation->getReason()], 403);
         }
 
-        $universe = \App\Models\UniverseModel::findOrFail($universeId);
-        
+        $universe = \App\Models\UniverseModel::find($universeId);
+        if (! $universe) {
+            throw UniverseNotFoundException::withId((string) $universeId);
+        }
         // Add to the saga or a dedicated canon field
         $params = $universe->parameters ?? [];
         $canon = $params['canon_events'] ?? [];
@@ -178,7 +187,10 @@ class WriterCosmologyController extends Controller
             'severity' => 'required|in:LOW,MEDIUM,HIGH,CALAMITY'
         ]);
 
-        $model = \App\Models\UniverseModel::findOrFail($universeId);
+        $model = \App\Models\UniverseModel::find($universeId);
+        if (! $model) {
+            throw UniverseNotFoundException::withId((string) $universeId);
+        }
         app(\App\Domains\Cosmology\Services\InterventionService::class)
             ->injectNarrative($model, $data['content'], $data['severity']);
 
@@ -195,10 +207,9 @@ class WriterCosmologyController extends Controller
         $bifurcation = app(\App\Domains\Cosmology\Services\BifurcationService::class);
 
         $universe = $repo->find($universeId);
-        if (!$universe) {
-            return response()->json(['error' => 'Universe not found'], 404);
+        if (! $universe) {
+            throw UniverseNotFoundException::withId((string) $universeId);
         }
-
         $branches = $bifurcation->split($universe);
         $lifecycle->archive($universe, 'BIFURCATION');
 
@@ -217,10 +228,9 @@ class WriterCosmologyController extends Controller
         $lifecycle = app(\App\Domains\Cosmology\Services\LifecycleService::class);
 
         $universe = $repo->find($universeId);
-        if (!$universe) {
-            return response()->json(['error' => 'Universe not found'], 404);
+        if (! $universe) {
+            throw UniverseNotFoundException::withId((string) $universeId);
         }
-
         $lifecycle->archive($universe, 'WRITER_INDUCED_COLLAPSE');
 
         return response()->json(['message' => 'Universe collapsed. Archived.']);
@@ -231,7 +241,10 @@ class WriterCosmologyController extends Controller
      */
     public function getLastInjected($universeId)
     {
-        $model = \App\Models\UniverseModel::findOrFail($universeId);
+        $model = \App\Models\UniverseModel::find($universeId);
+        if (! $model) {
+            throw UniverseNotFoundException::withId((string) $universeId);
+        }
         $last = $model->parameters['last_injected_event'] ?? null;
         return response()->json(['last_injected' => $last]);
     }

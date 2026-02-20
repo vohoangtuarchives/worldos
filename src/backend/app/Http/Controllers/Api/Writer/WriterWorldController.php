@@ -8,6 +8,7 @@ use App\Models\World;
 use App\Models\UniverseModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 /**
  * Writer API: Worlds (aggregate root). World Detail includes Runtime Instances (Universes).
@@ -44,7 +45,10 @@ class WriterWorldController extends Controller
      */
     public function show(string $id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
+        }
         $instances = UniverseModel::where('world_id', $world->id)->get()->map(function (UniverseModel $u) {
             return [
                 'id' => (string) $u->id,
@@ -80,7 +84,10 @@ class WriterWorldController extends Controller
      */
     public function storeInstance(Request $request, string $id)
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
+        }
         $data = $request->validate([
             'name' => 'nullable|string|max:255',
             'archetype' => 'nullable|string|in:BALANCED,UTOPIAN,DYSTOPIAN,CHAOTIC,VOID_TOUCHED',

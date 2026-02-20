@@ -9,6 +9,7 @@ use App\Domains\Material\Material;
 use App\Models\World;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Tuzy\Domain\World\Exception\WorldNotFoundException;
 
 /**
  * Writer API: Materials for a world (list, activate, adjust, retire).
@@ -26,8 +27,8 @@ class WriterMaterialController extends Controller
     public function timeline(string $id): JsonResponse
     {
         $world = World::find($id);
-        if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
         }
         $worldId = (string) $id;
         $instances = $this->repository->getInstancesForWorld($worldId);
@@ -80,8 +81,8 @@ class WriterMaterialController extends Controller
     public function index(string $id): JsonResponse
     {
         $world = World::find($id);
-        if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
         }
 
         $worldId = (string) $id;
@@ -110,8 +111,8 @@ class WriterMaterialController extends Controller
         ]);
 
         $world = World::find($id);
-        if (!$world) {
-            return response()->json(['error' => 'World not found'], 404);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
         }
 
         $worldId = (string) $id;
@@ -296,7 +297,10 @@ class WriterMaterialController extends Controller
      */
     public function worldAnalytics(string $id): JsonResponse
     {
-        $world = World::findOrFail($id);
+        $world = World::find($id);
+        if (! $world) {
+            throw WorldNotFoundException::withId($id);
+        }
         $analytics = $this->analytics->getWorldAnalytics($world);
 
         return response()->json([
