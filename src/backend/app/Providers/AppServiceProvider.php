@@ -223,6 +223,15 @@ class AppServiceProvider extends ServiceProvider
             \Tuzy\Infrastructure\Cosmology\Repositories\AttractorEloquentRepository::class
         );
 
+        // Phase 15: Cosmos Domain (Meta-Simulation)
+        $this->app->singleton(\Tuzy\Domain\Cosmos\Service\ParetoSelector::class);
+        $this->app->singleton(\Tuzy\Domain\Cosmos\Service\ObjectiveEngine::class, function ($app) {
+            return new \Tuzy\Domain\Cosmos\Service\ObjectiveEngine(
+                $app->make(\Tuzy\Domain\Cosmos\Implementation\NarrativeDramaObjective::class)
+            );
+        });
+        $this->app->bind(\Tuzy\Domain\Cosmos\Contracts\Objective::class, \Tuzy\Domain\Cosmos\Implementation\NarrativeDramaObjective::class);
+
     }
 
     /**

@@ -169,6 +169,13 @@ class WorldBlindRunCommand extends Command
             $this->info(" >>> HISTORY PHASE: " . $snap->historyPhase->label() . " <<< ");
             $this->warn(" >>> POWER STAGE:   " . $snap->powerStage->label() . " <<< ");
             $this->error(" >>> LIFECYCLE:     " . strtoupper($snap->lifecycleState->value) . " <<< ");
+            
+            // Evaluated Phase 8 Feature: Escalation Basin
+            $detector = new \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector();
+            $escalationBasin = $detector->detect($snap);
+            $this->line(" ");
+            $this->line("<options=bold,reverse> >>> BASIN DYNAMICS:  " . strtoupper($escalationBasin) . " <<< </>");
+            
             $this->newLine();
             $this->line(" --- NARRATIVE ---");
             $this->line(sprintf(" - Tension (Short|Long): %-8s | %-8s", number_format($snap->shortWaveTension, 4), number_format($snap->longWaveTension, 4)));

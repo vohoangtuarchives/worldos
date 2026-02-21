@@ -32,17 +32,22 @@ class MaterialEvolutionService
     private function updateFactions(CivilizationSnapshot $civ): void
     {
         foreach ($this->registry->getAllFactions() as $faction) {
-            // 1. Power Drift: Prosperity supports growth, Stability prevents decay
-            $growth = ($civ->prosperity * 0.05) + ($civ->stability * 0.02) - 0.03;
+            // 1. Power Drift: Prosperity, Military, Expansionism support growth. Entropy causes decay.
+            $growth = ($civ->prosperity * 0.06) 
+                    + ($civ->militaryPressure * 0.04) 
+                    + ($civ->expansionism * 0.02)
+                    - ($civ->internalEntropy * 0.05) 
+                    - 0.005; // Base decay much smaller now
+            
             $faction->modifyPower($growth);
 
             // 2. Ideology Mutation: High inequality forces radicalization
-            if ($civ->inequality > 0.7) {
+            if ($civ->inequality > 0.7 || $civ->internalEntropy > 0.8) {
                 $faction->mutateIdeology(0.1);
             }
 
             // 3. Memory Decay
-            $faction->decayMemory(0.05);
+            $faction->decayMemory(0.02);
         }
     }
 

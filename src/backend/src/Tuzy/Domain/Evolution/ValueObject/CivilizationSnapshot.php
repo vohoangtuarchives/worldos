@@ -55,6 +55,13 @@ final class CivilizationSnapshot
         public readonly float $energy = 1.0, // Năng lượng văn minh (bảo toàn)
         /** @var \Tuzy\Domain\Evolution\ValueObject\SocialClass[] */
         public readonly array $socialClasses = [],
+        /** @var \Tuzy\Domain\Evolution\ValueObject\Faction[] */
+        public readonly array $factions = [],
+        /** @var \Tuzy\Domain\Evolution\ValueObject\PopulationCluster[] */
+        public readonly array $populationClusters = [],
+        public readonly ?EliteNetwork $eliteNetwork = null,
+        public readonly float $structuralEntropy = 0.0,
+        public readonly float $civilizationalMemory = 0.0,
         public readonly ?CivilizationResidual $residual = null,
         public readonly CivilizationLifecycleState $lifecycleState = CivilizationLifecycleState::EMERGENCE,
         public readonly float $narrativeTension = 0.0,
@@ -91,6 +98,28 @@ final class CivilizationSnapshot
                 new \Tuzy\Domain\Evolution\ValueObject\SocialClass(\Tuzy\Domain\Evolution\Enum\SocialClassType::PEASANTRY, 0.1, 0.4, 0.75),
                 new \Tuzy\Domain\Evolution\ValueObject\SocialClass(\Tuzy\Domain\Evolution\Enum\SocialClassType::INTELLECTUAL, 0.01, 0.9, 0.01),
             ],
+            factions: [
+                new \Tuzy\Domain\Evolution\ValueObject\Faction(
+                    id: 'fac_initial',
+                    name: 'Initial Ruling Council',
+                    ideology: new \Tuzy\Domain\Evolution\ValueObject\IdeologyVector(0.5, 0.5, 0.5, 0.5, 0.5, 0.5),
+                    powerShare: 1.0,
+                    cohesion: 0.8,
+                    legitimacyClaim: 0.9
+                )
+            ],
+            populationClusters: [
+                new \Tuzy\Domain\Evolution\ValueObject\PopulationCluster(
+                    ideology: new \Tuzy\Domain\Evolution\ValueObject\IdeologyVector(0.5, 0.5, 0.5, 0.5, 0.5, 0.5),
+                    share: 1.0,
+                    radicalization: 0.1,
+                    originEventType: 'GENESIS',
+                    birthTick: $year
+                )
+            ],
+            eliteNetwork: new \Tuzy\Domain\Evolution\ValueObject\EliteNetwork(),
+            structuralEntropy: 0.0,
+            civilizationalMemory: 0.0,
             lifecycleState: CivilizationLifecycleState::EMERGENCE
         );
     }
@@ -126,6 +155,16 @@ final class CivilizationSnapshot
         $narrativeEngine   = new \Tuzy\Domain\Evolution\Service\NarrativeEngine();
         $heroSystem        = new \Tuzy\Domain\Evolution\Service\HeroSystem();
         $attractorModifier = new \Tuzy\Domain\Evolution\Service\AttractorFieldModifier();
+        $phaseDetector     = new \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector();
+
+        $populationDynamics = new \Tuzy\Domain\Evolution\Service\PopulationDynamicsEngine();
+        $polarizationEngine = new \Tuzy\Domain\Evolution\Service\PolarizationEngine();
+        $legitimacyEngine   = new \Tuzy\Domain\Evolution\Service\LegitimacyEngine();
+        $factionEvolution   = new \Tuzy\Domain\Evolution\Service\FactionEvolutionEngine();
+        $ecoPressureEngine  = new \Tuzy\Domain\Evolution\Service\EcologicalPressureEngine();
+        $forecastEngine     = new \Tuzy\Domain\Evolution\Service\ForecastEngine();
+        $policyAdvisor      = new \Tuzy\Domain\Evolution\Service\PolicyAdvisor();
+        $eliteDecision      = new \Tuzy\Domain\Evolution\Service\EliteDecision();
         
         $phaseForces = $phaseEngine->getPhaseForces($this->historyPhase);
         
@@ -136,15 +175,39 @@ final class CivilizationSnapshot
         $totalTension = $this->narrativeTension;
         $hCount = $this->heroCount;
         
+        $currentFactions = $this->factions;
+        $currentClusters = $this->populationClusters;
+        $currentNetwork = $this->eliteNetwork ?? new \Tuzy\Domain\Evolution\ValueObject\EliteNetwork();
+        $currentStructuralEntropy = $this->structuralEntropy;
+        
         for ($i = 0; $i < $deltaYears; $i++) {
+            $ieNow = $state->values[array_search('ie', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->internalEntropy;
+            
+            // Build temporary snapshot to evaluate current phase
+            $tempCivForPhase = \Tuzy\Domain\Evolution\ValueObject\CivilizationSnapshot::fromArray(
+                array_merge(\Tuzy\Domain\Evolution\ValueObject\CivilizationSnapshot::defaultObservation()->toArray(), $state->toAssocArray())
+            );
+            $currentBasinPhase = $phaseDetector->detect($tempCivForPhase);
+
             // 0. Hero Emergence Check
             $heroImpactThisTick = 0.0;
-            $extForcesFromHero = [];
-            if ($heroSystem->checkEmergence($totalTension, 1, $ieNow ?? $this->internalEntropy)) {
+            if ($heroSystem->checkEmergence($totalTension, 1, $ieNow, $currentBasinPhase)) {
                 $impact = $heroSystem->applyHeroImpact($hCount);
-                $extForcesFromHero = $impact['forces'];
+                $heroImpulses = $impact['forces'];
                 $heroImpactThisTick = $impact['tensionRelief'];
                 $hCount++;
+                
+                // Directly apply Hero distortion as IMPULSES (bypassing DT integration)
+                $sValues = $state->toAssocArray();
+                foreach (\Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS as $idx => $keyName) {
+                    if (isset($heroImpulses[$idx]) && $heroImpulses[$idx] != 0) {
+                        $sValues[$keyName] = max(-1.0, min(1.0, $sValues[$keyName] + $heroImpulses[$idx]));
+                    }
+                }
+                $state = new \Tuzy\Domain\Evolution\ValueObject\StateVector($sValues);
+                
+                // Hero also dissipates some trauma instantaneously
+                $trauma = max(0.0, $trauma - 0.3);
             }
 
             // 1. Calculate Total Pressure (Constraints)
@@ -156,63 +219,142 @@ final class CivilizationSnapshot
             
             // Compile External Forces (Phase + Basin Pull + Faction Power as MP drive)
             $ext = $phaseForces;
-            if (isset($pull['stability'])) $ext['stability'] = ($ext['stability'] ?? 0) + $pull['stability'];
             if (isset($pull['prosperity'])) $ext['prosperity'] = ($ext['prosperity'] ?? 0) + $pull['prosperity'];
-            
-            // Add Hero forces to $ext. $ext is associative.
-            foreach(\Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS as $idx => $keyName) {
-                if (isset($extForcesFromHero[$idx]) && $extForcesFromHero[$idx] != 0) {
-                    $ext[$keyName] = ($ext[$keyName] ?? 0) + $extForcesFromHero[$idx];
-                }
-            }
 
             $structuralCapacity = max(0.1, $state->values[3] * $state->values[4]); // stability * prosperity
             $potentialPressure = $totalFactionPower / $structuralCapacity;
             $targetPressure = min(1.0, $potentialPressure * 0.1);
-            $mpIdx = array_search('mp', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
-            $ext['mp'] = ($ext['mp'] ?? 0) + ($targetPressure - $state->values[$mpIdx]) * 0.1;
+            $ext['mp'] = ($ext['mp'] ?? 0) + ($targetPressure - $state->values[5]) * 0.1;
+
+            // ── PHASE 10: ECOLOGICAL & AI ADVISORY LAYER ─────────────────────
+            $ecoPressures = $ecoPressureEngine->calculatePressures($this);
+            $resourcePressure = $ecoPressures['resourcePressure'];
+            $complexityCost = $ecoPressures['complexityCost'];
+
+            // AI Forecast & Policy
+            $ceVal = $state->values[array_search('ce', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->culturalEnergy;
+            $techVal = $state->values[array_search('tech', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->technologicalLevel;
+            $infoVal = $state->values[array_search('info', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->informationFlow;
+            
+            $aii = ($techVal * 0.4) + ($infoVal * 0.4) + ($ceVal * 0.2);
+            $riskForecast = $forecastEngine->predict($this, 10, $aii);
+            $suggestedPolicies = $policyAdvisor->suggest($riskForecast);
+            $chosenPolicy = $eliteDecision->makeDecision($suggestedPolicies, $this->eliteCohesion, $this->legitimacy, $this->structuralEntropy);
+
+            // Apply Policy Effects to Dynamic System External Forces
+            if ($chosenPolicy === \Tuzy\Domain\Evolution\Service\PolicyAdvisor::POLICY_TRIGGER_REFORM) {
+                $ext['ie'] = ($ext['ie'] ?? 0) - 0.1; // Reduce internal entropy
+                $ext['ce'] = ($ext['ce'] ?? 0) + 0.05; // Boost cultural energy
+            } elseif ($chosenPolicy === \Tuzy\Domain\Evolution\Service\PolicyAdvisor::POLICY_REDUCE_CENTRALIZATION) {
+                $ext['stability'] = ($ext['stability'] ?? 0) + 0.02; // Minor stability buff
+            }
+
+            // ── PHASE 10: POPULATION DYNAMICS & FACTION EVOLUTION ────────────
+            $ieIdx = array_search('ie', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
+            $ieNow = $state->values[$ieIdx] ?? $this->internalEntropy;
+
+            $currentClusters = $populationDynamics->evolve(
+                $currentClusters,
+                $currentFactions,
+                $this->prosperity,
+                $resourcePressure,
+                $this->inequality,
+                $ieNow,     
+                $riskForecast->shockRiskVector['social_unrest'] ?? 0.0,
+                $this->year + $i
+            );
+            $polarization = $polarizationEngine->calculatePolarization($currentClusters);
+            
+            // Faction Evolution
+            $externalThreatValue = max($this->externalThreat, $riskForecast->shockRiskVector['external_invasion'] ?? 0.0);
+            $factionResult = $factionEvolution->process(
+                $currentFactions,
+                $currentNetwork,
+                $currentStructuralEntropy,
+                $this->legitimacy,
+                $externalThreatValue,
+                $resourcePressure,
+                $riskForecast->collapseProbability
+            );
+            $currentFactions = $factionResult['factions'];
+            $currentNetwork = $factionResult['network'];
+
+            // Find ruling faction (highest power share) to calculate legitimacy
+            $rulingFaction = null;
+            $maxShare = -1.0;
+            foreach ($currentFactions as $f) {
+                if ($f->powerShare > $maxShare) {
+                    $maxShare = $f->powerShare;
+                    $rulingFaction = $f;
+                }
+            }
+
+            $calcLegitimacy = $this->legitimacy;
+            if ($rulingFaction) {
+                $calcLegitimacy = $legitimacyEngine->calculateLegitimacy($currentClusters, $rulingFaction);
+            }
+
+            // Structural Entropy Drift
+            $currentStructuralEntropy += ($currentNetwork->networkRigidity * 0.01 + $complexityCost * 0.02) * self::DT;
+            $currentStructuralEntropy = min(1.0, max(0.0, $currentStructuralEntropy));
+
+            // ── TRAUMA DISSIPATION MECHANISM ─────────────────────────────────
+            // TraumaDecay = (SpiritualCohesion * 0.4) + (CulturalEnergy * 0.3) + Constant Drift
+            $scVal = $state->values[array_search('sc', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->spiritualCohesion;
+            $ceVal = $state->values[array_search('ce', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->culturalEnergy;
+            
+            $traumaDecay = ($scVal * 0.04 + $ceVal * 0.03 + 0.005) * self::DT;
+            $trauma = max(0.0, $trauma - $traumaDecay);
 
             // ── ACTIVE ENTROPY DISSIPATION ───────────────────────────────
-            // Cohesion, legitimacy, sustainability are entropy SINKS.
-            // Without this, internalEntropy only ever grows → EXTINCT every run.
             $ieIdx    = array_search('ie', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
-            $scVal    = $state->values[array_search('sc',          \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->spiritualCohesion;
-            $legVal   = $state->values[array_search('legitimacy',  \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->legitimacy;
-            $susVal   = $state->values[array_search('sustainability', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->sustainability;
-            $ineqVal  = $state->values[array_search('inequality',  \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->inequality;
-            $mpVal    = $state->values[array_search('mp',          \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)] ?? $this->militaryPressure;
             $ieNow    = $state->values[$ieIdx] ?? $this->internalEntropy;
 
-            // ── PURE THRESHOLD ENTROPY DISSIPATION ───────────────────────
-            // Dissipation is 0 below threshold, allowing entropy to build naturally.
-            // Above threshold, society actively pushes back proportional to overflow SQUARED.
-            // This guarantees oscillation by creating a "hard wall" as entropy nears 1.0
             $entropyThreshold = 0.25;
             if ($ieNow > $entropyThreshold) {
                 $overflow = $ieNow - $entropyThreshold;
-                // Exponential pushback: creates an unbreakable wall near 0.85
-                // Overflow^2 * 2.50 → at 0.50 (overflow 0.25) = -0.15/tick
-                //                 → at 0.85 (overflow 0.60) = -0.90/tick
                 $ext['ie'] = ($ext['ie'] ?? 0.0) - ($overflow * $overflow) * 2.50;
             }
 
-            // Hero bonus: pure entropy sink during crises
-            if ($hCount > 0 && $ieNow > $entropyThreshold) {
-                $heroBonus = min(0.10, $hCount * 0.04 * ($ieNow - $entropyThreshold));
-                $ext['ie'] = ($ext['ie'] ?? 0.0) - $heroBonus;
-            }
-
             // ── ATTRACTOR FIELD COUPLING ─────────────────────────────────
-            // Apply cosmic attractor force profile before kernel integration.
-            // Entropy balance is handled via: 
-            //   (1) LinearCouplingMatrix ie diagonal override (-0.065) prevents runaway
-            //   (2) AttractorFieldModifier: RENAISSANCE dissipates, DARK_AGE/CHAOS amplifies
-            //   (3) Hero forces in HeroSystem: ie=-0.50*efficiency when entropy crisis
             $ext = $attractorModifier->apply($cosmicState->currentAttractor, $ext, $entropy, $ieNow);
-
 
             // ── DYNAMICAL MATRIX INTEGRATION ────────────────────────────
             $nextState = $kernel->step($state, $entropy, $elasticity, $ext);
+
+            // ── EMERGENT STABILITY & LEGITIMACY (Feedback Loop) ────────────────
+            $v = $nextState->values;
+            $legIdx = array_search('legitimacy', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
+            $ecIdx  = array_search('eliteCohesion', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
+            $ineqIdx = array_search('inequality', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
+            $ceIdx  = array_search('ce', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
+
+            $legVal = $v[$legIdx];
+            $ecVal  = $v[$ecIdx];
+            $ineqVal = $v[$ineqIdx];
+            $ieVal  = $v[$ieIdx];
+            $ceNew  = $v[$ceIdx];
+
+            // Blend ideological legitimacy mapping with physical state
+            $legVal = ($legVal * 0.6) + ($calcLegitimacy * 0.4);
+            $nextStateValues = $nextState->getAll();
+            $nextStateValues['legitimacy'] = $legVal;
+
+            // The structural formula for Stability (ranges ~0 to 1)
+            $calcStab = 0.3 * $legVal 
+                      + 0.3 * $ecVal 
+                      + 0.2 * $ceNew 
+                      - 0.3 * $ineqVal 
+                      - 0.4 * $ieVal 
+                      - 0.1 * $polarization    // Inject Polarization penalty
+                      - 0.2 * $trauma;
+            
+            // Re-inject stability directly into the state vector, bypassing Euler integration drift for this variable
+            $calcStab = max(0.0, min(1.0, $calcStab + 0.3)); // Base structural anchor point
+            
+            $nextStateValues = $nextState->getAll();
+            $nextStateValues['stability'] = $calcStab;
+            $nextState = new \Tuzy\Domain\Evolution\ValueObject\StateVector($nextStateValues);
 
             // NARRATIVE TENSION INTEGRATION
             $tensions = $narrativeEngine->updateTension($tensionShort, $tensionLong, $nextState, $entropy, $heroImpactThisTick);
@@ -221,36 +363,47 @@ final class CivilizationSnapshot
             $totalTension = $tensions['total'];
 
             // Energy & Resilience Logic based on new state
-            $stab = $nextState->values[array_search('stability', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)];
+            $stab = $calcStab;
             $p = $nextState->values[array_search('prosperity', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)];
-            $ie = $nextState->values[array_search('ie', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)];
+            $ieNew = $nextState->values[array_search('ie', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS)];
             
-            $energyRegen = ($stab * 0.002 + $p * 0.001) * self::DT; // Base regeneration
-            $energy = max(0.0, min(2.0, $energy + $energyRegen - 0.001)); // Constant micro drain
+            $energyRegen = ($stab * 0.002 + $p * 0.001) * self::DT; 
+            $energy = max(0.0, min(2.0, $energy + $energyRegen - 0.001)); 
 
-            // 10. Resilience Evolution (Stateful Health Bar)
-            $resilienceStress = ($stab < 0.3 ? (0.3 - $stab) * 0.1 : 0.0) + ($ie > 0.8 ? ($ie - 0.8) * 0.1 : 0.0);
-            $resilienceRecovery = ($stab > 0.6 ? ($stab - 0.6) * 0.05 : 0.0);
+            // Resilience Evolution
+            $resilienceStress = ($stab < 0.3 ? (0.3 - $stab) * 0.1 : 0.0) + ($ieNew > 0.8 ? ($ieNew - 0.8) * 0.1 : 0.0);
+            $resilienceRecovery = ($stab > 0.6 ? ($stab - 0.6) * 0.05 : 0.0) + ($ceNew > 0.7 ? 0.02 : 0.0); // CE also recovers resilience
             
-            // Dynamic Resilience based on Legacy and Long Wave Tension
-            // Structural floor of 0.15 so it doesn't instantly collapse from tension alone
             $legacyIdx = array_search('legacy', \Tuzy\Domain\Evolution\ValueObject\StateVector::KEYS);
             $legacyVal = $state->values[$legacyIdx] ?? 0.1;
             
             $resilienceTarget = max(0.15, 0.5 + 0.3 * $legacyVal - 0.2 * $tensionLong);
-            
-            // Grace Period: New civilizations (first 100 years) have protected resilience
             $graceFactor = ($this->year + $i < 100) ? 0.2 : 1.0;
             
-            // Drift towards target based on current stress/recovery
-            // 0.01 means it takes 100 ticks (1000 years) to fully drift to target
             $r = (1 - 0.01) * $r + 0.01 * $resilienceTarget;
-            
-            // Apply stress/recovery but clamp the decay so it doesn't just plummet to 0
-            // from one bad tick. Max drop of 0.05 per tick.
             $netStress = min(0.05, max(-0.05, $resilienceStress * $graceFactor - $resilienceRecovery));
-            // Floor at 0.01: a civilization always has some tiny thread of survival
             $r = max(0.01, min(1.0, $r - $netStress));
+
+            // ── HIDDEN FRAGILITY & DELAYED COLLAPSE (Edge of Chaos) ─────────
+            $fragility = $this->residual ? $this->residual->socialUnrest : 0.0;
+            $fragility += ($ineqVal * $ineqVal + $ieNew) * self::DT;
+            
+            if ($fragility > 1.5) {
+                $k = 0.2; // 20% shock
+                $newIe = min(3.0, $ieNew * (1.0 + $k)); 
+                $newStab = max(0.0, $stab * (1.0 - $k));
+                
+                $shockStateValues = $nextState->toAssocArray();
+                $shockStateValues['ie'] = $newIe;
+                $shockStateValues['stability'] = $newStab;
+                $nextState = new \Tuzy\Domain\Evolution\ValueObject\StateVector($shockStateValues);
+                
+                $fragility = 1.0; 
+            }
+            
+            if ($this->residual) {
+                $this->residual->socialUnrest = $fragility;
+            }
 
             $state = $nextState;
         }
@@ -287,6 +440,11 @@ final class CivilizationSnapshot
             fieldCurvature: round($v['curvature'], 6),
             energy: $energy,
             socialClasses: $this->socialClasses,
+            factions: $currentFactions,
+            populationClusters: $currentClusters,
+            eliteNetwork: $currentNetwork,
+            structuralEntropy: $currentStructuralEntropy,
+            civilizationalMemory: $this->civilizationalMemory,
             residual: new CivilizationResidual(
                 warTrauma: round($trauma, 6),
                 metaphysicalScar: $this->residual ? $this->residual->metaphysicalScar : 0.0,
@@ -373,6 +531,11 @@ final class CivilizationSnapshot
             'field_curvature' => $this->fieldCurvature,
             'energy' => $this->energy,
             'social_classes' => array_map(fn($c) => $c->toArray(), $this->socialClasses),
+            'factions' => array_map(fn($f) => $f->toArray(), $this->factions),
+            'population_clusters' => array_map(fn($p) => $p->toArray(), $this->populationClusters),
+            'elite_network' => $this->eliteNetwork ? $this->eliteNetwork->toArray() : null,
+            'structural_entropy' => $this->structuralEntropy,
+            'civilizational_memory' => $this->civilizationalMemory,
             'residual' => $this->residual ? [
                 'war_trauma' => $this->residual->warTrauma,
                 'metaphysical_scar' => $this->residual->metaphysicalScar,
@@ -418,6 +581,17 @@ final class CivilizationSnapshot
                 fn($c) => \Tuzy\Domain\Evolution\ValueObject\SocialClass::fromArray($c), 
                 $data['social_classes'] ?? []
             ),
+            factions: array_map(
+                fn($f) => \Tuzy\Domain\Evolution\ValueObject\Faction::fromArray($f),
+                $data['factions'] ?? []
+            ),
+            populationClusters: array_map(
+                fn($p) => \Tuzy\Domain\Evolution\ValueObject\PopulationCluster::fromArray($p),
+                $data['population_clusters'] ?? []
+            ),
+            eliteNetwork: isset($data['elite_network']) ? \Tuzy\Domain\Evolution\ValueObject\EliteNetwork::fromArray($data['elite_network']) : null,
+            structuralEntropy: (float) ($data['structural_entropy'] ?? 0.0),
+            civilizationalMemory: (float) ($data['civilizational_memory'] ?? 0.0),
             residual: isset($data['residual']) ? new CivilizationResidual(
                 warTrauma: (float) ($data['residual']['war_trauma'] ?? 0.0),
                 metaphysicalScar: (float) ($data['residual']['metaphysical_scar'] ?? 0.0),

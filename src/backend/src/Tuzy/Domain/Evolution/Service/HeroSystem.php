@@ -19,7 +19,7 @@ class HeroSystem
      *
      * Gate: requires meaningful tension + entropy > 0.3 to prevent constant spawning.
      */
-    public function checkEmergence(float $tension, int $yearsPerTick, float $currentEntropy = 0.0): bool
+    public function checkEmergence(float $tension, int $yearsPerTick, float $currentEntropy = 0.0, ?string $phase = null): bool
     {
         // Heroes only emerge when civilisation is under real stress
         if ($currentEntropy < 0.30) {
@@ -28,6 +28,11 @@ class HeroSystem
 
         // Reduced lambda: was 0.1, now 0.03 to prevent ~1 spawn/tick
         $lambda = 0.03 * $yearsPerTick;
+        
+        if ($phase === \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector::PHASE_CHAOS) {
+            $lambda *= 1.5; // Chaos Basin breeds 1.5x more heroes
+        }
+
         $probability = $lambda * ($tension * $tension);
 
         $rand = mt_rand() / mt_getrandmax();
@@ -51,31 +56,49 @@ class HeroSystem
         $efficiency = 1.0 / (1.0 + $phi * $heroCount);
 
         // ── POSITIVE impacts (short-term structural salvation) ─────────
-        $c_stab  = 0.4 * $efficiency;   // stability pull-up
-        $c_legit = 0.3 * $efficiency;   // legitimacy restoration
-        $c_ce    = 0.35 * $efficiency;  // cultural energy boost
+        $c_stab  = 0.40 * $efficiency;   // stability pull-up
+        $c_legit = 0.30 * $efficiency;   // legitimacy restoration
+        $c_ce    = 0.35 * $efficiency;   // cultural energy boost
+        $c_sc    = 0.25 * $efficiency;   // spiritual cohesion surge (messianic figure)
+        $c_tech  = 0.15 * $efficiency;   // technological or tactical innovation
+        $c_prosp = 0.20 * $efficiency;   // prosperity bump from initial conquests/reforms
+        $c_mobil = 0.25 * $efficiency;   // social mobility rises (meritocracy of the hero)
+        $c_info  = 0.15 * $efficiency;   // information flow improvements (new networks)
+        $c_myst  = 0.10 * $efficiency;   // adds to the arcane/mystery of the epoch
+        $c_legacy= 0.30 * $efficiency;   // massive boost to historical legacy
+        $c_curve = 0.40 * $efficiency;   // massively bends the historical field curvature
 
         // ── ENTROPY DISSIPATION ────────────────────────────────────────
-        // Hero channels civilisational energy to counter disorder.
-        // ie force is NEGATIVE = active entropic reduction.
-        // Magnitude: -0.50 * efficiency (significant but not instant reset)
-        $c_ie_dissip = -0.50 * $efficiency;
+        $c_ie_dissip = -0.50 * $efficiency; // active entropic reduction
 
         // ── SIDE EFFECTS (long-term Roman collapse pattern) ────────────
-        $e_elite = -0.20 * $efficiency; // elite conflict grows (power vacuum)
-        $e_ineq  =  0.10 * $efficiency; // inequality rises (heroic privilege)
-        $e_sus   = -0.05 * $efficiency; // sustainability strain (campaigns)
+        $e_elite = -0.25 * $efficiency; // elite conflict: old guard vs new hero
+        $e_ineq  =  0.15 * $efficiency; // inequality rises (new aristocratic class forms)
+        $e_sus   = -0.10 * $efficiency; // sustainability strain (massive campaigns)
+        $e_mp    =  0.30 * $efficiency; // military pressure spikes
+        $e_exp   =  0.25 * $efficiency; // expansionism fires up
 
         $keys   = StateVector::KEYS;
         $forces = array_fill(0, StateVector::DIMENSIONS, 0.0);
 
-        $forces[array_search('stability',    $keys)] += $c_stab;
-        $forces[array_search('legitimacy',   $keys)] += $c_legit;
-        $forces[array_search('ce',           $keys)] += $c_ce;
-        $forces[array_search('ie',           $keys)] += $c_ie_dissip; // ← KEY: entropy sink
-        $forces[array_search('eliteCohesion',$keys)] += $e_elite;
-        $forces[array_search('inequality',   $keys)] += $e_ineq;
+        // Map all 17 dimensions
+        $forces[array_search('ce',            $keys)] += $c_ce;
+        $forces[array_search('sc',            $keys)] += $c_sc;
+        $forces[array_search('tech',          $keys)] += $c_tech;
+        $forces[array_search('stability',     $keys)] += $c_stab;
+        $forces[array_search('prosperity',    $keys)] += $c_prosp;
+        $forces[array_search('mp',            $keys)] += $e_mp;
+        $forces[array_search('ie',            $keys)] += $c_ie_dissip;
+        $forces[array_search('legitimacy',    $keys)] += $c_legit;
+        $forces[array_search('eliteCohesion', $keys)] += $e_elite;
+        $forces[array_search('inequality',    $keys)] += $e_ineq;
         $forces[array_search('sustainability',$keys)] += $e_sus;
+        $forces[array_search('mystery',       $keys)] += $c_myst;
+        $forces[array_search('legacy',        $keys)] += $c_legacy;
+        $forces[array_search('expansion',     $keys)] += $e_exp;
+        $forces[array_search('info',          $keys)] += $c_info;
+        $forces[array_search('mobility',      $keys)] += $c_mobil;
+        $forces[array_search('curvature',     $keys)] += $c_curve;
 
         return [
             'forces'        => $forces,

@@ -67,13 +67,31 @@ class DynamicalKernel
         array $externalForces = []
     ): StateVector {
         $S = $state->values;
+        $civSnapshot = \Tuzy\Domain\Evolution\ValueObject\CivilizationSnapshot::fromArray(
+            array_merge(\Tuzy\Domain\Evolution\ValueObject\CivilizationSnapshot::defaultObservation()->toArray(), $state->toAssocArray())
+        );
 
-        // Calculate components
+        $phaseDetector = new \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector();
+        $empireDynamics = new \Tuzy\Domain\Evolution\Service\EmpireDynamics();
+        $chaosDynamics = new \Tuzy\Domain\Evolution\Service\ChaosDynamics();
+        
+        $currentPhase = $phaseDetector->detect($civSnapshot);
+        $gain = config('worldos.interaction_gain', 1.8);
+
+        // Calculate continuous components
         $linear = $this->A0->multiply($state);
         $destab = $this->D->apply($state, $cosmicEntropy, $elasticity);
         $quad = $this->Q->apply($state);
         $noise = $this->calculateNoise($state);
         $drivers = $this->A0->getBaselineDrivers();
+        
+        // Calculate Phase-specific Multiplicative Escalation Basins
+        $phaseForces = array_fill(0, StateVector::DIMENSIONS, 0.0);
+        if ($currentPhase === \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector::PHASE_EMPIRE) {
+            $phaseForces = $empireDynamics->apply($S, $gain, self::DT);
+        } elseif ($currentPhase === \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector::PHASE_CHAOS) {
+            $phaseForces = $chaosDynamics->apply($S, $gain, self::DT);
+        }
 
         $dS = [];
         for ($i = 0; $i < StateVector::DIMENSIONS; $i++) {
@@ -82,7 +100,8 @@ class DynamicalKernel
             // External force (e.g. from PhaseEngine or narrative)
             $fExt = $externalForces[$key] ?? 0.0;
 
-            $dS[$i] = $linear[$i] + $destab[$i] + $quad[$i] + $noise[$i] + $drivers[$i] + $fExt;
+            // Master Equation
+            $dS[$i] = $linear[$i] + $destab[$i] + $quad[$i] + $noise[$i] + $drivers[$i] + $fExt + $phaseForces[$i];
             
             // Apply Euler Step
             $S[$i] += $dS[$i] * self::DT;

@@ -47,6 +47,12 @@ class StepWorldUseCase
         // Simplification: We simulate the first civilization found
         $civState = $civStates[0];
 
+        // Optimized check: Does this world exist in the persistent DB?
+        // If not (e.g. In-Memory testing), we skip DB-backed Chronicle events to avoid FK violations.
+        $worldExistsInDb = \Illuminate\Support\Facades\DB::table('worlds')
+            ->where('id', $worldId)
+            ->exists();
+
         $logs = [];
 
         for ($i = 0; $i < $ticks; $i++) {
@@ -57,7 +63,7 @@ class StepWorldUseCase
                 civilization: $civState->getSnapshot(),
                 worldField: WorldField::default(),
                 worldPhase: WorldPhase::CIVILIZATIONAL_AGE,
-                lifeState: LifeState::primordial(),
+                lifeState: $worldState->getLifeState(),
                 year: $worldState->getYear()
             );
 
@@ -77,6 +83,23 @@ class StepWorldUseCase
                 $type = $evt['type'] ?? 'Unknown Event';
                 $intensity = $evt['intensity'] ?? 0;
                 $logs[] = "Year [{$nextSnapshot->year}]: Event Erupted [{$type}] with intensity {$intensity}";
+
+                // Save to Chronicle DB
+                try {
+                    if ($worldExistsInDb) {
+                        \App\Models\WorldChronicleEvent::create([
+                            'world_id' => $worldId,
+                            'year' => $nextSnapshot->year,
+                            'type' => $type,
+                            'title' => $evt['name'] ?? $type,
+                            'description' => $evt['description'] ?? '',
+                            'severity' => $intensity >= 1.0 ? 'CRITICAL' : ($intensity >= 0.8 ? 'HIGH' : ($intensity >= 0.5 ? 'MEDIUM' : 'LOW')),
+                            'metadata' => $evt['metadata'] ?? [],
+                        ]);
+                    }
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::warning("Failed to save Chronicle Event: " . $e->getMessage());
+                }
             }
 
             // (Optional) Decay internal civilization residual memory

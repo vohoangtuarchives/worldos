@@ -131,6 +131,13 @@ class EventEngine
             $weights[self::TYPE_RELIGIOUS_MOVEMENT] = ($weights[self::TYPE_RELIGIOUS_MOVEMENT] ?? 0) + 0.4;
         }
 
+        // BÓC TÁCH ESCALATION BASIN: Chaos Phase
+        $phaseDetector = new \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector();
+        if ($phaseDetector->detect($state) === \Tuzy\Domain\Evolution\Service\CivilizationPhaseDetector::PHASE_CHAOS) {
+            $weights[self::TYPE_REBELLION] = ($weights[self::TYPE_REBELLION] ?? 0) * 2.0; // Breakaway factions
+            $weights[self::TYPE_BATTLE] = ($weights[self::TYPE_BATTLE] ?? 0) * 1.5;
+        }
+
         // 2. Eligibility Guard: Filter out types that aren't possible given the physical state
         if ($totalFactionPower < 0.1) {
             unset($weights[self::TYPE_BATTLE]);

@@ -3,68 +3,54 @@
 namespace Tuzy\Domain\Evolution\Mathematics;
 
 use Tuzy\Domain\Evolution\ValueObject\WorldStateVector;
+use Tuzy\Domain\Evolution\ValueObject\StateVector;
 
 /**
- * Non-linear Innovation Burst
+ * Non-linear Innovation Burst & Multiplicative Noise
  *
- * innovation_rate khÃ´ng linear â€” tÄƒng Ä‘á»™t biáº¿n khi entropy cao.
- * Reorganization Law: entropy â†’ innovation spike â†’ cáº¥u trÃºc má»›i.
- *
- * Hai táº§ng: entropy > 0.65 (burst nháº¹), entropy >= 0.9 (burst máº¡nh â€” mÃ©p sá»¥p Ä‘á»•).
+ * Implements multiplicative divergence and stochastic shocks.
  */
 class InnovationBurst
 {
-    protected float $entropyTrigger = 0.65;       // Entropy cáº§n Ä‘á»ƒ kÃ­ch hoáº¡t burst
-    protected float $entropyCritical = 0.90;      // Entropy ráº¥t cao â†’ burst máº¡nh hÆ¡n
     protected float $burstAmplitude = 0.25;
-    protected float $burstAmplitudeCritical = 0.40; // Khi entropy >= critical
-    protected float $burstProbability = 0.15;
-    protected float $burstProbabilityCritical = 0.28; // Cao hÆ¡n khi gáº§n sá»¥p
 
     /**
-     * Delta innovation cho tick hiá»‡n táº¡i.
-     * Linear base + potential burst khi entropy cao (2 táº§ng).
+     * Applies multiplicative noise (divergence) and potential innovation spikes.
+     * X += X * random(-eps, eps)
      */
-    public function deltaInnovation(WorldStateVector $s, float $baseDelta): float
+    public function apply(array $values, float $baseVolatility = 0.5): array
     {
-        $entropy = $s->getEntropy();
-        $innovation = $s->getInnovation();
+        $n = count($values);
+        $d = array_fill(0, $n, 0.0);
+        
+        // High mutation rate (multiplicative noise) to break attractor basins
+        // The user requested x3 to x5 higher mutation rate to increase seed divergence
+        $mutationFactor = 0.15 * $baseVolatility; 
 
-        $delta = $baseDelta;
-
-        if ($entropy <= $this->entropyTrigger || $innovation >= 0.7) {
-            return $delta;
+        for ($i = 0; $i < $n; $i++) {
+            // Noise is between -1 and 1
+            $noise = (mt_rand() / mt_getrandmax() - 0.5) * 2.0;
+            // The change is proportional to the current value (Multiplicative Shock)
+            // If the dimension is saturated, the shock causes it to drift back.
+            $d[$i] = $values[$i] * $noise * $mutationFactor;
         }
 
-        $excessEntropy = $entropy - $this->entropyTrigger;
-        $isCritical = $entropy >= $this->entropyCritical;
-        $amplitude = $isCritical ? $this->burstAmplitudeCritical : $this->burstAmplitude;
-        $probability = $isCritical ? $this->burstProbabilityCritical : $this->burstProbability;
-        $burstPotential = $excessEntropy * $amplitude;
+        // Provide a special chaotic spike to technology when entropy is high
+        $keys = StateVector::KEYS;
+        $idxTech = array_search('tech', $keys);
+        $idxIe = array_search('ie', $keys);
 
-        $burstRoll = ($entropy * 1000) % 100 / 100;
-        if ($burstRoll < $probability) {
-            $delta += $burstPotential;
+        if ($idxTech !== false && $idxIe !== false) {
+            $entropy = $values[$idxIe];
+            if ($entropy > 0.65) {
+                // High entropy forces extreme technological or structural mutation
+                $burstRoll = mt_rand() / mt_getrandmax();
+                if ($burstRoll < 0.28) {
+                    $d[$idxTech] += $this->burstAmplitude * $entropy;
+                }
+            }
         }
 
-        return $delta;
-    }
-
-    /**
-     * Reorganization Law: khi can_reorganize, tÄƒng innovation â€” máº¡nh hÆ¡n khi entropy ráº¥t cao.
-     */
-    public function reorganizationBoost(WorldStateVector $s, bool $canReorganize): float
-    {
-        if (!$canReorganize) {
-            return 0.0;
-        }
-        $entropy = $s->getEntropy();
-        $base = ($entropy - $this->entropyTrigger) * 0.1;
-        if ($entropy >= $this->entropyCritical) {
-            $base += ($entropy - $this->entropyCritical) * 0.2; // ThÃªm boost khi mÃ©p sá»¥p
-        }
-        return $base;
+        return $d;
     }
 }
-
-

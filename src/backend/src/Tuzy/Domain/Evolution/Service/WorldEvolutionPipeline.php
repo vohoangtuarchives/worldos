@@ -344,6 +344,21 @@ class WorldEvolutionPipeline
             heroCount: $nextCivilization->heroCount
         );
 
+        // 5. PHASE 11: Chronicle Event Logging
+        $chronicleService = new \Tuzy\Domain\Evolution\Service\ChronicleService();
+        $chronicleEvents = $chronicleService->generateLogs($current->civilization, $nextCivilization);
+        
+        foreach ($chronicleEvents as $ce) {
+            $this->lastStepEvents[] = [
+                'id' => \Illuminate\Support\Str::uuid()->toString(),
+                'type' => $ce->type,
+                'name' => $ce->title,
+                'intensity' => $ce->severity === \Tuzy\Domain\Evolution\ValueObject\ChronicleEvent::SEVERITY_CRITICAL ? 1.0 : ($ce->severity === \Tuzy\Domain\Evolution\ValueObject\ChronicleEvent::SEVERITY_HIGH ? 0.8 : 0.5),
+                'description' => $ce->description,
+                'metadata' => $ce->metadata
+            ];
+        }
+
         $nextYear = $current->year + $deltaYears;
 
         $snapshot = new WorldSnapshot(

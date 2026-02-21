@@ -74,8 +74,8 @@ class LinearCouplingMatrix
         for ($i = 0; $i < $n; $i++) {
             for ($j = 0; $j < $n; $j++) {
                 if ($i === $j) {
-                    // Small local damping
-                    $A[$i][$j] = -0.05; 
+                    // Small local damping (Reduced by ~30% from -0.05 to unclamp the system)
+                    $A[$i][$j] = -0.035; 
                 } else {
                     $rand = mt_rand() / mt_getrandmax();
                     if ($rand < 0.3) {
@@ -114,8 +114,8 @@ class LinearCouplingMatrix
         //          (they can still push entropy up, just not as aggressively)
         $ieIdx = array_search('ie', StateVector::KEYS);
         
-        // Strengthen ie self-damping  
-        $A[$ieIdx][$ieIdx] = -0.065; // competitive balance with EntropyDestabilizer gamma=0.035
+        // Strengthen ie self-damping (Reduced by 30% from -0.065 to -0.045 to allow chaos)
+        $A[$ieIdx][$ieIdx] = -0.045; // competitive balance with EntropyDestabilizer gamma=0.035
         
         // Clamp positive cross-couplings into ie row
         for ($j = 0; $j < count(StateVector::KEYS); $j++) {

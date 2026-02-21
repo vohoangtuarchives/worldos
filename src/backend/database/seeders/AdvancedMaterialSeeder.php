@@ -258,7 +258,11 @@ class AdvancedMaterialSeeder extends Seeder
             'default_lifecycle' => 'active',
             'description' => $data['description'],
             'origin_sources' => json_encode($data['origin_sources']),
-            'pressure_outputs' => json_encode($data['pressure_outputs']),
+            'pressure_inputs' => json_encode($data['pressure_inputs'] ?? []),
+            'pressure_outputs' => json_encode($data['pressure_outputs'] ?? []),
+            'mutation_axes' => json_encode($data['mutation_axes'] ?? []),
+            'incompatible_with' => json_encode($data['incompatible_with'] ?? []),
+            'preconditions' => json_encode($data['preconditions'] ?? []),
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -24,6 +24,10 @@ use App\Http\Controllers\Api\ClusterController;
 // Tuzy DDD — World & Runtime (pilot)
 Route::post('v4/tuzy/worlds', \Tuzy\Presentation\Http\Controllers\World\CreateWorldController::class);
 Route::get('v4/tuzy/worlds/{id}', \Tuzy\Presentation\Http\Controllers\World\GetWorldController::class);
+Route::get('v4/tuzy/worlds/{id}/timeline', \Tuzy\Presentation\Http\Controllers\World\GetWorldTimelineController::class);
+Route::patch('v4/tuzy/worlds/{id}/meta-laws', \Tuzy\Presentation\Http\Controllers\MetaCosmos\UpdateMetaLawsController::class);
+Route::post('v4/tuzy/worlds/{id}/evolve', \Tuzy\Presentation\Http\Controllers\MetaCosmos\RunMetaCycleController::class);
+Route::get('v4/tuzy/worlds/{id}/meta-cycles', \Tuzy\Presentation\Http\Controllers\MetaCosmos\ListMetaCyclesController::class);
 Route::post('v4/tuzy/universes', \Tuzy\Presentation\Http\Controllers\Runtime\CreateUniverseController::class);
 Route::post('v4/tuzy/sagas', \Tuzy\Presentation\Http\Controllers\Saga\CreateSagaController::class);
 Route::post('v4/tuzy/universe-styles', \Tuzy\Presentation\Http\Controllers\Cosmology\CreateUniverseStyleController::class);
