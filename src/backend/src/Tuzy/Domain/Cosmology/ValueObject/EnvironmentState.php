@@ -2,31 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 use InvalidArgumentException;
 
 /**
  * EnvironmentState - Represents the meso-scale environment of a region/world.
- *
- * This layer sits between Cosmic and Civilization.
- * - Receives pressure from CosmicState (top-down)
- * - Has its own tipping points and memory (hysteresis)
- * - Can amplify or dampen cosmic signals to civilization
- *
- * Key properties:
- * - ley_energy: Local spiritual/energy density (influenced by cosmic energy)
- * - terrain_stability: Geological/geographical stability
- * - biosphere_vitality: Health of the living ecosystem
- * - anomaly_density: Concentration of anomalous phenomena (rifts, vortices, etc.)
+ * Sits between Cosmic and Civilization; receives pressure from CosmicState, has tipping points and memory.
  */
 final class EnvironmentState
 {
     public function __construct(
-        public readonly float $leyEnergy,         // Local energy field (0.0 to 1.0)
-        public readonly float $terrainStability,   // Geological stability (0.0 to 1.0)
-        public readonly float $biosphereVitality,  // Ecosystem health (0.0 to 1.0)
-        public readonly float $anomalyDensity,     // Anomalous phenomena concentration (0.0 to 1.0)
+        public readonly float $leyEnergy,
+        public readonly float $terrainStability,
+        public readonly float $biosphereVitality,
+        public readonly float $anomalyDensity,
         public readonly int $year,
     ) {
         $this->validate();
@@ -43,55 +33,34 @@ final class EnvironmentState
         );
     }
 
-    /**
-     * Evolve environment state based on cosmic pressure.
-     *
-     * The environment acts as a FILTER between cosmic and civilization:
-     * - It absorbs cosmic energy changes with inertia (doesn't react instantly)
-     * - It has tipping points (when anomaly density crosses threshold)
-     * - It has memory (terrain changes persist)
-     *
-     * @param CosmicState $cosmicState Current cosmic state (top-down pressure)
-     * @param float $civilizationImpact How much civilization is affecting environment (0.0 to 1.0)
-     * @param int $deltaYears Time step
-     */
     public function evolve(CosmicState $cosmicState, float $civilizationImpact = 0.0, int $deltaYears = 100): self
     {
         $dt = $deltaYears / 100.0;
-
-        // 1. Ley energy follows cosmic energy with inertia (slow coupling)
-        $inertia = 0.05; // How fast local energy tracks cosmic energy
+        $inertia = 0.05;
         $newLeyEnergy = $this->leyEnergy + $inertia * ($cosmicState->energy - $this->leyEnergy) * $dt;
-        // Civilization can drain or boost local energy
         $newLeyEnergy += $civilizationImpact * 0.02 * $dt;
         $newLeyEnergy = $this->clamp($newLeyEnergy, 0.0, 1.0);
 
-        // 2. Terrain stability is affected by cosmic strain (earthquakes, shifts)
         $newTerrainStability = $this->terrainStability
-            - $cosmicState->strain * 0.02 * $dt  // Cosmic strain damages terrain
-            + 0.005 * $dt;                         // Natural recovery (very slow)
+            - $cosmicState->strain * 0.02 * $dt
+            + 0.005 * $dt;
         $newTerrainStability = $this->clamp($newTerrainStability, 0.0, 1.0);
 
-        // 3. Biosphere vitality depends on stability and energy
         $newBiosphereVitality = $this->biosphereVitality
-            + ($newLeyEnergy - 0.5) * 0.01 * $dt        // Energy above baseline helps
-            + ($newTerrainStability - 0.5) * 0.01 * $dt  // Stability helps
-            - $civilizationImpact * 0.01 * $dt;          // Civilization depletes
+            + ($newLeyEnergy - 0.5) * 0.01 * $dt
+            + ($newTerrainStability - 0.5) * 0.01 * $dt
+            - $civilizationImpact * 0.01 * $dt;
         $newBiosphereVitality = $this->clamp($newBiosphereVitality, 0.0, 1.0);
 
-        // 4. Anomaly density — the TIPPING POINT mechanism
-        // Anomalies grow when cosmic entropy is high AND terrain is unstable
         $anomalyGrowth = $cosmicState->entropy * (1.0 - $newTerrainStability) * 0.03 * $dt;
-        $anomalyDecay = $newBiosphereVitality * 0.01 * $dt; // Healthy biosphere suppresses anomalies
+        $anomalyDecay = $newBiosphereVitality * 0.01 * $dt;
         $newAnomalyDensity = $this->anomalyDensity + $anomalyGrowth - $anomalyDecay;
 
-        // Tipping point: if anomaly density > 0.7, cascade effect
         if ($newAnomalyDensity > 0.7) {
-            $newTerrainStability *= 0.95;  // Terrain degrades faster
-            $newBiosphereVitality *= 0.90; // Biosphere takes a hit
-            $newAnomalyDensity *= 0.6;     // Release (similar to fracture in cosmic layer)
+            $newTerrainStability *= 0.95;
+            $newBiosphereVitality *= 0.90;
+            $newAnomalyDensity *= 0.6;
         }
-
         $newAnomalyDensity = $this->clamp($newAnomalyDensity, 0.0, 1.0);
 
         return new self(
@@ -103,21 +72,12 @@ final class EnvironmentState
         );
     }
 
-    /**
-     * How much the environment amplifies or dampens cosmic signals to civilization.
-     * > 1.0 = amplifying, < 1.0 = dampening.
-     */
     public function cosmicSignalMultiplier(): float
     {
-        // Unstable terrain + high anomaly density amplifies cosmic effects
         $instability = 1.0 - $this->terrainStability;
         return 1.0 + ($instability * 0.3) + ($this->anomalyDensity * 0.5);
     }
 
-    /**
-     * Environmental pressure that civilization experiences.
-     * Higher = more hostile environment.
-     */
     public function environmentalPressure(): float
     {
         return (1.0 - $this->terrainStability) * 0.3

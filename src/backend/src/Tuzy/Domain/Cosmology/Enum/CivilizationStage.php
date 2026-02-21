@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\Enum;
 
 enum CivilizationStage: string
 {

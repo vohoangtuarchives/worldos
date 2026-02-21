@@ -6,7 +6,7 @@ namespace App\Domains\Evolution\Kernel;
 
 use App\Domains\Cosmology\Entities\Universe as CosmologyUniverse;
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Runtime\Evaluation\MutationSuggestion;
+use Tuzy\Domain\Runtime\ValueObject\MutationSuggestion;
 use App\Domains\Cosmology\Evolution\ArcPhase;
 use Tuzy\Domain\Saga\ValueObject\ShockParams;
 use App\Domains\Cosmology\Evolution\PresetDescriptor;

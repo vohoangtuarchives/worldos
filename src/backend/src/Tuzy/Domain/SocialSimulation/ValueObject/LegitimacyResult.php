@@ -26,4 +26,19 @@ final readonly class LegitimacyResult
     {
         return $this->legitimacy > 0.7;
     }
+
+    public function getStatus(): string
+    {
+        return $this->thresholdStatus['current'] ?? 'unknown';
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'legitimacy' => $this->legitimacy,
+            'status' => $this->getStatus(),
+            'components' => $this->components,
+            'threshold_status' => $this->thresholdStatus,
+        ];
+    }
 }

@@ -2,24 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 /**
  * InteractionMemory — pairwise relationship memory between two attractors.
- *
- * From RFC §5.2:
- *   HR(A,B) = w₁·shared_survival - w₂·conflict_intensity + w₃·rebirth_alignment
- *   |HR| ≤ 0.3
- *   Interaction force: F(A,B) = BaseForce · (1 + HR(A,B))
- *
- * Memory is bias, not destiny. Positive HR = cooperative tendency.
- * Negative HR = adversarial tendency. But physics still dominates.
+ * HR(A,B) = w₁·shared_survival - w₂·conflict_intensity + w₃·rebirth_alignment, |HR| ≤ 0.3
  */
 final class InteractionMemory
 {
     private const MAX_HR = 0.3;
-
-    // Weights for HR calculation
     private const W_SHARED_SURVIVAL = 0.4;
     private const W_CONFLICT = 0.35;
     private const W_REBIRTH_ALIGNMENT = 0.25;
@@ -33,15 +24,10 @@ final class InteractionMemory
         public readonly int $interactionCount,
     ) {}
 
-    /**
-     * Create initial empty interaction.
-     */
     public static function initial(string $a, string $b): self
     {
-        // Ensure consistent ordering
         $sorted = [$a, $b];
         sort($sorted);
-
         return new self(
             attractorA: $sorted[0],
             attractorB: $sorted[1],
@@ -52,9 +38,6 @@ final class InteractionMemory
         );
     }
 
-    /**
-     * Record a shared survival event (both survived the same chaos epoch).
-     */
     public function recordSharedSurvival(float $intensity = 0.1): self
     {
         return new self(
@@ -67,9 +50,6 @@ final class InteractionMemory
         );
     }
 
-    /**
-     * Record a conflict event (one pulled basin away from the other).
-     */
     public function recordConflict(float $intensity = 0.1): self
     {
         return new self(
@@ -82,9 +62,6 @@ final class InteractionMemory
         );
     }
 
-    /**
-     * Record rebirth alignment (both morphed in similar direction).
-     */
     public function recordRebirthAlignment(float $alignment = 0.1): self
     {
         return new self(
@@ -97,34 +74,19 @@ final class InteractionMemory
         );
     }
 
-    /**
-     * Calculate HR score.
-     *
-     * HR(A,B) = w₁·shared_survival - w₂·conflict_intensity + w₃·rebirth_alignment
-     * Clamped to [-0.3, 0.3]
-     */
     public function hrScore(): float
     {
         $raw = self::W_SHARED_SURVIVAL * $this->sharedSurvival
              - self::W_CONFLICT * $this->conflictIntensity
              + self::W_REBIRTH_ALIGNMENT * $this->rebirthAlignment;
-
         return max(-self::MAX_HR, min(self::MAX_HR, $raw));
     }
 
-    /**
-     * Calculate the interaction force modifier.
-     *
-     * F(A,B) = BaseForce · (1 + HR(A,B))
-     */
     public function forceModifier(): float
     {
         return 1.0 + $this->hrScore();
     }
 
-    /**
-     * Check if these two attractors have a key that matches.
-     */
     public function involves(string $code): bool
     {
         return $this->attractorA === $code || $this->attractorB === $code;

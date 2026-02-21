@@ -4,6 +4,7 @@ namespace App\Domains\Runtime\Evaluation;
 
 use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
 use App\Models\UniverseSnapshot;
+use Tuzy\Domain\Runtime\ValueObject\UniverseMetrics;
 
 class MetricsExtractor
 {

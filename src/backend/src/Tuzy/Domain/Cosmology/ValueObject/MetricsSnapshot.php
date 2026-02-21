@@ -2,61 +2,36 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 /**
  * MetricsSnapshot — immutable snapshot of all 18 KPIs.
- *
- * 6 groups:
- *   Stability:  SSI, CF, StabilityMargin
- *   Evolution:  DI, AGR, RES
- *   Power:      ICR, VPS, API
- *   Memory:     HBR, CM, MDE
- *   Emergence:  EPI, ATR
- *   Governance: PAR, GL, HII
- *   Meta:       CHS (composite)
  */
-final class MetricsSnapshot
+final readonly class MetricsSnapshot
 {
     public function __construct(
-        public readonly int $epoch,
+        public int $epoch,
+        public float $spectralStabilityIndex,
+        public float $collapseFrequency,
+        public float $stabilityMargin,
+        public float $diversityIndex,
+        public float $adaptationGainRate,
+        public float $rebirthEffectiveness,
+        public float $influenceConcentration,
+        public float $votingPowerSkew,
+        public float $alliancePolarization,
+        public float $historicalBiasRatio,
+        public float $collectiveMomentum,
+        public float $memoryDecayEffectiveness,
+        public float $emergencePressure,
+        public float $archetypeTurnoverRate,
+        public float $proposalAcceptanceRatio,
+        public float $governanceLatency,
+        public float $humanInterventionIndex,
+        public float $civilizationalHealthScore,
+    ) {
+    }
 
-        // Stability KPIs
-        public readonly float $spectralStabilityIndex,   // SSI: max |eigen(J)|, lower = safer
-        public readonly float $collapseFrequency,        // CF: collapses / 50 epochs
-        public readonly float $stabilityMargin,          // CTI_current - chaos_threshold
-
-        // Evolution KPIs
-        public readonly float $diversityIndex,           // DI: 1 - Σ(influence_i²), Herfindahl inverse
-        public readonly float $adaptationGainRate,       // AGR: ΔAdaptation / epoch
-        public readonly float $rebirthEffectiveness,     // RES: avg(rebirth_gain / collapse_depth)
-
-        // Power KPIs
-        public readonly float $influenceConcentration,   // ICR: max(attractor_influence)
-        public readonly float $votingPowerSkew,          // VPS: std_dev(voting_power)
-        public readonly float $alliancePolarization,     // API: variance(HR edges)
-
-        // Memory KPIs
-        public readonly float $historicalBiasRatio,      // HBR: ||MemoryBias|| / total_force
-        public readonly float $collectiveMomentum,       // CM: |GCMF|
-        public readonly float $memoryDecayEffectiveness, // MDE: decay rate impact score
-
-        // Emergence KPIs
-        public readonly float $emergencePressure,        // EPI: w1*entropy + w2*diversity + w3*GCMF
-        public readonly float $archetypeTurnoverRate,    // ATR: new_archetypes / 100 epochs
-
-        // Governance KPIs
-        public readonly float $proposalAcceptanceRatio,  // PAR: approved / proposed
-        public readonly float $governanceLatency,        // GL: avg epochs to approval
-        public readonly float $humanInterventionIndex,   // HII: manual_override / 50 epochs
-
-        // Meta
-        public readonly float $civilizationalHealthScore, // CHS: composite
-    ) {}
-
-    /**
-     * The 4 critical KPIs that must always be visible.
-     */
     public function criticalFour(): array
     {
         return [
@@ -67,9 +42,6 @@ final class MetricsSnapshot
         ];
     }
 
-    /**
-     * Severity level derived from KPIs.
-     */
     public function overallSeverity(): string
     {
         if ($this->spectralStabilityIndex > 1.0 || $this->collapseFrequency > 3.0) {

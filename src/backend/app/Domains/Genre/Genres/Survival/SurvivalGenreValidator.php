@@ -3,10 +3,10 @@
 namespace App\Domains\Genre\Genres\Survival;
 
 use App\Domains\Genre\Contracts\GenreValidator;
-use App\Domains\Genre\DTO\StoryEvent;
-use App\Domains\Genre\Validation\ValidationResult;
-use App\Domains\Genre\Validation\Violations\ForbiddenConcept;
-use App\Domains\Genre\Validation\Violations\ImpossibleEvent;
+use Tuzy\Domain\Genre\ValueObject\StoryEvent;
+use Tuzy\Domain\Genre\ValueObject\ValidationResult;
+use Tuzy\Domain\Genre\ValueObject\ForbiddenConcept;
+use Tuzy\Domain\Genre\ValueObject\ImpossibleEvent;
 
 class SurvivalGenreValidator implements GenreValidator
 {

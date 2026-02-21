@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Runtime\UniverseRuntimeService;
 use App\Domains\Saga\Services\SagaService;
 use App\Models\UniverseModel;

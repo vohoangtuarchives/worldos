@@ -4,11 +4,11 @@ namespace App\Domains\Genre\Validation;
 
 use App\Domains\Genre\Contracts\GenreValidator;
 use App\Domains\Genre\Contracts\GenreDefinition;
-use App\Domains\Genre\DTO\StoryEvent;
-use App\Domains\Genre\Validation\ValidationResult;
-use App\Domains\Genre\Validation\Violations\ImpossibleEvent;
-use App\Domains\Genre\Validation\Violations\PowerLevelViolation;
-use App\Domains\Genre\Validation\Violations\ForbiddenConcept;
+use Tuzy\Domain\Genre\ValueObject\StoryEvent;
+use Tuzy\Domain\Genre\ValueObject\ValidationResult;
+use Tuzy\Domain\Genre\ValueObject\ImpossibleEvent;
+use Tuzy\Domain\Genre\ValueObject\PowerLevelViolation;
+use Tuzy\Domain\Genre\ValueObject\ForbiddenConcept;
 
 class XianxiaGenreValidator implements GenreValidator
 {

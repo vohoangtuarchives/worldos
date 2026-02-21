@@ -3,7 +3,7 @@
 namespace App\Jobs\Cosmology;
 
 use App\Domains\Cosmology\Services\StyleAdvisorService;
-use App\Domains\Cosmology\ValueObjects\UniverseStyleVersion;
+use Tuzy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
 use App\Models\World;
 use App\Models\UniverseStyle;
 use App\Domains\Governance\Actions\ProposeStyleChangeAction;

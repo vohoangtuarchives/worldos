@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\MetricsSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\MetricsSnapshot;
 
 /**
  * QualityEvaluator — calculates the GrandnessIndex (GI) for a simulation run.

@@ -2,14 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
-
-use Illuminate\Contracts\Support\Arrayable;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 /**
  * WorldSnapshot - Composite of all 4 evolution layers at a single point in time.
- *
- * This is the complete "state of the world" across all layers.
  * Used for persistence snapshots and narrative rendering.
  */
 final class WorldSnapshot
@@ -51,10 +47,6 @@ final class WorldSnapshot
         );
     }
 
-    /**
-     * A composite "tension" metric for the narrative renderer.
-     * Combines signals from all layers.
-     */
     public function compositeTension(): float
     {
         return $this->cosmic->cosmicTension() * 0.4

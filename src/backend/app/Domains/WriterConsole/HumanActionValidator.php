@@ -2,6 +2,8 @@
 
 namespace App\Domains\WriterConsole;
 
+use Tuzy\Domain\WriterConsole\ValueObject\ValidationResult;
+
 /**
  * Human Action Validator
  * 

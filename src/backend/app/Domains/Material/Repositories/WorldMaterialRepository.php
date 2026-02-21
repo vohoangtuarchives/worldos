@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Material\Repositories;
 
 use App\Domains\Material\ValueObjects\MaterialInstance;
-use App\Domains\Material\ValueObjects\MaterialChange;
+use Tuzy\Domain\Material\ValueObject\MaterialChange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -317,13 +317,13 @@ class WorldMaterialRepository
         $newValue = json_decode($data->new_value ?? '{}', true);
         
         return new MaterialChange(
-            $data->material_instance_id,
-            $data->change_type,
-            $oldValue,
-            $newValue,
-            $data->reason,
-            $data->epoch,
-            new \DateTime($data->created_at)
+            materialInstanceId: (string) $data->material_instance_id,
+            changeType: (string) $data->change_type,
+            oldValue: $oldValue,
+            newValue: $newValue,
+            reason: $data->reason,
+            epoch: isset($data->epoch) ? (int) $data->epoch : null,
+            createdAt: new \DateTime($data->created_at)
         );
     }
 

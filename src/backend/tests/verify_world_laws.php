@@ -5,7 +5,7 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 use App\StoryEngine\Simulator;
-use App\Domains\World\ValueObjects\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use Tuzy\Domain\World\Enums\MagicSystemType;
 use Tuzy\Domain\World\Enums\PowerCeiling;
 use Tuzy\Domain\World\Enums\TechLevel;

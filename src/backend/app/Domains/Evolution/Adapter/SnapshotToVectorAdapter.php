@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Evolution\Adapter;
 
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 
 /**

@@ -4,7 +4,7 @@ namespace App\Domains\Saga\Actions;
 
 use App\Domains\Runtime\Evaluation\MetricsExtractor;
 use App\Domains\Runtime\Evaluation\UniverseEvaluatorInterface;
-use App\Domains\Runtime\Evaluation\EvaluationResult;
+use Tuzy\Domain\Runtime\ValueObject\EvaluationResult;
 use App\Models\UniverseModel;
 
 class EvaluateUniverseAction

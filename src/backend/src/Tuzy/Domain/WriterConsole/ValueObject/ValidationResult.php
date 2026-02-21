@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Domains\WriterConsole;
+declare(strict_types=1);
 
-class ValidationResult
+namespace Tuzy\Domain\WriterConsole\ValueObject;
+
+final readonly class ValidationResult
 {
     public function __construct(
-        public readonly bool $allowed,
-        public readonly ?string $reason = null
-    ) {}
+        public bool $allowed,
+        public ?string $reason = null,
+    ) {
+    }
 
     public static function allow(): self
     {

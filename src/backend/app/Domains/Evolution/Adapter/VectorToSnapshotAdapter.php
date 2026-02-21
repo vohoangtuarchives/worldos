@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Evolution\Adapter;
 
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 
 /**

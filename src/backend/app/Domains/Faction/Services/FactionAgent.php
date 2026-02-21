@@ -27,8 +27,8 @@ class FactionAgent
         Faction $faction, 
         World $world, 
         int $turn,
-        ?\App\Domains\Cosmic\ValueObjects\CosmicState $cosmic = null,
-        ?\App\Domains\Cosmic\ValueObjects\CivilizationState $civ = null
+        ?\Tuzy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
+        ?\Tuzy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
     ): void {
         // 0. Apply Historical Drift (Scars)
         $drift = $this->scarService->calculateFactionIdeologyDrift($faction, $turn);

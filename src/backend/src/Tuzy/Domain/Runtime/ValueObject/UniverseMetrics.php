@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Runtime\Evaluation;
+namespace Tuzy\Domain\Runtime\ValueObject;
 
-final class UniverseMetrics
+final readonly class UniverseMetrics
 {
     public function __construct(
-        public readonly float $entropyTrend,
-        public readonly float $complexityIndex,
-        public readonly float $factionDiversity,
-        public readonly float $conflictDensity,
-        public readonly float $stabilityScore,
-        public readonly float $noveltyIndex,
-        public readonly float $mutationRate,
-        public readonly float $collapseRisk,
-        public readonly ?string $archetype = null,
-        public readonly ?string $dominantFactionType = null,
+        public float $entropyTrend,
+        public float $complexityIndex,
+        public float $factionDiversity,
+        public float $conflictDensity,
+        public float $stabilityScore,
+        public float $noveltyIndex,
+        public float $mutationRate,
+        public float $collapseRisk,
+        public ?string $archetype = null,
+        public ?string $dominantFactionType = null,
     ) {
     }
 

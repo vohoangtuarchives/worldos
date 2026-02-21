@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmic\Services\EpochManager;
-use App\Domains\Cosmic\Services\QualityEvaluator;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\UniverseStyleVersion;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use App\Domains\Cosmology\Services\EpochManager;
+use App\Domains\Cosmology\Services\QualityEvaluator;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use PHPUnit\Framework\TestCase;
 
 class StyleEpochTest extends TestCase

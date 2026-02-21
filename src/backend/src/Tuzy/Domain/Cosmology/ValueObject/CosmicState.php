@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 use InvalidArgumentException;
-use Illuminate\Contracts\Support\Arrayable;
 
 /**
  * CosmicState - Immutable Value Object representing the cosmic field at a moment in time.
@@ -16,13 +15,13 @@ use Illuminate\Contracts\Support\Arrayable;
 final class CosmicState
 {
     public function __construct(
-        public readonly float $entropy,         // Order disorder (0.0 = perfect order, 1.0 = maximum chaos)
-        public readonly float $energy,          // Energy density from wave engine (externally computed)
-        public readonly float $causality,       // Causality tension (accumulated causal pressure)
-        public readonly float $strain,          // Structural strain on the cosmic fabric
-        public readonly float $stability,       // Overall stability gradient (derived)
-        public readonly string $currentAttractor, // Identifier of the current regime
-        public readonly int $year,              // The cosmic year this state represents
+        public readonly float $entropy,
+        public readonly float $energy,
+        public readonly float $causality,
+        public readonly float $strain,
+        public readonly float $stability,
+        public readonly string $currentAttractor,
+        public readonly int $year,
         public readonly ?string $currentIncarnationId = null,
         public readonly ?array $morphTargetCentroid = null,
         public readonly ?int $morphStartTick = null,
@@ -31,10 +30,6 @@ final class CosmicState
         $this->validate();
     }
 
-    /**
-     * Create the default initial observation state.
-     * This is NOT "year 0" — it's just the default entry point for observation.
-     */
     public static function defaultObservation(int $year = 0): self
     {
         return new self(
@@ -48,69 +43,39 @@ final class CosmicState
         );
     }
 
-    /**
-     * CORE TRANSITION FUNCTION: S(t+1) = F(S(t), externalEnergy)
-     *
-     * @param float $externalEnergy Energy density from WaveInterferenceEngine
-     * @param float $civilizationResonance Feedback from civilization layer (0.0 to 1.0)
-     * @param int $deltaYears Time step in years
-     * @return self The next cosmic state
-     */
     public function evolve(float $externalEnergy, float $civilizationResonance = 0.0, int $deltaYears = 100): self
     {
-        // Initial values
         $ent = $this->entropy;
-        $en = $externalEnergy; // Energy is driven externally, but we might smooth it? No, take as is.
+        $en = $externalEnergy;
         $cau = $this->causality;
         $str = $this->strain;
         $stab = $this->stability;
 
-        // Constants (tuned for 1-year step)
-        $alpha = 0.0004; // Entropy natural growth
-        $beta = 0.0003;  // Entropy reduction by energy
-        $strainFeedbackFactor = 0.002; // Strength of dStrain ~ Entropy * Strain
+        $alpha = 0.0004;
+        $beta = 0.0003;
+        $strainFeedbackFactor = 0.002;
 
-        // Internal Loop for Stability (dt = 1 year)
         for ($i = 0; $i < $deltaYears; $i++) {
-            
-            // 1. Entropy
-            // dH/dt = alpha * H * (1-H) - beta * Energy
             $entChange = ($alpha * $ent * (1.0 - $ent)) - ($beta * $en);
             $ent = max(0.0, min(1.0, $ent + $entChange));
 
-            // 2. Causality
-            // Grows with entropy and energy
             $cauChange = ($ent * 0.0003) + ($en * 0.0002) - 0.0001;
             $cau = max(0.0, min(2.0, $cau + $cauChange));
 
-            // 3. Stability
-            // Inverse of entropy
             $stab = 1.0 - $ent;
 
-            // 4. Strain (The Positive Feedback Loop)
-            // dStrain/dt = k * Entropy * Strain (Exponential runaway if H > 0)
-            // + Civilization Resonance forcing
-            
             $strainRunaway = $strainFeedbackFactor * $ent * $str;
             $strainResonance = $civilizationResonance * 0.0005;
-            $strainRecovery = $stab * 0.0002; // Stability heals strain
-
+            $strainRecovery = $stab * 0.0002;
             $strChange = $strainRunaway + $strainResonance - $strainRecovery;
-            
-            // Ensure Strain doesn't get stuck at 0 (need a tiny spark if H is high)
             if ($str < 0.01 && $ent > 0.5) {
-                $strChange += 0.0001; 
+                $strChange += 0.0001;
             }
-
             $str = max(0.0, min(2.0, $str + $strChange));
         }
 
-        // Check for Fracture (Collapse Condition)
-        // NOT resetting here. Just clamping or marking. 
-        // BifurcationManager will handle the actual regime shift.
         $newAttractor = $this->currentAttractor;
-        
-        // Return new state
+
         return new self(
             entropy: round($ent, 6),
             energy: round($en, 6),
@@ -122,22 +87,48 @@ final class CosmicState
         );
     }
 
-    /**
-     * Check if the state meets the structural collapse criteria.
-     * Used by BifurcationManager.
-     */
     public function isCritical(float $resilience): bool
     {
-        // Collapse if Strain is high AND Civilization Resilience is low
         return ($this->strain > 0.9 && $resilience < 0.2);
     }
 
-    /**
-     * Calculate the "cosmic tension" — a composite metric for narrative rendering.
-     */
     public function cosmicTension(): float
     {
         return ($this->entropy * 0.3 + $this->causality * 0.3 + $this->strain * 0.4);
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'entropy' => $this->entropy,
+            'energy' => $this->energy,
+            'causality' => $this->causality,
+            'strain' => $this->strain,
+            'stability' => $this->stability,
+            'current_attractor' => $this->currentAttractor,
+            'year' => $this->year,
+            'current_incarnation_id' => $this->currentIncarnationId,
+            'morph_target_centroid' => $this->morphTargetCentroid,
+            'morph_start_tick' => $this->morphStartTick,
+            'morph_intensity' => $this->morphIntensity,
+        ];
+    }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            entropy: (float) ($data['entropy'] ?? 0.2),
+            energy: (float) ($data['energy'] ?? 0.6),
+            causality: (float) ($data['causality'] ?? 0.3),
+            strain: (float) ($data['strain'] ?? 0.05),
+            stability: (float) ($data['stability'] ?? 0.8),
+            currentAttractor: (string) ($data['current_attractor'] ?? 'EQUILIBRIUM'),
+            year: (int) ($data['year'] ?? 0),
+            currentIncarnationId: $data['current_incarnation_id'] ?? null,
+            morphTargetCentroid: $data['morph_target_centroid'] ?? null,
+            morphStartTick: isset($data['morph_start_tick']) ? (int) $data['morph_start_tick'] : null,
+            morphIntensity: (float) ($data['morph_intensity'] ?? 1.0)
+        );
     }
 
     private function validate(): void

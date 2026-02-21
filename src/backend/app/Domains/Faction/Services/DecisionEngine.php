@@ -17,8 +17,8 @@ class DecisionEngine
     public function scoreIntents(
         Faction $faction, 
         World $world,
-        ?\App\Domains\Cosmic\ValueObjects\CosmicState $cosmic = null,
-        ?\App\Domains\Cosmic\ValueObjects\CivilizationState $civ = null
+        ?\Tuzy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
+        ?\Tuzy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
     ): array {
         $personality = $faction->getPersonality();
         $ideology = $faction->getIdeology();

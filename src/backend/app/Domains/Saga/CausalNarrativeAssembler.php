@@ -3,8 +3,8 @@
 namespace App\Domains\Saga;
 
 use App\Domains\Saga\Services\NarrativeDictionary;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use Illuminate\Support\Str;
 
 /**

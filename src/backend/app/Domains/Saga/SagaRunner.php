@@ -9,10 +9,10 @@ use App\Domains\Material\MaterialArchetypeCoupler;
 use App\Models\World;
 use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
 use App\Domains\Cosmology\Contracts\CosmicSnapshotRepositoryInterface;
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\EnvironmentState;
-use App\Domains\Cosmology\ValueObjects\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use App\Domains\Cosmology\ValueObjects\Attractor;
 
 /**

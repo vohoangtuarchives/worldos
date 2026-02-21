@@ -2,34 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Cosmology\ValueObjects;
+namespace Tuzy\Domain\Cosmology\ValueObject;
 
 /**
  * UniverseStyleVersion — immutable versioned style configuration.
- *
- * From RFC §6.1:
- *   - weight_profile: biases for order, diversity, chaos sensitivity, emergence
- *   - alignment_profile: per-archetype alignment scores
- *   - arc_profile: preferred narrative arc shape
- *
  * Once published, a style version is FROZEN. Changes create new versions.
- * Checksum = sha256(weight + alignment + arc) for reproducibility.
  */
-final class UniverseStyleVersion
+final readonly class UniverseStyleVersion
 {
     public function __construct(
-        public readonly string $styleId,
-        public readonly int $versionNumber,
-        public readonly array $weightProfile,
-        public readonly array $alignmentProfile,
-        public readonly array $arcProfile,
-        public readonly string $checksumHash,
-    ) {}
+        public string $styleId,
+        public int $versionNumber,
+        public array $weightProfile,
+        public array $alignmentProfile,
+        public array $arcProfile,
+        public string $checksumHash,
+    ) {
+    }
 
-    /**
-     * Default style: "Transcendent Order" — favors long eras of order
-     * with occasional controlled chaos.
-     */
     public static function defaultStyle(): self
     {
         $weight = [
@@ -38,7 +28,6 @@ final class UniverseStyleVersion
             'chaos_sensitivity' => 0.3,
             'emergence_threshold' => 0.7,
         ];
-
         $alignment = [
             'celestial_harmony' => 0.8,
             'transcendent_order' => 0.7,
@@ -49,13 +38,11 @@ final class UniverseStyleVersion
             'apocalypse' => -0.4,
             'void_silence' => -0.3,
         ];
-
         $arc = [
             'preferred_shape' => ['long_emergence', 'prolonged_dominance', 'slow_decline'],
             'min_dominance_duration' => 'high',
             'max_chaos_burst_length' => 'low',
         ];
-
         return new self(
             styleId: 'transcendent_order',
             versionNumber: 1,
@@ -66,38 +53,27 @@ final class UniverseStyleVersion
         );
     }
 
-    /**
-     * Create a new version with modified profiles.
-     */
     public function newVersion(array $newWeight, array $newAlignment, array $newArc): self
     {
+        $w = array_merge($this->weightProfile, $newWeight);
+        $a = array_merge($this->alignmentProfile, $newAlignment);
+        $arc = array_merge($this->arcProfile, $newArc);
         return new self(
             styleId: $this->styleId,
             versionNumber: $this->versionNumber + 1,
-            weightProfile: array_merge($this->weightProfile, $newWeight),
-            alignmentProfile: array_merge($this->alignmentProfile, $newAlignment),
-            arcProfile: array_merge($this->arcProfile, $newArc),
-            checksumHash: self::computeChecksum(
-                array_merge($this->weightProfile, $newWeight),
-                array_merge($this->alignmentProfile, $newAlignment),
-                array_merge($this->arcProfile, $newArc),
-            ),
+            weightProfile: $w,
+            alignmentProfile: $a,
+            arcProfile: $arc,
+            checksumHash: self::computeChecksum($w, $a, $arc),
         );
     }
 
-    /**
-     * Style bias vector for physics.
-     * Converts alignment + weight into a bias applied to evolution equations.
-     */
     public function styleBias(string $currentArchetype): array
     {
         $archetypeAlignment = $this->alignmentProfile[$currentArchetype] ?? 0.0;
         $orderBias = $this->weightProfile['order_bias'] ?? 0.5;
         $chaosSens = $this->weightProfile['chaos_sensitivity'] ?? 0.3;
-
-        // Scale factor: how strongly this style pushes
-        $scale = 0.05; // Small — style is subtle bias, not override
-
+        $scale = 0.05;
         return [
             'entropy' => -$scale * $orderBias * $archetypeAlignment,
             'energy' => $scale * $archetypeAlignment * 0.5,
@@ -108,8 +84,7 @@ final class UniverseStyleVersion
 
     private static function computeChecksum(array $w, array $a, array $arc): string
     {
-        $payload = json_encode(['w' => $w, 'a' => $a, 'arc' => $arc]);
-        return hash('sha256', $payload);
+        return hash('sha256', json_encode(['w' => $w, 'a' => $a, 'arc' => $arc]));
     }
 
     public function toArray(): array

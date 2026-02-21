@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\Entities\AttractorAggregate;
-use App\Domains\Cosmology\ValueObjects\IndividualMemory;
-use App\Domains\Cosmology\ValueObjects\InteractionMemory;
-use App\Domains\Cosmology\ValueObjects\MetricsSnapshot;
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use App\Domains\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Domain\Cosmology\ValueObject\IndividualMemory;
+use Tuzy\Domain\Cosmology\ValueObject\InteractionMemory;
+use Tuzy\Domain\Cosmology\ValueObject\MetricsSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 
 /**
  * MetricsSnapshotService — computes all 18 KPIs from simulation state.

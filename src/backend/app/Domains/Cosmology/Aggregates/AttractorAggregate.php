@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Aggregates;
 
-use App\Domains\Cosmology\ValueObjects\Attractor;
-use App\Domains\Cosmology\ValueObjects\AttractorIncarnation;
+use Tuzy\Domain\Cosmic\ValueObject\Attractor;
+use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
 
 /**
  * AttractorAggregate — the full lifecycle entity for a cosmic attractor.
@@ -227,6 +227,12 @@ class AttractorAggregate
     public function currentIncarnation(): ?AttractorIncarnation
     {
         return empty($this->incarnations) ? null : end($this->incarnations);
+    }
+
+    /** Alias for currentIncarnation() for compatibility with services. */
+    public function getCurrentIncarnation(): ?AttractorIncarnation
+    {
+        return $this->currentIncarnation();
     }
 
     public function incarnationDepth(): int

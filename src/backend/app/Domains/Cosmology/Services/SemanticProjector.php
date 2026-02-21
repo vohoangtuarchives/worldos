@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 /**

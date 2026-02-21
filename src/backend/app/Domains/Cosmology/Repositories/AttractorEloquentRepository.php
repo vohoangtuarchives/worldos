@@ -6,7 +6,7 @@ namespace App\Domains\Cosmology\Repositories;
 
 use App\Domains\Cosmology\Aggregates\AttractorAggregate;
 use App\Domains\Cosmology\Contracts\AttractorRepositoryInterface;
-use App\Domains\Cosmology\ValueObjects\AttractorIncarnation;
+use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
 use Illuminate\Support\Facades\DB;
 
 class AttractorEloquentRepository implements AttractorRepositoryInterface

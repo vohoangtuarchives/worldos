@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmic\Services\WaveInterferenceEngine;
-use App\Domains\Cosmic\Services\CosmicEvolutionService;
-use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
-use App\Domains\Cosmic\Services\BifurcationManager;
-use App\Domains\Cosmic\Services\CosmicNarrativeRenderer;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
+use App\Domains\Cosmology\Services\WaveInterferenceEngine;
+use App\Domains\Cosmology\Services\CosmicEvolutionService;
+use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
+use App\Domains\Cosmology\Services\BifurcationManager;
+use App\Domains\Cosmology\Services\CosmicNarrativeRenderer;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use PHPUnit\Framework\TestCase;
 
 class WorldEvolutionPipelineTest extends TestCase
