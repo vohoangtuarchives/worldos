@@ -36,7 +36,7 @@ class AIGovernanceService
     /**
      * Log extracted claims for a generation.
      */
-    public function logClaims(int $generationId, array $claims, \App\Domains\World\Services\WorldLawValidator $validator, \App\Domains\World\ValueObjects\WorldLawProfile $profile): void
+    public function logClaims(int $generationId, array $claims, \App\Domains\World\Services\WorldLawValidator $validator, \Tuzy\Domain\World\ValueObject\WorldLawProfile $profile): void
     {
         $data = [];
         $now = now();

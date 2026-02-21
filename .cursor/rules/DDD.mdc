@@ -1,0 +1,48 @@
+---
+alwaysApply: true
+---
+
+# DDD RULES - STRICT MODE
+
+## Architecture Principles
+
+- This is a Modular Monolith using DDD.
+- Each Module has its own:
+  - Domain
+  - Application
+  - Infrastructure
+  - Presentation
+
+- Domain MUST NOT depend on:
+  - Eloquent
+  - Laravel Facades
+  - Database
+  - Kafka
+  - Redis
+  - HTTP
+
+## Domain Layer Rules
+
+- Entities contain business rules.
+- No anemic domain model.
+- All invariants must be protected inside Aggregate Root.
+- Use Value Objects.
+- Use Domain Events.
+- No public property mutation.
+
+## Application Layer
+
+- Use Cases only orchestrate.
+- No business logic here.
+- All persistence via Repository interface.
+
+## Infrastructure Layer
+
+- Eloquent is Infrastructure.
+- Repository implementation only.
+
+## Forbidden
+
+- Fat Controller
+- Static helper business logic
+- Direct Eloquent in Domain

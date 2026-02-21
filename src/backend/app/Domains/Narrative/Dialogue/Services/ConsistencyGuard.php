@@ -3,7 +3,7 @@
 namespace App\Domains\Narrative\Dialogue\Services;
 
 use App\Domains\Narrative\Character\Character;
-use App\Domains\Narrative\Dialogue\ValueObjects\Intent;
+use Tuzy\Domain\Narrative\ValueObject\Intent;
 use App\Domains\Narrative\Scene\Scene;
 use App\Domains\Narrative\Dialogue\Contracts\GuardRule;
 use Exception;

@@ -216,19 +216,19 @@ class WorldEvolutionPipeline
 
         foreach ($civ->socialClasses as $class) {
             switch ($class->type) {
-                case \App\Domains\Cosmology\Enums\SocialClassType::MERCHANT:
+                case \Tuzy\Domain\Cosmology\Enums\SocialClassType::MERCHANT:
                     // High Merchant power boosts efficiency
                     $mods['efficiency_bonus'] += $class->power * 0.2;
                     break;
-                case \App\Domains\Cosmology\Enums\SocialClassType::WARRIOR:
+                case \Tuzy\Domain\Cosmology\Enums\SocialClassType::WARRIOR:
                     // Disgruntled warriors hurt stability, happy ones help
                     $mods['stability_modifier'] += ($class->contentment - 0.5) * $class->power * 0.1;
                     break;
-                case \App\Domains\Cosmology\Enums\SocialClassType::INTELLECTUAL:
+                case \Tuzy\Domain\Cosmology\Enums\SocialClassType::INTELLECTUAL:
                     // Intellectuals boost knowledge growth
                     $mods['knowledge_growth_factor'] += $class->power * 0.5;
                     break;
-                case \App\Domains\Cosmic\Enums\SocialClassType::NOBILITY:
+                case \Tuzy\Domain\Cosmology\Enums\SocialClassType::NOBILITY:
                     // Nobility provides entropy resistance (preserving order)
                     $mods['entropy_resistance'] += $class->power * 0.15;
                     break;

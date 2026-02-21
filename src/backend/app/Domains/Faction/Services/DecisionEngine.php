@@ -4,7 +4,7 @@ namespace App\Domains\Faction\Services;
 
 use App\Models\Faction;
 use App\Models\World;
-use App\Domains\Faction\Enums\FactionIntentType;
+use Tuzy\Domain\Faction\Enums\FactionIntentType;
 
 class DecisionEngine
 {
@@ -53,6 +53,7 @@ class DecisionEngine
         $civ
     ): float {
         return match ($intent) {
+            FactionIntentType::SURVIVE => 0.5,
             FactionIntentType::ATTACK => $this->scoreAttack($faction, $world, $personality, $ideology, $memory, $cosmic),
             FactionIntentType::EXPAND => $this->scoreExpand($faction, $world, $personality, $ideology, $memory, $cosmic),
             FactionIntentType::ALLIANCE => $this->scoreAlliance($faction, $world, $personality, $ideology, $memory, $cosmic),

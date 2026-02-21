@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Planning;
 
-use App\Domains\Narrative\DTO\BeatSpec;
+use Tuzy\Domain\Narrative\ValueObject\BeatSpec;
 
 /**
  * Deterministic planner: outputs BeatSpec (emotion, tension, arc context) from arc position

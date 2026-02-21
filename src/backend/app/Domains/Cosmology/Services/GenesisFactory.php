@@ -6,7 +6,7 @@ namespace App\Domains\Cosmology\Services;
 
 use App\Domains\Cosmology\Contracts\StructuralAnchorInterface;
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\ValueObjects\ConstraintProfile;
+use Tuzy\Domain\Cosmology\ValueObject\ConstraintProfile;
 
 /** Creates initial WorldStateVector from Anchor + ConstraintProfile (Genesis / Forge). */
 final class GenesisFactory

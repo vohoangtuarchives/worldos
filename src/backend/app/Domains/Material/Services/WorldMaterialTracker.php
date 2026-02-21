@@ -8,7 +8,7 @@ use App\Domains\Material\Aggregates\MaterialAggregate;
 use App\Domains\Material\ValueObjects\MaterialInstance;
 use App\Domains\World\Aggregates\WorldAggregate;
 use App\Domains\Material\Collections\WorldMaterialCollection;
-use App\Domains\Material\ValueObjects\MaterialState;
+use Tuzy\Domain\Material\ValueObject\MaterialState;
 use App\Domains\Material\Contracts\MaterialRepositoryInterface;
 use App\Domains\Material\Repositories\WorldMaterialRepository;
 use Illuminate\Support\Collection;

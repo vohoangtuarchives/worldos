@@ -21,6 +21,16 @@ use App\Http\Controllers\Api\ClusterController;
 | Auth — Sanctum Token (Bearer)
 |--------------------------------------------------------------------------
 */
+// Tuzy DDD — World & Runtime (pilot)
+Route::post('v4/tuzy/worlds', \Tuzy\Presentation\Http\Controllers\World\CreateWorldController::class);
+Route::get('v4/tuzy/worlds/{id}', \Tuzy\Presentation\Http\Controllers\World\GetWorldController::class);
+Route::post('v4/tuzy/universes', \Tuzy\Presentation\Http\Controllers\Runtime\CreateUniverseController::class);
+Route::post('v4/tuzy/sagas', \Tuzy\Presentation\Http\Controllers\Saga\CreateSagaController::class);
+Route::post('v4/tuzy/universe-styles', \Tuzy\Presentation\Http\Controllers\Cosmology\CreateUniverseStyleController::class);
+Route::post('v4/tuzy/evolution-profiles', \Tuzy\Presentation\Http\Controllers\Evolution\CreateEvolutionProfileController::class);
+Route::post('v4/tuzy/narrative-series', \Tuzy\Presentation\Http\Controllers\Narrative\CreateNarrativeSeriesController::class);
+Route::post('v4/tuzy/world-heroes', \Tuzy\Presentation\Http\Controllers\Heroes\CreateWorldHeroController::class);
+
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {

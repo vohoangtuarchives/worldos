@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Saga\Services;
 
-use App\Domains\Saga\DTO\SagaEvaluationReport;
+use Tuzy\Domain\Saga\ValueObject\SagaEvaluationReport;
 
 /**
  * Phase 4.1: Rule-based civilization scoring from collapse/state (no AI).

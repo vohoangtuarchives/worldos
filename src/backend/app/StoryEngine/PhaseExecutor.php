@@ -286,7 +286,7 @@ class PhaseExecutor
         
         // Extract claims from world state
         if ($context->world->publicAwareness > 8) {
-            $claims[] = new \App\Domains\World\ValueObjects\Claim(
+            $claims[] = new \Tuzy\Domain\World\ValueObject\Claim(
                 'HIGH_PUBLIC_AWARENESS',
                 $context->world->publicAwareness
             );
@@ -295,7 +295,7 @@ class PhaseExecutor
         // Extract claims from factions
         foreach ($context->world->factions as $faction) {
             if (isset($faction->militaryPower) && $faction->militaryPower > 7) {
-                $claims[] = new \App\Domains\World\ValueObjects\Claim(
+                $claims[] = new \Tuzy\Domain\World\ValueObject\Claim(
                     'HIGH_MILITARY_POWER',
                     $faction->militaryPower
                 );

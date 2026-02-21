@@ -7,7 +7,7 @@ namespace Tests\Unit\Cosmic;
 use App\Domains\Cosmic\Entities\AttractorAggregate;
 use App\Domains\Cosmic\Services\MorphingEngine;
 use App\Domains\Cosmic\Services\SemanticProjector;
-use App\Domains\Cosmic\ValueObjects\Attractor;
+use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use App\Domains\Cosmic\ValueObjects\AttractorIncarnation;
 use App\Domains\Cosmic\ValueObjects\CosmicState;
 use PHPUnit\Framework\TestCase;

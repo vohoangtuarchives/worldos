@@ -7,7 +7,7 @@ $kernel->bootstrap();
 use App\Models\World;
 use App\Models\Story;
 use App\StoryEngine\Seed;
-use App\Domains\World\ValueObjects\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use App\StoryEngine\Services\StoryContentGenerator;
 use Illuminate\Support\Facades\DB;
 

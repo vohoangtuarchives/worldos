@@ -2,6 +2,8 @@
 
 namespace App\Domains\Genre\Signal;
 
+use Tuzy\Domain\Genre\ValueObject\GenreProfile;
+
 class SignalAggregator
 {
     /** @var GenreSignal[] */

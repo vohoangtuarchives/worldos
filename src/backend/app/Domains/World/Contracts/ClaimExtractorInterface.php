@@ -2,7 +2,7 @@
 
 namespace App\Domains\World\Contracts;
 
-use App\Domains\World\ValueObjects\Claim;
+use Tuzy\Domain\World\ValueObject\Claim;
 
 interface ClaimExtractorInterface
 {

@@ -8,7 +8,7 @@ use App\StoryEngine\Commands\SimulationCommand;
 use App\StoryEngine\Persistence\OptimizedEventStore;
 use App\Services\WorldLawProfileCache;
 use App\Domains\World\Services\WorldLawValidator;
-use App\Domains\World\ValueObjects\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 
 class RefactoredSimulator
 {

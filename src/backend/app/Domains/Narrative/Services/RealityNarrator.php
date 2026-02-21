@@ -5,7 +5,7 @@ namespace App\Domains\Narrative\Services;
 use App\Models\World;
 use App\Models\WorldEvent;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
-use App\Domains\World\ValueObjects\PhysicsProfile;
+use Tuzy\Domain\World\ValueObject\PhysicsProfile;
 use Illuminate\Support\Facades\Log;
 use App\Services\AI\AIAgentContext;
 

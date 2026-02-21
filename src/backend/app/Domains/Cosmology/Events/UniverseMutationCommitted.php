@@ -3,7 +3,7 @@
 namespace App\Domains\Cosmology\Events;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Narrative\Planning\StoryOutcomeDTO;
+use Tuzy\Domain\Narrative\ValueObject\StoryOutcomeDTO;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 

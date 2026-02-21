@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use App\Listeners\TuzyCreatedEventSubscriber;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,7 +62,49 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\World\Repositories\WorldRepository::class,
             \App\Domains\World\Repositories\EloquentWorldRepository::class
         );
-        
+
+        // Tuzy: World repository (DDD port)
+        $this->app->bind(
+            \Tuzy\Domain\World\Repository\WorldRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\World\EloquentWorldRepository::class
+        );
+
+        // Tuzy: Universe repository (Runtime context)
+        $this->app->bind(
+            \Tuzy\Domain\Runtime\Repository\UniverseRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Runtime\EloquentUniverseRepository::class
+        );
+
+        // Tuzy: Saga repository
+        $this->app->bind(
+            \Tuzy\Domain\Saga\Repository\SagaRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Saga\EloquentSagaRepository::class
+        );
+
+        // Tuzy: UniverseStyle repository (Cosmology)
+        $this->app->bind(
+            \Tuzy\Domain\Cosmology\Repository\UniverseStyleRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Cosmology\EloquentUniverseStyleRepository::class
+        );
+
+        // Tuzy: EvolutionProfile repository (Evolution)
+        $this->app->bind(
+            \Tuzy\Domain\Evolution\Repository\EvolutionProfileRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Evolution\EloquentEvolutionProfileRepository::class
+        );
+
+        // Tuzy: NarrativeSeries repository (Narrative)
+        $this->app->bind(
+            \Tuzy\Domain\Narrative\Repository\NarrativeSeriesRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Narrative\EloquentNarrativeSeriesRepository::class
+        );
+
+        // Tuzy: WorldHero repository (Vietnamese)
+        $this->app->bind(
+            \Tuzy\Domain\Heroes\Repository\WorldHeroRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Heroes\EloquentWorldHeroRepository::class
+        );
+
         // Shock event repository binding
         $this->app->bind(
             \App\Domains\World\Repositories\ShockEventRepository::class,
@@ -178,6 +222,7 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\Cosmology\Contracts\AttractorRepositoryInterface::class,
             \App\Domains\Cosmology\Repositories\AttractorEloquentRepository::class
         );
+
     }
 
     /**
@@ -185,6 +230,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Event::subscribe(TuzyCreatedEventSubscriber::class);
+
         // Custom response macros
         Response::macro('success', function ($data = null, string $message = 'Success', int $status = 200) {
             return Response::json([

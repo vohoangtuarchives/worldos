@@ -6,7 +6,7 @@ use App\Domains\Narrative\Character\Character as CharacterAggregate;
 use App\Domains\Narrative\Character\Entities\Memory;
 use App\Domains\Narrative\Character\MemoryCollection;
 use App\Domains\Narrative\Character\GoalStack;
-use App\Domains\Narrative\Character\ValueObjects\EmotionState;
+use Tuzy\Domain\Narrative\ValueObject\EmotionState;
 use App\Models\Character as CharacterModel;
 use App\Models\CharacterMemory as CharacterMemoryModel;
 use App\Models\CharacterEmotion as CharacterEmotionModel;

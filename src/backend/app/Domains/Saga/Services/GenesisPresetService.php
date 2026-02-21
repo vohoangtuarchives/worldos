@@ -2,13 +2,13 @@
 
 namespace App\Domains\Saga\Services;
 
-use App\Domains\World\Enums\PowerSystemType;
-use App\Domains\World\Enums\StartingEnvironment;
-use App\Domains\World\Enums\SocialStructure;
-use App\Domains\World\Enums\StartingCrisis;
-use App\Domains\World\Enums\PowerRanking;
-use App\Domains\World\Enums\TechLevel;
-use App\Domains\World\Enums\PowerCeiling;
+use Tuzy\Domain\World\Enums\PowerSystemType;
+use Tuzy\Domain\World\Enums\StartingEnvironment;
+use Tuzy\Domain\World\Enums\SocialStructure;
+use Tuzy\Domain\World\Enums\StartingCrisis;
+use Tuzy\Domain\World\Enums\PowerRanking;
+use Tuzy\Domain\World\Enums\TechLevel;
+use Tuzy\Domain\World\Enums\PowerCeiling;
 
 class GenesisPresetService
 {

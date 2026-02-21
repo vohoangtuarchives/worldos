@@ -3,7 +3,7 @@
 namespace App\Domains\Saga\Services;
 
 use App\Models\WorldEvent;
-use App\Domains\Saga\Enums\EpicEventType;
+use Tuzy\Domain\Saga\Enums\EpicEventType;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 

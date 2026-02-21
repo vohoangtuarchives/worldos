@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\World;
 use App\Domains\Narrative\Timeline\TimelineNode;
-use App\Domains\Narrative\Timeline\ValueObjects\StateSnapshot;
+use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
 use App\Domains\Narrative\Timeline\Repositories\TimelineEloquentRepository;
 use App\Domains\Narrative\Timeline\Services\CausalConsistency;
 use App\Domains\Narrative\Character\Entities\Memory;

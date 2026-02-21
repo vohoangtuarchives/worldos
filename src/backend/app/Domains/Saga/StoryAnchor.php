@@ -2,8 +2,8 @@
 
 namespace App\Domains\Saga;
 
-use App\Domains\Power\Enums\PowerStage;
-use App\Domains\Saga\Enums\PowerScope;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
+use Tuzy\Domain\Saga\Enums\PowerScope;
 
 class StoryAnchor
 {

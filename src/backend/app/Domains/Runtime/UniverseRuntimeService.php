@@ -6,8 +6,8 @@ use App\Domains\Cosmology\Cosmology;
 use App\Domains\Cosmology\Entities\Universe as CosmologyUniverse;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
-use App\Domains\Runtime\Events\UniverseTicked;
-use App\Domains\Saga\DTO\ShockParams;
+use Tuzy\Domain\Runtime\Event\UniverseTicked;
+use Tuzy\Domain\Saga\ValueObject\ShockParams;
 use App\Domains\Saga\Services\ShockInjector;
 use App\Domains\World\Contracts\EvolutionEngineInterface;
 use App\Models\UniverseModel;
@@ -101,7 +101,7 @@ class UniverseRuntimeService
     private function dispatchTicked(CosmologyUniverse $universe, ?string $worldId): void
     {
         $state = $universe->getState();
-        UniverseTicked::dispatch(
+        event(new UniverseTicked(
             $universe->getId(),
             $worldId ? (string) $worldId : null,
             $universe->getAge(),
@@ -109,6 +109,6 @@ class UniverseRuntimeService
                 'order' => $state->getOrder(),
                 'entropy' => $state->getEntropy(),
             ]
-        );
+        ));
     }
 }

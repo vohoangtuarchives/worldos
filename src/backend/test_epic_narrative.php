@@ -2,7 +2,7 @@ use App\Models\World;
 use App\Models\WorldEvent;
 use App\Domains\Saga\DeepNarrativeAssembler;
 use App\Domains\Saga\Services\LedgerNarrator;
-use App\Domains\Saga\Enums\EpicEventType;
+use Tuzy\Domain\Saga\Enums\EpicEventType;
 use Illuminate\Support\Facades\Artisan;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -15,7 +15,7 @@ echo "--- STEP 1: Setting up Mock Data ---\n";
 $world = World::updateOrCreate(
     ['name' => 'Epic Narrative World'],
     [
-        'type' => \App\Domains\World\Enums\WorldType::WUXIA,
+        'type' => \Tuzy\Domain\World\Enums\WorldType::WUXIA,
         'config' => ['current_stage' => 'mundane'],
         'tick' => 100
     ]

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Bridge\Contracts;
 
-use App\Domains\Narrative\Bridge\DTO\PressureSignal;
+use Tuzy\Domain\Narrative\ValueObject\PressureSignal;
 
 /**
  * WorldOS 2.0 Clean: Inject narrative (or other) pressure into runtime so PhaseEngine can

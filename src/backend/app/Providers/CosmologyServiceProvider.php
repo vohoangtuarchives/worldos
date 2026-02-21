@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Event;
-use App\Domains\World\Events\WorldDefined;
+use Tuzy\Domain\World\Event\WorldDefined;
 use App\Listeners\Cosmology\InitializeUniverseStyle;
 
 class CosmologyServiceProvider extends ServiceProvider

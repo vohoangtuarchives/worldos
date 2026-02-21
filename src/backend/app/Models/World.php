@@ -65,8 +65,8 @@ class World extends Model
         'tags' => 'array',
         'gene_vector' => 'array',
         'autonomous' => 'boolean',
-        'health_status' => \App\Domains\World\Enums\WorldHealthStatus::class,
-        'type' => \App\Domains\World\Enums\WorldType::class,
+        'health_status' => \Tuzy\Domain\World\ValueObject\WorldHealthStatus::class,
+        'type' => \Tuzy\Domain\World\Enums\WorldType::class,
         
         // Vietnamese Origin & Yggdrasil
         'origin_metadata' => 'array',
@@ -80,17 +80,17 @@ class World extends Model
         'bifurcation_era' => 'integer',
     ];
 
-    public function getLawProfileAttribute($value): \App\Domains\World\ValueObjects\WorldLawProfile
+    public function getLawProfileAttribute($value): \Tuzy\Domain\World\ValueObject\WorldLawProfile
     {
         // If null or array, handle conversion
         if (is_string($value)) $value = json_decode($value, true);
         
         return $value 
-            ? \App\Domains\World\ValueObjects\WorldLawProfile::fromArray($value)
-            : \App\Domains\World\ValueObjects\WorldLawProfile::default();
+            ? \Tuzy\Domain\World\ValueObject\WorldLawProfile::fromArray($value)
+            : \Tuzy\Domain\World\ValueObject\WorldLawProfile::default();
     }
 
-    public function setLawProfileAttribute(\App\Domains\World\ValueObjects\WorldLawProfile $profile): void
+    public function setLawProfileAttribute(\Tuzy\Domain\World\ValueObject\WorldLawProfile $profile): void
     {
         $this->attributes['law_profile'] = json_encode($profile->toArray());
     }
@@ -147,13 +147,13 @@ class World extends Model
         }
         
         return $value 
-            ? \App\Domains\World\ValueObjects\PhysicsProfile::fromArray($value) 
-            : \App\Domains\World\ValueObjects\PhysicsProfile::standard();
+            ? \Tuzy\Domain\World\ValueObject\PhysicsProfile::fromArray($value) 
+            : \Tuzy\Domain\World\ValueObject\PhysicsProfile::standard();
     }
 
     public function setPhysicsProfileAttribute($value)
     {
-        if ($value instanceof \App\Domains\World\ValueObjects\PhysicsProfile) {
+        if ($value instanceof \Tuzy\Domain\World\ValueObject\PhysicsProfile) {
             $this->attributes['physics_profile'] = json_encode($value->toArray());
         } else {
             $this->attributes['physics_profile'] = is_array($value) ? json_encode($value) : $value;

@@ -2,7 +2,7 @@
 
 namespace App\Domains\Power\Repositories;
 
-use App\Domains\Power\WorldEvent;
+use Tuzy\Domain\Power\ValueObject\WorldEvent;
 use Illuminate\Support\Facades\DB;
 
 class WorldEventLedgerRepository

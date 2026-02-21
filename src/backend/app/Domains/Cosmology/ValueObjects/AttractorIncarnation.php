@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\ValueObjects;
 
-use App\Domains\Cosmology\Enums\SocialClassType;
+use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 /**
  * AttractorIncarnation represents a versioned snapshot of an attractor's state

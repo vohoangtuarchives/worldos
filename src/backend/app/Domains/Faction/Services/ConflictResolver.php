@@ -4,7 +4,7 @@ namespace App\Domains\Faction\Services;
 
 use App\Models\World;
 use App\Models\Faction;
-use App\Domains\Faction\Enums\FactionIntentType;
+use Tuzy\Domain\Faction\Enums\FactionIntentType;
 
 class ConflictResolver
 {

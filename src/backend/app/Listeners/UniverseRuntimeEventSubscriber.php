@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Domains\Runtime\Events\UniverseCollapsed;
-use App\Domains\Runtime\Events\UniverseForked;
-use App\Domains\Runtime\Events\UniverseTicked;
-use App\Domains\Saga\DTO\SagaEvaluationReport;
+use Tuzy\Domain\Runtime\Event\UniverseCollapsed;
+use Tuzy\Domain\Runtime\Event\UniverseForked;
+use Tuzy\Domain\Runtime\Event\UniverseTicked;
+use Tuzy\Domain\Saga\ValueObject\SagaEvaluationReport;
 use App\Domains\Saga\Services\BlueprintMutationPlanner;
 use App\Domains\Saga\Services\CivilizationScorer;
 use App\Domains\Saga\Services\ParetoFrontManager;

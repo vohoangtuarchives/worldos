@@ -6,7 +6,7 @@ namespace App\Domains\Cosmology\Services;
 
 use App\Domains\Cosmology\ValueObjects\CosmicState;
 use App\Domains\Cosmology\ValueObjects\CivilizationState;
-use App\Domains\Cosmology\Enums\SocialClassType;
+use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 /**
  * SemanticProjector maps world state into a semantic vector space.

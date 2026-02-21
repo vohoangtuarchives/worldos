@@ -26,6 +26,11 @@
     "autoload": {
         "psr-4": {
             "App\\": "app/",
+            "WorldOS\\": [
+                "app/",
+                "src/"
+            ],
+            "Tuzy\\": "src/Tuzy/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
         }

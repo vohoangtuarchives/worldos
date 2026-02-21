@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Domains\World\Services;
 
 use App\Domains\World\Aggregates\WorldAggregate;
-use App\Domains\World\ValueObjects\EntropyScore;
-use App\Domains\World\ValueObjects\GeneVector;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
+use Tuzy\Domain\World\ValueObject\GeneVector;
 use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
-use App\Domains\Character\ValueObjects\NarrativeWeight;
+use Tuzy\Domain\Character\ValueObject\NarrativeWeight;
 use App\Domains\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Support\Facades\Log;
 

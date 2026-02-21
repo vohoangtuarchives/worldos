@@ -2,7 +2,7 @@
 
 namespace App\Domains\Saga\Services;
 
-use App\Domains\World\ValueObjects\PhysicsProfile;
+use Tuzy\Domain\World\ValueObject\PhysicsProfile;
 use App\Models\World;
 
 class PhysicsMutator

@@ -10,7 +10,7 @@ use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
 use App\Domains\Cosmic\Services\CosmicEvolutionService;
 use App\Domains\Cosmic\Services\BifurcationManager;
 use App\Domains\Cosmic\Services\SocialDynamicsService;
-use App\Domains\Cosmic\Enums\SocialClassType;
+use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 // 1. Mock the services
 $cosmicService = Mockery::mock(CosmicEvolutionService::class);

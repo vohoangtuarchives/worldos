@@ -6,10 +6,10 @@ namespace App\Domains\Intelligence\Services;
 
 use App\Domains\World\Aggregates\WorldAggregate;
 use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
-use App\Domains\World\Events\ShockEvent;
-use App\Domains\Intelligence\ValueObjects\IntelligenceReport;
-use App\Domains\Intelligence\ValueObjects\IntelligenceSource;
-use App\Domains\Intelligence\ValueObjects\IntelligenceType;
+use Tuzy\Domain\World\Event\ShockEvent;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceSource;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceType;
 use App\Domains\Intelligence\Repositories\IntelligenceRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;

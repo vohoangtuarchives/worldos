@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api_vietnamese.php',
+        api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
@@ -21,6 +21,50 @@ return Application::configure(basePath: dirname(__DIR__))
         // Every request authenticates via Authorization: Bearer {token}.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Tuzy domain exceptions → HTTP status
+        $exceptions->renderable(function (Tuzy\Domain\World\Exception\WorldNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'world_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Runtime\Exception\UniverseNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'universe_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Saga\Exception\SagaNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'saga_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Cosmology\Exception\UniverseStyleNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'universe_style_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Evolution\Exception\EvolutionProfileNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'evolution_profile_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Narrative\Exception\NarrativeSeriesNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'narrative_series_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+        $exceptions->renderable(function (Tuzy\Domain\Heroes\Exception\WorldHeroNotFoundException $e, Request $request): ?Response {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => $e->getMessage(), 'error' => 'world_hero_not_found'], 404);
+            }
+            return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
+        });
+
         // Ensure API error responses (e.g. 500) include CORS headers so the browser doesn't report "blocked by CORS".
         $exceptions->renderable(function (\Throwable $e, Request $request): ?Response {
             if (! str_starts_with($request->path(), 'api/')) {

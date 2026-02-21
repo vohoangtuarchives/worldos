@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domains\World\Services;
 
 use App\Domains\World\Aggregates\WorldAggregate;
-use App\Domains\World\ValueObjects\EntropyScore;
-use App\Domains\World\Events\ShockEvent;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
+use Tuzy\Domain\World\Event\ShockEvent;
 use Illuminate\Support\Facades\Config;
 
 final class ShockEventGenerator

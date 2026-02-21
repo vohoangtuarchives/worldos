@@ -3,7 +3,7 @@
 namespace App\Domains\Cosmology\Mathematics;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\ValueObjects\ConstraintProfile;
+use Tuzy\Domain\Cosmology\ValueObject\ConstraintProfile;
 
 /**
  * Criticality Detector — Tính toán khi nào đạt điểm chuyển pha (phase transition)

@@ -3,8 +3,8 @@
 use App\Models\World;
 use App\Models\WorldEvent;
 use App\Domains\Saga\Services\LedgerNarrator;
-use App\Domains\Saga\Enums\EpicEventType;
-use App\Domains\World\Enums\WorldType;
+use Tuzy\Domain\Saga\Enums\EpicEventType;
+use Tuzy\Domain\World\Enums\WorldType;
 
 require_once __DIR__ . '/vendor/autoload.php';
 $app = require_once __DIR__ . '/bootstrap/app.php';

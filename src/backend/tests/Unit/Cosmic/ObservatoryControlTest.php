@@ -10,7 +10,7 @@ use App\Domains\Cosmic\Services\EmergencyInterventionService;
 use App\Domains\Cosmic\Services\EpochControlService;
 use App\Domains\Cosmic\Services\MetricsSnapshotService;
 use App\Domains\Cosmic\ValueObjects\AlertRule;
-use App\Domains\Cosmic\ValueObjects\Attractor;
+use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use App\Domains\Cosmic\ValueObjects\CivilizationState;
 use App\Domains\Cosmic\ValueObjects\CosmicState;
 use App\Domains\Cosmic\ValueObjects\EnvironmentState;

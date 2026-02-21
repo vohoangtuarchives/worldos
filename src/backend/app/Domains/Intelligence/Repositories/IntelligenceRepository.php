@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Intelligence\Repositories;
 
-use App\Domains\Intelligence\ValueObjects\IntelligenceReport;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
 use App\Domains\Intelligence\Collections\IntelligenceCollection;
 use Illuminate\Support\Collection;
 

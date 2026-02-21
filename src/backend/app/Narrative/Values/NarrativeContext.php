@@ -12,9 +12,9 @@ class NarrativeContext
         public readonly string $audience,
         public readonly ?GenreDefinition $genre = null,
         public readonly ?\App\Domains\Social\HonorificContext $socialContext = null,
-        public readonly ?\App\Domains\Power\Enums\PowerStage $powerStage = null,
-        public readonly ?\App\Domains\Genre\Signal\GenreProfile $genreProfile = null,
-        public readonly ?\App\Domains\Saga\Enums\PowerScope $powerScope = null,
+        public readonly ?\Tuzy\Domain\Power\ValueObject\PowerStage $powerStage = null,
+        public readonly ?\Tuzy\Domain\Genre\ValueObject\GenreProfile $genreProfile = null,
+        public readonly ?\Tuzy\Domain\Saga\Enums\PowerScope $powerScope = null,
         public readonly string $phase = 'stable' // pre, moment, post
     ) {}
 

@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tuzy\Domain\Evolution\Exception;
+
+use RuntimeException;
+
+final class EvolutionProfileNotFoundException extends RuntimeException
+{
+    public static function withId(string $id): self
+    {
+        return new self("EvolutionProfile not found: {$id}", 0, null);
+    }
+}

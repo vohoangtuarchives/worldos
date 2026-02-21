@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Saga\Services;
 
-use App\Domains\Saga\DTO\SagaEvaluationInput;
-use App\Domains\Saga\DTO\SagaEvaluationReport;
-use App\Domains\Saga\ValueObjects\CollapseProfile;
+use Tuzy\Domain\Saga\ValueObject\SagaEvaluationInput;
+use Tuzy\Domain\Saga\ValueObject\SagaEvaluationReport;
+use Tuzy\Domain\Saga\ValueObject\CollapseProfile;
 
 
 /**

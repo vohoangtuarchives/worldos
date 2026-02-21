@@ -5,8 +5,8 @@ use App\Domains\Cosmic\ValueObjects\CivilizationState;
 use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
 use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
 use App\Domains\Cosmic\Repositories\CosmicSnapshotEloquentRepository;
-use App\Domains\Cosmic\Enums\SocialClassType;
-use App\Domains\Cosmic\ValueObjects\SocialClass;
+use Tuzy\Domain\Cosmology\Enums\SocialClassType;
+use Tuzy\Domain\Cosmology\ValueObject\SocialClass;
 
 require __DIR__ . '/vendor/autoload.php';
 $app = require_once __DIR__ . '/bootstrap/app.php';

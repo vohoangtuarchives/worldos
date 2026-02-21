@@ -4,8 +4,8 @@ namespace App\Domains\Cosmology\Services;
 
 use App\Domains\Cosmology\ValueObjects\CivilizationState;
 use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\SocialClass;
-use App\Domains\Cosmology\Enums\SocialClassType;
+use Tuzy\Domain\Cosmology\ValueObject\SocialClass;
+use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 class SocialDynamicsService
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Domains\Narrative\Events\ChapterGenerated;
+use Tuzy\Domain\Narrative\Event\ChapterGenerated;
 use Illuminate\Support\Facades\Log;
 
 /**

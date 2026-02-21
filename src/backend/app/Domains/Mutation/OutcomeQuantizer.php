@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Mutation;
 
-use App\Domains\Narrative\Planning\DefaultOutcome;
-use App\Domains\Narrative\Planning\StoryOutcomeDTO;
+use Tuzy\Domain\Narrative\ValueObject\DefaultOutcome;
+use Tuzy\Domain\Narrative\ValueObject\StoryOutcomeDTO;
 
 /**
  * Validates user override, clamps to plausible range, produces final StoryOutcomeDTO.

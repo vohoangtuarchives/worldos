@@ -2,8 +2,8 @@
 
 namespace App\Domains\World\Aggregates;
 
-use App\Domains\World\ValueObjects\EntropyScore;
-use App\Domains\World\ValueObjects\GeneVector;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
+use Tuzy\Domain\World\ValueObject\GeneVector;
 use Illuminate\Support\Collection;
 use DateTime;
 
@@ -31,8 +31,8 @@ class WorldAggregate
             new DateTime()
         );
 
-        // Dispatch Event
-        \App\Domains\World\Events\WorldDefined::dispatch($id, $name);
+        // Dispatch Event (Tuzy domain event via Laravel bus)
+        event(new \Tuzy\Domain\World\Event\WorldDefined($id, $name));
 
         return $aggregate;
     }

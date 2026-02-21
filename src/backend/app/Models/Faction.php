@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Domains\Faction\ValueObjects\Leader;
-use App\Domains\Faction\ValueObjects\IdeologyVector;
-use App\Domains\Faction\ValueObjects\PersonalityVector;
-use App\Domains\Faction\ValueObjects\FactionMemory;
+use Tuzy\Domain\Faction\ValueObject\Leader;
+use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
+use Tuzy\Domain\Faction\ValueObject\PersonalityVector;
+use Tuzy\Domain\Faction\ValueObject\FactionMemory;
 
 class Faction extends Model
 {

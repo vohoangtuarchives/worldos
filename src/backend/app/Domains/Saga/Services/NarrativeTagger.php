@@ -2,7 +2,7 @@
 
 namespace App\Domains\Saga\Services;
 
-use App\Domains\Genre\Signal\GenreProfile;
+use Tuzy\Domain\Genre\ValueObject\GenreProfile;
 
 class NarrativeTagger
 {

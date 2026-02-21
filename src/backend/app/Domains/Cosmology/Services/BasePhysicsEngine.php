@@ -8,7 +8,7 @@ use App\Domains\Cosmology\Mathematics\Vector;
 use App\Domains\Cosmology\Mathematics\PressureAccumulationField;
 use App\Domains\Cosmology\Mathematics\CriticalityDetector;
 use App\Domains\Cosmology\Mathematics\InnovationBurst;
-use App\Domains\Cosmology\ValueObjects\PhaseSignal;
+use Tuzy\Domain\Cosmology\ValueObject\PhaseSignal;
 
 /**
  * Base Physics Engine — pure dynamics (differentials, feedback, criticality).

@@ -3,7 +3,7 @@
 namespace App\StoryEngine;
 
 use App\Services\WorldLawProfileCache;
-use App\Domains\World\ValueObjects\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use App\Exceptions\Simulation\SimulationException;
 
 class StateManager

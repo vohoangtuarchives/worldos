@@ -3,6 +3,7 @@
 namespace App\Domains\Genre\Signal;
 
 use App\Domains\Genre\Contracts\VocabularyMap;
+use Tuzy\Domain\Genre\ValueObject\GenreProfile;
 
 class VocabularyResolver
 {

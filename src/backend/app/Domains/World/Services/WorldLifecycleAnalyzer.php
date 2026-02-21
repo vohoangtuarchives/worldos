@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\World\Services;
 
 use App\Domains\World\Aggregates\WorldAggregate;
-use App\Domains\World\ValueObjects\EntropyScore;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
 use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
 use Illuminate\Support\Collection;
 

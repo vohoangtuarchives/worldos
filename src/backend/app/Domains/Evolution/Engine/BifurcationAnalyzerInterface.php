@@ -6,7 +6,7 @@ namespace App\Domains\Evolution\Engine;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use App\Domains\Evolution\EvolutionContext;
-use App\Domains\Evolution\ValueObjects\BranchEvent;
+use Tuzy\Domain\Evolution\ValueObject\BranchEvent;
 use App\Domains\Evolution\ValueObjects\VectorForce;
 
 interface BifurcationAnalyzerInterface

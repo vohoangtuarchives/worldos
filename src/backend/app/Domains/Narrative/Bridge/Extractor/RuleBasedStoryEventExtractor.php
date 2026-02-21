@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Narrative\Bridge\Extractor;
 
 use App\Domains\Narrative\Bridge\Contracts\StoryEventExtractorInterface;
-use App\Domains\Narrative\Bridge\DTO\StoryEvent;
+use Tuzy\Domain\Narrative\ValueObject\StoryEvent;
 
 /**
  * Rule-based extraction: keywords/phrases to event type + severity.
