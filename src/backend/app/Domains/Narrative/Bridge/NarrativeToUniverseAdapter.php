@@ -7,9 +7,9 @@ namespace App\Domains\Narrative\Bridge;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Mutation\UniverseMutationService;
 use App\Domains\Narrative\Bridge\Contracts\NarrativePressureBridgeInterface;
-use App\Domains\Narrative\Bridge\DTO\PressureSignal;
-use App\Domains\Narrative\Bridge\DTO\StoryEvent;
-use App\Domains\Narrative\Planning\StoryOutcomeDTO;
+use Tuzy\Domain\Narrative\ValueObject\PressureSignal;
+use Tuzy\Domain\Narrative\ValueObject\StoryEvent;
+use Tuzy\Domain\Narrative\ValueObject\StoryOutcomeDTO;
 use App\Models\NarrativeSeries;
 use Illuminate\Support\Facades\Log;
 

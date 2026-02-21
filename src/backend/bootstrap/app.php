@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
-        api: __DIR__.'/../routes/api_vietnamese.php',
+        api: __DIR__.'/../routes/api.php',
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
@@ -58,7 +58,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
             return new Response($e->getMessage(), 404, ['Content-Type' => 'text/plain']);
         });
-        $exceptions->renderable(function (Tuzy\Domain\Vietnamese\Exception\WorldHeroNotFoundException $e, Request $request): ?Response {
+        $exceptions->renderable(function (Tuzy\Domain\Heroes\Exception\WorldHeroNotFoundException $e, Request $request): ?Response {
             if ($request->expectsJson()) {
                 return response()->json(['message' => $e->getMessage(), 'error' => 'world_hero_not_found'], 404);
             }

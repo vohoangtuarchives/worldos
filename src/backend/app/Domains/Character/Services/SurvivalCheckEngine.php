@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Domains\Character\Services;
 
 use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
-use App\Domains\Character\Events\CharacterDeathEvent;
-use App\Domains\Character\Events\CharacterSurvivedEvent;
-use App\Domains\Character\ValueObjects\SurvivalProbability;
-use App\Domains\World\ValueObjects\EntropyScore;
-use App\Domains\World\Events\ShockEvent;
+use Tuzy\Domain\Character\ValueObject\SurvivalProbability;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
+use Tuzy\Domain\World\Event\ShockEvent;
 use Illuminate\Support\Collection;
+use Tuzy\Domain\Character\ValueObject\SurvivalResult as TuzySurvivalResult;
+use Tuzy\Domain\Character\ValueObject\SurvivalTrend;
 
 final class SurvivalCheckEngine
 {
@@ -153,64 +153,15 @@ final readonly class SurvivalResult
 
     public function toArray(): array
     {
-        return [
-            'character_id' => $this->character->characterId(),
-            'survived' => $this->survived,
-            'probability' => $this->probability->value(),
-            'reason' => $this->reason,
-        ];
+        return $this->toTuzy()->toArray();
+    }
+
+    /** Returns Tuzy DTO for use in domain/API boundaries. */
+    public function toTuzy(): TuzySurvivalResult
+    {
+        return $this->survived
+            ? TuzySurvivalResult::survived($this->character->characterId(), $this->probability->value(), $this->reason)
+            : TuzySurvivalResult::died($this->character->characterId(), $this->probability->value(), $this->reason);
     }
 }
 
-final readonly class SurvivalTrend
-{
-    private function __construct(
-        public readonly string $characterId,
-        public readonly array $probabilities,
-    ) {}
-
-    public function isDeclining(): bool
-    {
-        if (count($this->probabilities) < 2) {
-            return false;
-        }
-
-        $first = $this->probabilities[0];
-        $last = end($this->probabilities);
-
-        return $last < $first - 0.1; // Decline by more than 10%
-    }
-
-    public function averageProbability(): float
-    {
-        if (empty($this->probabilities)) {
-            return 0.0;
-        }
-
-        return array_sum($this->probabilities) / count($this->probabilities);
-    }
-
-    public function riskOfDeath(int $withinTicks = 3): float
-    {
-        $recentProbabilities = array_slice($this->probabilities, -$withinTicks);
-        
-        if (empty($recentProbabilities)) {
-            return 0.0;
-        }
-
-        $belowThreshold = array_filter($recentProbabilities, fn($p) => $p < 0.3);
-        
-        return count($belowThreshold) / count($recentProbabilities);
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'character_id' => $this->characterId,
-            'probabilities' => $this->probabilities,
-            'is_declining' => $this->isDeclining(),
-            'average_probability' => $this->averageProbability(),
-            'risk_of_death' => $this->riskOfDeath(),
-        ];
-    }
-}

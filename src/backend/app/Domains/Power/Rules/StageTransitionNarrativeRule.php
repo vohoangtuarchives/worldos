@@ -2,7 +2,7 @@
 
 namespace App\Domains\Power\Rules;
 
-use App\Domains\Power\Enums\PowerStage;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
 
 class StageTransitionNarrativeRule
 {
@@ -42,11 +42,11 @@ class StageTransitionNarrativeRule
     public function getVocabularyShift(PowerStage $to): array
     {
         return match ($to) {
-            PowerStage::MORTAL_MARTIAL => [
+            PowerStage::STAGE_1_MORTAL_MARTIAL => [
                 'deprecated' => ['thể thao', 'vô địch olympic'],
                 'emerging' => ['nội kình', 'cổ võ', 'ẩn thế'],
             ],
-            PowerStage::LOW_IMMORTAL => [
+            PowerStage::STAGE_3_LOW_IMMORTAL => [
                 'deprecated' => ['cao thủ', 'nội công'],
                 'emerging' => ['linh khí', 'trúc cơ', 'pháp thuật'],
             ],

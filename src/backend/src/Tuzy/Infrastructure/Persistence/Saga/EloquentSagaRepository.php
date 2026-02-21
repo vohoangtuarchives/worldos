@@ -17,6 +17,17 @@ final class EloquentSagaRepository implements SagaRepositoryInterface
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = SagaModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = Saga::create($model->name ?? '', $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?Saga
     {
         $model = SagaModel::find($id);

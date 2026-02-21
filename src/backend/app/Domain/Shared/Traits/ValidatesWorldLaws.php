@@ -2,10 +2,10 @@
 
 namespace App\Domain\Shared\Traits;
 
-use App\Domains\World\ValueObjects\WorldLawProfile;
-use App\Domains\World\ValueObjects\Claim;
-use App\Domains\World\Enums\MagicSystemType;
-use App\Domains\World\Enums\PowerCeiling;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\Claim;
+use Tuzy\Domain\World\Enums\MagicSystemType;
+use Tuzy\Domain\World\Enums\PowerCeiling;
 use App\Exceptions\World\WorldLawViolationException;
 use App\StoryEngine\Seed;
 

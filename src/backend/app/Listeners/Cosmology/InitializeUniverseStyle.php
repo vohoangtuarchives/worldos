@@ -2,7 +2,7 @@
 
 namespace App\Listeners\Cosmology;
 
-use App\Domains\World\Events\WorldDefined;
+use Tuzy\Domain\World\Event\WorldDefined;
 use App\Domains\Genre\GenreRegistry;
 use App\Models\World;
 use App\Models\UniverseStyle;

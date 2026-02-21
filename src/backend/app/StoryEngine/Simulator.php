@@ -80,7 +80,7 @@ class Simulator
                 // Fetch fresh status
                 $freshWorld = \App\Models\World::find($worldId);
                 if ($freshWorld) {
-                    if ($freshWorld->health_status === \App\Domains\World\Enums\WorldHealthStatus::HALTED) {
+                    if ($freshWorld->health_status === \Tuzy\Domain\World\ValueObject\WorldHealthStatus::HALTED) {
                          $metrics[] = ['status' => 'HALTED', 'message' => 'Simulation stopped by Kill Switch'];
                          break;
                     }

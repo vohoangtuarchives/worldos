@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Conflict;
 
-use App\Domains\Conflict\ValueObjects\ConflictSeed;
+use Tuzy\Domain\Conflict\ValueObject\ConflictSeed;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use App\Domains\Cosmology\Mathematics\StressModel;
 

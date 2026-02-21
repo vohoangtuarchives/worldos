@@ -3,7 +3,7 @@
 namespace App\Domains\Cosmology\Evolution\Policies;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\ValueObjects\WorldSeed;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSeed;
 
 interface DriftPolicyInterface
 {

@@ -8,6 +8,9 @@ use Tuzy\Domain\Saga\Entity\Saga;
 
 interface SagaRepositoryInterface
 {
+    /** @return list<Saga> */
+    public function findAll(): array;
+
     public function findById(string $id): ?Saga;
 
     public function save(Saga $saga): void;

@@ -4,6 +4,18 @@ Tài liệu tổng hợp toàn bộ backend: các domain, model, bảng DB, mố
 
 ---
 
+## 0. Tuzy — Nguồn sự thật domain (DDD)
+
+**Vị trí:** `src/Tuzy/` (namespace `Tuzy\Domain\*`, `Tuzy\Application\*`, `Tuzy\Infrastructure\*`).
+
+Logic nghiệp vụ (Value Objects, Domain Events, Entities, Application Handlers) được di chuyển dần vào **Tuzy**. `app/Domains/*` giữ tương thích ngược bằng **extends** hoặc **class_alias** trỏ tới Tuzy; các class App tương ứng đánh dấu `@deprecated`.
+
+- **Value Objects / Events đã trong Tuzy:** EntropyScore, ShockEvent, Claim, PhysicsProfile, GeneVector, WorldLawUpdated, MaterialInjected, WorldDefined; WorldHealthStatus (enum); UniverseTicked, UniverseForked, UniverseCollapsed; ShockParams, CollapseProfile, SagaEvaluationReport, SagaEvaluationInput; BranchEvent; ChapterGenerated, StoryEvent, MemorySnapshot, PressureSignal, BeatSpec, DefaultOutcome, StoryOutcomeDTO; PhaseSignal, ConstraintProfile; SurvivalProbability, NarrativeWeight, RiskFactors, SurvivalTrend, SurvivalResult; ConflictSeed; IntelligenceSource, IntelligenceType, IntelligenceReport; MaterialState; Attractor (Cosmic); Axiom, CoreTruth (CoreTruth); HealthResult (WorldManagement); FactionMemory, IdeologyVector, PersonalityVector (Faction); GenrePromptCapsule (Genre); EpistemicIndex (Epistemology); EpistemicVector, OntologyVector, CivilizationVector, EnergyVector, WorldSeed (Cosmology); StorySlice, Intent, EmotionState, StateSnapshot (Narrative).  
+- **Test domain Tuzy:** `tests/Unit/Tuzy/` — chạy `php vendor/bin/phpunit tests/Unit/Tuzy/`.  
+- **Kế hoạch chi tiết:** `docs/plans/2026-02-20-domain-to-ddd-migration.md`.
+
+---
+
 ## 1. Tổng quan kiến trúc
 
 ### 1.1 Ba bounded context (theo CONTEXT_MAP)

@@ -159,8 +159,8 @@ class CosmicSnapshotEloquentRepository implements CosmicSnapshotRepositoryInterf
         }
 
         return array_map(function ($c) {
-            return new \App\Domains\Cosmology\ValueObjects\SocialClass(
-                type: \App\Domains\Cosmology\Enums\SocialClassType::from($c['type']),
+            return new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(
+                type: \Tuzy\Domain\Cosmology\Enums\SocialClassType::from($c['type']),
                 power: (float) $c['power'],
                 contentment: (float) $c['contentment'],
                 size: (float) $c['size'],

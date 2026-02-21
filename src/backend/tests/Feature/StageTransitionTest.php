@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Domains\Power\StageTransitionEngine;
 use App\Domains\Power\Services\WorldPressureService;
-use App\Domains\Power\Enums\PowerStage;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
 use Illuminate\Support\Facades\DB;
 
 class StageTransitionTest extends TestCase

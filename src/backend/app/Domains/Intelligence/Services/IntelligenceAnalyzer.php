@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Intelligence\Services;
 
 use App\Domains\Intelligence\Collections\IntelligenceCollection;
-use App\Domains\Intelligence\ValueObjects\IntelligenceReport;
-use App\Domains\Intelligence\ValueObjects\IntelligenceType;
-use App\Domains\Intelligence\ValueObjects\IntelligenceSource;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceType;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceSource;
 
 final class IntelligenceAnalyzer
 {

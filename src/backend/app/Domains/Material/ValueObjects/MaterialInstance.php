@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Material\ValueObjects;
 
-use App\Domains\Material\ValueObjects\MaterialState;
+use Tuzy\Domain\Material\ValueObject\MaterialState;
 
 final readonly class MaterialInstance
 {

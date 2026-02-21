@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Domains\Character\Aggregates;
 
-use App\Domains\Character\ValueObjects\SurvivalProbability;
-use App\Domains\Character\ValueObjects\RiskFactors;
-use App\Domains\Character\ValueObjects\NarrativeWeight;
-use App\Domains\World\ValueObjects\EntropyScore;
-use App\Domains\World\Events\ShockEvent;
+use Tuzy\Domain\Character\ValueObject\SurvivalProbability;
+use Tuzy\Domain\Character\ValueObject\RiskFactors;
+use Tuzy\Domain\Character\ValueObject\NarrativeWeight;
+use Tuzy\Domain\World\ValueObject\EntropyScore;
+use Tuzy\Domain\World\Event\ShockEvent;
 
 final class CharacterSurvivalAggregate
 {

@@ -69,7 +69,7 @@ class TerraformWorldAction
 
         $this->eventLedger->record(
             $victim, 
-            \App\Domains\Saga\Enums\EpicEventType::TERRAFORM_EVENT->value, 
+            \Tuzy\Domain\Saga\Enums\EpicEventType::TERRAFORM_EVENT->value, 
             $dynamicDescription,
             1.0, // Magnitude
             1.0, // Permanence

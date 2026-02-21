@@ -4,7 +4,7 @@ namespace App\Domains\World\Services;
 
 use App\Models\World;
 use App\Domains\Power\PowerStageRegistry;
-use App\Domains\Power\Enums\PowerStage;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
 use App\Models\WorldPowerProfile;
 
 class StageTransitionEngine

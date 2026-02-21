@@ -6,9 +6,9 @@ $kernel->bootstrap();
 
 use App\StoryEngine\Simulator;
 use App\Domains\World\ValueObjects\WorldLawProfile;
-use App\Domains\World\Enums\MagicSystemType;
-use App\Domains\World\Enums\PowerCeiling;
-use App\Domains\World\Enums\TechLevel;
+use Tuzy\Domain\World\Enums\MagicSystemType;
+use Tuzy\Domain\World\Enums\PowerCeiling;
+use Tuzy\Domain\World\Enums\TechLevel;
 use App\StoryEngine\Seed;
 
 // 1. Create a Low Magic ("History") World Profile

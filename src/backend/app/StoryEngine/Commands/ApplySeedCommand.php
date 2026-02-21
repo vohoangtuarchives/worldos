@@ -6,7 +6,7 @@ use App\StoryEngine\WorldState;
 use App\StoryEngine\CharacterState;
 use App\StoryEngine\Seed;
 use App\Domains\World\Services\WorldLawValidator;
-use App\Domains\World\ValueObjects\WorldLawProfile;
+use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use App\Exceptions\World\WorldLawViolationException;
 
 class ApplySeedCommand extends SimulationCommand

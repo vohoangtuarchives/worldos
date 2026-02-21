@@ -16,6 +16,7 @@ final class CreateSagaHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements SagaRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?Saga { return null; }
             public function save(Saga $saga): void { $this->saved[] = $saga; }
         };

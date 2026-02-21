@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Material\Collections;
 
 use App\Domains\Material\ValueObjects\MaterialInstance;
-use App\Domains\Material\ValueObjects\MaterialState;
+use Tuzy\Domain\Material\ValueObject\MaterialState;
 use Illuminate\Support\Collection;
 
 final class WorldMaterialCollection

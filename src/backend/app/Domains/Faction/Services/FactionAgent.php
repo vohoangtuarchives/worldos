@@ -5,7 +5,7 @@ namespace App\Domains\Faction\Services;
 use App\Models\Faction;
 use App\Models\World;
 use App\Models\FactionHistoryLog;
-use App\Domains\Faction\Enums\FactionIntentType;
+use Tuzy\Domain\Faction\Enums\FactionIntentType;
 
 class FactionAgent
 {
@@ -60,7 +60,7 @@ class FactionAgent
     {
         $ideology = $faction->getIdeology();
         
-        $newIdeology = new \App\Domains\Faction\ValueObjects\IdeologyVector(
+        $newIdeology = new \Tuzy\Domain\Faction\ValueObject\IdeologyVector(
             militarism: $this->clamp($ideology->militarism + ($drift['militarism'] ?? 0)),
             spiritualism: $this->clamp($ideology->spiritualism + ($drift['spiritualism'] ?? 0)),
             expansionism: $this->clamp($ideology->expansionism + ($drift['expansionism'] ?? 0)),

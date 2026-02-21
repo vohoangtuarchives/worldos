@@ -2,8 +2,8 @@
 
 namespace App\Domains\WorldManagement\Services;
 
-use App\Domains\World\Enums\WorldHealthStatus;
-use App\Domains\WorldManagement\ValueObjects\HealthResult;
+use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
+use Tuzy\Domain\WorldManagement\ValueObject\HealthResult;
 use App\Models\World;
 use Illuminate\Support\Facades\DB;
 

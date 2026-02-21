@@ -16,6 +16,7 @@ final class CreateEvolutionProfileHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements EvolutionProfileRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?EvolutionProfile { return null; }
             public function save(EvolutionProfile $p): void { $this->saved[] = $p; }
         };

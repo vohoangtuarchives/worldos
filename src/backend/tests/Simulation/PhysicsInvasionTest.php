@@ -4,7 +4,7 @@ namespace Tests\Simulation;
 
 use Tests\TestCase;
 use App\Models\World;
-use App\Domains\World\ValueObjects\PhysicsProfile;
+use Tuzy\Domain\World\ValueObject\PhysicsProfile;
 use App\Domains\Saga\Services\PhysicsMutator;
 use App\Domains\Saga\Actions\TerraformWorldAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;

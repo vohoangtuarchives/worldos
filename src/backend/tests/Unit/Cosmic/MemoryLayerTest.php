@@ -6,7 +6,7 @@ namespace Tests\Unit\Cosmic;
 
 use App\Domains\Cosmic\Entities\AttractorAggregate;
 use App\Domains\Cosmic\Services\CollectiveFieldService;
-use App\Domains\Cosmic\ValueObjects\Attractor;
+use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use App\Domains\Cosmic\ValueObjects\IndividualMemory;
 use App\Domains\Cosmic\ValueObjects\InteractionMemory;
 use PHPUnit\Framework\TestCase;

@@ -17,6 +17,17 @@ final class EloquentEvolutionProfileRepository implements EvolutionProfileReposi
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = EvolutionProfileModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = EvolutionProfile::create($model->name ?? '', $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?EvolutionProfile
     {
         $model = EvolutionProfileModel::find($id);

@@ -5,7 +5,7 @@ namespace App\Domains\World\Services;
 use App\Models\World;
 use App\Models\SeedTemplate;
 use App\Models\WorldSeed;
-use App\Domains\World\Enums\WorldHealthStatus;
+use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
 
 class SeedGovernanceValidator
 {
@@ -49,7 +49,7 @@ class SeedGovernanceValidator
     public function checkDimensionLimits(World $world, string $dimension): bool
     {
         $activeSeeds = WorldSeed::where('world_id', $world->id)
-            ->where('state', \App\Domains\World\Enums\SeedState::ACTIVE)
+            ->where('state', \Tuzy\Domain\World\Enums\SeedState::ACTIVE)
             ->whereHas('template', function ($q) use ($dimension) {
                 $q->where('dimension', $dimension);
             })
@@ -69,7 +69,7 @@ class SeedGovernanceValidator
         return !in_array($world->health_status, [
             WorldHealthStatus::CRITICAL,
             WorldHealthStatus::HALTED,
-        ]);
+        ], true);
     }
 
     /**

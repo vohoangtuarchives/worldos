@@ -20,7 +20,7 @@ echo "--- STEP 1: Setting up World ---\n";
 $world = World::updateOrCreate(
     ['name' => 'Ledger Test World'],
     [
-        'type' => \App\Domains\World\Enums\WorldType::WUXIA,
+        'type' => \Tuzy\Domain\World\Enums\WorldType::WUXIA,
         'config' => ['current_stage' => 'mundane'],
         'tick' => 1
     ]

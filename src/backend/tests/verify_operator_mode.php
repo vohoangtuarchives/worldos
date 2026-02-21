@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\World;
-use App\Domains\World\Enums\WorldHealthStatus;
+use Tuzy\Domain\World\Enums\WorldHealthStatus;
 use App\Domains\WorldManagement\Services\AlertService;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -18,7 +18,7 @@ $world = World::create([
     'name' => 'Operator Test World',
     'status' => 'ACTIVE',
     'health_status' => WorldHealthStatus::STABLE,
-    'law_profile' => \App\Domains\World\ValueObjects\WorldLawProfile::default(),
+    'law_profile' => \Tuzy\Domain\World\ValueObject\WorldLawProfile::default(),
 ]);
 echo "    World Created: ID {$world->id}\n";
 
@@ -144,7 +144,7 @@ for ($i = 0; $i < 4; $i++) {
         'parent_id' => $world->id,
         'status' => 'ACTIVE',
         'health_status' => WorldHealthStatus::STABLE,
-        'law_profile' => \App\Domains\World\ValueObjects\WorldLawProfile::default(),
+        'law_profile' => \Tuzy\Domain\World\ValueObject\WorldLawProfile::default(),
         'created_at' => now(),
     ]);
 }

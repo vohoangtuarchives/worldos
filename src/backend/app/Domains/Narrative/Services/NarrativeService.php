@@ -6,7 +6,7 @@ use App\Models\World;
 use App\Models\WorldEvent;
 use App\Models\WorldMyth;
 use App\Models\WorldScar;
-use App\Domains\Narrative\ValueObjects\StorySlice;
+use Tuzy\Domain\Narrative\ValueObject\StorySlice;
 
 class NarrativeService
 {

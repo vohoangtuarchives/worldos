@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Narrative\Bridge;
 
 use App\Domains\Narrative\Bridge\Contracts\NarrativePressureBridgeInterface;
-use App\Domains\Narrative\Bridge\DTO\PressureSignal;
+use Tuzy\Domain\Narrative\ValueObject\PressureSignal;
 
 /**
  * No-op implementation. When narrative_affects_via_pressure is implemented for real,

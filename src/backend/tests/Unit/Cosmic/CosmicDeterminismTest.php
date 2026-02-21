@@ -7,7 +7,7 @@ namespace Tests\Unit\Cosmic;
 use App\Domains\Cosmic\Services\WaveInterferenceEngine;
 use App\Domains\Cosmic\Services\CosmicEvolutionService;
 use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\Attractor;
+use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use PHPUnit\Framework\TestCase;
 
 class CosmicDeterminismTest extends TestCase

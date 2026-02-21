@@ -4,7 +4,7 @@ namespace App\Domains\World\Services;
 
 use App\Domains\Cosmology\Entities\Universe as CosmologyUniverse;
 use App\Domains\Evolution\Kernel\WorldEvolutionKernel;
-use App\Domains\Saga\DTO\ShockParams;
+use Tuzy\Domain\Saga\ValueObject\ShockParams;
 use App\Domains\World\Contracts\EvolutionEngineInterface;
 use App\Models\UniverseModel;
 use App\Models\World;

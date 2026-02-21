@@ -2,7 +2,7 @@
 
 namespace App\Domains\Saga;
 
-use App\Domains\Saga\Enums\PowerScope;
+use Tuzy\Domain\Saga\Enums\PowerScope;
 
 class ContinuityPolicy
 {

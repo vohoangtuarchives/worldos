@@ -16,6 +16,7 @@ final class CreateUniverseHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements UniverseRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?Universe { return null; }
             public function save(Universe $universe): void { $this->saved[] = $universe; }
         };

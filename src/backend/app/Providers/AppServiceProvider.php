@@ -101,8 +101,8 @@ class AppServiceProvider extends ServiceProvider
 
         // Tuzy: WorldHero repository (Vietnamese)
         $this->app->bind(
-            \Tuzy\Domain\Vietnamese\Repository\WorldHeroRepositoryInterface::class,
-            \Tuzy\Infrastructure\Persistence\Vietnamese\EloquentWorldHeroRepository::class
+            \Tuzy\Domain\Heroes\Repository\WorldHeroRepositoryInterface::class,
+            \Tuzy\Infrastructure\Persistence\Heroes\EloquentWorldHeroRepository::class
         );
 
         // Shock event repository binding
@@ -222,6 +222,7 @@ class AppServiceProvider extends ServiceProvider
             \App\Domains\Cosmology\Contracts\AttractorRepositoryInterface::class,
             \App\Domains\Cosmology\Repositories\AttractorEloquentRepository::class
         );
+
     }
 
     /**

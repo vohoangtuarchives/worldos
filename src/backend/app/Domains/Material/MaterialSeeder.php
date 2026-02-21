@@ -53,7 +53,7 @@ class MaterialSeeder
     {
         // For now, seed all materials with default_lifecycle = 'active'
         // In future, check preconditions against world state
-        return $material->default_lifecycle === \App\Domains\Material\Enums\MaterialLifecycle::ACTIVE;
+        return $material->default_lifecycle === \Tuzy\Domain\Material\Enums\MaterialLifecycle::ACTIVE;
     }
 
     /**

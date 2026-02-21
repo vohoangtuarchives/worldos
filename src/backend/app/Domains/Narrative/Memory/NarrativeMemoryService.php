@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Memory;
 
-use App\Domains\Narrative\DTO\MemorySnapshot;
+use Tuzy\Domain\Narrative\ValueObject\MemorySnapshot;
 use App\Models\NarrativeSeries;
 use App\Models\SerialChapter;
 use App\Domains\Narrative\Serial\Contracts\StructuredSummaryGeneratorInterface;

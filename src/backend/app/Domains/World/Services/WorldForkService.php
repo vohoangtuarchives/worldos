@@ -16,13 +16,13 @@ class WorldForkService
      * @param World $sourceWorld
      * @param int $atTick
      * @param string $newName
-     * @param \App\Domains\World\ValueObjects\WorldLawProfile|null $newProfile (ADR-0006)
+     * @param \Tuzy\Domain\World\ValueObject\WorldLawProfile|null $newProfile (ADR-0006)
      */
     public function fork(
         World $sourceWorld,
         int $atTick,
         string $newName,
-        ?\App\Domains\World\ValueObjects\WorldLawProfile $newProfile = null
+        ?\Tuzy\Domain\World\ValueObject\WorldLawProfile $newProfile = null
     ): World {
         return DB::transaction(function () use ($sourceWorld, $atTick, $newName, $newProfile) {
             // 1. Create New World

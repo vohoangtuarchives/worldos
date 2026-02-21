@@ -16,6 +16,7 @@ final class CreateNarrativeSeriesHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements NarrativeSeriesRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?NarrativeSeries { return null; }
             public function save(NarrativeSeries $s): void { $this->saved[] = $s; }
         };

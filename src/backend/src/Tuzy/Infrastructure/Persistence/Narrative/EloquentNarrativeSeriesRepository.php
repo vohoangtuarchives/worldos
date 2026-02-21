@@ -17,6 +17,17 @@ final class EloquentNarrativeSeriesRepository implements NarrativeSeriesReposito
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = NarrativeSeriesModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = NarrativeSeries::create($model->title ?? '', $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?NarrativeSeries
     {
         $model = NarrativeSeriesModel::find($id);

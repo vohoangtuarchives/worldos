@@ -8,6 +8,9 @@ use Tuzy\Domain\Cosmology\Entity\UniverseStyle;
 
 interface UniverseStyleRepositoryInterface
 {
+    /** @return list<UniverseStyle> */
+    public function findAll(): array;
+
     public function findById(string $id): ?UniverseStyle;
 
     public function save(UniverseStyle $universeStyle): void;

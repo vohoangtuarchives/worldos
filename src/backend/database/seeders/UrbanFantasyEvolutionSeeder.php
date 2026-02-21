@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Domains\Power\Enums\PowerStage;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
 
 class UrbanFantasyEvolutionSeeder extends Seeder
 {

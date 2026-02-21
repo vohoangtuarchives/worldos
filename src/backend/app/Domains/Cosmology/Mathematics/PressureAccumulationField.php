@@ -3,7 +3,7 @@
 namespace App\Domains\Cosmology\Mathematics;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\ValueObjects\ConstraintProfile;
+use Tuzy\Domain\Cosmology\ValueObject\ConstraintProfile;
 
 /**
  * Pressure Accumulation Field (Áp suất tích lũy)

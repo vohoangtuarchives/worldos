@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Domains\World\Enums\WorldHealthStatus;
+use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
 use App\Models\UniverseModel;
 use App\Models\World;
 

@@ -4,8 +4,8 @@ namespace App\Domains\Saga\Services;
 
 use App\Models\Story;
 use App\Models\Chapter;
-use App\Domains\Saga\Dto\StoryMetadataDTO;
-use App\Domains\Genre\Signal\GenreProfile;
+use Tuzy\Domain\Saga\ValueObject\StoryMetadataDTO;
+use Tuzy\Domain\Genre\ValueObject\GenreProfile;
 use Illuminate\Support\Facades\DB;
 
 class StoryAssembler

@@ -17,6 +17,17 @@ final class EloquentWorldRepository implements WorldRepositoryInterface
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = WorldModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = World::create($model->name ?? '', $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?World
     {
         $model = WorldModel::find($id);

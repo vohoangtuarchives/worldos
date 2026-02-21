@@ -17,6 +17,17 @@ final class EloquentUniverseStyleRepository implements UniverseStyleRepositoryIn
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = UniverseStyleModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = UniverseStyle::create($model->name ?? '', (string) $model->world_id, $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?UniverseStyle
     {
         $model = UniverseStyleModel::find($id);

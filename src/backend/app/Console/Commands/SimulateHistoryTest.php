@@ -11,7 +11,7 @@ use App\Domains\History\Services\EntropyCalculator;
 use App\Domains\History\Services\ScarImpactService;
 use App\Domains\Institution\Services\HealingService;
 use App\Domains\Faction\Services\FactionAgent;
-use App\Domains\Faction\ValueObjects\IdeologyVector;
+use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
 use Illuminate\Support\Str;
 
 class SimulateHistoryTest extends Command

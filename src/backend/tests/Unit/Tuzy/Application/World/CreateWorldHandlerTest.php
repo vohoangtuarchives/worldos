@@ -16,6 +16,7 @@ final class CreateWorldHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements WorldRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?World { return null; }
             public function save(World $world): void { $this->saved[] = $world; }
         };

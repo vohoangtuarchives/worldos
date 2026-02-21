@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Intelligence\Repositories;
 
-use App\Domains\Intelligence\ValueObjects\IntelligenceReport;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
 use App\Domains\Intelligence\Collections\IntelligenceCollection;
-use App\Domains\Intelligence\ValueObjects\IntelligenceSource;
-use App\Domains\Intelligence\ValueObjects\IntelligenceType;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceSource;
+use Tuzy\Domain\Intelligence\ValueObject\IntelligenceType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
@@ -386,7 +386,7 @@ class EloquentIntelligenceRepository implements IntelligenceRepository
             'world_id' => $report->metadata['world_id'] ?? null,
             'type' => $report->type->value,
             'source_id' => $report->source->id,
-            'source_type' => $report->source->type->value,
+            'source_type' => $report->source->type,
             'source_reliability' => $report->source->reliability,
             'content' => $report->content,
             'metadata' => json_encode($report->metadata),
@@ -407,9 +407,9 @@ class EloquentIntelligenceRepository implements IntelligenceRepository
             $data->id,
             IntelligenceType::from($data->type),
             new IntelligenceSource(
-                $data->source_id,
-                IntelligenceType::from($data->source_type),
-                $data->source_reliability
+                (string) $data->source_type,
+                (string) $data->source_id,
+                (float) $data->source_reliability
             ),
             $data->content,
             $metadata,

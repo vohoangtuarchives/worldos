@@ -2,7 +2,7 @@
 
 namespace App\Domains\Narrative\LLM\Services;
 
-use App\Domains\Narrative\Dialogue\ValueObjects\Intent;
+use Tuzy\Domain\Narrative\ValueObject\Intent;
 use Illuminate\Support\Facades\Log;
 
 class IntentParser

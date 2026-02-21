@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\PhaseSignal;
+use Tuzy\Domain\Cosmology\ValueObject\PhaseSignal;
 use App\Domains\Cosmology\ValueObjects\CosmicState;
 
 /**

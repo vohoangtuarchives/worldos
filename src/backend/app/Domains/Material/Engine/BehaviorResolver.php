@@ -17,8 +17,8 @@ class BehaviorResolver
         $effects = [];
 
         // 1. Symbolic + Legitimizing -> Boost cohesion
-        if ($material->ontology === \App\Domains\Material\Enums\MaterialOntology::SYMBOLIC &&
-            $material->function === \App\Domains\Material\Enums\MaterialFunction::LEGITIMIZING) {
+        if ($material->ontology === \Tuzy\Domain\Material\Enums\MaterialOntology::SYMBOLIC &&
+            $material->function === \Tuzy\Domain\Material\Enums\MaterialFunction::LEGITIMIZING) {
             $effects['cohesion_modifier'] = 0.1 * $instance->strength_level;
         }
 
@@ -30,8 +30,8 @@ class BehaviorResolver
         }
 
         // 3. Behavioral + Destructive -> Increase fracture risk
-        if ($material->ontology === \App\Domains\Material\Enums\MaterialOntology::BEHAVIORAL &&
-            $material->function === \App\Domains\Material\Enums\MaterialFunction::DESTRUCTIVE) {
+        if ($material->ontology === \Tuzy\Domain\Material\Enums\MaterialOntology::BEHAVIORAL &&
+            $material->function === \Tuzy\Domain\Material\Enums\MaterialFunction::DESTRUCTIVE) {
             $effects['fracture_risk'] = 0.2 * $instance->strength_level;
         }
 

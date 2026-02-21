@@ -2,12 +2,12 @@
 
 namespace App\Domains\WorldManagement\Services;
 
-use App\Domains\World\Enums\WorldHealthStatus;
+use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
 use App\Models\World;
 use App\Models\WorldAlert;
 use Illuminate\Support\Facades\DB;
 
-use App\Domains\WorldManagement\ValueObjects\HealthResult;
+use Tuzy\Domain\WorldManagement\ValueObject\HealthResult;
 
 class AlertService
 {

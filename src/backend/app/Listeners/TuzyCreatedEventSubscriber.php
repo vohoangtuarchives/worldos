@@ -10,7 +10,7 @@ use Tuzy\Domain\Evolution\Event\EvolutionProfileCreated;
 use Tuzy\Domain\Narrative\Event\NarrativeSeriesCreated;
 use Tuzy\Domain\Runtime\Event\UniverseCreated;
 use Tuzy\Domain\Saga\Event\SagaCreated;
-use Tuzy\Domain\Vietnamese\Event\WorldHeroCreated;
+use Tuzy\Domain\Heroes\Event\WorldHeroCreated;
 use Tuzy\Domain\World\Event\WorldCreated;
 
 /**

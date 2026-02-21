@@ -295,7 +295,7 @@ class SagaRunner
                     $currentSnapshot->cosmic,
                     $currentSnapshot->civilization
                 ); 
-                $intents[$faction->id] = \App\Domains\Faction\Enums\FactionIntentType::from($faction->attributes['current_intent'] ?? 'survive');
+                $intents[$faction->id] = \Tuzy\Domain\Faction\Enums\FactionIntentType::from($faction->attributes['current_intent'] ?? 'survive');
             }
 
             // 2. Conflict Resolution Phase
@@ -395,16 +395,16 @@ class SagaRunner
     {
         foreach ($world->factions as $faction) {
             if (!$faction->leader_data) {
-                $faction->updateLeader(\App\Domains\Faction\ValueObjects\Leader::create());
+                $faction->updateLeader(\Tuzy\Domain\Faction\ValueObject\Leader::create());
             }
             if (!$faction->ideology_vector) {
-                $faction->updateIdeology(\App\Domains\Faction\ValueObjects\IdeologyVector::random());
+                $faction->updateIdeology(\Tuzy\Domain\Faction\ValueObject\IdeologyVector::random());
             }
             if (!$faction->personality_vector) {
-                $faction->updatePersonality(\App\Domains\Faction\ValueObjects\PersonalityVector::random());
+                $faction->updatePersonality(\Tuzy\Domain\Faction\ValueObject\PersonalityVector::random());
             }
             if (!$faction->memory_state) {
-                $faction->updateMemory(\App\Domains\Faction\ValueObjects\FactionMemory::fresh());
+                $faction->updateMemory(\Tuzy\Domain\Faction\ValueObject\FactionMemory::fresh());
             }
             $faction->save();
         }
@@ -516,7 +516,7 @@ class SagaRunner
         // 5. Social Class Dynamics
         foreach ($civ->socialClasses as $class) {
             // Merchant Uprising (High Power + Low Contentment)
-            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::MERCHANT && $class->power > 0.7 && $class->contentment < 0.3) {
+            if ($class->type === \Tuzy\Domain\Cosmology\Enums\SocialClassType::MERCHANT && $class->power > 0.7 && $class->contentment < 0.3) {
                 if (rand(1, 100) <= 25) {
                     $events[] = [
                         'type' => 'merchant_uprising',
@@ -526,7 +526,7 @@ class SagaRunner
                 }
             }
             // Nobility Collapse (Low Power in Chaos)
-            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::NOBILITY && $class->power < 0.2 && $cosmic->entropy > 0.7) {
+            if ($class->type === \Tuzy\Domain\Cosmology\Enums\SocialClassType::NOBILITY && $class->power < 0.2 && $cosmic->entropy > 0.7) {
                  $events[] = [
                     'type' => 'nobility_collapse',
                     'severity' => 2,
@@ -534,7 +534,7 @@ class SagaRunner
                 ];
             }
             // Warrior Dominance (High Power in Instability)
-            if ($class->type === \App\Domains\Cosmology\Enums\SocialClassType::WARRIOR && $class->power > 0.8 && $cosmic->stability < 0.4) {
+            if ($class->type === \Tuzy\Domain\Cosmology\Enums\SocialClassType::WARRIOR && $class->power > 0.8 && $cosmic->stability < 0.4) {
                  $events[] = [
                     'type' => 'warrior_dominance',
                     'severity' => 3,

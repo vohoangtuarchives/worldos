@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Character\Repositories;
 
 use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
-use App\Domains\Character\ValueObjects\SurvivalProbability;
-use App\Domains\Character\ValueObjects\RiskFactors;
-use App\Domains\Character\ValueObjects\NarrativeWeight;
+use Tuzy\Domain\Character\ValueObject\SurvivalProbability;
+use Tuzy\Domain\Character\ValueObject\RiskFactors;
+use Tuzy\Domain\Character\ValueObject\NarrativeWeight;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

@@ -2,9 +2,9 @@
 
 namespace App\Domains\World\ValueObjects;
 
-use App\Domains\World\Enums\MagicSystemType;
-use App\Domains\World\Enums\PowerCeiling;
-use App\Domains\World\Enums\TechLevel;
+use Tuzy\Domain\World\Enums\MagicSystemType;
+use Tuzy\Domain\World\Enums\PowerCeiling;
+use Tuzy\Domain\World\Enums\TechLevel;
 
 class WorldLawProfile
 {

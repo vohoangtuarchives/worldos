@@ -2,7 +2,7 @@
 
 namespace App\Domains\Power;
 
-use App\Domains\Power\Enums\PowerStage;
+use Tuzy\Domain\Power\ValueObject\PowerStage;
 
 class PowerStageRegistry
 {

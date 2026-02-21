@@ -11,7 +11,7 @@ class WorldPrimitive extends Model
     protected $guarded = ['*'];
 
     protected $casts = [
-        'domain' => \App\Domains\World\Enums\PrimitiveDomain::class,
+        'domain' => \Tuzy\Domain\World\Enums\PrimitiveDomain::class,
         'constraints' => 'array',
         'tags' => 'array',
     ];

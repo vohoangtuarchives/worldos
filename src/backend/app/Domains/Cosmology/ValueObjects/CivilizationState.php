@@ -34,7 +34,7 @@ final class CivilizationState
         public readonly float $resilience,             // 0.0 to 1.0
         public readonly int $year,
         public readonly int $yearsInPhase = 0,         // Track duration in current phase for entropy growth
-        /** @var \App\Domains\Cosmic\ValueObjects\SocialClass[] */
+        /** @var \Tuzy\Domain\Cosmology\ValueObject\SocialClass[] */
         public readonly array $socialClasses = [],
     ) {
         $this->validate();
@@ -56,12 +56,12 @@ final class CivilizationState
             year: $year,
             yearsInPhase: 0,
             socialClasses: [
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::NOBILITY, 0.8, 0.9, 0.05),
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::PRIESTHOOD, 0.6, 0.8, 0.05),
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::WARRIOR, 0.5, 0.7, 0.10),
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::MERCHANT, 0.2, 0.5, 0.05),
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::PEASANTRY, 0.1, 0.4, 0.75),
-                new \App\Domains\Cosmic\ValueObjects\SocialClass(\App\Domains\Cosmic\Enums\SocialClassType::INTELLECTUAL, 0.01, 0.9, 0.01),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::NOBILITY, 0.8, 0.9, 0.05),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::PRIESTHOOD, 0.6, 0.8, 0.05),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::WARRIOR, 0.5, 0.7, 0.10),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::MERCHANT, 0.2, 0.5, 0.05),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::PEASANTRY, 0.1, 0.4, 0.75),
+                new \Tuzy\Domain\Cosmology\ValueObject\SocialClass(\Tuzy\Domain\Cosmology\Enums\SocialClassType::INTELLECTUAL, 0.01, 0.9, 0.01),
             ]
         );
     }
@@ -238,7 +238,7 @@ final class CivilizationState
             year: (int) $data['year'],
             yearsInPhase: (int) ($data['years_in_phase'] ?? 0),
             socialClasses: array_map(
-                fn($c) => \App\Domains\Cosmic\ValueObjects\SocialClass::fromArray($c), 
+                fn($c) => \Tuzy\Domain\Cosmology\ValueObject\SocialClass::fromArray($c), 
                 $data['social_classes'] ?? []
             )
         );

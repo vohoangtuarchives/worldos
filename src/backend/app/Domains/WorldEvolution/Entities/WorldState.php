@@ -3,8 +3,8 @@
 namespace App\Domains\WorldEvolution\Entities;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\CoreTruth\ValueObjects\CoreTruth;
-use App\Domains\Epistemology\ValueObjects\EpistemicIndex;
+use Tuzy\Domain\CoreTruth\ValueObject\CoreTruth;
+use Tuzy\Domain\Epistemology\ValueObject\EpistemicIndex;
 
 /**
  * WorldState represents the holistic state of a single Universe at a specific point in time.

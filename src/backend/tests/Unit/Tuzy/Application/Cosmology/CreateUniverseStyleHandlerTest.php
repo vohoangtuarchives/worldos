@@ -16,6 +16,7 @@ final class CreateUniverseStyleHandlerTest extends TestCase
         $saved = [];
         $repo = new class($saved) implements UniverseStyleRepositoryInterface {
             public function __construct(private array &$saved) {}
+            public function findAll(): array { return []; }
             public function findById(string $id): ?UniverseStyle { return null; }
             public function save(UniverseStyle $s): void { $this->saved[] = $s; }
         };

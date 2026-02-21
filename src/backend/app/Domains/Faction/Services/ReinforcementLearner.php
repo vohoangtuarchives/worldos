@@ -3,9 +3,9 @@
 namespace App\Domains\Faction\Services;
 
 use App\Models\Faction;
-use App\Domains\Faction\ValueObjects\FactionMemory;
-use App\Domains\Faction\ValueObjects\PersonalityVector;
-use App\Domains\Faction\ValueObjects\IdeologyVector;
+use Tuzy\Domain\Faction\ValueObject\FactionMemory;
+use Tuzy\Domain\Faction\ValueObject\PersonalityVector;
+use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
 
 class ReinforcementLearner
 {

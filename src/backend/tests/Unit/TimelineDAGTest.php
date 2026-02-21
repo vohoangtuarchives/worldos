@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use Tests\TestCase;
 use App\Domains\Narrative\Timeline\TimelineNode;
-use App\Domains\Narrative\Timeline\ValueObjects\StateSnapshot;
+use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
 use App\Domains\Narrative\Character\Entities\Memory;
 use Illuminate\Support\Str;
 

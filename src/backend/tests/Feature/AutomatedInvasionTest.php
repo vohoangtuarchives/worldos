@@ -6,7 +6,7 @@ use App\Models\World;
 use App\Domains\Saga\Saga;
 use App\Domains\Saga\SagaWorld;
 use App\Domains\Saga\SagaRunner;
-use App\Domains\Saga\Enums\EpicEventType;
+use Tuzy\Domain\Saga\Enums\EpicEventType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Facades\DB;

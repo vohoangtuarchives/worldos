@@ -42,7 +42,7 @@ class WorldPressureService
         return $pressure;
     }
 
-    public function checkTransition(string $worldId): ?\App\Domains\Power\Enums\PowerStage
+    public function checkTransition(string $worldId): ?\Tuzy\Domain\Power\ValueObject\PowerStage
     {
         $this->syncPressure($worldId);
         

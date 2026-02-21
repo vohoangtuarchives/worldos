@@ -2,8 +2,8 @@
 
 namespace App\Domains\Saga;
 
-use App\Domains\Power\WorldEvent;
-use App\Domains\Saga\Enums\PowerScope;
+use Tuzy\Domain\Power\ValueObject\WorldEvent;
+use Tuzy\Domain\Saga\Enums\PowerScope;
 use Exception;
 
 class SharedWorldResolver

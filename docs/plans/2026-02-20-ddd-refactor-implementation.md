@@ -270,12 +270,15 @@ Break into tasks per module (e.g. Task 3.1: Migrate World API to Tuzy; Task 3.2:
 
 ## Implementation status (done)
 
-- **Phase 0–2:** Tuzy scaffold, World pilot, all contexts (Runtime, Saga, Cosmology, Evolution, Narrative, Vietnamese) with Entity, Repository, Create* use case, Controller, route, unit tests.
+- **Tuzy-only:** Công việc refactor tiếp diễn chỉ trong `src/Tuzy`; không chỉnh Presenter/HTTP (user có thể remove thêm).
+- **Phase 0–2:** Tuzy scaffold, World pilot, all contexts (Runtime, Saga, Cosmology, Evolution, Narrative, Heroes) with Entity, Repository, Create* use case, Controller, route, unit tests.
 - **Phase 3:** AdminWorldController::store uses CreateWorldHandler; WriterWorldController, WriterUniverseController, WriterCosmologyController, WriterMaterialController use domain exceptions (WorldNotFoundException, UniverseNotFoundException, SagaNotFoundException) instead of findOrFail / manual 404. Admin WMCP WorldController (show, edit, update, fork, lock, unlock, safeMode, halt, editLaws, updateLaws) and Api AdminController / AdminCosmologyController (toggleLock) use WorldNotFoundException / UniverseNotFoundException.
 - **Domain-first (all domain entities):** All entrypoints that resolve **domain** entities now use Tuzy domain exceptions. **World:** MaterialAnalyticsController, HealthController, DashboardController, ReactionController, MaterialInterventionController (World only), GodConsoleController (Admin WMCP + Writer), SeedController (World only), WorldHubController (WriterConsole), WriterWorldSnapshotController, WriterGenesisController, WriterMaterialController (World only), ReaderInteractController, WriterWorldHubController, ReaderController. **Root WorldController** (show, dashboard, tick, start, stop, status, intelligence, materials, realtime): WorldRepository::findById + WorldNotFoundException. **Universe:** MarketplaceController, WriterUniverseController (style), WriterSagaController (createFromActive by id), CosmologyController (halt, fork, updateLaws, advance, assignPlayerFaction, contributeToShield, spawnHero, buildFleet, assignPlayerFaction, generateNarrative). **Saga:** WriterCosmologyController (getSagaTree, runSaga already). **WorldHero:** VietnameseHeroController (show, events). **NarrativeSeries:** SerialController (update, destroy, generateChapters, generateOutline), StoryBibleController (show, generateFromPremise, update, indexCharacters, storeCharacter). Left for **others later:** Material, SeedTemplate, WorldSeed, StyleProposal, WorldMyth, WorldPrimitive, WorldEvent, Artifact, WorldAlert, WorldScar, StoryPremise, AIProviderRequestHistory, WorldState, StoryArc, CosmicFaction, Fleet, etc.
 - **Phase 4:** *Created events and *NotFoundException per context; Eloquent repositories dispatch events on create; `bootstrap/app.php` maps all Tuzy exceptions to 404 JSON.
 - **Bootstrap:** Added `"App\\": "app/"` to `composer.json` to fix ChapterGeneratedListener redeclare; `php artisan test` and Tuzy + CreateWorldEndpointTest run successfully.
 - **Listeners:** `App\Listeners\TuzyCreatedEventSubscriber` subscribes to all Tuzy *Created events (World, Universe, Saga, UniverseStyle, EvolutionProfile, NarrativeSeries, WorldHero) and logs at debug for audit; registered in `AppServiceProvider::boot()`.
+- **Phase 3 sâu hơn:** All contexts have Create + Get + Update + List; `tests/Unit/Tuzy/Application/` → 49 tests, 147 assertions.
+- **Phase 4 integration test:** `DomainExceptionTo404Test` verifies Tuzy domain exception → 404 JSON. GET `v4/tuzy/worlds/{id}` via `GetWorldController`; `api.php` requires `api_vietnamese.php` for v4 routes.
 
 ---
 
@@ -292,6 +295,6 @@ Break into tasks per module (e.g. Task 3.1: Migrate World API to Tuzy; Task 3.2:
 ## Next steps (khi tiếp tục)
 
 - **Others (optional):** Thay `findOrFail` bằng domain/application exception cho các entity chưa có trong Tuzy: Material, SeedTemplate, WorldSeed, StyleProposal, WorldMyth, WorldPrimitive, WorldEvent, Artifact, WorldAlert, WorldScar, StoryPremise, AIProviderRequestHistory, WorldState, StoryArc, CosmicFaction, Fleet — có thể thêm exception trong Tuzy hoặc dùng chung một `ResourceNotFoundException` ở app.
-- **Phase 3 sâu hơn:** Chuyển thêm use case sang Tuzy Application (GetWorld, UpdateWorld, ForkWorld, …), controller chỉ gọi handler.
-- **Phase 4 bổ sung:** Listener khác cho *Created (notification, metric); test integration cho exception → 404.
+- **Phase 3 sâu hơn (chỉ Tuzy):** ✅ Done. Mọi context có đủ **Create + Get + Update + List**. Unit test cho từng handler: `php vendor/bin/phpunit tests/Unit/Tuzy/Application/` → **49 tests, 147 assertions OK**.
+- **Phase 4 bổ sung:** ✅ Integration test cho exception → 404: `DomainExceptionTo404Test` (GET world by non-existent id → 404 JSON với `error: world_not_found`). GET endpoint `v4/tuzy/worlds/{id}` + `GetWorldController`; `api.php` require `api_vietnamese.php` để load v4 routes. Listener khác cho *Created (notification, metric) — optional sau.
 - **Hoàn nhánh:** Dùng skill finishing-a-development-branch để merge/PR khi sẵn sàng.

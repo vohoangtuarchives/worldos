@@ -3,7 +3,7 @@
 namespace App\Domains\Cosmology\Evolution;
 
 use App\Domains\Cosmology\Evolution\Policies\DriftPolicyInterface;
-use App\Domains\Cosmology\ValueObjects\WorldSeed;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSeed;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use Exception;
 

@@ -5,8 +5,8 @@ namespace App\Domains\Material\Services;
 
 use App\Domains\Material\Material;
 use App\Domains\Material\MaterialInstance;
-use App\Domains\Material\Enums\MaterialOntology;
-use App\Domains\Material\Enums\MaterialFunction;
+use Tuzy\Domain\Material\Enums\MaterialOntology;
+use Tuzy\Domain\Material\Enums\MaterialFunction;
 use App\Models\World;
 use App\Domains\WorldManagement\Services\AIGovernanceService;
 use Illuminate\Support\Collection;

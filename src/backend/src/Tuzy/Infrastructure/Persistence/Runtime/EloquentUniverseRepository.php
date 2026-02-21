@@ -17,6 +17,17 @@ final class EloquentUniverseRepository implements UniverseRepositoryInterface
     ) {
     }
 
+    /** @inheritDoc */
+    public function findAll(): array
+    {
+        $models = UniverseModel::orderBy('updated_at', 'desc')->get();
+        $result = [];
+        foreach ($models as $model) {
+            $result[] = Universe::create($model->name ?? '', $model->id);
+        }
+        return $result;
+    }
+
     public function findById(string $id): ?Universe
     {
         $model = UniverseModel::find($id);

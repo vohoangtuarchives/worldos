@@ -6,7 +6,7 @@ namespace App\Domains\Cosmology\Services;
 
 use App\Domains\Cosmology\Anchors\StructuralAnchorRegistry;
 use App\Domains\Cosmology\Contracts\StructuralAnchorInterface;
-use App\Domains\Cosmology\ValueObjects\ConstraintProfile;
+use Tuzy\Domain\Cosmology\ValueObject\ConstraintProfile;
 use App\Domains\Saga\Services\GenesisPresetService;
 
 /**

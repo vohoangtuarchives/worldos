@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\World\Repositories;
 
-use App\Domains\World\Events\ShockEvent;
+use Tuzy\Domain\World\Event\ShockEvent;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

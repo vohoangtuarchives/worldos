@@ -3,8 +3,8 @@
 namespace App\Narrative\Constraints;
 
 use App\Narrative\Values\NarrativeContext;
-use App\Domains\Social\Enums\AddressingScope;
-use App\Domains\Social\Enums\SocialStatus;
+use Tuzy\Domain\Social\ValueObject\AddressingScope;
+use Tuzy\Domain\Social\Enums\SocialStatus;
 
 class HonorificConstraint implements NarrativeConstraint
 {

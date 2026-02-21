@@ -1,0 +1,13 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tuzy\Domain\Material\Enums;
+
+enum MaterialLifecycle: string
+{
+    case DORMANT = 'dormant';
+    case ACTIVE = 'active';
+    case DECAYING = 'decaying';
+    case LEGACY = 'legacy';
+}

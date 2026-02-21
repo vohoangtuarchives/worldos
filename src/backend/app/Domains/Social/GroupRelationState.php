@@ -2,7 +2,7 @@
 
 namespace App\Domains\Social;
 
-use App\Domains\Social\Enums\RelationshipTone;
+use Tuzy\Domain\Social\Enums\RelationshipTone;
 
 class GroupRelationState
 {

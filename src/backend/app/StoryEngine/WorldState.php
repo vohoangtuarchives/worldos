@@ -6,11 +6,11 @@ class WorldState
 {
     public int $tierIndex = 0;
     
-    public \App\Domains\World\ValueObjects\WorldLawProfile $lawProfile;
+    public \Tuzy\Domain\World\ValueObject\WorldLawProfile $lawProfile;
 
     public function __construct()
     {
-        $this->lawProfile = \App\Domains\World\ValueObjects\WorldLawProfile::default();
+        $this->lawProfile = \Tuzy\Domain\World\ValueObject\WorldLawProfile::default();
     }
 
     public int $publicAwareness = 5;

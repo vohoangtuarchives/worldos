@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Bridge\Contracts;
 
-use App\Domains\Narrative\Bridge\DTO\StoryEvent;
+use Tuzy\Domain\Narrative\ValueObject\StoryEvent;
 
 interface StoryEventExtractorInterface
 {
