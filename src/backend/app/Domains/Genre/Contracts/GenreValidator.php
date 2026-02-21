@@ -2,8 +2,8 @@
 
 namespace App\Domains\Genre\Contracts;
 
-use App\Domains\Genre\Validation\ValidationResult;
-use App\Domains\Genre\DTO\StoryEvent;
+use Tuzy\Domain\Genre\ValueObject\ValidationResult;
+use Tuzy\Domain\Genre\ValueObject\StoryEvent;
 // Assuming WorldState exists in Material domain, purely using dynamic/array for now to avoid coupling if specific class path unknown
 // User mentioned WorldState, let's assume App\Domains\Material\State\WorldState if it exists, or just pass generic object
 // To be safe, I'll typehint as mixed or object for now, or check file system. 

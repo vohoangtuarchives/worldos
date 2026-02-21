@@ -2,11 +2,11 @@
 
 namespace Tests\Unit\Cosmology;
 
-use App\Domains\Cosmology\Agents\InfluenceField;
-use App\Domains\Cosmology\Agents\TranscendentAgent;
-use App\Domains\Cosmology\Entities\Universe;
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\Mathematics\Vector;
+use Tuzy\Application\Cosmology\Agents\InfluenceField;
+use Tuzy\Application\Cosmology\Agents\TranscendentAgent;
+use Tuzy\Application\Cosmology\Entities\Universe;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Cosmology\Mathematics\Vector;
 use PHPUnit\Framework\TestCase;
 
 class TranscendentAgencyTest extends TestCase

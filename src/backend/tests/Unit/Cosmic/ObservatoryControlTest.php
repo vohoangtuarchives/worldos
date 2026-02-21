@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmic\Entities\AttractorAggregate;
-use App\Domains\Cosmic\Services\AlertEvaluationEngine;
-use App\Domains\Cosmic\Services\EmergencyInterventionService;
-use App\Domains\Cosmic\Services\EpochControlService;
-use App\Domains\Cosmic\Services\MetricsSnapshotService;
-use App\Domains\Cosmic\ValueObjects\AlertRule;
+use Tuzy\Domain\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Application\Cosmology\Services\AlertEvaluationEngine;
+use Tuzy\Application\Cosmology\Services\EmergencyInterventionService;
+use Tuzy\Application\Cosmology\Services\EpochControlService;
+use Tuzy\Application\Cosmology\Services\MetricsSnapshotService;
+use Tuzy\Domain\Cosmology\ValueObject\AlertRule;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\MetricsSnapshot;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\MetricsSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use PHPUnit\Framework\TestCase;
 
 class ObservatoryControlTest extends TestCase

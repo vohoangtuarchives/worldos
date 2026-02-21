@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Domains\World\Processor\EntropyTickProcessor;
-use App\Domains\World\Processor\MythPropagationProcessor;
-use App\Domains\World\Services\BasicWorldMetricCalculator;
-use App\Domains\World\Services\WorldTickService;
+use Tuzy\Application\World\Processor\EntropyTickProcessor;
+use Tuzy\Application\World\Processor\MythPropagationProcessor;
+use Tuzy\Application\World\Services\BasicWorldMetricCalculator;
+use Tuzy\Application\World\Services\WorldTickService;
 use App\Models\World\WorldPreset;
 use App\Models\World\WorldState;
 use Carbon\Carbon;

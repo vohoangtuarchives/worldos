@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Saga\Saga;
+use Tuzy\Domain\Saga\Saga;
 
 class TestSagaSeeder extends Seeder
 {

@@ -1,0 +1,130 @@
+{
+    "stage_transition": {
+        "mundane_to_mortal_martial": [
+            "Bầu trời {world_name} bỗng nhiên rạn nứt, những tia sáng vô hình bắt đầu len lỏi vào từng ngõ ngách của thực tại. Người dân ở {location} bắt đầu cảm thấy huyết mạch sục sôi, một sức mạnh cổ xưa đang thức tỉnh.",
+            "Tại {location}, một bia đá cổ đại đột ngột phát sáng, đánh dấu sự kết thúc của Kỷ Nguyên Phàm Trần. Các võ giả bắt đầu cảm nhận được 'Khí' chảy trong trời đất.",
+            "Những giấc mơ kỳ lạ lan tràn khắp {world_name}, báo hiệu một thời đại mới nơi sức mạnh cá nhân có thể thay đổi vận mệnh quốc gia. Gông cùm của quy tắc vật lý cũ đang dần nới lỏng."
+        ],
+        "mortal_martial_to_enhanced_martial": [
+            "Các đại tông sư tại {location} đồng loạt cảm nhận được thiên địa linh khí biến đổi. Những giới hạn của cơ thể phàm thai đã bị phá vỡ.",
+            "Một cơn chấn động tâm linh quét qua {world_name}. Những người có ngộ tính cao bắt đầu nhìn thấy dòng chảy của năng lượng bằng mắt thường.",
+            "Tại {location}, một ngọn núi đột nhiên bay lơ lửng, thách thức mọi định luật vật lý đã biết. Kỷ Nguyên Chân Khí đã chính thức bắt đầu."
+        ],
+        "enhanced_martial_to_low_immortal": [
+            "Cổng Tiên Giới (hoặc thứ gì đó tương tự) đã mở ra tại {location}. Linh khí nồng đậm đến mức cây cỏ cũng bắt đầu hóa tinh.",
+            "Quy tắc sinh tử của {world_name} đang bị viết lại. Những kẻ tu hành giờ đây có thể di sơn đảo hải, thọ ngang trời đất.",
+            "Bầu trời đổi màu, thất sắc tường vân bao phủ {location}. Thời đại của Tiên Nhân đã giáng lâm."
+        ]
+    },
+    "world_collapse": {
+        "reason_perception": [
+            "Nạn đói và sự tuyệt vọng đã biến {world_name} thành địa ngục trần gian. Không còn ai tin vào ngày mai nữa.",
+            "Nhân tính đã bị ăn mòn bởi sự sinh tồn tàn khốc. Nền văn minh sụp đổ không phải vì ngoại xâm, mà vì lòng người đã chết."
+        ],
+        "reason_social": [
+            "Mâu thuẫn giai cấp đã đạt đến đỉnh điểm. Máu của tầng lớp thống trị nhuộm đỏ các con đường tại {location}.",
+            "Nội chiến lan rộng khắp {world_name}. Sự tin tưởng sụp đổ, nhường chỗ cho luật rừng và sự hỗn loạn vĩnh cửu."
+        ],
+        "reason_power": [
+            "Sức mạnh quân sự mất kiểm soát đã hủy diệt chính những kẻ tạo ra nó. {world_name} giờ đây chỉ là một bãi chiến trường hoang tàn.",
+            "Cuộc đua vũ trang giữa các phe phái tại {location} đã dẫn đến sự hủy diệt hoàn toàn của cấu trúc xã hội."
+        ],
+        "reason_metaphysical": [
+            "Thực tại bắt đầu tan rã khi những thế lực siêu nhiên xâm nhập. {world_name} không còn chịu đựng được sức nặng của chính nó.",
+            "Các quy luật vật lý sụp đổ tại {location}, biến thế giới thành một cơn ác mộng phi logic."
+        ]
+    },
+    "myth_birth": {
+        "artifact_discovery": {
+            "wuxia": [
+                "Tại phế tích cổ xưa gần {location}, một luồng sáng thần bí đã phóng thẳng lên trời cao. Người ta đồn rằng một Thánh Vật thất lạc đã tái xuất.",
+                "Một nông dân tình cờ đào được cổ vật tại {location}, vô tình đánh thức một truyền thuyết đã ngủ quên hàng ngàn năm.",
+                "Mặt đất rung chuyển, và từ lòng đất {location} trồi lên một thanh thần binh, chờ đợi người có duyên."
+            ],
+            "scifi": [
+                "Tại tọa độ {location}, cảm biến phát hiện tín hiệu bất thường từ một lõi năng lượng cổ đại.",
+                "Một phi thuyền vô danh rơi xuống {location}, mang theo công nghệ vượt ngoài hiểu biết của nhân loại."
+            ],
+            "modern_fantasy": [
+                "Tại một cửa tiệm nhỏ trong hẻm bí mật ở {location}, một cây đũa phép cổ xưa đã tự chọn chủ nhân.",
+                "Một cuốn sách ma thuật bị cấm đoán bất ngờ xuất hiện trong thư viện của {location}, tỏa ra ánh sáng xanh ma quái.",
+                "Tin đồn về Viên Đá Phù Thủy tái xuất hiện đã khiến giới pháp thuật tại {world_name} xôn xao."
+            ]
+        },
+        "hero_awakening": [
+            "Một đứa trẻ sinh ra tại {location} với dấu ấn kỳ lạ trên trán, điềm báo về sự ra đời của một vĩ nhân.",
+            "Tin đồn về một người lạ mặt tại {location} với khả năng hô mưa gọi gió đã bắt đầu lan truyền khắp {world_name}.",
+            "Tại {location}, một tu sĩ vô danh đã ngộ ra chân lý, bước chân vào còn đường trở thành huyền thoại."
+        ]
+    },
+    "cataclysm": {
+        "natural_disaster": [
+            "Mặt đất tại {location} nứt toác như một vết thương hở miệng, nuốt chửng hàng vạn sinh linh trong chớp mắt.",
+            "Một cơn đại hồng thủy quét qua {world_name}, biến những đồng bằng màu mỡ thành biển nước mênh mông.",
+            "Núi lửa tại {location} thức giấc sau ngàn năm ngủ yên, phun trào tro bụi che lấp cả mặt trời."
+        ],
+        "magical_backlash": {
+            "wuxia": [
+                "Dòng chảy năng lượng tại {location} đột ngột đảo chiều, tạo ra những cơn bão linh lực xé nát không gian.",
+                "Bầu trời {world_name} chuyển sang màu máu. Những sinh vật biến dị bắt đầu xuất hiện từ các kẽ hở không gian.",
+                "Một nghi lễ cấm kỵ thất bại tại {location} đã giải phóng một lời nguyền cổ xưa, héo rũ mọi sự sống xung quanh."
+            ],
+            "modern_fantasy": [
+                "Một lời nguyền Thất Truyền bị kích hoạt, khiến toàn bộ cư dân phi pháp thuật tại {location} rơi vào giấc ngủ vĩnh hằng.",
+                "Dấu hiệu Hắc Ám khổng lồ xuất hiện trên bầu trời {location}, báo hiệu sự trở lại của kẻ mà ai cũng biết là ai đó.",
+                "Bộ Pháp Thuật hoàn toàn mất kiểm soát khi các sinh vật huyền bí tràn ngập đường phố {location}."
+            ]
+        }
+    },
+    "great_war": {
+        "clash_of_empires": {
+            "wuxia": [
+                "Tiếng trống trận vang rền khắp {location}. Hai đại thế lực đã chính thức tuyên chiến, mở màn cho một cuộc tắm máu.",
+                "Bầu trời {location} bị che khuất bởi hàng vạn mũi tên. Cuộc chiến này sẽ định đoạt vận mệnh của cả {world_name}.",
+                "Khói lửa chiến tranh bốc cao từ {location}, nhuộm đỏ cả chân trời. Không một ai có thể đứng ngoài vòng xoáy này."
+            ],
+            "modern_fantasy": [
+                "Các Thần Sáng và Tử Thần Thực Tử đã có cuộc đụng độ nảy lửa tại {location}, phá hủy hoàn toàn khu vực này.",
+                "Bộ Pháp Thuật tuyên bố tình trạng khẩn cấp. Chiến tranh thế giới phù thủy lần thứ hai đã chính thức bắt đầu tại {world_name}.",
+                "Những người khổng lồ và người sói đã gia nhập cuộc chiến tại {location}, gieo rắc nỗi kinh hoàng cho phe ánh sáng."
+            ]
+        },
+        "last_stand": [
+            "Tại {location}, những chiến binh cuối cùng của triều đại cũ đang chuẩn bị cho trận tử chiến.",
+            "Dòng sông tại {location} đã ngừng chảy vì xác người. Một sự hy sinh bi tráng để bảo vệ những gì còn lại.",
+            "Tiếng kèn xung trận vang lên lần cuối cùng tại {location}, báo hiệu sự kết thúc của một kỷ nguyên."
+        ]
+    },
+    "divine_intervention": {
+        "miracle": {
+            "wuxia": [
+                "Một luồng ánh sáng vàng kim chiếu xuống {location}, chữa lành mọi bệnh tật cho những kẻ thành tâm.",
+                "Bầu trời rẽ mây, và một giọng nói uy nghiêm vang vọng khắp {world_name}. Thần linh đã lên tiếng.",
+                "Tại {location}, tượng thần bỗng nhiên rơi lệ, một điềm báo vừa là phước lành vừa là tai ương."
+            ],
+            "modern_fantasy": [
+                "Một con Phượng Hoàng lửa xuất hiện giữa chiến trường {location}, tiếng hót của nó xua tan mọi nỗi sợ hãi.",
+                "Linh hồn của các vị hiệu trưởng đời trước đã hiện về tại {location} để bảo vệ ngôi trường khỏi sự sụp đổ.",
+                "Một phép màu cổ xưa đã được kích hoạt, tạo ra lớp màng bảo vệ không thể xuyên thủng bao quanh {world_name}."
+            ]
+        },
+        "wrath": [
+            "Một tia sấm sét đen hủy diệt đánh xuống {location}, như sự trừng phạt của trời cao cho tội lỗi của nhân gian.",
+            "Mùa màng tại {location} bỗng nhiên thối rữa trong một đêm. Thần linh đã ngoảnh mặt làm ngơ.",
+            "Một cơn bệnh dịch kỳ lạ bắt đầu lây lan từ {location}, không thuốc nào chữa nổi."
+        ]
+    },
+    "entropy_spike": {
+        "standard": [
+            "Một gợn sóng entropy cực lớn quét qua {world_name}. Tại {location}, các hằng số vật lý bắt đầu dao động không ổn định, khiến thực tại trở nên mỏng manh.",
+            "Nhiệt lượng vô hình bùng phát tại {location}. Những hằng số mà chúng ta từng tin là bất biến giờ đây đang bị bẻ cong bởi áp lực của sự hỗn loạn."
+        ]
+    },
+    "terraform_event": {
+        "reality_drift": [
+            "Bầu trời tại {location} bỗng nhiên bị xé rách bởi một vết nứt màu tím. Một thực tại ngoại lai đang tràn vào, ép buộc các quy tắc của {world_name} phải thay đổi.",
+            "Không gian tại {location} bắt đầu biến dạng. Những ngọn núi tan chảy thành sương mù, và sương mù đông cứng thành pha lê. Một lực lượng từ bên ngoài đang viết lại mã nguồn của thế giới.",
+            "Tại {location}, người ta nghe thấy tiếng 'vỡ vụn' của không gian. Các luật lệ cũ đang sụp đổ để nhường chỗ cho một trật tự (hoặc sự hỗn loạn) hoàn toàn mới."
+        ]
+    }
+}

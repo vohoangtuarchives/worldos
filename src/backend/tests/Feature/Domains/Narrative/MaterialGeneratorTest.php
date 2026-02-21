@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Domains\Narrative;
 
-use App\Domains\Narrative\Models\MaterialSeed;
-use App\Domains\Narrative\Models\StoryPremise;
-use App\Domains\Narrative\Services\MaterialGenerator;
+use Tuzy\Domain\Narrative\Models\MaterialSeed;
+use Tuzy\Domain\Narrative\Models\StoryPremise;
+use Tuzy\Application\Narrative\Services\MaterialGenerator;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Support\Str;

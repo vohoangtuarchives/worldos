@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use App\Domains\Cosmology\Events\UniverseMutationCommitted;
+use Tuzy\Domain\Cosmology\Events\UniverseMutationCommitted;
 
 /**
  * Listens to UniverseMutationCommitted. Phase 2: apply World material updates

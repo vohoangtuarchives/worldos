@@ -1,9 +1,9 @@
 <?php
 
-use App\Domains\Cosmic\Aggregates\AttractorAggregate;
-use App\Domains\Cosmic\Repositories\AttractorEloquentRepository;
-use App\Domains\Cosmic\Services\MorphingEngine;
-use App\Domains\Cosmic\ValueObjects\AttractorIncarnation;
+use App\Domains\Cosmology\Aggregates\AttractorAggregate;
+use App\Domains\Cosmology\Repositories\AttractorEloquentRepository;
+use App\Domains\Cosmology\Services\MorphingEngine;
+use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
 use Illuminate\Support\Str;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -63,12 +63,12 @@ try {
 
 // 3. Test SemanticProjector
 echo "\n3. Testing SemanticProjector...\n";
-$projector = new \App\Domains\Cosmic\Services\SemanticProjector();
+$projector = new \App\Domains\Cosmology\Services\SemanticProjector();
 
-$snapshot = new \App\Domains\Cosmic\ValueObjects\WorldSnapshot(
-    cosmic: new \App\Domains\Cosmic\ValueObjects\CosmicState(0.6, 0.7, 0.5, 0.8, 0.4, 'CHAOS', 1000),
-    environment: \App\Domains\Cosmic\ValueObjects\EnvironmentState::defaultObservation(1000),
-    civilization: \App\Domains\Cosmic\ValueObjects\CivilizationState::defaultObservation(1000),
+$snapshot = new \Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot(
+    cosmic: new \Tuzy\Domain\Cosmology\ValueObject\CosmicState(0.6, 0.7, 0.5, 0.8, 0.4, 'CHAOS', 1000),
+    environment: \Tuzy\Domain\Cosmology\ValueObject\EnvironmentState::defaultObservation(1000),
+    civilization: \Tuzy\Domain\Cosmology\ValueObject\CivilizationState::defaultObservation(1000),
     year: 1000
 );
 

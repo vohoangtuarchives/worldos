@@ -3,9 +3,9 @@
 namespace Tests\Unit\Domains\Historian;
 
 use Tests\TestCase;
-use App\Domains\Historian\PatternDetector;
-use App\Domains\Saga\Saga;
-use App\Domains\Saga\SagaWorld;
+use Tuzy\Domain\Historian\PatternDetector;
+use Tuzy\Domain\Saga\Saga;
+use Tuzy\Domain\Saga\SagaWorld;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 
@@ -46,7 +46,7 @@ class PatternDetectorTest extends TestCase
                     'hero' => ['type' => 'dominance', 'intensity' => 0.9]
                 ]
             ]);
-            \App\Domains\Saga\SagaObservation::create([
+            \Tuzy\Domain\Saga\SagaObservation::create([
                 'saga_id' => $saga->id,
                 'world_id' => $world->id,
                 'tick' => 100,
@@ -90,11 +90,11 @@ class PatternDetectorTest extends TestCase
             ]
         ]);
 
-        \App\Domains\Saga\SagaObservation::create([
+        \Tuzy\Domain\Saga\SagaObservation::create([
             'saga_id' => $saga->id,
             'world_id' => $world->id,
             'tick' => 50,
-            'observation_type' => \App\Domains\Saga\SagaObservation::TYPE_PATTERN,
+            'observation_type' => \Tuzy\Domain\Saga\SagaObservation::TYPE_PATTERN,
             'observation' => 'Collapse triggered by shadow',
             'context' => ['archetype' => 'shadow']
         ]);

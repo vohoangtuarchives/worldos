@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Vietnamese\Models\ScoringVersion;
-use App\Domains\Vietnamese\Config\EventDimensionMapping;
+use Tuzy\Domain\Vietnamese\Models\ScoringVersion;
+use Tuzy\Application\Vietnamese\Config\EventDimensionMapping;
 
 class ScoringVersionSeeder extends Seeder
 {

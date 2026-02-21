@@ -2,8 +2,8 @@
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\CivilizationState;
-use App\Domains\Cosmology\ValueObjects\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use Tuzy\Domain\Cosmology\ValueObject\SocialClass;
 use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 

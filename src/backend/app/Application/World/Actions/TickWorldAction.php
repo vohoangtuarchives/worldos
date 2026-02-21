@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Application\World\Actions;
 
-use App\Domains\World\Aggregates\WorldAggregate;
-use App\Domains\History\Services\EntropyCalculator;
-use App\Domains\World\Services\ShockEventGenerator;
+use Tuzy\Domain\World\Aggregates\WorldAggregate;
+use Tuzy\Application\History\Services\EntropyCalculator;
+use Tuzy\Application\World\Services\ShockEventGenerator;
 use Tuzy\Domain\World\Event\ShockEvent;
-use App\Domains\Character\Services\SurvivalCheckEngine;
-use App\Domains\Character\Aggregates\CharacterSurvivalAggregate;
+use Tuzy\Application\Character\Services\SurvivalCheckEngine;
+use Tuzy\Domain\Character\Aggregates\CharacterSurvivalAggregate;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;

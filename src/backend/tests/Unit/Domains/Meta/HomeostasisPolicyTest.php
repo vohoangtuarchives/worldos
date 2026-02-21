@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Meta;
 
-use App\Domains\Meta\Policies\HomeostasisPolicy;
+use Tuzy\Domain\Meta\Policies\HomeostasisPolicy;
 use Tests\TestCase;
 
 class HomeostasisPolicyTest extends TestCase

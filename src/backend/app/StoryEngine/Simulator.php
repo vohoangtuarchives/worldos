@@ -58,7 +58,7 @@ class Simulator
     public function run(int $chapters): array
     {
         $metrics = [];
-        $validator = new \App\Domains\World\Services\WorldLawValidator();
+        $validator = new \Tuzy\Application\World\Services\WorldLawValidator();
 
         // Build Pipeline
         $pipeline = new \App\StoryEngine\Simulation\SimulationPipeline();

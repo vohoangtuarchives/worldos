@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\EnvironmentState;
-use App\Domains\Cosmology\ValueObjects\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use App\Domains\Cosmology\Services\CosmicEvolutionService; // Added this use statement as per instruction
 use Illuminate\Support\Facades\Log; // Added this use statement as per instruction
 

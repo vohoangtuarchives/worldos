@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Material\Material;
+use Tuzy\Domain\Material\Material;
 
 class TechnologyInteractionMaterialsSeeder extends Seeder
 {

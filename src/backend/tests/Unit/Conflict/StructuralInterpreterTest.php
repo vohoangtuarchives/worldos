@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Conflict;
 
-use App\Domains\Conflict\StructuralInterpreter;
+use Tuzy\Domain\Conflict\StructuralInterpreter;
 use Tuzy\Domain\Conflict\ValueObject\ConflictSeed;
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\Mathematics\PressureAccumulationField;
-use App\Domains\Cosmology\Mathematics\StressModel;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Cosmology\Mathematics\PressureAccumulationField;
+use Tuzy\Application\Cosmology\Mathematics\StressModel;
 use PHPUnit\Framework\TestCase;
 
 class StructuralInterpreterTest extends TestCase

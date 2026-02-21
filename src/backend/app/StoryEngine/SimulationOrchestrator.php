@@ -6,7 +6,7 @@ use App\StoryEngine\Simulation\SimulationPipeline;
 use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\Persistence\OptimizedEventStore;
 use App\Services\WorldLawProfileCache;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldLawValidator;
 use App\Exceptions\Simulation\SimulationException;
 
 class SimulationOrchestrator

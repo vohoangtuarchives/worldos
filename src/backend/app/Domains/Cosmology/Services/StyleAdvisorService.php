@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\CosmicState;
-use App\Domains\Cosmology\ValueObjects\UniverseStyleVersion;
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 
 /**
  * StyleAdvisorService — the Meta-AI advisor that proposes style changes.

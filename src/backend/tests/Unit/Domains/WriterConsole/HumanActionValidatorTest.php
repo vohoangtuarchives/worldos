@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domains\WriterConsole;
 
 use Tests\TestCase;
-use App\Domains\WriterConsole\HumanActionValidator;
+use Tuzy\Domain\WriterConsole\HumanActionValidator;
 
 class HumanActionValidatorTest extends TestCase
 {

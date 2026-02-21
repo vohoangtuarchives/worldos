@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\Models\World;
-use App\Domains\Saga\Saga;
-use App\Domains\Saga\SagaWorld;
-use App\Domains\Saga\SagaRunner;
+use Tuzy\Domain\Saga\Saga;
+use Tuzy\Domain\Saga\SagaWorld;
+use Tuzy\Domain\Saga\SagaRunner;
 use Tuzy\Domain\Saga\Enums\EpicEventType;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -72,7 +72,7 @@ class AutomatedInvasionTest extends TestCase
         ]);
 
         // 4. Manually trigger evaluation via Director
-        $director = app(\App\Domains\Saga\Services\SagaDirector::class);
+        $director = app(\Tuzy\Application\Saga\Services\SagaDirector::class);
         $director->evaluateSaga($saga);
 
         // 5. Assertions

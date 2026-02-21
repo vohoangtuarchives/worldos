@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Meta;
 
-use App\Domains\Meta\Policies\ExtinctionPolicy;
-use App\Domains\Meta\Aggregates\MetaLayer;
+use Tuzy\Domain\Meta\Policies\ExtinctionPolicy;
+use Tuzy\Domain\Meta\Aggregates\MetaLayer;
 use Tests\TestCase;
 
 class ExtinctionPolicyTest extends TestCase

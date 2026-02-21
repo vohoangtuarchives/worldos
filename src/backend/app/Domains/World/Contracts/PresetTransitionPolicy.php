@@ -3,6 +3,7 @@
 namespace App\Domains\World\Contracts;
 
 use App\Models\World\WorldState;
+use Tuzy\Domain\World\ValueObject\TransitionResult;
 
 interface PresetTransitionPolicy
 {

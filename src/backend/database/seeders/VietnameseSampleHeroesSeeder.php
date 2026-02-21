@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Vietnamese\Models\VietnameseHero;
-use App\Domains\Vietnamese\Models\HeroEvent;
+use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
+use Tuzy\Domain\Vietnamese\Models\HeroEvent;
 
 class VietnameseSampleHeroesSeeder extends Seeder
 {

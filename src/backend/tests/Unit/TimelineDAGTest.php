@@ -3,9 +3,9 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Domains\Narrative\Timeline\TimelineNode;
+use Tuzy\Application\Narrative\Timeline\TimelineNode;
 use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
-use App\Domains\Narrative\Character\Entities\Memory;
+use Tuzy\Application\Narrative\Character\Entities\Memory;
 use Illuminate\Support\Str;
 
 class TimelineDAGTest extends TestCase

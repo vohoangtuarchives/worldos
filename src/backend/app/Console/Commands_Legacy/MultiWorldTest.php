@@ -2,11 +2,11 @@
 
 namespace App\Console\Commands;
 
-use App\Domains\World\Interaction\WorldGraphManager;
-use App\Domains\World\Interaction\InteractionZone;
-use App\Domains\World\Interaction\MultiWorldCoordinator;
-use App\Domains\World\Interaction\HybridPresetGenerator;
-use App\Domains\World\WorldState;
+use Tuzy\Application\World\Interaction\WorldGraphManager;
+use Tuzy\Application\World\Interaction\InteractionZone;
+use Tuzy\Application\World\Interaction\MultiWorldCoordinator;
+use Tuzy\Application\World\Interaction\HybridPresetGenerator;
+use Tuzy\Domain\World\WorldState;
 use Illuminate\Console\Command;
 
 class MultiWorldTest extends Command

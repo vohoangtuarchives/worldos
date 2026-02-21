@@ -50,7 +50,7 @@ class EvolveWorldJobTest extends TestCase
         // Let's check logic: if (!$state || !$state->evolutionProfile) Log::warning
         // So we MUST attach a profile.
         
-        $profile = \App\Domains\Evolution\Models\EvolutionProfile::create([
+        $profile = \Tuzy\Domain\Evolution\Models\EvolutionProfile::create([
              'id' => Str::uuid(),
              'name' => 'Test Profile',
              'coefficients' => ['entropy_decay' => 0.05],
@@ -64,7 +64,7 @@ class EvolveWorldJobTest extends TestCase
 
         // 2. Run Job Synchronously
         $job = new EvolveWorldJob($world);
-        $kernel = app(\App\Domains\Evolution\Services\EvolutionKernel::class);
+        $kernel = app(\Tuzy\Application\Evolution\Services\EvolutionKernel::class);
         $job->handle($kernel);
 
         // 3. Assertions

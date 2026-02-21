@@ -11,7 +11,7 @@ use App\Domains\Cosmic\Services\CosmicEvolutionService;
 use App\Domains\Cosmic\Services\BifurcationManager;
 use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
 use App\Domains\Cosmic\Services\CosmicNarrativeRenderer;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Cosmic\Repositories\CosmicSnapshotEloquentRepository;
 
 class CosmosSimulateCommand extends Command

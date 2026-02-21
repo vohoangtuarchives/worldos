@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use App\Domains\Cosmology\Contracts\CivilizationSnapshotRepositoryInterface;
-use App\Domains\Cosmology\Cosmology;
-use App\Domains\Cosmology\Services\AttractorInfluenceRecorder;
-use App\Domains\Cosmology\Services\LifecycleService;
+use Tuzy\Domain\Cosmology\Contracts\CivilizationSnapshotRepositoryInterface;
+use Tuzy\Domain\Cosmology\Cosmology;
+use Tuzy\Application\Cosmology\Services\AttractorInfluenceRecorder;
+use Tuzy\Application\Cosmology\Services\LifecycleService;
 use App\Models\UniverseModel;
 use Illuminate\Console\Command;
 
@@ -32,13 +32,13 @@ class CosmologyCycleCommand extends Command
      */
     public function handle(
         LifecycleService $lifecycleService,
-        \App\Domains\Cosmology\Services\CrisisService $crisisService,
-        \App\Domains\Cosmology\Services\ConvergenceService $convergenceService,
-        \App\Domains\Cosmology\Services\BifurcationService $bifurcationService,
-        \App\Domains\Cosmology\Services\AnomalyService $anomalyService,
-        \App\Domains\Cosmology\Services\FactionService $factionService,
-        \App\Domains\Cosmology\Services\ConflictService $conflictService,
-        \App\Domains\Cosmology\Services\HarbingerService $harbingerService,
+        \Tuzy\Application\Cosmology\Services\CrisisService $crisisService,
+        \Tuzy\Application\Cosmology\Services\ConvergenceService $convergenceService,
+        \Tuzy\Application\Cosmology\Services\BifurcationService $bifurcationService,
+        \Tuzy\Application\Cosmology\Services\AnomalyService $anomalyService,
+        \Tuzy\Application\Cosmology\Services\FactionService $factionService,
+        \Tuzy\Application\Cosmology\Services\ConflictService $conflictService,
+        \Tuzy\Application\Cosmology\Services\HarbingerService $harbingerService,
         ?CivilizationSnapshotRepositoryInterface $snapshotRepo = null,
         ?AttractorInfluenceRecorder $influenceRecorder = null
     ) {
@@ -71,8 +71,8 @@ class CosmologyCycleCommand extends Command
             // Spawn new and global threat below
         } else {
             $cosmology = Cosmology::boot();
-            $repo = app(\App\Domains\Cosmology\Repositories\CosmologyRepository::class);
-            $coupling = app(\App\Domains\Cosmology\Services\CouplingService::class);
+            $repo = app(\Tuzy\Infrastructure\Cosmology\Repositories\CosmologyRepository::class);
+            $coupling = app(\Tuzy\Application\Cosmology\Services\CouplingService::class);
 
         foreach ($activeUniverses as $model) {
             $universe = $repo->find($model->id);
@@ -138,7 +138,7 @@ class CosmologyCycleCommand extends Command
             // Convert collection to array for service
             $couplingResult = $coupling->interact($universe, $neighbors->all(), 0.05);
             if ($couplingResult) {
-                 $universe = new \App\Domains\Cosmology\Entities\Universe(
+                 $universe = new \Tuzy\Application\Cosmology\Entities\Universe(
                      $couplingResult, 
                      $universe->getParameters(), // Use parameters
                      $universe->getId(), 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\AlertRule;
-use App\Domains\Cosmology\ValueObjects\MetricsSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\AlertRule;
+use Tuzy\Domain\Cosmology\ValueObject\MetricsSnapshot;
 
 /**
  * AlertEvaluationEngine — evaluates rules, manages cooldown, escalation, composites.

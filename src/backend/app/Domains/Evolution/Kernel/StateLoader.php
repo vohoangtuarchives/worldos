@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Evolution\Kernel;
 
 use App\Domains\Cosmic\Contracts\CosmicSnapshotRepositoryInterface;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Evolution\Adapter\SnapshotToVectorAdapter;

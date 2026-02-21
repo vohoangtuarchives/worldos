@@ -2,7 +2,7 @@
 
 namespace App\Domains\World\Services;
 
-use App\Domains\World\Exceptions\OntologyViolation;
+use Tuzy\Domain\World\Exception\OntologyViolation;
 
 class AIResponseValidator
 {

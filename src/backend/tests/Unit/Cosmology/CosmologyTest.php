@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Cosmology;
 
-use App\Domains\Cosmology\Cosmology;
-use App\Domains\Cosmology\Entities\Universe;
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\Services\BasePhysicsEngine;
+use Tuzy\Domain\Cosmology\Cosmology;
+use Tuzy\Application\Cosmology\Entities\Universe;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Cosmology\Services\BasePhysicsEngine;
 use PHPUnit\Framework\TestCase;
 
 class CosmologyTest extends TestCase

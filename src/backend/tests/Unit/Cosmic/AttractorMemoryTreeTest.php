@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmic\Entities\AttractorAggregate;
-use App\Domains\Cosmic\Services\MorphingEngine;
-use App\Domains\Cosmic\Services\SemanticProjector;
+use Tuzy\Domain\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Application\Cosmology\Services\MorphingEngine;
+use Tuzy\Application\Cosmology\Services\SemanticProjector;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
-use App\Domains\Cosmic\ValueObjects\AttractorIncarnation;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use PHPUnit\Framework\TestCase;
 
 class AttractorMemoryTreeTest extends TestCase

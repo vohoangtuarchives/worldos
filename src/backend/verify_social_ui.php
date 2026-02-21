@@ -1,10 +1,10 @@
 <?php
 
 use App\Models\World;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
-use App\Domains\Cosmic\Repositories\CosmicSnapshotEloquentRepository;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
+use App\Domains\Cosmology\Repositories\CosmicSnapshotEloquentRepository;
 use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 use Tuzy\Domain\Cosmology\ValueObject\SocialClass;
 
@@ -38,19 +38,24 @@ $classes = array_map(function($c) {
 }, $civ->socialClasses);
 
 $initialCiv = new CivilizationState(
-    collectiveKnowledge: 0.1,
-    ritualCoherence: 0.5,
+    culturalEnergy: 0.1,
+    spiritualCohesion: 0.5,
     technologicalLevel: 0.1,
-    factionStability: 0.8,
+    stability: 0.8,
+    prosperity: 0.3,
+    militaryPressure: 0.1,
+    externalThreat: 0.05,
+    internalEntropy: 0.1,
     resonanceAccumulator: 0.0,
     resilience: 1.0,
     year: 0,
+    yearsInPhase: 0,
     socialClasses: $classes
 );
 
 $snapshot = new WorldSnapshot(
-    cosmic: \App\Domains\Cosmic\ValueObjects\CosmicState::defaultObservation(0),
-    environment: \App\Domains\Cosmic\ValueObjects\EnvironmentState::defaultObservation(0),
+    cosmic: \Tuzy\Domain\Cosmology\ValueObject\CosmicState::defaultObservation(0),
+    environment: \Tuzy\Domain\Cosmology\ValueObject\EnvironmentState::defaultObservation(0),
     civilization: $initialCiv,
     year: 0
 );

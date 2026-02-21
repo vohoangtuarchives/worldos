@@ -7,8 +7,8 @@ use App\Models\World;
 use App\Models\WorldClock;
 use App\Models\Observer;
 use App\Models\ObserverVersion;
-use App\Domains\World\Services\EventRecorder;
-use App\Domains\World\Services\ScarFactory;
+use Tuzy\Application\World\Services\EventRecorder;
+use Tuzy\Application\World\Services\ScarFactory;
 
 class WorldSeeder extends Seeder
 {
@@ -28,9 +28,9 @@ class WorldSeeder extends Seeder
         $this->command->info("World created: {$world->name}");
 
         // 1. Initialize WorldState (Phase 13) — only if no snapshot exists yet
-        $repository = app(\App\Domains\Material\State\WorldStateRepository::class);
+        $repository = app(\Tuzy\Application\Material\State\WorldStateRepository::class);
         if ($repository->getLatestSnapshot((string) $world->id) === null) {
-            $initialState = \App\Domains\Material\State\WorldState::createInitial((string) $world->id);
+            $initialState = \Tuzy\Application\Material\State\WorldState::createInitial((string) $world->id);
             $repository->saveSnapshot($initialState);
             $this->command->info("WorldState initialized for World {$world->id}");
         } else {
@@ -38,19 +38,19 @@ class WorldSeeder extends Seeder
         }
 
         // 2. Activate Materials (Phase 14)
-        $materials = \App\Domains\Material\Material::all();
+        $materials = \Tuzy\Domain\Material\Material::all();
         
         if ($materials->isEmpty()) {
             $this->command->warn('No materials found. Running MaterialSeeder...');
             $this->call(MaterialSeeder::class);
-            $materials = \App\Domains\Material\Material::all();
+            $materials = \Tuzy\Domain\Material\Material::all();
         }
 
         $activatedCount = 0;
         foreach ($materials as $material) {
             // Activate ~50% of materials with random strength
             if (rand(0, 100) > 50) {
-                \App\Domains\Material\MaterialInstance::firstOrCreate(
+                \Tuzy\Domain\Material\MaterialInstance::firstOrCreate(
                     [
                         'world_id' => $world->id,
                         'material_id' => $material->id,

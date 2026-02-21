@@ -4,17 +4,17 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use App\Domains\Narrative\Character\Character;
-use App\Domains\Narrative\Character\MemoryCollection;
-use App\Domains\Narrative\Character\GoalStack;
-use App\Domains\Narrative\Scene\Scene;
-use App\Domains\Narrative\Dialogue\Services\DialogueEngine;
-use App\Domains\Narrative\Dialogue\Services\TurnScheduler;
-use App\Domains\Narrative\Dialogue\Services\ConsistencyGuard;
-use App\Domains\Narrative\Dialogue\Services\SceneUpdater;
-use App\Domains\Narrative\LLM\Services\FakeLLMService;
-use App\Domains\Narrative\LLM\Services\ContextBuilder;
-use App\Domains\Narrative\LLM\Services\IntentParser;
+use Tuzy\Application\Narrative\Character\Character;
+use Tuzy\Application\Narrative\Character\MemoryCollection;
+use Tuzy\Application\Narrative\Character\GoalStack;
+use Tuzy\Application\Narrative\Scene\Scene;
+use Tuzy\Application\Narrative\Dialogue\Services\DialogueEngine;
+use Tuzy\Application\Narrative\Dialogue\Services\TurnScheduler;
+use Tuzy\Application\Narrative\Dialogue\Services\ConsistencyGuard;
+use Tuzy\Application\Narrative\Dialogue\Services\SceneUpdater;
+use Tuzy\Application\Narrative\LLM\Services\FakeLLMService;
+use Tuzy\Application\Narrative\LLM\Services\ContextBuilder;
+use Tuzy\Application\Narrative\LLM\Services\IntentParser;
 use Illuminate\Support\Collection;
 
 class LLMIntegrationTest extends TestCase
@@ -32,7 +32,7 @@ class LLMIntegrationTest extends TestCase
         $scheduler = new TurnScheduler();
         $guard = new ConsistencyGuard();
 
-        $updater = new SceneUpdater(new \App\Domains\Narrative\Character\Repositories\CharacterEloquentRepository());
+        $updater = new SceneUpdater(new \Tuzy\Application\Narrative\Character\Repositories\CharacterEloquentRepository());
 
         $llm = new FakeLLMService();
         $contextBuilder = new ContextBuilder();

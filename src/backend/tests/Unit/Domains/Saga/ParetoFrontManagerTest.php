@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Domains\Saga;
 
-use App\Domains\Saga\Services\ParetoFrontManager;
-use App\Domains\Saga\Services\StabilityConstraint;
+use Tuzy\Application\Saga\Services\ParetoFrontManager;
+use Tuzy\Application\Saga\Services\StabilityConstraint;
 use PHPUnit\Framework\TestCase;
 
 class ParetoFrontManagerTest extends TestCase

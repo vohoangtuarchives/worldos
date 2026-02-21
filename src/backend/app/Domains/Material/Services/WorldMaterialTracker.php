@@ -11,6 +11,7 @@ use App\Domains\Material\Collections\WorldMaterialCollection;
 use Tuzy\Domain\Material\ValueObject\MaterialState;
 use App\Domains\Material\Contracts\MaterialRepositoryInterface;
 use App\Domains\Material\Repositories\WorldMaterialRepository;
+use Tuzy\Domain\Material\ValueObject\MaterialChange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
@@ -277,9 +278,17 @@ final class WorldMaterialTracker
 
     private function recordMaterialChanges(WorldMaterialCollection $collection, WorldAggregate $world): void
     {
-        $changes = $collection->getChanges();
-        
-        foreach ($changes as $change) {
+        $rawChanges = $collection->getChanges();
+        foreach ($rawChanges as $raw) {
+            $change = new MaterialChange(
+                materialInstanceId: (string) $raw['instance_id'],
+                changeType: (string) $raw['type'],
+                oldValue: $raw['old_state'] ?? [],
+                newValue: $raw['new_state'] ?? [],
+                reason: null,
+                epoch: null,
+                createdAt: $raw['timestamp'] ?? new \DateTimeImmutable()
+            );
             $this->worldMaterialRepository->recordChange($world->id(), $change);
         }
     }

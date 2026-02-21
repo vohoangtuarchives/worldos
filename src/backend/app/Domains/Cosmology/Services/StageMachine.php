@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\CivilizationStage;
+use Tuzy\Domain\Cosmology\Enum\CivilizationStage;
 
 /**
  * Stage Machine — 7-phase evolution loop.

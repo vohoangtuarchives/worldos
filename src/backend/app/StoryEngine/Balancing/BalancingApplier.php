@@ -11,9 +11,9 @@ class BalancingApplier
     /**
      * @param WorldState $world
      * @param array $activeSeeds Reference to Simulator seeds array
-     * @param \App\Domains\World\Services\WorldLawValidator $validator
+     * @param \Tuzy\Application\World\Services\WorldLawValidator $validator
      */
-    public static function apply(WorldState $world, array &$activeSeeds, \App\Domains\World\Services\WorldLawValidator $validator): void
+    public static function apply(WorldState $world, array &$activeSeeds, \Tuzy\Application\World\Services\WorldLawValidator $validator): void
     {
         $health = WorldHealthCalculator::calculate($world);
         $danger = $health->dangerScore();

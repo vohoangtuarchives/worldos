@@ -2,14 +2,14 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmic\Services\WorldEvolutionPipeline;
-use App\Domains\Cosmic\Services\CosmicEvolutionService;
-use App\Domains\Cosmic\Services\BifurcationManager;
-use App\Domains\Cosmic\Services\SocialDynamicsService;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
+use App\Domains\Cosmology\Services\CosmicEvolutionService;
+use App\Domains\Cosmology\Services\BifurcationManager;
+use App\Domains\Cosmology\Services\SocialDynamicsService;
 use Tuzy\Domain\Cosmology\Enums\SocialClassType;
 
 // 1. Mock the services

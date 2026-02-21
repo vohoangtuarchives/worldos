@@ -2,8 +2,8 @@
 
 namespace App\Jobs;
 
-use App\Domains\Saga\Saga;
-use App\Domains\Saga\Services\SagaService;
+use Tuzy\Domain\Saga\Saga;
+use Tuzy\Application\Saga\Services\SagaService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

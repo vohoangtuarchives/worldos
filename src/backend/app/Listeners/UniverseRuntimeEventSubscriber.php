@@ -8,12 +8,12 @@ use Tuzy\Domain\Runtime\Event\UniverseCollapsed;
 use Tuzy\Domain\Runtime\Event\UniverseForked;
 use Tuzy\Domain\Runtime\Event\UniverseTicked;
 use Tuzy\Domain\Saga\ValueObject\SagaEvaluationReport;
-use App\Domains\Saga\Services\BlueprintMutationPlanner;
-use App\Domains\Saga\Services\CivilizationScorer;
-use App\Domains\Saga\Services\ParetoFrontManager;
-use App\Domains\Saga\Services\SagaMetaEvaluator;
-use App\Domains\Saga\SagaObserver;
-use App\Domains\Saga\SagaWorld;
+use Tuzy\Application\Saga\Services\BlueprintMutationPlanner;
+use Tuzy\Application\Saga\Services\CivilizationScorer;
+use Tuzy\Application\Saga\Services\ParetoFrontManager;
+use Tuzy\Application\Saga\Services\SagaMetaEvaluator;
+use Tuzy\Domain\Saga\SagaObserver;
+use Tuzy\Domain\Saga\SagaWorld;
 use Illuminate\Support\Facades\Log;
 
 /**

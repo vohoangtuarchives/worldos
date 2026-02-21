@@ -1,12 +1,12 @@
 <?php
 
-use App\Domains\Cosmic\Services\BifurcationManager;
-use App\Domains\Cosmic\Services\MorphingEngine;
-use App\Domains\Cosmic\Repositories\AttractorEloquentRepository;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
+use App\Domains\Cosmology\Services\BifurcationManager;
+use App\Domains\Cosmology\Services\MorphingEngine;
+use App\Domains\Cosmology\Repositories\AttractorEloquentRepository;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 
 require __DIR__ . '/vendor/autoload.php';
 $app = require_once __DIR__ . '/bootstrap/app.php';

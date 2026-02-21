@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Cosmology\Contracts;
 
 use App\Domains\Cosmology\Aggregates\AttractorAggregate;
-use App\Domains\Cosmology\ValueObjects\AttractorIncarnation;
+use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
 
 interface AttractorRepositoryInterface
 {

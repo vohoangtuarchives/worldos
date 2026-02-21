@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Contracts;
 
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 
 /**
  * Repository contract for persisting cosmic simulation snapshots (world_id, year).

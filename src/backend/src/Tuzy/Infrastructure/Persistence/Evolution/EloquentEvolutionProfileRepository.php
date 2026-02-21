@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tuzy\Infrastructure\Persistence\Evolution;
 
-use App\Domains\Evolution\Models\EvolutionProfile as EvolutionProfileModel;
+use Tuzy\Domain\Evolution\Models\EvolutionProfile as EvolutionProfileModel;
 use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\Evolution\Entity\EvolutionProfile;
 use Tuzy\Domain\Evolution\Event\EvolutionProfileCreated;

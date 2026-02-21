@@ -3,8 +3,8 @@
 namespace Tests\Integration\Domains\CognitiveKernel;
 
 use Tests\TestCase;
-use App\Domains\CognitiveKernel\Drift\DriftCalculator;
-use App\Domains\CognitiveKernel\ArchetypePool;
+use Tuzy\Application\CognitiveKernel\Drift\DriftCalculator;
+use Tuzy\Domain\CognitiveKernel\ArchetypePool;
 use App\Models\World;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -20,7 +20,7 @@ class DriftTest extends TestCase
         $pool = new ArchetypePool();
         // Initialize with even weights (assuming pool has archetypes seeded from migration/seeder)
         // We'll mock or ensure at least one archetype exists
-        \App\Domains\CognitiveKernel\Archetype::create([
+        \Tuzy\Domain\CognitiveKernel\Archetype::create([
              'key' => 'tester', 
              'domain' => 'power', 
              'polarity' => ['order'], 

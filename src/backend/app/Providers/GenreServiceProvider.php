@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Domains\Genre\GenreRegistry;
-use App\Domains\Genre\Genres\WuxiaGenre;
-use App\Domains\Genre\Genres\XianxiaGenre;
-use App\Domains\Genre\Genres\SystemGenre;
-use App\Domains\Genre\Genres\MagicalAcademyGenre;
+use Tuzy\Domain\Genre\GenreRegistry;
+use Tuzy\Application\Genre\Genres\WuxiaGenre;
+use Tuzy\Application\Genre\Genres\XianxiaGenre;
+use Tuzy\Application\Genre\Genres\SystemGenre;
+use Tuzy\Application\Genre\Genres\MagicalAcademyGenre;
 
 class GenreServiceProvider extends ServiceProvider
 {
@@ -17,11 +17,11 @@ class GenreServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->singleton(GenreRegistry::class, function ($app) {
-            $registry = new \App\Domains\Genre\GenreRegistry();
+            $registry = new \Tuzy\Domain\Genre\GenreRegistry();
             
             // Register detailed GenreDefinitions
-            $registry->register(new \App\Domains\Genre\Genres\Xianxia\XianxiaDefinition());
-            $registry->register(new \App\Domains\Genre\Genres\Survival\SurvivalGenre());
+            $registry->register(new \Tuzy\Application\Genre\Genres\Xianxia\XianxiaDefinition());
+            $registry->register(new \Tuzy\Application\Genre\Genres\Survival\SurvivalGenre());
             
             // Re-enable others when ported to new Definition system
             // $registry->register(new WuxiaDefinition());

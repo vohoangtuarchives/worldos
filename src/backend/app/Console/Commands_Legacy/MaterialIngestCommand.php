@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use App\Domains\Material\Contracts\MaterialRepositoryInterface;
-use App\Domains\Material\Extraction\MaterialValidator;
+use Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface;
+use Tuzy\Application\Material\Extraction\MaterialValidator;
 use Illuminate\Support\Facades\File;
 
 class MaterialIngestCommand extends Command

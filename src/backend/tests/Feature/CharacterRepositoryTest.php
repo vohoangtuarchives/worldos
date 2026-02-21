@@ -5,11 +5,11 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\World;
-use App\Domains\Narrative\Character\Character;
-use App\Domains\Narrative\Character\MemoryCollection;
-use App\Domains\Narrative\Character\GoalStack;
-use App\Domains\Narrative\Character\Entities\Memory;
-use App\Domains\Narrative\Character\Repositories\CharacterEloquentRepository;
+use Tuzy\Application\Narrative\Character\Character;
+use Tuzy\Application\Narrative\Character\MemoryCollection;
+use Tuzy\Application\Narrative\Character\GoalStack;
+use Tuzy\Application\Narrative\Character\Entities\Memory;
+use Tuzy\Application\Narrative\Character\Repositories\CharacterEloquentRepository;
 use Illuminate\Support\Str;
 
 class CharacterRepositoryTest extends TestCase

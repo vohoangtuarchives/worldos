@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Cosmology;
 
-use App\Domains\Cosmology\Mathematics\Vector;
+use Tuzy\Application\Cosmology\Mathematics\Vector;
 use PHPUnit\Framework\TestCase;
 
 class VectorTest extends TestCase

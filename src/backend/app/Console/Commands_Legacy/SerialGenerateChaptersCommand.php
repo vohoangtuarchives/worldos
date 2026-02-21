@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Domains\Narrative\Serial\SerialStoryService;
+use Tuzy\Application\Narrative\Serial\SerialStoryService;
 use App\Models\NarrativeSeries;
 use Illuminate\Console\Command;
 

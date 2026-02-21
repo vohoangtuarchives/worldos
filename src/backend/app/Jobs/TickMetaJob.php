@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Domains\Meta\Aggregates\MetaLayer;
+use Tuzy\Domain\Meta\Aggregates\MetaLayer;
 use App\Models\MetaLayerState; // Need to create this model
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -61,7 +61,7 @@ class TickMetaJob implements ShouldQueue
 
             // 6. Capture Snapshot
             $runId = '00000000-0000-0000-0000-000000000000';
-            $snapshotService = app(\App\Domains\Replay\Services\SnapshotService::class);
+            $snapshotService = app(\Tuzy\Application\Replay\Services\SnapshotService::class);
             $snapshotService->captureMeta($metaLayer, $runId, $this->targetTick);
 
         } catch (\Exception $e) {

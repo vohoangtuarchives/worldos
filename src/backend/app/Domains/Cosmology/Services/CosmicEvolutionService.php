@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Domains\Cosmology\Services;
 
-use App\Domains\Cosmology\ValueObjects\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use App\Domains\Cosmology\ValueObjects\Attractor;
-use App\Domains\Cosmology\ValueObjects\WorldSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 
 /**

@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Runtime\Evaluation;
 
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
+use Tuzy\Domain\Runtime\ValueObject\EvaluationResult;
+use Tuzy\Domain\Runtime\ValueObject\MutationSuggestion;
+use Tuzy\Domain\Runtime\ValueObject\UniverseMetrics;
 use Illuminate\Support\Facades\Log;
 use App\Services\AI\AIAgentContext;
 
@@ -91,7 +94,7 @@ PROMPT;
             $type = $response['mutation']['type'] ?? null;
             $intensity = (float) ($response['mutation']['intensity'] ?? 0.5);
             if (in_array($type, ['military', 'resource', 'ideology', 'tech'], true)) {
-                $mutationSuggestion = new MutationSuggestion($type, $this->clamp01($intensity));
+                $mutationSuggestion = new MutationSuggestion(type: $type, intensity: $this->clamp01($intensity));
             }
         }
 

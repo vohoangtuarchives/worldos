@@ -5,7 +5,7 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 use App\Models\World;
-use App\Domains\World\Services\WorldForkService;
+use Tuzy\Application\World\Services\WorldForkService;
 use Illuminate\Support\Facades\DB;
 
 echo "--- TEST: Admin Features (ADR-0007) ---\n";

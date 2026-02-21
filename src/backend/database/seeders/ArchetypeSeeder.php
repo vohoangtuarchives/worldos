@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\CognitiveKernel\Archetype;
+use Tuzy\Domain\CognitiveKernel\Archetype;
 
 class ArchetypeSeeder extends Seeder
 {

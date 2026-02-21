@@ -4,10 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Domains\Genre\Genres\WuxiaGenre;
-use App\Domains\Genre\Genres\XianxiaGenre;
-use App\Domains\Genre\Genres\SystemGenre;
-use App\Domains\Genre\Genres\MagicalAcademyGenre;
+use Tuzy\Application\Genre\Genres\WuxiaGenre;
+use Tuzy\Application\Genre\Genres\XianxiaGenre;
+use Tuzy\Application\Genre\Genres\SystemGenre;
+use Tuzy\Application\Genre\Genres\MagicalAcademyGenre;
 
 class GenreMaterialSeeder extends Seeder
 {

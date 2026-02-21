@@ -2,9 +2,9 @@
 
 namespace App\Jobs;
 
-use App\Domains\Vietnamese\Models\VietnameseHero;
-use App\Domains\Vietnamese\Models\ScoringVersion;
-use App\Domains\Vietnamese\Services\HeroScoringService;
+use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
+use Tuzy\Domain\Vietnamese\Models\ScoringVersion;
+use Tuzy\Application\Vietnamese\Services\HeroScoringService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tuzy\Infrastructure\Persistence\Saga;
 
-use App\Domains\Saga\Saga as SagaModel;
+use Tuzy\Domain\Saga\Saga as SagaModel;
 use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\Saga\Entity\Saga;
 use Tuzy\Domain\Saga\Event\SagaCreated;

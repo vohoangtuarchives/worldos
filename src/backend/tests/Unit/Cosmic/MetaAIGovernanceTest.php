@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmic\Services\ConstraintEngine;
-use App\Domains\Cosmic\Services\QualityEvaluator;
-use App\Domains\Cosmic\Services\SemanticProjector;
-use App\Domains\Cosmic\Services\StyleAdvisorService;
-use App\Domains\Cosmic\ValueObjects\CosmicState;
-use App\Domains\Cosmic\ValueObjects\CivilizationState;
-use App\Domains\Cosmic\ValueObjects\EnvironmentState;
-use App\Domains\Cosmic\ValueObjects\UniverseStyleVersion;
-use App\Domains\Cosmic\ValueObjects\WorldSnapshot;
+use Tuzy\Application\Cosmology\Services\ConstraintEngine;
+use Tuzy\Application\Cosmology\Services\QualityEvaluator;
+use Tuzy\Application\Cosmology\Services\SemanticProjector;
+use Tuzy\Application\Cosmology\Services\StyleAdvisorService;
+use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
+use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
+use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;
+use Tuzy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
+use Tuzy\Domain\Cosmology\ValueObject\MetricsSnapshot;
+use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use PHPUnit\Framework\TestCase;
 
 class MetaAIGovernanceTest extends TestCase

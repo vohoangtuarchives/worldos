@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Database\Seeders\WorldSeeder;
 use App\Models\World;
-use App\Domains\World\Services\EventRecorder;
+use Tuzy\Application\World\Services\EventRecorder;
 
 class ObserverTest extends TestCase
 {

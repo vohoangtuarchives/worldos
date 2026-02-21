@@ -7,8 +7,8 @@ $kernel->bootstrap();
 use App\Models\World;
 use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use Tuzy\Domain\World\Enums\MagicSystemType;
-use App\Domains\World\Services\WorldForkService;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldForkService;
+use Tuzy\Application\World\Services\WorldLawValidator;
 use App\StoryEngine\Seed;
 
 // 1. Setup Parent World (Low Magic)

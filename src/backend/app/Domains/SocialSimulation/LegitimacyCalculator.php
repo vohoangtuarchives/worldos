@@ -6,6 +6,7 @@ use App\Domains\CognitiveKernel\ArchetypeWeight;
 use App\Domains\CognitiveKernel\CouplingRules;
 use App\Models\World;
 use Illuminate\Support\Collection;
+use Tuzy\Domain\SocialSimulation\ValueObject\LegitimacyResult;
 
 /**
  * Legitimacy Calculator
@@ -30,9 +31,9 @@ class LegitimacyCalculator
     /**
      * Calculate overall world legitimacy
      * 
-     * @return LegitimacyDTO
+     * @return LegitimacyResult
      */
-    public function calculate(World $world): LegitimacyDTO
+    public function calculate(World $world): LegitimacyResult
     {
         // Get archetype weights
         $archetypeWeights = ArchetypeWeight::where('world_id', $world->id)->get();
@@ -51,7 +52,7 @@ class LegitimacyCalculator
         // Clamp to 0-1
         $legitimacy = max(0, min(1, $legitimacy));
 
-        return new LegitimacyDTO(
+        return new LegitimacyResult(
             legitimacy: $legitimacy,
             components: [
                 'archetype_contribution' => $archetypeContribution,
@@ -59,7 +60,7 @@ class LegitimacyCalculator
                 'economic_inequality' => $economicInequality,
                 'trauma_memory' => $traumaMemory,
             ],
-            threshold_status: $this->getThresholdStatus($legitimacy)
+            thresholdStatus: $this->getThresholdStatus($legitimacy)
         );
     }
 
