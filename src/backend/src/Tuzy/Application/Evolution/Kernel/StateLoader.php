@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tuzy\Application\Evolution\Kernel;
 
-use App\Domains\Cosmic\Contracts\CosmicSnapshotRepositoryInterface;
+use Tuzy\Domain\Cosmology\Contracts\CosmicSnapshotRepositoryInterface;
 use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use Tuzy\Application\Cosmology\Entities\WorldStateVector;
 use Tuzy\Infrastructure\Cosmology\Repositories\CosmologyRepository;

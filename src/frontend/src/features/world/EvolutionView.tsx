@@ -20,13 +20,24 @@ import {
   DatabaseBackup,
   AlertTriangle,
   CheckCircle2,
+  Zap,
 } from "lucide-react";
+import { useWorldStream } from "./hooks/useWorldStream";
+import { RealtimeVectorAnalysis } from "./components/RealtimeVectorAnalysis";
+import { LiveChronicleNode } from "./components/LiveChronicleNode";
+import { useSimulationStore } from "./stores/useSimulationStore";
 
 const METRICS_POLL_MS = 4000;
 
 const COLLAPSED_STATUSES = ["collapsed", "dissipated", "destroyed", "terminated", "void"];
 
-export function EvolutionView({ worldId }: { worldId: string }) {
+export function EvolutionView({
+  worldId,
+  forceUniverseId,
+}: {
+  worldId: string;
+  forceUniverseId?: string;
+}) {
   const searchParams = useSearchParams();
   const universeFromUrl = searchParams.get("universe") ?? "";
   const [manualSelectedUniverseId, setManualSelectedUniverseId] = useState<string>("");
@@ -35,6 +46,9 @@ export function EvolutionView({ worldId }: { worldId: string }) {
   const runtimeInstances = useMemo(() => world?.runtime_instances ?? [], [world?.runtime_instances]);
 
   const selectedUniverseId = useMemo(() => {
+    if (forceUniverseId) {
+      return forceUniverseId;
+    }
     if (manualSelectedUniverseId && runtimeInstances.some((u) => u.id === manualSelectedUniverseId)) {
       return manualSelectedUniverseId;
     }
@@ -68,6 +82,14 @@ export function EvolutionView({ worldId }: { worldId: string }) {
     refetchInterval: METRICS_POLL_MS,
   });
 
+  // HYPER-REALTIME STREAM HOOK
+  useWorldStream(selectedUniverseId || worldId);
+  const rtYear = useSimulationStore(s => s.year);
+  const rtPhase = useSimulationStore(s => s.phase);
+  const rtEntropy = useSimulationStore(s => s.currentEntropy);
+  const rtStability = useSimulationStore(s => s.currentStability);
+  const rtVector = useSimulationStore(s => s.currentVector);
+
   const data = (useUniverse ? universeData : worldData) as
     | { tick?: number; phase?: string; state_vector?: Record<string, number>; entropy?: number | null; stability_index?: number | null }
     | undefined;
@@ -87,28 +109,36 @@ export function EvolutionView({ worldId }: { worldId: string }) {
   const materialEvents = timelineData?.events ?? [];
   const materialLifecycle = materialsData?.lifecycle ?? { active: 0, dormant: 0, retired: 0 };
 
+  const KEYS = [
+    'ce', 'sc', 'tech', 'stab', 'pros', 'mp', 'ie',
+    'legit', 'ec', 'ineq', 'sust', 'myst', 'legacy',
+    'exp', 'info', 'mob', 'curv'
+  ];
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
-      <div className="glass-panel p-4 rounded-xl flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <Orbit className="h-5 w-5 text-primary" />
-          <span className="text-xs font-bold uppercase tracking-tight">Monitoring Scope</span>
+      {!forceUniverseId && (
+        <div className="glass-panel p-4 rounded-xl flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Orbit className="h-5 w-5 text-primary" />
+            <span className="text-xs font-bold uppercase tracking-tight">Monitoring Scope</span>
+          </div>
+          <select
+            className="bg-transparent border-none text-sm font-bold text-primary focus:ring-0 cursor-pointer"
+            value={selectedUniverseId}
+            onChange={(e) => setManualSelectedUniverseId(e.target.value)}
+          >
+            <option value="">— World Kernel (Legacy) —</option>
+            {runtimeInstances.map((u) => (
+              <option key={u.id} value={u.id}>
+                {u.name} (Age {u.age})
+              </option>
+            ))}
+          </select>
         </div>
-        <select
-          className="bg-transparent border-none text-sm font-bold text-primary focus:ring-0 cursor-pointer"
-          value={selectedUniverseId}
-          onChange={(e) => setManualSelectedUniverseId(e.target.value)}
-        >
-          <option value="">— World Kernel (Legacy) —</option>
-          {runtimeInstances.map((u) => (
-            <option key={u.id} value={u.id}>
-              {u.name} (Age {u.age})
-            </option>
-          ))}
-        </select>
-      </div>
+      )}
 
-      <div className="grid gap-8 lg:grid-cols-3">
+      <div className="grid gap-6 lg:grid-cols-4">
         <div className="lg:col-span-1 space-y-6">
           <div className="glass-card p-6">
             <div className="flex items-center justify-between mb-6">
@@ -122,24 +152,30 @@ export function EvolutionView({ worldId }: { worldId: string }) {
             <div className="space-y-6">
               <div>
                 <p className="metric-label mb-1">Current Tick/Cycle</p>
-                <p className="text-4xl font-bold metric-value tracking-tighter">{tick}</p>
+                <p className="text-4xl font-bold metric-value tracking-tighter">
+                  {rtYear || tick}
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border/30">
                 <div>
                   <span className="metric-label">Entropy</span>
-                  <p className="text-xl font-bold metric-value">{(Number(entropy) || 0).toFixed(3)}</p>
+                  <p className="text-xl font-bold metric-value">
+                    {(rtEntropy || Number(entropy) || 0).toFixed(4)}
+                  </p>
                 </div>
                 <div>
                   <span className="metric-label">Stability</span>
-                  <p className="text-xl font-bold metric-value text-success">{(Number(stability) || 0).toFixed(3)}</p>
+                  <p className="text-xl font-bold metric-value text-success">
+                    {(rtStability || Number(stability) || 0).toFixed(4)}
+                  </p>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-border/30">
                 <span className="metric-label">Current Phase</span>
                 <Badge variant="secondary" className="mt-2 w-full justify-center py-1 font-mono uppercase text-[10px] tracking-widest border-primary/20 bg-primary/5 text-primary">
-                  {phase}
+                  {rtPhase !== 'PRIMORDIAL' ? rtPhase : phase}
                 </Badge>
               </div>
             </div>
@@ -161,43 +197,27 @@ export function EvolutionView({ worldId }: { worldId: string }) {
           <div className="glass-card flex flex-col h-full overflow-hidden">
             <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-white/40">
               <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-primary" />
-                State Vector Analysis
+                <Zap className="h-4 w-4 text-sky-500" />
+                Hyper-Realtime Vector Analysis
               </h3>
             </div>
-            <div className="flex-1 p-6">
-              {isLoading ? (
-                <div className="h-full flex items-center justify-center text-xs text-muted-foreground">Loading vector stream...</div>
-              ) : Object.keys(vector).length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center text-muted-foreground opacity-50 space-y-2">
-                  <Activity className="h-12 w-12" />
-                  <p className="text-xs uppercase tracking-widest font-bold">Waiting for Vector Stream...</p>
-                </div>
-              ) : (
-                <div className="grid gap-3">
-                  {Object.entries(vector).map(([k, v]) => (
-                    <div key={k} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/20 group hover:border-primary/30 transition-all">
-                      <div className="flex items-center gap-3">
-                        <div className="h-2 w-2 rounded-full bg-primary/20 group-hover:bg-primary transition-all" />
-                        <span className="text-xs font-bold text-muted-foreground uppercase tracking-tight">{k}</span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="font-mono text-xs font-bold tabular-nums">
-                          {typeof v === "number" ? v.toFixed(4) : String(v)}
-                        </span>
-                        <div className="h-1.5 w-24 bg-muted rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-primary/60"
-                            style={{ width: `${Math.min(typeof v === "number" ? v * 100 : 0, 100)}%` }}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
+            <div className="flex-1 p-6 flex flex-col">
+              <RealtimeVectorAnalysis />
+
+              <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
+                {KEYS.map((k, i) => (
+                  <div key={k} className="flex flex-col p-2 bg-muted/20 border border-border/20 rounded-md">
+                    <span className="text-[9px] text-muted-foreground uppercase font-bold">{k}</span>
+                    <span className="text-xs font-mono font-bold">{(rtVector[i] || 0).toFixed(4)}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
+        </div>
+
+        <div className="lg:col-span-1 h-full min-h-[400px]">
+          <LiveChronicleNode />
         </div>
       </div>
 

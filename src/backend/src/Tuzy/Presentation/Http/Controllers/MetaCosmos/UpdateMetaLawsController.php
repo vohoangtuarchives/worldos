@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Tuzy\Presentation\Http\Controllers\MetaCosmos;
 
-use App\Http\Controllers\Controller;
 use App\Models\World;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class UpdateMetaLawsController extends Controller
+class UpdateMetaLawsController
 {
     public function __invoke(string $id, Request $request): JsonResponse
     {

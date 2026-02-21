@@ -20,8 +20,9 @@ class StepWorldUseCase
         private WorldStateRepository $worldStateRepo,
         private CivilizationStateRepository $civStateRepo,
         private WorldRepository $worldRepo, // Thêm WorldRepo
-        private EventBus $eventBus,
-        private WorldEvolutionPipeline $pipeline
+        private \Tuzy\Infrastructure\EventBus\EventBus $eventBus,
+        private \Tuzy\Domain\Evolution\Service\WorldEvolutionPipeline $pipeline,
+        private \Tuzy\Infrastructure\Realtime\RealtimeStreamServer $streamServer // NEW
     ) {}
 
     public function execute(string $worldId, int $ticks = 1, int $deltaYears = 1): array
@@ -97,8 +98,20 @@ class StepWorldUseCase
                             'metadata' => $evt['metadata'] ?? [],
                         ]);
                     }
+
+                    // Tích hợp Real-time Chronicle Stream (Giai đoạn 18)
+                    $this->streamServer->broadcastEvent([
+                        'world_id' => $worldId,
+                        'year' => $nextSnapshot->year,
+                        'type' => $type,
+                        'title' => $evt['name'] ?? $type,
+                        'description' => $evt['description'] ?? '',
+                        'severity' => $intensity >= 1.0 ? 'CRITICAL' : ($intensity >= 0.8 ? 'HIGH' : ($intensity >= 0.5 ? 'MEDIUM' : 'LOW')),
+                        'metadata' => $evt['metadata'] ?? [],
+                    ], $worldId);
+                    
                 } catch (\Exception $e) {
-                    \Illuminate\Support\Facades\Log::warning("Failed to save Chronicle Event: " . $e->getMessage());
+                    \Illuminate\Support\Facades\Log::warning("Failed to save/broadcast Chronicle Event: " . $e->getMessage());
                 }
             }
 
@@ -107,7 +120,10 @@ class StepWorldUseCase
                 $civState->ageEra();
             }
 
-            // 5. Dispatch V4 Domain Events (e.g. EntropyCriticalReached from WorldState)
+            // 5. Broadcast Hyper-Realtime Update (SSE/MessagePack)
+            $this->streamServer->broadcastUpdate($nextSnapshot, $worldId);
+
+            // 6. Dispatch V4 Domain Events (e.g. EntropyCriticalReached from WorldState)
             $v4Events = $worldState->releaseEvents();
             if (count($v4Events) > 0) {
                 $this->eventBus->dispatchAll($v4Events);

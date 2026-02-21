@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
+/* 
+// Legacy V3 Controllers (Removed during v4 refactoring)
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\VietnameseHeroController;
 use App\Http\Controllers\Api\Writer\WriterSagaController;
@@ -15,6 +18,7 @@ use App\Http\Controllers\Api\Writer\WriterMaterialController;
 use App\Http\Controllers\Api\SerialController;
 use App\Http\Controllers\Api\StoryBibleController;
 use App\Http\Controllers\Api\ClusterController;
+*/
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +39,13 @@ Route::post('v4/tuzy/evolution-profiles', \Tuzy\Presentation\Http\Controllers\Ev
 Route::post('v4/tuzy/narrative-series', \Tuzy\Presentation\Http\Controllers\Narrative\CreateNarrativeSeriesController::class);
 Route::post('v4/tuzy/world-heroes', \Tuzy\Presentation\Http\Controllers\Heroes\CreateWorldHeroController::class);
 
+/*
+|--------------------------------------------------------------------------
+| Legacy V3 Routes
+|--------------------------------------------------------------------------
+| Below routes are commented out because their controllers were removed
+*/
+/*
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -43,11 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout-all',  [AuthController::class, 'logoutAll']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Admin API
-|--------------------------------------------------------------------------
-*/
+// Admin API
 Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::get('stats', [\App\Http\Controllers\Api\AdminController::class, 'stats']);
     Route::get('evolution/overview', [\App\Http\Controllers\Api\AdminController::class, 'evolutionOverview']);
@@ -56,11 +63,7 @@ Route::middleware('auth:sanctum')->prefix('admin')->group(function () {
     Route::post('universe/{id}/lock', [\App\Http\Controllers\Api\AdminController::class, 'toggleLock']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Writer API — protected by Sanctum
-|--------------------------------------------------------------------------
-*/
+// Writer API
 Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
 
     // Sagas
@@ -72,7 +75,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::post('saga/{sagaId}/advance',   [WriterSagaController::class, 'advance']);
     Route::post('saga/{sagaId}/run',       [WriterSagaController::class, 'run']);
 
-    // Universes (v3 snapshot-first, metrics)
+    // Universes
     Route::get('universes',                        [WriterUniverseController::class, 'index']);
     Route::get('universes/{universeId}/snapshots', [WriterUniverseController::class, 'snapshots']);
     Route::get('universes/{universeId}/metrics',   [WriterUniverseController::class, 'metrics']);
@@ -104,7 +107,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::get('worlds/{id}/events',                 [WriterWorldSnapshotController::class, 'events']);
     Route::post('worlds/{id}/events/replay',         [WriterWorldSnapshotController::class, 'replay']);
 
-    // Material Wiki — catalog + per-world instances/analytics
+    // Material Wiki
     Route::get('materials/catalog',                  [WriterMaterialController::class, 'catalog']);
     Route::get('materials/{code}/detail',            [WriterMaterialController::class, 'detail']);
     Route::get('worlds/{id}/materials',              [WriterMaterialController::class, 'index']);
@@ -133,22 +136,13 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
         Route::post('intervene',               [WriterAIAgentController::class, 'intervene']);
     });
 
-    // Governance / Proposals
+    // Governance
     Route::get('governance/proposals/{worldId}',  [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'proposals']);
     Route::post('governance/proposals/{id}/approve', [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'approve']);
     Route::post('governance/proposals/{id}/reject',  [\App\Http\Controllers\Api\Writer\WriterGovernanceController::class, 'reject']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Serial API (truyện dài kỳ) — protected by Sanctum
-|--------------------------------------------------------------------------
-*/
-/*
-|--------------------------------------------------------------------------
-| Cluster API (control plane — snapshot for dashboard)
-|--------------------------------------------------------------------------
-*/
+// Cluster API
 Route::middleware('auth:sanctum')->prefix('cluster')->group(function () {
     Route::get('snapshot', [ClusterController::class, 'snapshot']);
     Route::get('governor', [ClusterController::class, 'governor']);
@@ -156,11 +150,7 @@ Route::middleware('auth:sanctum')->prefix('cluster')->group(function () {
     Route::post('emergency-freeze', [ClusterController::class, 'emergencyFreeze']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Serial API (truyện dài kỳ) — protected by Sanctum
-|--------------------------------------------------------------------------
-*/
+// Serial API
 Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::get('series',                    [SerialController::class, 'index']);
     Route::get('genres',                    [SerialController::class, 'genres']);
@@ -183,11 +173,7 @@ Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::post('series/{id}/chapters/{chapterId}/canonize', [SerialController::class, 'canonizeChapter']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| Vietnamese Heroes (public)
-|--------------------------------------------------------------------------
-*/
+// Vietnamese Heroes
 Route::prefix('vietnamese-heroes')->group(function () {
     Route::get('/',                      [VietnameseHeroController::class, 'index']);
     Route::get('/search',                [VietnameseHeroController::class, 'search']);
@@ -198,3 +184,5 @@ Route::prefix('vietnamese-heroes')->group(function () {
     Route::get('/{id}',                  [VietnameseHeroController::class, 'show']);
     Route::get('/{id}/events',           [VietnameseHeroController::class, 'events']);
 });
+*/
+
