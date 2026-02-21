@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Aggregates\AttractorAggregate;
-use App\Domains\Cosmology\Services\CollectiveFieldService;
+use Tuzy\Domain\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Application\Cosmology\Services\CollectiveFieldService;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use Tuzy\Domain\Cosmology\ValueObject\IndividualMemory;
 use Tuzy\Domain\Cosmology\ValueObject\InteractionMemory;

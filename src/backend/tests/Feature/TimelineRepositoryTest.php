@@ -5,11 +5,11 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use App\Models\World;
-use App\Domains\Narrative\Timeline\TimelineNode;
+use Tuzy\Application\Narrative\Timeline\TimelineNode;
 use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
-use App\Domains\Narrative\Timeline\Repositories\TimelineEloquentRepository;
-use App\Domains\Narrative\Timeline\Services\CausalConsistency;
-use App\Domains\Narrative\Character\Entities\Memory;
+use Tuzy\Application\Narrative\Timeline\Repositories\TimelineEloquentRepository;
+use Tuzy\Application\Narrative\Timeline\Services\CausalConsistency;
+use Tuzy\Application\Narrative\Character\Entities\Memory;
 use Illuminate\Support\Str;
 
 class TimelineRepositoryTest extends TestCase

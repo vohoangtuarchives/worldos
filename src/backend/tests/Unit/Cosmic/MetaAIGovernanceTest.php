@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Services\ConstraintEngine;
-use App\Domains\Cosmology\Services\QualityEvaluator;
-use App\Domains\Cosmology\Services\SemanticProjector;
-use App\Domains\Cosmology\Services\StyleAdvisorService;
+use Tuzy\Application\Cosmology\Services\ConstraintEngine;
+use Tuzy\Application\Cosmology\Services\QualityEvaluator;
+use Tuzy\Application\Cosmology\Services\SemanticProjector;
+use Tuzy\Application\Cosmology\Services\StyleAdvisorService;
 use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;
 use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;

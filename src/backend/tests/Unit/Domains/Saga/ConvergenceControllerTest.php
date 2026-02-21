@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Saga;
 
-use App\Domains\Saga\Services\ConvergenceController;
+use Tuzy\Application\Saga\Services\ConvergenceController;
 use PHPUnit\Framework\TestCase;
 
 class ConvergenceControllerTest extends TestCase

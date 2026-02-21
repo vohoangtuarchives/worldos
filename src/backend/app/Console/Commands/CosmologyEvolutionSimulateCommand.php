@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Domains\Cosmology\Evolution\SimulationConfig;
-use App\Domains\Cosmology\Evolution\SimulationRunner;
+use Tuzy\Application\Cosmology\Evolution\SimulationConfig;
+use Tuzy\Application\Cosmology\Evolution\SimulationRunner;
 use Illuminate\Console\Command;
 
 class CosmologyEvolutionSimulateCommand extends Command
@@ -42,7 +42,7 @@ class CosmologyEvolutionSimulateCommand extends Command
         return self::SUCCESS;
     }
 
-    private function outputJson(\App\Domains\Cosmology\Evolution\SimulationResult $result): void
+    private function outputJson(\Tuzy\Application\Cosmology\Evolution\SimulationResult $result): void
     {
         $this->line(json_encode([
             'metrics' => $result->metrics,
@@ -51,7 +51,7 @@ class CosmologyEvolutionSimulateCommand extends Command
         ], JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT));
     }
 
-    private function outputCsv(\App\Domains\Cosmology\Evolution\SimulationResult $result): void
+    private function outputCsv(\Tuzy\Application\Cosmology\Evolution\SimulationResult $result): void
     {
         $this->line('tick,entropy,arc_phase');
         $n = count($result->metrics['tick']);

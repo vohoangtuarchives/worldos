@@ -3,7 +3,7 @@
 namespace Tests\Unit\Cosmology;
 
 use App\Domains\Cosmology\DataTransferObjects\VisualStateDTO;
-use App\Domains\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
 use PHPUnit\Framework\TestCase;
 
 class VisualStateDTOTest extends TestCase

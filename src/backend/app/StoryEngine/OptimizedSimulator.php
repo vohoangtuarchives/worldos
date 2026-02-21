@@ -4,7 +4,7 @@ namespace App\StoryEngine;
 
 use App\StoryEngine\Persistence\OptimizedEventStore;
 use App\Services\WorldLawProfileCache;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldLawValidator;
 use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use App\Exceptions\Simulation\SimulationException;
 

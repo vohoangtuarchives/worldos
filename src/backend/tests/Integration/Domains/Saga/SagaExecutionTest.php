@@ -3,9 +3,9 @@
 namespace Tests\Integration\Domains\Saga;
 
 use Tests\TestCase;
-use App\Domains\Saga\Saga;
-use App\Domains\Saga\SagaRunner;
-use App\Domains\CognitiveKernel\Archetype;
+use Tuzy\Domain\Saga\Saga;
+use Tuzy\Domain\Saga\SagaRunner;
+use Tuzy\Domain\CognitiveKernel\Archetype;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 

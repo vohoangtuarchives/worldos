@@ -3,7 +3,7 @@
 namespace App\Listeners\Cosmology;
 
 use Tuzy\Domain\World\Event\WorldDefined;
-use App\Domains\Genre\GenreRegistry;
+use Tuzy\Domain\Genre\GenreRegistry;
 use App\Models\World;
 use App\Models\UniverseStyle;
 use Illuminate\Support\Facades\Log;

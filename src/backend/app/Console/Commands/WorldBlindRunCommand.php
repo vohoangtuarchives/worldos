@@ -3,26 +3,25 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use WorldOS\Applications\Simulator\StepWorldUseCase;
-use WorldOS\Infrastructure\EventBus\EventBus;
-use WorldOS\Domains\Evolution\WorldStateRepository;
-use WorldOS\Domains\Evolution\CivilizationStateRepository;
-use WorldOS\Domains\Evolution\WorldState;
-use WorldOS\Domains\Evolution\CivilizationState;
+use Tuzy\Application\Simulator\UseCase\StepWorldUseCase;
+use Tuzy\Infrastructure\EventBus\EventBus;
+use Tuzy\Domain\Evolution\Repository\WorldStateRepository;
+use Tuzy\Domain\Evolution\Repository\CivilizationStateRepository;
+use Tuzy\Domain\Evolution\Entity\WorldState;
+use Tuzy\Domain\Evolution\Entity\CivilizationState;
 use Illuminate\Support\Str;
-use WorldOS\Infrastructure\Persistence\Evolution\InMemoryWorldStateRepository;
-use WorldOS\Infrastructure\Persistence\Evolution\InMemoryCivilizationStateRepository;
-use WorldOS\Infrastructure\EventBus\LaravelEventBus;
-use WorldOS\Infrastructure\Persistence\Cosmology\InMemoryWorldRepository;
-use WorldOS\Domains\Cosmology\Contracts\WorldRepositoryInterface;
-use WorldOS\Domains\Cosmology\WorldRepository;
-use WorldOS\Domains\Evolution\Enums\CivilizationLifecycleState;
+use Tuzy\Infrastructure\Persistence\Evolution\InMemoryWorldStateRepository;
+use Tuzy\Infrastructure\Persistence\Evolution\InMemoryCivilizationStateRepository;
+use Tuzy\Infrastructure\EventBus\LaravelEventBus;
+use Tuzy\Infrastructure\Persistence\Cosmology\InMemoryWorldRepository;
+use Tuzy\Domain\Cosmology\Repository\WorldRepository;
+use Tuzy\Domain\Evolution\Enum\CivilizationLifecycleState;
 
 class WorldBlindRunCommand extends Command
 {
     protected $signature = 'world:blind-run 
-        {--ticks=500 : Số lượng ticks mô phỏng} 
-        {--delta=1 : Số năm mỗi tick}
+        {--ticks=150 : Số lượng ticks mô phỏng} 
+        {--delta=100 : Số năm mỗi tick}
         {--ce=0.15 : Cultural Energy}
         {--sc=0.20 : Spiritual Cohesion}
         {--tech=0.10 : Technological Level}
@@ -54,20 +53,20 @@ class WorldBlindRunCommand extends Command
         app()->instance(CivilizationStateRepository::class, $civStateRepo);
         app()->instance(WorldRepositoryInterface::class, new InMemoryWorldRepository());
         app()->instance(WorldRepository::class, new InMemoryWorldRepository());
-        app()->instance(\WorldOS\Domains\Evolution\Contracts\AttractorRepositoryInterface::class, new \WorldOS\Infrastructure\Persistence\Evolution\InMemoryAttractorRepository());
+        app()->instance(\Tuzy\Domain\Evolution\Contract\AttractorRepositoryInterface::class, new \Tuzy\Infrastructure\Persistence\Evolution\InMemoryAttractorRepository());
         if (!app()->bound(EventBus::class)) {
             app()->instance(EventBus::class, new LaravelEventBus(app('events')));
         }
 
         // 3. Khởi tạo Material Domain cho Test
-        $materialRegistry = new \WorldOS\Domains\Material\MaterialRegistry();
-        $materialService = new \WorldOS\Domains\Material\Services\MaterialEvolutionService($materialRegistry);
-        app()->instance(\WorldOS\Domains\Material\MaterialRegistry::class, $materialRegistry);
-        app()->instance(\WorldOS\Domains\Material\Services\MaterialEvolutionService::class, $materialService);
-        app()->instance(\WorldOS\Domains\Evolution\Contracts\EntropyLedgerInterface::class, new \WorldOS\Infrastructure\Persistence\Evolution\InMemoryEntropyLedger());
+        $materialRegistry = new \Tuzy\Domain\Material\MaterialRegistry();
+        $materialService = new \Tuzy\Domain\Material\Service\MaterialEvolutionService($materialRegistry);
+        app()->instance(\Tuzy\Domain\Material\MaterialRegistry::class, $materialRegistry);
+        app()->instance(\Tuzy\Domain\Material\Service\MaterialEvolutionService::class, $materialService);
+        app()->instance(\Tuzy\Domain\Evolution\Contract\EntropyLedgerInterface::class, new \Tuzy\Infrastructure\Persistence\Evolution\InMemoryEntropyLedger());
 
         // Thêm một Faction mẫu
-        $sampleFaction = new \WorldOS\Domains\Material\Faction(Str::uuid()->toString(), "Đại Việt Đế Quốc", "empire", 1.0);
+        $sampleFaction = new \Tuzy\Domain\Material\Entity\Faction(Str::uuid()->toString(), "Đại Việt Đế Quốc", "empire", 1.0);
         $materialRegistry->addFaction($sampleFaction);
         
         // 4. Khởi tạo UseCase thông qua Container
@@ -81,7 +80,7 @@ class WorldBlindRunCommand extends Command
         $initialState = new WorldState($worldId, null, null, 0); // CosmicState, EnvironmentState sẽ mặc định create Year 0
         $worldStateRepo->save($initialState);
 
-        $initialSnapshot = new \WorldOS\Domains\Evolution\ValueObjects\CivilizationSnapshot(
+        $initialSnapshot = new \Tuzy\Domain\Evolution\ValueObject\CivilizationSnapshot(
             culturalEnergy: (float) $this->option('ce'),
             spiritualCohesion: (float) $this->option('sc'),
             technologicalLevel: (float) $this->option('tech'),
@@ -182,7 +181,7 @@ class WorldBlindRunCommand extends Command
 
         $this->newLine();
         $this->info("--- THÔNG SỐ VẬT CHẤT (MATERIAL) ---");
-        $registry = app(\WorldOS\Domains\Material\MaterialRegistry::class);
+        $registry = app(\Tuzy\Domain\Material\MaterialRegistry::class);
         foreach ($registry->getAllFactions() as $faction) {
             $this->line(" - Faction [{$faction->getName()}]: Power " . number_format($faction->getPowerLevel(), 4));
         }

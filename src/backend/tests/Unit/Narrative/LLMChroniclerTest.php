@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Narrative;
 
-use App\Domains\Cosmology\Entities\Universe;
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Narrative\Services\LLMChronicler;
-use App\Domains\Narrative\Services\NarrativeBridge;
+use Tuzy\Application\Cosmology\Entities\Universe;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Narrative\Services\LLMChronicler;
+use Tuzy\Application\Narrative\Services\NarrativeBridge;
 use PHPUnit\Framework\TestCase;
 
 class LLMChroniclerTest extends TestCase

@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\World;
-use App\Domains\World\AI\ArchitectAdvisor;
+use Tuzy\Application\World\AI\ArchitectAdvisor;
 
 class AnalyzeWorldCommand extends Command
 {

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use App\Domains\Cosmology\Entities\WorldScar;
+use Tuzy\Application\Cosmology\Entities\WorldScar;
 
 class World extends Model
 {

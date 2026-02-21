@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands\Saga;
 
-use App\Domains\Saga\SagaExecutor;
-use App\Domains\Material\State\WorldStateRepository;
+use Tuzy\Domain\Saga\SagaExecutor;
+use Tuzy\Application\Material\State\WorldStateRepository;
 use Illuminate\Console\Command;
 
 class ExecuteSagaCommand extends Command

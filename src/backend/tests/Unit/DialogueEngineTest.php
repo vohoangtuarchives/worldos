@@ -3,15 +3,15 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Domains\Narrative\Character\Character;
-use App\Domains\Narrative\Character\MemoryCollection;
-use App\Domains\Narrative\Character\GoalStack;
-use App\Domains\Narrative\Scene\Scene;
-use App\Domains\Narrative\Dialogue\Services\DialogueEngine;
-use App\Domains\Narrative\Dialogue\Services\TurnScheduler;
-use App\Domains\Narrative\Dialogue\Services\ConsistencyGuard;
-use App\Domains\Narrative\Dialogue\Services\SceneUpdater;
-use App\Domains\Narrative\Dialogue\Rules\CannotRevealUnknownInformation;
+use Tuzy\Application\Narrative\Character\Character;
+use Tuzy\Application\Narrative\Character\MemoryCollection;
+use Tuzy\Application\Narrative\Character\GoalStack;
+use Tuzy\Application\Narrative\Scene\Scene;
+use Tuzy\Application\Narrative\Dialogue\Services\DialogueEngine;
+use Tuzy\Application\Narrative\Dialogue\Services\TurnScheduler;
+use Tuzy\Application\Narrative\Dialogue\Services\ConsistencyGuard;
+use Tuzy\Application\Narrative\Dialogue\Services\SceneUpdater;
+use Tuzy\Application\Narrative\Dialogue\Rules\CannotRevealUnknownInformation;
 use Illuminate\Support\Collection;
 
 class DialogueEngineTest extends TestCase
@@ -32,7 +32,7 @@ class DialogueEngineTest extends TestCase
         $scheduler = new TurnScheduler();
         $guard = new ConsistencyGuard();
         $guard->addRule(new CannotRevealUnknownInformation());
-        $updater = new SceneUpdater(new \App\Domains\Narrative\Character\Repositories\CharacterEloquentRepository());
+        $updater = new SceneUpdater(new \Tuzy\Application\Narrative\Character\Repositories\CharacterEloquentRepository());
 
         $engine = new DialogueEngine($scheduler, $guard, $updater);
 

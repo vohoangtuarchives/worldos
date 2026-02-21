@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Domains\Saga\Services\GenesisPresetService;
+use Tuzy\Application\Saga\Services\GenesisPresetService;
 use Tests\TestCase;
 
 class GenesisPresetServiceTest extends TestCase

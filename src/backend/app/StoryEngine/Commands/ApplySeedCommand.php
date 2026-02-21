@@ -5,7 +5,7 @@ namespace App\StoryEngine\Commands;
 use App\StoryEngine\WorldState;
 use App\StoryEngine\CharacterState;
 use App\StoryEngine\Seed;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldLawValidator;
 use Tuzy\Domain\World\ValueObject\WorldLawProfile;
 use App\Exceptions\World\WorldLawViolationException;
 

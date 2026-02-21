@@ -34,7 +34,7 @@ $sim->world->lawProfile = $lowMagicProfile;
 // Actually, new seeds are filtered in RuleApplier.
 // Let's call RuleApplier manually to test Filter logic.
 
-$validator = new \App\Domains\World\Services\WorldLawValidator();
+$validator = new \Tuzy\Application\World\Services\WorldLawValidator();
 
 // Test A: Magic Seed in Low Magic World (Should be NULL)
 $magicSeed = new Seed('MANA_STORM', 'world', 5);
@@ -71,8 +71,8 @@ echo "\n--- TEST 3: Generator Integration ---\n";
 // Mock Dependencies
 $mockLLM = new \App\StoryEngine\Services\FakeStoryLLMService();
 // We need to bind things or just instantiate manually. Manual is faster for script.
-$extractor = new \App\Domains\World\Services\RegexClaimExtractor(); 
-$governance = new \App\Domains\WorldManagement\Services\AIGovernanceService();
+$extractor = new \Tuzy\Application\World\Services\RegexClaimExtractor(); 
+$governance = new \Tuzy\Application\WorldManagement\Services\AIGovernanceService();
 
 $generator = new \App\StoryEngine\Services\StoryContentGenerator($mockLLM, $validator, $extractor, $governance);
 

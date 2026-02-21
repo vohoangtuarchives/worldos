@@ -2,8 +2,8 @@
 
 namespace Tests\Unit\Cosmology;
 
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\Services\BasePhysicsEngine;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Cosmology\Services\BasePhysicsEngine;
 use PHPUnit\Framework\TestCase;
 
 class EvolutionKernelTest extends TestCase

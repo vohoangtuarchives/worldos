@@ -3,10 +3,10 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use App\Domains\Narrative\Character\Character;
-use App\Domains\Narrative\Character\MemoryCollection;
-use App\Domains\Narrative\Character\GoalStack;
-use App\Domains\Narrative\Character\Entities\Memory;
+use Tuzy\Application\Narrative\Character\Character;
+use Tuzy\Application\Narrative\Character\MemoryCollection;
+use Tuzy\Application\Narrative\Character\GoalStack;
+use Tuzy\Application\Narrative\Character\Entities\Memory;
 use Tuzy\Domain\Narrative\ValueObject\EmotionState;
 
 class CharacterAggregateTest extends TestCase

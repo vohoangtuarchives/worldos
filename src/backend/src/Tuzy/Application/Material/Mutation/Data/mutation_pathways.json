@@ -1,0 +1,114 @@
+{
+    "DIVINE_KINGSHIP": [
+        {
+            "target_code": "THEOCRATIC_STATE",
+            "trigger_condition": "sacred > 0.8",
+            "strength_transfer": 0.7,
+            "description": "Divine kingship evolves into full theocracy when sacred authority dominates."
+        },
+        {
+            "target_code": "SYMBOLIC_MONARCHY",
+            "trigger_condition": "authority < 0.3",
+            "strength_transfer": 0.5,
+            "description": "Divine kingship becomes ceremonial when real authority erodes."
+        }
+    ],
+    "RITUAL_SACRIFICE": [
+        {
+            "target_code": "SYMBOLIC_OFFERING",
+            "trigger_condition": "violence < 0.2",
+            "strength_transfer": 0.6,
+            "description": "Ritual sacrifice becomes symbolic when violence is rejected."
+        },
+        {
+            "target_code": "MASS_PURGE",
+            "trigger_condition": "violence > 0.9",
+            "strength_transfer": 0.8,
+            "description": "Ritual sacrifice escalates to systematic purges under extreme violence."
+        }
+    ],
+    "PROPHETIC_MOVEMENT": [
+        {
+            "target_code": "MESSIANIC_CULT",
+            "trigger_condition": "faith > 0.85",
+            "strength_transfer": 0.75,
+            "description": "Prophetic movement crystallizes into messianic cult."
+        },
+        {
+            "target_code": "REFORMATION",
+            "trigger_condition": "change > 0.7 AND order > 0.5",
+            "strength_transfer": 0.65,
+            "description": "Prophetic movement becomes institutional reformation."
+        }
+    ],
+    "GIFT_ECONOMY": [
+        {
+            "target_code": "PATRONAGE_NETWORK",
+            "trigger_condition": "hierarchy > 0.6",
+            "strength_transfer": 0.6,
+            "description": "Gift economy becomes hierarchical patronage system."
+        },
+        {
+            "target_code": "BRIBE_CULTURE",
+            "trigger_condition": "corruption > 0.7",
+            "strength_transfer": 0.5,
+            "description": "Gift economy degrades into systematic bribery."
+        }
+    ],
+    "SCAPEGOATING": [
+        {
+            "target_code": "INSTITUTIONALIZED_RACISM",
+            "trigger_condition": "cohesion > 0.7 AND violence > 0.6",
+            "strength_transfer": 0.8,
+            "description": "Scapegoating becomes systematic racial hierarchy."
+        },
+        {
+            "target_code": "WITCH_HUNT",
+            "trigger_condition": "sacred > 0.7 AND anxiety > 0.8",
+            "strength_transfer": 0.75,
+            "description": "Scapegoating manifests as witch hunt persecution."
+        }
+    ],
+    "ORAL_TRADITION": [
+        {
+            "target_code": "MYTHOLOGIZATION",
+            "trigger_condition": "memory > 0.8 AND time_depth > 5",
+            "strength_transfer": 0.7,
+            "description": "Oral tradition becomes increasingly mythological over time."
+        },
+        {
+            "target_code": "SECRET_SOCIETY",
+            "trigger_condition": "exclusivity > 0.7",
+            "strength_transfer": 0.6,
+            "description": "Oral tradition becomes esoteric knowledge of secret societies."
+        }
+    ],
+    "FEUDAL_OATH": [
+        {
+            "target_code": "CHIVALRIC_CODE",
+            "trigger_condition": "honor > 0.75",
+            "strength_transfer": 0.65,
+            "description": "Feudal oaths evolve into elaborate chivalric code."
+        },
+        {
+            "target_code": "MAFIA_CODE",
+            "trigger_condition": "state_weakness > 0.8",
+            "strength_transfer": 0.7,
+            "description": "Feudal oaths persist as criminal organization codes."
+        }
+    ],
+    "MARKET_CITY": [
+        {
+            "target_code": "MERCHANT_REPUBLIC",
+            "trigger_condition": "trade > 0.8 AND autonomy > 0.7",
+            "strength_transfer": 0.75,
+            "description": "Market city becomes independent merchant republic."
+        },
+        {
+            "target_code": "PLUTOCRACY",
+            "trigger_condition": "wealth_concentration > 0.85",
+            "strength_transfer": 0.7,
+            "description": "Market city becomes rule by wealthy elite."
+        }
+    ]
+}

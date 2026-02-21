@@ -5,7 +5,7 @@ namespace App\StoryEngine\Simulation\Phases;
 use App\StoryEngine\Simulation\SimulationPhaseInterface;
 use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\Levers\EconomicPressureResolver;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldLawValidator;
 
 class EconomicPhase implements SimulationPhaseInterface
 {

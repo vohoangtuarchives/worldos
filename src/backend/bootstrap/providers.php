@@ -2,8 +2,8 @@
 
 return [
     App\Providers\AppServiceProvider::class,
-    App\Domains\Material\Providers\MaterialServiceProvider::class,
-    App\Domains\World\Providers\WorldServiceProvider::class,
-    App\Domains\Cosmic\Providers\CosmicServiceProvider::class,
-    App\Domains\Vietnamese\Providers\VietnameseServiceProvider::class,
+    Tuzy\Infrastructure\Material\Providers\MaterialServiceProvider::class,
+    Tuzy\Infrastructure\World\Providers\WorldServiceProvider::class,
+    Tuzy\Infrastructure\Cosmic\Providers\CosmicServiceProvider::class,
+    Tuzy\Infrastructure\Vietnamese\Providers\VietnameseServiceProvider::class,
 ];

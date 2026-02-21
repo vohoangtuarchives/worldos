@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Material\Contracts\MaterialRepositoryInterface;
-use App\Domains\Material\Extraction\MaterialValidator;
+use Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface;
+use Tuzy\Application\Material\Extraction\MaterialValidator;
 use Illuminate\Support\Facades\File;
 
 class MaterialSeeder extends Seeder

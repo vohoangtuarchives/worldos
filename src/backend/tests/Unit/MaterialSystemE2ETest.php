@@ -2,10 +2,10 @@
 
 namespace Tests\Unit;
 
-use App\Domains\World\Services\MaterialService;
-use App\Domains\World\Services\MaterialQuery;
-use App\Domains\World\Services\OntologyService;
-use App\Domains\World\Services\PresetVersionService;
+use Tuzy\Application\World\Services\MaterialService;
+use Tuzy\Application\World\Services\MaterialQuery;
+use Tuzy\Application\World\Services\OntologyService;
+use Tuzy\Application\World\Services\PresetVersionService;
 use App\Models\World\MaterialDraft;
 use App\Models\World\WorldPreset;
 use App\Models\World\WorldState;

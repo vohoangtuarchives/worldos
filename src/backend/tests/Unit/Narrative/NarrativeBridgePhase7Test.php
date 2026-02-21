@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Narrative;
 
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Narrative\Services\NarrativeBridge;
-use App\Domains\Narrative\Entities\GenreSignature;
+use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use Tuzy\Application\Narrative\Services\NarrativeBridge;
+use Tuzy\Application\Narrative\Entities\GenreSignature;
 use PHPUnit\Framework\TestCase;
 
 class NarrativeBridgePhase7Test extends TestCase

@@ -7,10 +7,10 @@ use App\Models\World;
 use App\Models\Faction;
 use App\Models\Scar;
 use App\Models\Institution;
-use App\Domains\History\Services\EntropyCalculator;
-use App\Domains\History\Services\ScarImpactService;
-use App\Domains\Institution\Services\HealingService;
-use App\Domains\Faction\Services\FactionAgent;
+use Tuzy\Application\History\Services\EntropyCalculator;
+use Tuzy\Application\History\Services\ScarImpactService;
+use Tuzy\Application\Institution\Services\HealingService;
+use Tuzy\Application\Faction\Services\FactionAgent;
 use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
 use Illuminate\Support\Str;
 

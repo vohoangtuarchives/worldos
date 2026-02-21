@@ -7,7 +7,7 @@ use App\Models\Story;
 use App\Models\World;
 use App\Models\WorldPowerProfile;
 use App\StoryEngine\Seed;
-use App\Domains\World\Services\WorldEventLedger;
+use Tuzy\Application\World\Services\WorldEventLedger;
 
 class NarrativeAssembler
 {

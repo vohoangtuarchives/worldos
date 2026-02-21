@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Services\WaveInterferenceEngine;
-use App\Domains\Cosmology\Services\CosmicEvolutionService;
+use Tuzy\Application\Cosmology\Services\WaveInterferenceEngine;
+use Tuzy\Application\Cosmology\Services\CosmicEvolutionService;
 use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use PHPUnit\Framework\TestCase;

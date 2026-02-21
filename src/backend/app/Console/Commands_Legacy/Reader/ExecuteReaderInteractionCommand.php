@@ -35,7 +35,7 @@ class ExecuteReaderInteractionCommand extends Command
         $this->info("Executing reader interaction for World {$worldId}, Epoch {$epoch}");
 
         try {
-            $engine = app(\App\Domains\Reader\ReaderInteractionEngine::class);
+            $engine = app(\Tuzy\Domain\Reader\ReaderInteractionEngine::class);
 
             // Execute interaction cycle
             $result = $engine->execute($worldId, $epoch);
@@ -112,8 +112,8 @@ class ExecuteReaderInteractionCommand extends Command
     {
         $this->info('Applying deltas to WorldState...');
 
-        $repository = app(\App\Domains\Material\State\WorldStateRepository::class);
-        $mutator = app(\App\Domains\Material\State\WorldStateMutator::class);
+        $repository = app(\Tuzy\Application\Material\State\WorldStateRepository::class);
+        $mutator = app(\Tuzy\Application\Material\State\WorldStateMutator::class);
 
         // Get current state
         $currentState = $repository->getCurrentState($worldId);

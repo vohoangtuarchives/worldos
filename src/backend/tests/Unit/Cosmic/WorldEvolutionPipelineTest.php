@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Services\WaveInterferenceEngine;
-use App\Domains\Cosmology\Services\CosmicEvolutionService;
-use App\Domains\Cosmology\Services\WorldEvolutionPipeline;
-use App\Domains\Cosmology\Services\BifurcationManager;
-use App\Domains\Cosmology\Services\CosmicNarrativeRenderer;
+use Tuzy\Application\Cosmology\Services\WaveInterferenceEngine;
+use Tuzy\Application\Cosmology\Services\CosmicEvolutionService;
+use Tuzy\Application\Cosmology\Services\WorldEvolutionPipeline;
+use Tuzy\Application\Cosmology\Services\BifurcationManager;
+use Tuzy\Application\Cosmology\Services\CosmicNarrativeRenderer;
 use Tuzy\Domain\Cosmology\ValueObject\WorldSnapshot;
 use Tuzy\Domain\Cosmology\ValueObject\CosmicState;
 use Tuzy\Domain\Cosmology\ValueObject\EnvironmentState;

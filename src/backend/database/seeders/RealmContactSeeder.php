@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\Vietnamese\Models\RealmContact;
+use Tuzy\Domain\Vietnamese\Models\RealmContact;
 
 class RealmContactSeeder extends Seeder
 {

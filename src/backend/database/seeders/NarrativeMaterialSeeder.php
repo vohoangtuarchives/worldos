@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-use App\Domains\Narrative\Models\MaterialSeed;
+use Tuzy\Domain\Narrative\Models\MaterialSeed;
 
 class NarrativeMaterialSeeder extends Seeder
 {

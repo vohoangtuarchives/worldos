@@ -2,7 +2,7 @@
 
 use App\Models\World;
 use Tuzy\Domain\World\Enums\WorldHealthStatus;
-use App\Domains\WorldManagement\Services\AlertService;
+use Tuzy\Application\WorldManagement\Services\AlertService;
 
 require __DIR__ . '/../vendor/autoload.php';
 

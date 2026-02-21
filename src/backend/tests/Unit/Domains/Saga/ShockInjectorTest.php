@@ -2,7 +2,7 @@
 
 namespace Tests\Unit\Domains\Saga;
 
-use App\Domains\Saga\Services\ShockInjector;
+use Tuzy\Application\Saga\Services\ShockInjector;
 use PHPUnit\Framework\TestCase;
 
 class ShockInjectorTest extends TestCase

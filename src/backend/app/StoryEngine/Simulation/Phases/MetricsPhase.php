@@ -7,7 +7,7 @@ use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\Balancing\WorldHealthCalculator;
 use App\StoryEngine\Seed;
 
-use App\Domains\WorldManagement\Services\AlertService;
+use Tuzy\Application\WorldManagement\Services\AlertService;
 
 class MetricsPhase implements SimulationPhaseInterface
 {

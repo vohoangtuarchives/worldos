@@ -41,7 +41,7 @@ class WorldState extends Model
 
     public function evolutionProfile(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(\App\Domains\Evolution\Models\EvolutionProfile::class);
+        return $this->belongsTo(\Tuzy\Domain\Evolution\Models\EvolutionProfile::class);
     }
 
     /**

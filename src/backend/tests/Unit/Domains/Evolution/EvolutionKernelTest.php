@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Domains\Evolution;
 
-use App\Domains\Evolution\Models\EvolutionProfile;
-use App\Domains\Evolution\Services\EvolutionKernel;
-use App\Domains\Evolution\ValueObjects\StateVector;
+use Tuzy\Domain\Evolution\Models\EvolutionProfile;
+use Tuzy\Application\Evolution\Services\EvolutionKernel;
+use Tuzy\Domain\Evolution\ValueObjects\StateVector;
 use PHPUnit\Framework\TestCase;
 
 class EvolutionKernelTest extends TestCase

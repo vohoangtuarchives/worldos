@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Domains\CognitiveKernel\KernelVersion;
+use Tuzy\Domain\CognitiveKernel\KernelVersion;
 
 class KernelVersionSeeder extends Seeder
 {

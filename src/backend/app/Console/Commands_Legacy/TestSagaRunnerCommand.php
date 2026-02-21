@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\World;
-use App\Domains\Saga\Saga;
-use App\Domains\Saga\SagaRunner;
+use Tuzy\Domain\Saga\Saga;
+use Tuzy\Domain\Saga\SagaRunner;
 
 class TestSagaRunnerCommand extends Command
 {

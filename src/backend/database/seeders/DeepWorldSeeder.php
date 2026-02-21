@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Domains\World\Myth;
-use App\Domains\World\Scar;
+use Tuzy\Domain\World\Myth;
+use Tuzy\Domain\World\Scar;
 
 class DeepWorldSeeder extends Seeder
 {

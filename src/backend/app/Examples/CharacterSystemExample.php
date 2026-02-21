@@ -9,7 +9,7 @@
 namespace App\Examples;
 
 use App\StoryEngine\Character\CharacterGenerator;
-use App\Domains\Material\Contracts\MaterialRepositoryInterface;
+use Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface;
 use App\Models\World;
 
 class CharacterSystemExample

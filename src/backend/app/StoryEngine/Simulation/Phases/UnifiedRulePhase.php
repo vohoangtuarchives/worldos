@@ -6,7 +6,7 @@ use App\StoryEngine\Simulation\SimulationPhaseInterface;
 use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\SeedTransition;
 use App\StoryEngine\RuleApplier;
-use App\Domains\World\Services\WorldLawValidator;
+use Tuzy\Application\World\Services\WorldLawValidator;
 
 class UnifiedRulePhase implements SimulationPhaseInterface
 {

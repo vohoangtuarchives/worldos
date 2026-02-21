@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tuzy\Infrastructure\Persistence\Heroes;
 
-use App\Domains\Vietnamese\Models\WorldHero as WorldHeroModel;
+use Tuzy\Domain\Vietnamese\Models\WorldHero as WorldHeroModel;
 use Illuminate\Contracts\Events\Dispatcher;
 use Tuzy\Domain\Heroes\Entity\WorldHero;
 use Tuzy\Domain\Heroes\Event\WorldHeroCreated;

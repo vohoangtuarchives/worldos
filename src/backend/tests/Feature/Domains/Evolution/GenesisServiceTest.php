@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Domains\Evolution;
 
-use App\Domains\Evolution\Services\GenesisService;
-use App\Domains\Narrative\Models\MaterialSeed;
-use App\Domains\Narrative\Models\StoryPremise;
+use Tuzy\Application\Evolution\Services\GenesisService;
+use Tuzy\Domain\Narrative\Models\MaterialSeed;
+use Tuzy\Domain\Narrative\Models\StoryPremise;
 use App\Models\World;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;

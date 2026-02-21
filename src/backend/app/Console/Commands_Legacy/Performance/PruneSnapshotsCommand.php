@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Performance;
 
 use Illuminate\Console\Command;
-use App\Domains\Material\State\CompressedSnapshotRepository;
+use Tuzy\Application\Material\State\CompressedSnapshotRepository;
 
 /**
  * PruneSnapshotsCommand - Prune old snapshots to save storage

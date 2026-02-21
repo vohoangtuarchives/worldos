@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Application\World\Actions\TickWorldAction;
-use App\Domains\Character\Repositories\CharacterSurvivalRepository;
-use App\Domains\World\Repositories\WorldRepository;
+use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use Tuzy\Infrastructure\World\Repositories\WorldRepository;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

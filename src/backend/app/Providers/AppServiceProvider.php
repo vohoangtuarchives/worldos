@@ -18,33 +18,33 @@ class AppServiceProvider extends ServiceProvider
     {
         // WorldOS v3: Universe evaluator (Phase 3) — driver via WORLDOS_EVALUATOR_DRIVER
         $this->app->bind(
-            \App\Domains\Runtime\Evaluation\UniverseEvaluatorInterface::class,
+            \Tuzy\Application\Runtime\Evaluation\UniverseEvaluatorInterface::class,
             function ($app) {
                 $driver = config('worldos.evaluator_driver', 'stub');
                 if ($driver === 'llm') {
-                    return new \App\Domains\Runtime\Evaluation\LLMUniverseEvaluator(
-                        $app->make(\App\Domains\Narrative\LLM\Contracts\LLMProvider::class),
-                        new \App\Domains\Runtime\Evaluation\StubUniverseEvaluator()
+                    return new \Tuzy\Application\Runtime\Evaluation\LLMUniverseEvaluator(
+                        $app->make(\Tuzy\Application\Narrative\LLM\Contracts\LLMProvider::class),
+                        new \Tuzy\Application\Runtime\Evaluation\StubUniverseEvaluator()
                     );
                 }
-                return new \App\Domains\Runtime\Evaluation\StubUniverseEvaluator();
+                return new \Tuzy\Application\Runtime\Evaluation\StubUniverseEvaluator();
             }
         );
 
         // LLM Provider binding
         $this->app->bind(
-            \App\Domains\Narrative\LLM\Contracts\LLMProvider::class,
+            \Tuzy\Application\Narrative\LLM\Contracts\LLMProvider::class,
             function ($app) {
                 $apiKey = config('services.openai.api_key');
                 if (empty($apiKey) || app()->environment('testing')) {
-                    return new \App\Domains\Narrative\LLM\Services\FakeLLMService(
-                        $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class)
+                    return new \Tuzy\Application\Narrative\LLM\Services\FakeLLMService(
+                        $app->make(\Tuzy\Application\Narrative\LLM\Support\AIProviderRequestLogger::class)
                     );
                 }
-                return new \App\Domains\Narrative\LLM\Services\OpenAIService(
+                return new \Tuzy\Application\Narrative\LLM\Services\OpenAIService(
                     $apiKey,
                     config('services.openai.model'),
-                    $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class),
+                    $app->make(\Tuzy\Application\Narrative\LLM\Support\AIProviderRequestLogger::class),
                     $app->make(\App\Services\AI\AIAgentContext::class),
                     $app->make(\App\Services\AI\AIFeatureAgentResolver::class)
                 );
@@ -53,14 +53,14 @@ class AppServiceProvider extends ServiceProvider
 
         // World system bindings
         $this->app->bind(
-            \App\Domains\World\Contracts\ClaimExtractorInterface::class,
-            \App\Domains\World\Services\RegexClaimExtractor::class
+            \Tuzy\Domain\World\Contracts\ClaimExtractorInterface::class,
+            \Tuzy\Application\World\Services\RegexClaimExtractor::class
         );
         
         // World repository binding
         $this->app->bind(
-            \App\Domains\World\Repositories\WorldRepository::class,
-            \App\Domains\World\Repositories\EloquentWorldRepository::class
+            \Tuzy\Infrastructure\World\Repositories\WorldRepository::class,
+            \Tuzy\Infrastructure\World\Repositories\EloquentWorldRepository::class
         );
 
         // Tuzy: World repository (DDD port)
@@ -107,120 +107,120 @@ class AppServiceProvider extends ServiceProvider
 
         // Shock event repository binding
         $this->app->bind(
-            \App\Domains\World\Repositories\ShockEventRepository::class,
-            \App\Domains\World\Repositories\EloquentShockEventRepository::class
+            \Tuzy\Infrastructure\World\Repositories\ShockEventRepository::class,
+            \Tuzy\Infrastructure\World\Repositories\EloquentShockEventRepository::class
         );
 
         // Evolution engine (Runtime → World tick delegation).
         // Closure ensures the implementation is resolved at runtime (avoids "not instantiable" when cache is stale).
         $this->app->bind(
-            \App\Domains\World\Contracts\EvolutionEngineInterface::class,
+            \Tuzy\Domain\World\Contracts\EvolutionEngineInterface::class,
             function ($app) {
-                return $app->make(\App\Domains\World\Services\WorldEvolutionEngineAdapter::class);
+                return $app->make(\Tuzy\Application\World\Services\WorldEvolutionEngineAdapter::class);
             }
         );
 
         // Explicitly bind WorldEvolutionKernel to inject BasePhysicsEngine
         $this->app->bind(
-            \App\Domains\Evolution\Kernel\WorldEvolutionKernel::class,
+            \Tuzy\Application\Evolution\Kernel\WorldEvolutionKernel::class,
             function ($app) {
-                return new \App\Domains\Evolution\Kernel\WorldEvolutionKernel(
-                    $app->make(\App\Domains\Evolution\Engine\VectorDynamicsEngine::class),
-                    $app->make(\App\Domains\Evolution\Kernel\StateLoader::class),
-                    $app->make(\App\Domains\Cosmology\Services\BasePhysicsEngine::class),
-                    $app->make(\App\Domains\Cosmology\Services\StructuralMutationEngine::class),
-                    $app->make(\App\Domains\Material\MaterialWorldBridge::class)
+                return new \Tuzy\Application\Evolution\Kernel\WorldEvolutionKernel(
+                    $app->make(\Tuzy\Application\Evolution\Engine\VectorDynamicsEngine::class),
+                    $app->make(\Tuzy\Application\Evolution\Kernel\StateLoader::class),
+                    $app->make(\Tuzy\Application\Cosmology\Services\BasePhysicsEngine::class),
+                    $app->make(\Tuzy\Application\Cosmology\Services\StructuralMutationEngine::class),
+                    $app->make(\Tuzy\Domain\Material\MaterialWorldBridge::class)
                 );
             }
         );
 
         // Continuous operation services
         $this->app->singleton(\App\Services\World\ContinuousWorldService::class);
-        $this->app->singleton(\App\Domains\Intelligence\Services\WorldIntelligenceService::class);
-        $this->app->singleton(\App\Domains\Material\Services\WorldMaterialTracker::class);
+        $this->app->singleton(\Tuzy\Application\Intelligence\Services\WorldIntelligenceService::class);
+        $this->app->singleton(\Tuzy\Application\Material\Services\WorldMaterialTracker::class);
         
         // Intelligence repository binding
         $this->app->bind(
-            \App\Domains\Intelligence\Repositories\IntelligenceRepository::class,
-            \App\Domains\Intelligence\Repositories\EloquentIntelligenceRepository::class
+            \Tuzy\Infrastructure\Intelligence\Repositories\IntelligenceRepository::class,
+            \Tuzy\Infrastructure\Intelligence\Repositories\EloquentIntelligenceRepository::class
         );
 
         // Phase 31: History & Institution Domains
         $this->app->bind(
-            \App\Domains\History\Repositories\ScarRepositoryInterface::class,
-            \App\Domains\History\Repositories\ScarEloquentRepository::class
+            \Tuzy\Infrastructure\History\Repositories\ScarRepositoryInterface::class,
+            \Tuzy\Infrastructure\History\Repositories\ScarEloquentRepository::class
         );
         $this->app->bind(
-            \App\Domains\History\Repositories\MythRepositoryInterface::class,
-            \App\Domains\History\Repositories\MythEloquentRepository::class
+            \Tuzy\Infrastructure\History\Repositories\MythRepositoryInterface::class,
+            \Tuzy\Infrastructure\History\Repositories\MythEloquentRepository::class
         );
         $this->app->bind(
-            \App\Domains\Institution\Repositories\InstitutionRepositoryInterface::class,
-            \App\Domains\Institution\Repositories\InstitutionEloquentRepository::class
+            \Tuzy\Infrastructure\Institution\Repositories\InstitutionRepositoryInterface::class,
+            \Tuzy\Infrastructure\Institution\Repositories\InstitutionEloquentRepository::class
         );
         
         // Character repository binding
         $this->app->bind(
-            \App\Domains\Character\Repositories\CharacterSurvivalRepository::class,
-            \App\Domains\Character\Repositories\EloquentCharacterSurvivalRepository::class
+            \Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository::class,
+            \Tuzy\Infrastructure\Character\Repositories\EloquentCharacterSurvivalRepository::class
         );
         
         // Material repository binding
         $this->app->bind(
-            \App\Domains\Material\Contracts\MaterialRepositoryInterface::class,
-            \App\Domains\Material\Repositories\MaterialEloquentRepository::class
+            \Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface::class,
+            \Tuzy\Infrastructure\Material\Repositories\MaterialEloquentRepository::class
         );
         
         // WorldMaterial repository binding
         $this->app->bind(
-            \App\Domains\Material\Repositories\WorldMaterialRepository::class,
-            \App\Domains\Material\Repositories\WorldMaterialRepository::class
+            \Tuzy\Infrastructure\Material\Repositories\WorldMaterialRepository::class,
+            \Tuzy\Infrastructure\Material\Repositories\WorldMaterialRepository::class
         );
         
         // WorldState repository binding
         $this->app->bind(
-            \App\Domains\Material\State\WorldStateRepository::class,
-            \App\Domains\Material\State\WorldStateRepository::class
+            \Tuzy\Application\Material\State\WorldStateRepository::class,
+            \Tuzy\Application\Material\State\WorldStateRepository::class
         );
         
         // WorldStateMutator binding
         $this->app->bind(
-            \App\Domains\Material\State\WorldStateMutator::class,
-            \App\Domains\Material\State\WorldStateMutator::class
+            \Tuzy\Application\Material\State\WorldStateMutator::class,
+            \Tuzy\Application\Material\State\WorldStateMutator::class
         );
         
         // CompressedSnapshot repository binding
         $this->app->bind(
-            \App\Domains\Material\State\CompressedSnapshotRepository::class,
-            \App\Domains\Material\State\CompressedSnapshotRepository::class
+            \Tuzy\Application\Material\State\CompressedSnapshotRepository::class,
+            \Tuzy\Application\Material\State\CompressedSnapshotRepository::class
         );
         
         // EntropyCalculator binding
         $this->app->bind(
-            \App\Domains\History\Services\EntropyCalculator::class,
-            \App\Domains\History\Services\EntropyCalculator::class
+            \Tuzy\Application\History\Services\EntropyCalculator::class,
+            \Tuzy\Application\History\Services\EntropyCalculator::class
         );
         
         // ScarImpactService binding
         $this->app->bind(
-            \App\Domains\History\Services\ScarImpactService::class,
-            \App\Domains\History\Services\ScarImpactService::class
+            \Tuzy\Application\History\Services\ScarImpactService::class,
+            \Tuzy\Application\History\Services\ScarImpactService::class
         );
 
         // RealityNarrator binding
-        $this->app->singleton(\App\Domains\Narrative\Services\RealityNarrator::class);
+        $this->app->singleton(\Tuzy\Application\Narrative\Services\RealityNarrator::class);
 
         // SagaDirector binding
-        $this->app->singleton(\App\Domains\Saga\Services\SagaDirector::class);
+        $this->app->singleton(\Tuzy\Application\Saga\Services\SagaDirector::class);
 
         // Cosmology Bindings (Consolidated from Cosmic)
         $this->app->bind(
-            \App\Domains\Cosmology\Contracts\CosmicSnapshotRepositoryInterface::class,
-            \App\Domains\Cosmology\Repositories\CosmicSnapshotEloquentRepository::class
+            \Tuzy\Domain\Cosmology\Contracts\CosmicSnapshotRepositoryInterface::class,
+            \Tuzy\Infrastructure\Cosmology\Repositories\CosmicSnapshotEloquentRepository::class
         );
         $this->app->bind(
-            \App\Domains\Cosmology\Contracts\AttractorRepositoryInterface::class,
-            \App\Domains\Cosmology\Repositories\AttractorEloquentRepository::class
+            \Tuzy\Domain\Cosmology\Contracts\AttractorRepositoryInterface::class,
+            \Tuzy\Infrastructure\Cosmology\Repositories\AttractorEloquentRepository::class
         );
 
     }
@@ -266,15 +266,15 @@ class AppServiceProvider extends ServiceProvider
 
         // Custom validation rules
         Validator::extend('world_id', function ($attribute, $value, $parameters, $validator) {
-            return \App\Domains\World\Repositories\WorldRepository::exists($value);
+            return \Tuzy\Infrastructure\World\Repositories\WorldRepository::exists($value);
         });
 
         Validator::extend('material_id', function ($attribute, $value, $parameters, $validator) {
-            return \App\Domains\Material\Repositories\MaterialEloquentRepository::exists($value);
+            return \Tuzy\Infrastructure\Material\Repositories\MaterialEloquentRepository::exists($value);
         });
 
         Validator::extend('character_id', function ($attribute, $value, $parameters, $validator) {
-            return \App\Domains\Character\Repositories\CharacterSurvivalRepository::exists($value);
+            return \Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository::exists($value);
         });
 
         // Request macros for common patterns

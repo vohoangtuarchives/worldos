@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Domains\Narrative\Planning\StoryOrchestrator;
+use Tuzy\Application\Narrative\Planning\StoryOrchestrator;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

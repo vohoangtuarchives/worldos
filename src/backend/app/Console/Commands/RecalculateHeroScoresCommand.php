@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use App\Domains\Vietnamese\Models\VietnameseHero;
-use App\Domains\Vietnamese\Models\ScoringVersion;
+use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
+use Tuzy\Domain\Vietnamese\Models\ScoringVersion;
 use App\Jobs\RecalculateHeroScoreJob;
 use Illuminate\Console\Command;
 

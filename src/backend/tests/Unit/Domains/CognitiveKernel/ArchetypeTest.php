@@ -3,7 +3,7 @@
 namespace Tests\Unit\Domains\CognitiveKernel;
 
 use Tests\TestCase;
-use App\Domains\CognitiveKernel\Archetype;
+use Tuzy\Domain\CognitiveKernel\Archetype;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use RuntimeException;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Aggregates\AttractorAggregate;
-use App\Domains\Cosmology\Services\MorphingEngine;
-use App\Domains\Cosmology\Services\SemanticProjector;
+use Tuzy\Domain\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Application\Cosmology\Services\MorphingEngine;
+use Tuzy\Application\Cosmology\Services\SemanticProjector;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use Tuzy\Domain\Cosmology\ValueObject\AttractorIncarnation;
 use Tuzy\Domain\Cosmology\ValueObject\CosmicState;

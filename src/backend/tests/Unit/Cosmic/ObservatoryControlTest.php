@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Unit\Cosmic;
 
-use App\Domains\Cosmology\Aggregates\AttractorAggregate;
-use App\Domains\Cosmology\Services\AlertEvaluationEngine;
-use App\Domains\Cosmology\Services\EmergencyInterventionService;
-use App\Domains\Cosmology\Services\EpochControlService;
-use App\Domains\Cosmology\Services\MetricsSnapshotService;
+use Tuzy\Domain\Cosmology\Aggregates\AttractorAggregate;
+use Tuzy\Application\Cosmology\Services\AlertEvaluationEngine;
+use Tuzy\Application\Cosmology\Services\EmergencyInterventionService;
+use Tuzy\Application\Cosmology\Services\EpochControlService;
+use Tuzy\Application\Cosmology\Services\MetricsSnapshotService;
 use Tuzy\Domain\Cosmology\ValueObject\AlertRule;
 use Tuzy\Domain\Cosmic\ValueObject\Attractor;
 use Tuzy\Domain\Cosmology\ValueObject\CivilizationState;

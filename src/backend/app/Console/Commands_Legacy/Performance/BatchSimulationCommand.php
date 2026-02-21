@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Performance;
 
 use Illuminate\Console\Command;
-use App\Domains\Material\Engine\MaterialLawEngine;
+use Tuzy\Application\Material\Engine\MaterialLawEngine;
 use Illuminate\Support\Facades\DB;
 
 /**
