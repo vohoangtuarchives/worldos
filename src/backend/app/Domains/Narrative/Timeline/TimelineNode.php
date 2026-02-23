@@ -2,7 +2,7 @@
 
 namespace App\Domains\Narrative\Timeline;
 
-use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
+use WorldOS\Saga\Domain\Narrative\ValueObject\StateSnapshot;
 use Illuminate\Support\Str;
 
 class TimelineNode

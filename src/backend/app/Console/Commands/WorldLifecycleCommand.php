@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Tuzy\Application\World\Services\WorldLifecycleAnalyzer;
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use App\Domains\World\Services\WorldLifecycleAnalyzer;
+use App\Domains\World\Repositories\WorldRepository;
+use App\Domains\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Console\Command;
 
 final class WorldLifecycleCommand extends Command

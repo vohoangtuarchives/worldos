@@ -3,7 +3,7 @@
 namespace App\Domains\Runtime\Evaluation;
 
 use App\Domains\Cosmology\Entities\Universe;
-use Tuzy\Domain\Runtime\ValueObject\EvaluationResult;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\EvaluationResult;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Cosmology\Repositories\UniverseSnapshotRepository;
 use App\Domains\Evolution\Kernel\WorldEvolutionKernel;

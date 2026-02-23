@@ -2,8 +2,8 @@
 
 namespace App\Domains\Runtime\Evaluation;
 
-use Tuzy\Domain\Runtime\ValueObject\EvaluationResult;
-use Tuzy\Domain\Runtime\ValueObject\UniverseMetrics;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\EvaluationResult;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\UniverseMetrics;
 
 interface UniverseEvaluatorInterface
 {

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Application\World\Actions\TickWorldAction;
-use Tuzy\Domain\World\Aggregates\WorldAggregate;
-use Tuzy\Domain\Character\Aggregates\CharacterSurvivalAggregate;
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use WorldOS\Blueprint\Domain\Legacy\Aggregates\WorldAggregate;
+use WorldOS\Society\Character\Aggregates\CharacterSurvivalAggregate;
+use WorldOS\Legacy\Infrastructure\World\Repositories\WorldRepository;
+use WorldOS\Legacy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;

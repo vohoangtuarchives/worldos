@@ -8,7 +8,7 @@ use Database\Seeders\WorldSeeder;
 use App\Models\World;
 use App\Models\WorldMyth;
 use App\Models\WorldScar;
-use Tuzy\Application\World\AI\ArchitectAdvisor;
+use WorldOS\Legacy\Application\World\AI\ArchitectAdvisor;
 
 class AIAdvisorTest extends TestCase
 {

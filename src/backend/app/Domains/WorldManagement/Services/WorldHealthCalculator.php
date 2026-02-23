@@ -2,8 +2,8 @@
 
 namespace App\Domains\WorldManagement\Services;
 
-use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
-use Tuzy\Domain\WorldManagement\ValueObject\HealthResult;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus;
+use WorldOS\Blueprint\Domain\LegacyManagement\ValueObject\HealthResult;
 use App\Models\World;
 use Illuminate\Support\Facades\DB;
 

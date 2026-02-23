@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs;
 
-use Tuzy\Application\Narrative\Serial\SerialStoryService;
+use WorldOS\Legacy\Application\Narrative\Serial\SerialStoryService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;

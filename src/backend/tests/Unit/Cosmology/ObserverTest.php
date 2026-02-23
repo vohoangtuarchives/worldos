@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Cosmology;
 
-use Tuzy\Application\Cosmology\Agents\Observer;
-use Tuzy\Application\Cosmology\Entities\Universe;
-use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use WorldOS\Legacy\Application\Cosmology\Agents\Observer;
+use WorldOS\Legacy\Application\Cosmology\Entities\Universe;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
 use PHPUnit\Framework\TestCase;
 
 class ObserverTest extends TestCase

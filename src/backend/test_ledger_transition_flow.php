@@ -2,7 +2,7 @@
 
 use App\Models\World;
 use App\Models\Faction;
-use App\Domains\World\Services\WorldEventLedger;
+use WorldOS\World\Application\Services\WorldEventLedger;
 use App\Domains\World\Services\StageTransitionEngine;
 use App\Domains\Material\MaterialArchetypeCoupler;
 use App\Domains\Material\Material;

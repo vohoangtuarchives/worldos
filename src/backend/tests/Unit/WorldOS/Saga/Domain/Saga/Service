@@ -1,0 +1,61 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Unit\WorldOS\Saga\Domain\Saga\Service;
+
+use PHPUnit\Framework\TestCase;
+use WorldOS\Saga\Domain\Saga\Service\LifecycleManager;
+use WorldOS\Saga\Domain\Saga\ValueObject\LifecyclePhase;
+use WorldOS\Saga\Domain\Saga\ValueObject\SagaMetrics;
+
+final class LifecycleManagerTest extends TestCase
+{
+    private LifecycleManager $manager;
+
+    protected function setUp(): void
+    {
+        $this->manager = new LifecycleManager();
+    }
+
+    public function test_evaluates_next_phase_transitions_linearly_based_on_chapter_count(): void
+    {
+        $metrics = SagaMetrics::genesis();
+
+        $phase = $this->manager->evaluateNextPhase(1, $metrics, LifecyclePhase::SEED, false);
+        $this->assertSame(LifecyclePhase::EMERGENCE, $phase);
+
+        $phase = $this->manager->evaluateNextPhase(40, $metrics, LifecyclePhase::EMERGENCE, false);
+        $this->assertSame(LifecyclePhase::ASCENT, $phase);
+
+        $phase = $this->manager->evaluateNextPhase(150, $metrics, LifecyclePhase::ASCENT, false);
+        $this->assertSame(LifecyclePhase::PEAK, $phase);
+
+        $phase = $this->manager->evaluateNextPhase(220, $metrics, LifecyclePhase::PEAK, false);
+        $this->assertSame(LifecyclePhase::DESTABILIZE, $phase);
+
+        $phase = $this->manager->evaluateNextPhase(260, $metrics, LifecyclePhase::DESTABILIZE, false);
+        $this->assertSame(LifecyclePhase::RESOLUTION, $phase);
+    }
+
+    public function test_early_destabilization_if_narrative_pressure_drops_during_peak(): void
+    {
+        // Chapter 180 is halfway through Peak.
+        // If NPI is very low (<0.2), it destabilizes early.
+        $metrics = SagaMetrics::create(1.0, 0.1); 
+
+        $phase = $this->manager->evaluateNextPhase(180, $metrics, LifecyclePhase::PEAK, false);
+        
+        $this->assertSame(LifecyclePhase::DESTABILIZE, $phase);
+    }
+
+    public function test_attractor_resolution_forces_resolution_phase_regardless_of_chapter(): void
+    {
+        $metrics = SagaMetrics::genesis();
+
+        // Even at chapter 100 (Ascent), if the attractor is reached, it skips to Resolution
+        $phase = $this->manager->evaluateNextPhase(100, $metrics, LifecyclePhase::ASCENT, true);
+        
+        $this->assertSame(LifecyclePhase::RESOLUTION, $phase);
+    }
+}

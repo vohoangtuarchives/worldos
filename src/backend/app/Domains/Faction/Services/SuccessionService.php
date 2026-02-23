@@ -3,7 +3,7 @@
 namespace App\Domains\Faction\Services;
 
 use App\Models\Faction;
-use Tuzy\Domain\Faction\ValueObject\Leader;
+use WorldOS\Society\Faction\ValueObject\Leader;
 
 class SuccessionService
 {

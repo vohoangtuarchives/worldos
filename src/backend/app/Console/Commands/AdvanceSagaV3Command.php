@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Tuzy\Application\Saga\Services\SagaService;
-use Tuzy\Domain\Saga\Saga;
+use WorldOS\Legacy\Application\Saga\Services\SagaService;
+use WorldOS\Saga\Domain\Legacy\Saga;
 
 class AdvanceSagaV3Command extends Command
 {

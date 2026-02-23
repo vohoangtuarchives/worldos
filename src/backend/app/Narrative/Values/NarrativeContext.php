@@ -2,7 +2,7 @@
 
 namespace App\Narrative\Values;
 
-use Tuzy\Domain\Genre\Contracts\GenreDefinition;
+use WorldOS\Legacy\Domain\Genre\Contracts\GenreDefinition;
 
 class NarrativeContext
 {
@@ -11,10 +11,10 @@ class NarrativeContext
         public readonly string $tone,
         public readonly string $audience,
         public readonly ?GenreDefinition $genre = null,
-        public readonly ?\Tuzy\Domain\Social\HonorificContext $socialContext = null,
-        public readonly ?\Tuzy\Domain\Power\ValueObject\PowerStage $powerStage = null,
-        public readonly ?\Tuzy\Domain\Genre\ValueObject\GenreProfile $genreProfile = null,
-        public readonly ?\Tuzy\Domain\Saga\Enums\PowerScope $powerScope = null,
+        public readonly ?\WorldOS\Society\Social\HonorificContext $socialContext = null,
+        public readonly ?\WorldOS\Legacy\Domain\Power\ValueObject\PowerStage $powerStage = null,
+        public readonly ?\WorldOS\Legacy\Domain\Genre\ValueObject\GenreProfile $genreProfile = null,
+        public readonly ?\WorldOS\Saga\Domain\Legacy\Enums\PowerScope $powerScope = null,
         public readonly string $phase = 'stable' // pre, moment, post
     ) {}
 

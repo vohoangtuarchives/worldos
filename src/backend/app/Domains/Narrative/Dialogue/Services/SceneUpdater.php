@@ -3,7 +3,7 @@
 namespace App\Domains\Narrative\Dialogue\Services;
 
 use App\Domains\Narrative\Character\Character;
-use Tuzy\Domain\Narrative\ValueObject\Intent;
+use WorldOS\Saga\Domain\Narrative\ValueObject\Intent;
 use App\Domains\Narrative\Scene\Scene;
 use Illuminate\Support\Facades\Log;
 

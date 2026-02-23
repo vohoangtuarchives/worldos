@@ -7,11 +7,11 @@ use App\Models\World;
 use App\Models\Faction;
 use App\Models\Scar;
 use App\Models\Institution;
-use Tuzy\Application\History\Services\EntropyCalculator;
-use Tuzy\Application\History\Services\ScarImpactService;
-use Tuzy\Application\Institution\Services\HealingService;
-use Tuzy\Application\Faction\Services\FactionAgent;
-use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
+use WorldOS\Legacy\Application\History\Services\EntropyCalculator;
+use WorldOS\Legacy\Application\History\Services\ScarImpactService;
+use WorldOS\Legacy\Application\Institution\Services\HealingService;
+use WorldOS\Legacy\Application\Faction\Services\FactionAgent;
+use WorldOS\Society\Faction\ValueObject\IdeologyVector;
 use Illuminate\Support\Str;
 
 class SimulateHistoryTest extends Command

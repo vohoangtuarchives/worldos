@@ -4,8 +4,8 @@ namespace App\StoryEngine;
 
 use App\StoryEngine\Persistence\OptimizedEventStore;
 use App\Services\WorldLawProfileCache;
-use Tuzy\Application\World\Services\WorldLawValidator;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\World\Application\Services\WorldLawValidator;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use App\Exceptions\Simulation\SimulationException;
 
 class OptimizedSimulator
@@ -247,7 +247,7 @@ class OptimizedSimulator
             return;
         }
 
-        if ($freshWorld->health_status === \Tuzy\Domain\World\ValueObject\WorldHealthStatus::HALTED) {
+        if ($freshWorld->health_status === \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::HALTED) {
             throw SimulationException::stateCorruption(
                 'Simulation halted by kill switch',
                 ['world_id' => $worldId, 'status' => $freshWorld->health_status]

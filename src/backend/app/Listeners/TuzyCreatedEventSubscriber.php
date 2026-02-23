@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Listeners;
 
 use Illuminate\Support\Facades\Log;
-use Tuzy\Domain\Cosmology\Event\UniverseStyleCreated;
-use Tuzy\Domain\Evolution\Event\EvolutionProfileCreated;
-use Tuzy\Domain\Narrative\Event\NarrativeSeriesCreated;
-use Tuzy\Domain\Runtime\Event\UniverseCreated;
-use Tuzy\Domain\Saga\Event\SagaCreated;
-use Tuzy\Domain\Heroes\Event\WorldHeroCreated;
-use Tuzy\Domain\World\Event\WorldCreated;
+use WorldOS\Legacy\Domain\Cosmology\Event\UniverseStyleCreated;
+use WorldOS\Evolution\Domain\Legacy\Event\EvolutionProfileCreated;
+use WorldOS\Saga\Domain\Narrative\Event\NarrativeSeriesCreated;
+use WorldOS\Legacy\Domain\Runtime\Event\UniverseCreated;
+use WorldOS\Saga\Domain\Legacy\Event\SagaCreated;
+use WorldOS\Saga\Domain\Hero\Event\HeroCreated;
+use WorldOS\Blueprint\Domain\Legacy\Event\WorldCreated;
 
 /**
  * Subscriber for Tuzy domain *Created events. Logs for audit; extend with notifications or persistence if needed.
@@ -26,7 +26,7 @@ final class TuzyCreatedEventSubscriber
         $events->listen(UniverseStyleCreated::class, [$this, 'onUniverseStyleCreated']);
         $events->listen(EvolutionProfileCreated::class, [$this, 'onEvolutionProfileCreated']);
         $events->listen(NarrativeSeriesCreated::class, [$this, 'onNarrativeSeriesCreated']);
-        $events->listen(WorldHeroCreated::class, [$this, 'onWorldHeroCreated']);
+        $events->listen(HeroCreated::class, [$this, 'onHeroCreated']);
     }
 
     public function onWorldCreated(WorldCreated $event): void
@@ -69,9 +69,9 @@ final class TuzyCreatedEventSubscriber
         ]);
     }
 
-    public function onWorldHeroCreated(WorldHeroCreated $event): void
+    public function onHeroCreated(HeroCreated $event): void
     {
-        Log::debug('Tuzy.WorldHeroCreated', [
+        Log::debug('Tuzy.HeroCreated', [
             'hero_id' => $event->heroId,
             'name' => $event->name,
             'world_id' => $event->worldId,

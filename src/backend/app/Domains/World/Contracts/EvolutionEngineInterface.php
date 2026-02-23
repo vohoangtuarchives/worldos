@@ -6,7 +6,7 @@ namespace App\Domains\World\Contracts;
  * World (aggregate root) owns evolution logic.
  * Runtime (Universe instance) delegates tick to this engine.
  * Implementations may delegate to Cosmology kernel or World-specific Evolution kernel.
- * Phase 4.2: Optional $shockParams (e.g. Tuzy\Domain\Saga\ValueObject\ShockParams) for Saga mode.
+ * Phase 4.2: Optional $shockParams (e.g. WorldOS\Saga\Domain\Legacy\ValueObject\ShockParams) for Saga mode.
  */
 interface EvolutionEngineInterface
 {

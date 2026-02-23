@@ -11,9 +11,9 @@ class RuleApplier
      * @param Seed[] $activeSeeds (Reference)
      * @param Seed[] $newSeeds
      * @param Seed $resolvedSeed
-     * @param \Tuzy\Application\World\Services\WorldLawValidator $validator
+     * @param \WorldOS\World\Application\Services\WorldLawValidator $validator
      */
-    public static function apply(WorldState $world, CharacterState $character, array &$activeSeeds, array $newSeeds, Seed $resolvedSeed, \Tuzy\Application\World\Services\WorldLawValidator $validator): void
+    public static function apply(WorldState $world, CharacterState $character, array &$activeSeeds, array $newSeeds, Seed $resolvedSeed, \WorldOS\World\Application\Services\WorldLawValidator $validator): void
     {
         // 1. World Friction: If power related resolved -> increase public awareness
         if (in_array($resolvedSeed->type, [SeedTransition::TYPE_POWER_GAP, SeedTransition::TYPE_ESCALATION_DEBT])) {

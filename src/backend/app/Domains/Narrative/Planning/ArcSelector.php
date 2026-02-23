@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Planning;
 
-use Tuzy\Domain\Conflict\ValueObject\ConflictSeed;
+use WorldOS\Legacy\Domain\Conflict\ValueObject\ConflictSeed;
 
 /**
  * Maps ConflictSeed[] to primary ArcType for story structure.

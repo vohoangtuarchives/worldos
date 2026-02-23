@@ -2,10 +2,10 @@
 
 namespace App\Domains\Social;
 
-use Tuzy\Domain\Social\Enums\RelativeAgeRank;
-use Tuzy\Domain\Social\Enums\SocialStatus;
-use Tuzy\Domain\Social\Enums\SituationType;
-use Tuzy\Domain\Social\ValueObject\AddressingScope;
+use WorldOS\Society\Social\Enums\RelativeAgeRank;
+use WorldOS\Society\Social\Enums\SocialStatus;
+use WorldOS\Society\Social\Enums\SituationType;
+use WorldOS\Society\Social\ValueObject\AddressingScope;
 
 class HonorificContext
 {

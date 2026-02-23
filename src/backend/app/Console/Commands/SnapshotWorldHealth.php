@@ -18,7 +18,7 @@ class SnapshotWorldHealth extends Command
 
         foreach ($worlds as $world) {
             // Skip if halted (no need to keep logging dead worlds)
-            if ($world->health_status === \Tuzy\Domain\World\ValueObject\WorldHealthStatus::HALTED) {
+            if ($world->health_status === \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::HALTED) {
                 continue;
             }
 

@@ -6,7 +6,7 @@ use App\Domains\CognitiveKernel\ArchetypeWeight;
 use App\Domains\CognitiveKernel\CouplingRules;
 use App\Models\World;
 use Illuminate\Support\Collection;
-use Tuzy\Domain\SocialSimulation\ValueObject\LegitimacyResult;
+use WorldOS\Society\SocialSimulation\ValueObject\LegitimacyResult;
 
 /**
  * Legitimacy Calculator

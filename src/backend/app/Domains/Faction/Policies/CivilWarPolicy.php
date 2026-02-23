@@ -4,8 +4,8 @@ namespace App\Domains\Faction\Policies;
 
 use App\Models\Faction;
 use App\Models\World;
-use Tuzy\Domain\Faction\ValueObject\PersonalityVector;
-use Tuzy\Domain\Faction\ValueObject\Leader;
+use WorldOS\Society\Faction\ValueObject\PersonalityVector;
+use WorldOS\Society\Faction\ValueObject\Leader;
 
 class CivilWarPolicy
 {

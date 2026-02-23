@@ -2,8 +2,8 @@
 
 namespace App\Listeners\Cosmology;
 
-use Tuzy\Domain\World\Event\WorldDefined;
-use Tuzy\Domain\Genre\GenreRegistry;
+use WorldOS\Blueprint\Domain\Legacy\Event\WorldDefined;
+use WorldOS\Legacy\Domain\Genre\GenreRegistry;
 use App\Models\World;
 use App\Models\UniverseStyle;
 use Illuminate\Support\Facades\Log;

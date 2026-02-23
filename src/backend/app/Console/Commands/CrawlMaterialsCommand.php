@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Infrastructure\Crawler\Services\MaterialCrawlerAggregator;
-use Tuzy\Application\Material\Services\MaterialIngestionService;
+use WorldOS\Legacy\Application\Material\Services\MaterialIngestionService;
 use App\Models\World;
 use Illuminate\Console\Command;
 

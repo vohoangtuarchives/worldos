@@ -5,10 +5,10 @@ $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
 use App\Models\World;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
-use Tuzy\Domain\World\Enums\MagicSystemType;
-use Tuzy\Application\World\Services\WorldForkService;
-use Tuzy\Application\World\Services\WorldLawValidator;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
+use WorldOS\Blueprint\Domain\Legacy\Enums\MagicSystemType;
+use App\Domains\World\Services\WorldForkService;
+use WorldOS\World\Application\Services\WorldLawValidator;
 use App\StoryEngine\Seed;
 
 // 1. Setup Parent World (Low Magic)

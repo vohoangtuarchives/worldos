@@ -3,11 +3,11 @@
 namespace Tests\Unit;
 
 use Tests\TestCase;
-use Tuzy\Application\Narrative\Character\Character;
-use Tuzy\Application\Narrative\Character\MemoryCollection;
-use Tuzy\Application\Narrative\Character\GoalStack;
-use Tuzy\Application\Narrative\Character\Entities\Memory;
-use Tuzy\Domain\Narrative\ValueObject\EmotionState;
+use WorldOS\Legacy\Application\Narrative\Character\Character;
+use WorldOS\Legacy\Application\Narrative\Character\MemoryCollection;
+use WorldOS\Legacy\Application\Narrative\Character\GoalStack;
+use WorldOS\Legacy\Application\Narrative\Character\Entities\Memory;
+use WorldOS\Saga\Domain\Narrative\ValueObject\EmotionState;
 
 class CharacterAggregateTest extends TestCase
 {

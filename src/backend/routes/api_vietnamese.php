@@ -26,18 +26,25 @@ use App\Http\Controllers\Api\ClusterController;
 |--------------------------------------------------------------------------
 */
 // Tuzy DDD — World & Runtime (pilot)
-Route::post('v4/tuzy/worlds', \Tuzy\Presentation\Http\Controllers\World\CreateWorldController::class);
-Route::get('v4/tuzy/worlds/{id}', \Tuzy\Presentation\Http\Controllers\World\GetWorldController::class);
-Route::get('v4/tuzy/worlds/{id}/timeline', \Tuzy\Presentation\Http\Controllers\World\GetWorldTimelineController::class);
-Route::patch('v4/tuzy/worlds/{id}/meta-laws', \Tuzy\Presentation\Http\Controllers\MetaCosmos\UpdateMetaLawsController::class);
-Route::post('v4/tuzy/worlds/{id}/evolve', \Tuzy\Presentation\Http\Controllers\MetaCosmos\RunMetaCycleController::class);
-Route::get('v4/tuzy/worlds/{id}/meta-cycles', \Tuzy\Presentation\Http\Controllers\MetaCosmos\ListMetaCyclesController::class);
-Route::post('v4/tuzy/universes', \Tuzy\Presentation\Http\Controllers\Runtime\CreateUniverseController::class);
-Route::post('v4/tuzy/sagas', \Tuzy\Presentation\Http\Controllers\Saga\CreateSagaController::class);
-Route::post('v4/tuzy/universe-styles', \Tuzy\Presentation\Http\Controllers\Cosmology\CreateUniverseStyleController::class);
-Route::post('v4/tuzy/evolution-profiles', \Tuzy\Presentation\Http\Controllers\Evolution\CreateEvolutionProfileController::class);
-Route::post('v4/tuzy/narrative-series', \Tuzy\Presentation\Http\Controllers\Narrative\CreateNarrativeSeriesController::class);
-Route::post('v4/tuzy/world-heroes', \Tuzy\Presentation\Http\Controllers\Heroes\CreateWorldHeroController::class);
+Route::get('v4/tuzy/worlds', \WorldOS\Legacy\Presentation\Http\Controllers\World\ListWorldsController::class);
+Route::post('v4/tuzy/worlds', \WorldOS\Legacy\Presentation\Http\Controllers\World\CreateWorldController::class);
+Route::get('v4/tuzy/worlds/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\World\GetWorldController::class);
+Route::patch('v4/tuzy/worlds/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\World\UpdateWorldController::class);
+Route::delete('v4/tuzy/worlds/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\World\DeleteWorldController::class);
+Route::get('v4/tuzy/worlds/{id}/timeline', \WorldOS\Legacy\Presentation\Http\Controllers\World\GetWorldTimelineController::class);
+Route::patch('v4/tuzy/worlds/{id}/meta-laws', \WorldOS\Legacy\Presentation\Http\Controllers\MetaCosmos\UpdateMetaLawsController::class);
+Route::post('v4/tuzy/worlds/{id}/evolve', \WorldOS\Legacy\Presentation\Http\Controllers\MetaCosmos\RunMetaCycleController::class);
+Route::get('v4/tuzy/worlds/{id}/meta-cycles', \WorldOS\Legacy\Presentation\Http\Controllers\MetaCosmos\ListMetaCyclesController::class);
+Route::get('v4/tuzy/universes/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\Runtime\GetUniverseController::class);
+Route::patch('v4/tuzy/universes/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\Runtime\UpdateUniverseController::class);
+Route::delete('v4/tuzy/universes/{id}', \WorldOS\Legacy\Presentation\Http\Controllers\Runtime\DeleteUniverseController::class);
+Route::post('v4/tuzy/universes', \WorldOS\Legacy\Presentation\Http\Controllers\Runtime\CreateUniverseController::class);
+Route::post('v4/tuzy/sagas', \WorldOS\Legacy\Presentation\Http\Controllers\Saga\CreateSagaController::class);
+Route::post('v4/tuzy/universe-styles', \WorldOS\Legacy\Presentation\Http\Controllers\Cosmology\CreateUniverseStyleController::class);
+Route::post('v4/tuzy/evolution-profiles', \WorldOS\Legacy\Presentation\Http\Controllers\Evolution\CreateEvolutionProfileController::class);
+Route::post('v4/tuzy/narrative-series', \WorldOS\Legacy\Presentation\Http\Controllers\Narrative\CreateNarrativeSeriesController::class);
+Route::post('v4/tuzy/world-heroes', \WorldOS\Legacy\Presentation\Http\Controllers\Heroes\CreateHeroController::class);
+Route::get('v4/tuzy/genesis/presets', \WorldOS\Legacy\Presentation\Http\Controllers\Genesis\ListPresetsController::class);
 
 /*
 |--------------------------------------------------------------------------
@@ -85,7 +92,7 @@ Route::middleware('auth:sanctum')->prefix('writer')->group(function () {
     Route::get('worlds',                   [WriterWorldController::class, 'index']);
     Route::get('worlds/{id}',              [WriterWorldController::class, 'show']);
     Route::post('worlds/{id}/instances',   [WriterWorldController::class, 'storeInstance']);
-    Route::get('worlds/{id}/heroes',       [\App\Http\Controllers\Api\Writer\WriterWorldHeroController::class, 'index']);
+    Route::get('worlds/{id}/heroes',       [\App\Http\Controllers\Api\Writer\WriterHeroController::class, 'index']);
 
     // World Hub actions
     Route::post('worlds/{id}/freeze',      [WriterWorldHubController::class, 'freeze']);
@@ -173,8 +180,8 @@ Route::middleware('auth:sanctum')->prefix('serial')->group(function () {
     Route::post('series/{id}/chapters/{chapterId}/canonize', [SerialController::class, 'canonizeChapter']);
 });
 
-// Vietnamese Heroes
-Route::prefix('vietnamese-heroes')->group(function () {
+// Heroes
+Route::prefix('heroes')->group(function () {
     Route::get('/',                      [VietnameseHeroController::class, 'index']);
     Route::get('/search',                [VietnameseHeroController::class, 'search']);
     Route::get('/statistics',            [VietnameseHeroController::class, 'statistics']);
@@ -186,3 +193,20 @@ Route::prefix('vietnamese-heroes')->group(function () {
 });
 */
 
+/*
+|--------------------------------------------------------------------------
+| WorldOS V6 / Darwinian Evolution API
+|--------------------------------------------------------------------------
+*/
+Route::prefix('v6/evolution')->group(function () {
+    Route::get('experiments', [\App\Http\Controllers\Api\EvolutionController::class, 'listExperiments']);
+    Route::post('experiment', [\App\Http\Controllers\Api\EvolutionController::class, 'createExperiment']);
+    Route::get('experiments/{id}/generations', [\App\Http\Controllers\Api\EvolutionController::class, 'listGenerations']);
+    Route::get('generations/{id}/universes', [\App\Http\Controllers\Api\EvolutionController::class, 'listUniverses']);
+    Route::get('universes/{id}/lineage', [\App\Http\Controllers\Api\EvolutionController::class, 'getLineage']);
+
+    // V6 Dashboard Single Universe Runtime APIs
+    Route::get('universes/{id}', [\App\Http\Controllers\Api\EvolutionController::class, 'getUniverse']);
+    Route::post('universes/{id}/simulate', [\App\Http\Controllers\Api\EvolutionController::class, 'simulateUniverse']);
+    Route::get('universes/{id}/chronicles', [\App\Http\Controllers\Api\EvolutionController::class, 'getChronicles']);
+});

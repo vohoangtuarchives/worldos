@@ -2,7 +2,7 @@
 
 namespace App\StoryEngine\Services;
 
-use Tuzy\Application\Narrative\LLM\Contracts\LLMProvider;
+use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use Illuminate\Support\Facades\Log;
 
 class FakeStoryLLMService implements LLMProvider

@@ -2,7 +2,7 @@
 
 namespace App\Domains\Power;
 
-use Tuzy\Domain\Power\ValueObject\PowerStage;
+use WorldOS\Legacy\Domain\Power\ValueObject\PowerStage;
 use Illuminate\Support\Facades\DB;
 
 class StageTransitionEngine

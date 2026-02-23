@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Tuzy\Application\Cosmology\Entities\WorldScar;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldScar;
 
 class World extends Model
 {
@@ -65,8 +65,8 @@ class World extends Model
         'tags' => 'array',
         'gene_vector' => 'array',
         'autonomous' => 'boolean',
-        'health_status' => \Tuzy\Domain\World\ValueObject\WorldHealthStatus::class,
-        'type' => \Tuzy\Domain\World\Enums\WorldType::class,
+        'health_status' => \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::class,
+        'type' => \WorldOS\Blueprint\Domain\Legacy\Enums\WorldType::class,
         
         // Vietnamese Origin & Yggdrasil
         'origin_metadata' => 'array',
@@ -80,17 +80,17 @@ class World extends Model
         'bifurcation_era' => 'integer',
     ];
 
-    public function getLawProfileAttribute($value): \Tuzy\Domain\World\ValueObject\WorldLawProfile
+    public function getLawProfileAttribute($value): \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile
     {
         // If null or array, handle conversion
         if (is_string($value)) $value = json_decode($value, true);
         
         return $value 
-            ? \Tuzy\Domain\World\ValueObject\WorldLawProfile::fromArray($value)
-            : \Tuzy\Domain\World\ValueObject\WorldLawProfile::default();
+            ? \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile::fromArray($value)
+            : \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile::default();
     }
 
-    public function setLawProfileAttribute(\Tuzy\Domain\World\ValueObject\WorldLawProfile $profile): void
+    public function setLawProfileAttribute(\WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile $profile): void
     {
         $this->attributes['law_profile'] = json_encode($profile->toArray());
     }
@@ -147,13 +147,13 @@ class World extends Model
         }
         
         return $value 
-            ? \Tuzy\Domain\World\ValueObject\PhysicsProfile::fromArray($value) 
-            : \Tuzy\Domain\World\ValueObject\PhysicsProfile::standard();
+            ? \WorldOS\Blueprint\Domain\Legacy\ValueObject\PhysicsProfile::fromArray($value) 
+            : \WorldOS\Blueprint\Domain\Legacy\ValueObject\PhysicsProfile::standard();
     }
 
     public function setPhysicsProfileAttribute($value)
     {
-        if ($value instanceof \Tuzy\Domain\World\ValueObject\PhysicsProfile) {
+        if ($value instanceof \WorldOS\Blueprint\Domain\Legacy\ValueObject\PhysicsProfile) {
             $this->attributes['physics_profile'] = json_encode($value->toArray());
         } else {
             $this->attributes['physics_profile'] = is_array($value) ? json_encode($value) : $value;

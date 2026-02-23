@@ -3,9 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\World;
-use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
-use Tuzy\Application\Vietnamese\Services\HeroBifurcationService;
-use Tuzy\Application\Vietnamese\Services\CosmicIntegrationService;
+use WorldOS\Legacy\Domain\Vietnamese\Models\VietnameseHero;
+use WorldOS\Legacy\Application\Vietnamese\Services\HeroBifurcationService;
+use WorldOS\Legacy\Application\Vietnamese\Services\CosmicIntegrationService;
 use Illuminate\Console\Command;
 
 class TestHeroBifurcationCommand extends Command

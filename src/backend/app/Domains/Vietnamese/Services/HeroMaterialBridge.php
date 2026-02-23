@@ -17,7 +17,7 @@ class HeroMaterialBridge
      * Calculate and apply material effects based on a Hero's emergence.
      * Returns an array of effects applied for logging.
      * 
-     * @param VietnameseHero|WorldHero $hero
+     * @param VietnameseHero|Hero $hero
      */
     public function processHeroEmergence($hero, World $world): array
     {

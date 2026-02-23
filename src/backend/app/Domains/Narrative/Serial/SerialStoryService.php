@@ -9,7 +9,7 @@ use App\Domains\Narrative\Bridge\Contracts\StoryEventExtractorInterface;
 use App\Domains\Narrative\Bridge\NarrativeToUniverseAdapter;
 use App\Domains\Narrative\Bridge\StateSerializerForPrompt;
 use App\Domains\Narrative\Bridge\WorldMutationPolicy;
-use Tuzy\Domain\Narrative\ValueObject\BeatSpec;
+use WorldOS\Saga\Domain\Narrative\ValueObject\BeatSpec;
 use App\Domains\Narrative\Services\ChapterCriticService;
 use App\Domains\Narrative\Services\ConsistencyValidator;
 use App\Domains\Narrative\Services\LorebookResolver;

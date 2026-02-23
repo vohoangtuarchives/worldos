@@ -4,7 +4,7 @@ namespace App\Domains\Narrative\Dialogue\Rules;
 
 use App\Domains\Narrative\Character\Character;
 use App\Domains\Narrative\Dialogue\Contracts\GuardRule;
-use Tuzy\Domain\Narrative\ValueObject\Intent;
+use WorldOS\Saga\Domain\Narrative\ValueObject\Intent;
 use App\Domains\Narrative\Scene\Scene;
 
 class CannotRevealUnknownInformation implements GuardRule

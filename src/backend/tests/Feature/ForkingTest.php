@@ -6,8 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Database\Seeders\WorldSeeder;
 use App\Models\World;
-use Tuzy\Application\World\Services\WorldForkService;
-use Tuzy\Application\World\Services\EventRecorder;
+use App\Domains\World\Services\WorldForkService;
+use WorldOS\World\Application\Services\EventRecorder;
 
 class ForkingTest extends TestCase
 {

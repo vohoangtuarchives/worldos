@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 

@@ -2,8 +2,8 @@
 
 namespace App\StoryEngine\Character;
 
-use Tuzy\Domain\Material\MaterialInstance;
-use Tuzy\Domain\Material\Material;
+use WorldOS\Legacy\Domain\Material\MaterialInstance;
+use WorldOS\Legacy\Domain\Material\Material;
 
 class CharacterGenerator
 {
@@ -53,7 +53,7 @@ class CharacterGenerator
      */
     public function generateFromWorld(string $worldId, int $limit = 10): array
     {
-        $repository = app(\Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface::class);
+        $repository = app(\WorldOS\Legacy\Domain\Material\Contracts\MaterialRepositoryInterface::class);
         $instances = $repository->getInstancesForWorld($worldId);
         
         $activeInstances = $instances->filter(fn($i) => $i->activation_epoch !== null && !$i->retired_at);

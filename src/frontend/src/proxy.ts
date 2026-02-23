@@ -10,7 +10,7 @@ import type { NextRequest } from "next/server";
 
 const AUTH_PATHS = ["/login"];
 
-const PUBLIC_PREFIXES = ["/", "/marketplace", "/vietnamese-heroes"];
+const PUBLIC_PREFIXES = ["/", "/marketplace", "/heroes"];
 
 function isPublicPath(pathname: string): boolean {
   if (pathname === "/") return true;

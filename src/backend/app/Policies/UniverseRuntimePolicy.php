@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus;
 use App\Models\UniverseModel;
 use App\Models\World;
 

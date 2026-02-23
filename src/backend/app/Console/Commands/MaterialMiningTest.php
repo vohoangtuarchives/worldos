@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands;
 
-use Tuzy\Application\World\Interaction\WorldGraphManager;
-use Tuzy\Application\World\Interaction\InteractionZone;
-use Tuzy\Application\World\Interaction\MultiWorldCoordinator;
-use Tuzy\Application\World\Interaction\HybridPresetGenerator;
-use Tuzy\Application\World\Interaction\MaterialExtractor;
-use Tuzy\Domain\World\WorldState;
+use WorldOS\Legacy\Application\World\Interaction\WorldGraphManager;
+use WorldOS\Legacy\Application\World\Interaction\InteractionZone;
+use WorldOS\Legacy\Application\World\Interaction\MultiWorldCoordinator;
+use WorldOS\Legacy\Application\World\Interaction\HybridPresetGenerator;
+use WorldOS\Legacy\Application\World\Interaction\MaterialExtractor;
+use WorldOS\Blueprint\Domain\Legacy\WorldState;
 use Illuminate\Console\Command;
 
 class MaterialMiningTest extends Command

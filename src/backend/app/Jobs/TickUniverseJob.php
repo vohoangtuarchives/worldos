@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use Tuzy\Domain\Runtime\UniverseRuntimeService;
+use WorldOS\Legacy\Domain\Runtime\UniverseRuntimeService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

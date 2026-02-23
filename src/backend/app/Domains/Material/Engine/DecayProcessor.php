@@ -3,7 +3,7 @@
 namespace App\Domains\Material\Engine;
 
 use App\Domains\Material\MaterialInstance;
-use Tuzy\Domain\Material\Enums\MaterialOntology;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialOntology;
 
 /**
  * DecayProcessor - Component 5 of MaterialLawEngine (Enhanced)

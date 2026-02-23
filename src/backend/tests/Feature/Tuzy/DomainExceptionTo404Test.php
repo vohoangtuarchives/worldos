@@ -3,8 +3,8 @@
 namespace Tests\Feature\Tuzy;
 
 use Tests\TestCase;
-use Tuzy\Domain\World\Entity\World;
-use Tuzy\Domain\World\Repository\WorldRepositoryInterface;
+use WorldOS\Blueprint\Domain\Legacy\Entity\World;
+use WorldOS\Blueprint\Domain\Legacy\Repository\WorldRepositoryInterface;
 
 /**
  * Integration test: Tuzy domain exceptions are rendered as 404 JSON by bootstrap/app.php.

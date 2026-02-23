@@ -111,7 +111,7 @@ export default function GodConsole() {
             </div>
           </Link>
 
-          <Link href="/console/vietnamese-heroes" className="group">
+          <Link href="/console/heroes" className="group">
             <div className="glass-card h-full p-6 flex flex-col gap-4 border-red-500/20 hover:border-red-500/40">
               <div className="flex items-center justify-between">
                 <div className="p-3 bg-red-500/10 rounded-lg group-hover:bg-red-500/20 transition-colors">

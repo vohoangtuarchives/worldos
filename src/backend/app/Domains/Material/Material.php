@@ -4,9 +4,9 @@ namespace App\Domains\Material;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Tuzy\Domain\Material\Enums\MaterialOntology;
-use Tuzy\Domain\Material\Enums\MaterialFunction;
-use Tuzy\Domain\Material\Enums\MaterialLifecycle;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialOntology;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialFunction;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialLifecycle;
 
 class Material extends Model
 {

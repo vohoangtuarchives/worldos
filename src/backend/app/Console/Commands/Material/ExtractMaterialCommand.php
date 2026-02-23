@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands\Material;
 
-use Tuzy\Application\Material\Extraction\ExtractionPipeline;
+use WorldOS\Legacy\Application\Material\Extraction\ExtractionPipeline;
 use Illuminate\Console\Command;
 
 class ExtractMaterialCommand extends Command

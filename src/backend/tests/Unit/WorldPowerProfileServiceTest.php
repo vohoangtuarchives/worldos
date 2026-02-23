@@ -2,8 +2,8 @@
 
 namespace Tests\Unit;
 
-use Tuzy\Application\Saga\Services\GenesisPresetService;
-use Tuzy\Application\World\Services\WorldPowerProfileService;
+use WorldOS\Legacy\Application\Saga\Services\GenesisPresetService;
+use WorldOS\Legacy\Application\World\Services\WorldPowerProfileService;
 use App\Models\World;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

@@ -29,7 +29,7 @@ class Fleet extends Model
 
     public function universe()
     {
-        return $this->belongsTo(\Tuzy\Application\Cosmology\Entities\Universe::class, 'universe_id'); // Note: Universe is usually an Entity, but mapped to DB via Model. Make sure to use the correct Eloquent model if separated.
+        return $this->belongsTo(\WorldOS\Legacy\Application\Cosmology\Entities\Universe::class, 'universe_id'); // Note: Universe is usually an Entity, but mapped to DB via Model. Make sure to use the correct Eloquent model if separated.
     }
 
     public function faction()

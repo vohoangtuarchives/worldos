@@ -3,7 +3,7 @@
 use App\Models\World;
 use App\Models\Faction;
 use App\Domains\Faction\Services\EncounterService;
-use App\Domains\World\Services\WorldEventLedger;
+use WorldOS\World\Application\Services\WorldEventLedger;
 use Tuzy\Domain\Faction\ValueObject\Leader;
 use Illuminate\Support\Facades\DB;
 

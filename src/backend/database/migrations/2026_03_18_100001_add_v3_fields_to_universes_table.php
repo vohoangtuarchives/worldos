@@ -13,15 +13,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('universes', function (Blueprint $table) {
-            $table->float('entropy')->nullable()->after('state_vector');
-            $table->float('stability_index')->nullable()->after('entropy');
-            $table->string('status', 32)->default('running')->after('stability_index'); // running, collapsed, stable, archived
-            $table->string('parent_universe_id')->nullable()->after('status');
+            if (!Schema::hasColumn('universes', 'entropy')) {
+                $table->float('entropy')->nullable()->after('state_vector');
+            }
+            if (!Schema::hasColumn('universes', 'stability_index')) {
+                $table->float('stability_index')->nullable()->after('entropy');
+            }
+            if (!Schema::hasColumn('universes', 'status')) {
+                $table->string('status', 32)->default('running')->after('stability_index');
+            }
+            if (!Schema::hasColumn('universes', 'parent_universe_id')) {
+                $table->string('parent_universe_id')->nullable()->after('status');
+            }
         });
 
-        Schema::table('universes', function (Blueprint $table) {
-            $table->foreign('parent_universe_id')->references('id')->on('universes')->onDelete('set null');
-        });
+        // We skip the foreign key if column already existed as it might already have the FK
     }
 
     public function down(): void

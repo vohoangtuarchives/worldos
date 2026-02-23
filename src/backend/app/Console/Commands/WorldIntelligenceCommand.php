@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Tuzy\Application\Intelligence\Services\WorldIntelligenceService;
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
-use Tuzy\Infrastructure\World\Repositories\ShockEventRepository;
+use WorldOS\Legacy\Application\Intelligence\Services\WorldIntelligenceService;
+use WorldOS\Legacy\Infrastructure\World\Repositories\WorldRepository;
+use WorldOS\Legacy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use WorldOS\Legacy\Infrastructure\World\Repositories\ShockEventRepository;
 use Illuminate\Console\Command;
 
 final class WorldIntelligenceCommand extends Command

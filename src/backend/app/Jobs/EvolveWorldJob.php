@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use Tuzy\Application\Evolution\Services\EvolutionKernel;
+use WorldOS\Legacy\Application\Evolution\Services\EvolutionKernel;
 use App\Models\World;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,7 +47,7 @@ class EvolveWorldJob implements ShouldQueue
             // The kernel expects a ValueObject, we need to map the array properly
             // Assuming the Kernel handles array-to-VO conversion internally or expects VO
             // Let's create the VO here for clarity
-            $currentVectorVO = \Tuzy\Domain\Evolution\ValueObjects\StateVector::fromArray($state->state_vector ?? []);
+            $currentVectorVO = \WorldOS\Evolution\Domain\Legacy\ValueObjects\StateVector::fromArray($state->state_vector ?? []);
 
             // 2. Calculate next state
             $nextVectorVO = $kernel->nextTick($currentVectorVO, $state->evolutionProfile);

@@ -9,8 +9,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-use Tuzy\Domain\Evolution\Service\WorldEvaluator;
-use Tuzy\Domain\History\Service\HistoricalChronicleSink;
+use WorldOS\Evolution\Domain\Legacy\Service\WorldEvaluator;
+use WorldOS\Legacy\Domain\History\Service\HistoricalChronicleSink;
 // Other evolutionary components injected here...
 
 class SimulateWorldEpochJob implements ShouldQueue

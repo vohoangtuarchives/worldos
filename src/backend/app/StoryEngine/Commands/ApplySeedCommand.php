@@ -5,8 +5,8 @@ namespace App\StoryEngine\Commands;
 use App\StoryEngine\WorldState;
 use App\StoryEngine\CharacterState;
 use App\StoryEngine\Seed;
-use Tuzy\Application\World\Services\WorldLawValidator;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\World\Application\Services\WorldLawValidator;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use App\Exceptions\World\WorldLawViolationException;
 
 class ApplySeedCommand extends SimulationCommand

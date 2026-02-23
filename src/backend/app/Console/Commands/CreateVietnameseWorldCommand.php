@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Tuzy\Application\Vietnamese\Services\VietnameseOriginService;
+use WorldOS\Legacy\Application\Vietnamese\Services\VietnameseOriginService;
 use Illuminate\Console\Command;
 
 class CreateVietnameseWorldCommand extends Command

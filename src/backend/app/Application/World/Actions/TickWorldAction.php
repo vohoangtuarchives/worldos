@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\World\Actions;
 
-use Tuzy\Domain\World\Aggregates\WorldAggregate;
-use Tuzy\Application\History\Services\EntropyCalculator;
-use Tuzy\Application\World\Services\ShockEventGenerator;
-use Tuzy\Domain\World\Event\ShockEvent;
-use Tuzy\Application\Character\Services\SurvivalCheckEngine;
-use Tuzy\Domain\Character\Aggregates\CharacterSurvivalAggregate;
+use App\Domains\World\Aggregates\WorldAggregate;
+use WorldOS\Legacy\Application\History\Services\EntropyCalculator;
+use WorldOS\Legacy\Application\World\Services\ShockEventGenerator;
+use WorldOS\Legacy\Application\Character\Services\SurvivalCheckEngine;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\EntropyScore;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
@@ -44,7 +43,7 @@ final class TickWorldAction
 
             // Calculate current world state
             $currentEntropyValue = $this->entropyCalculator->calculateWorldEntropy($worldModel, $world->currentTick());
-            $currentEntropy = new \Tuzy\Domain\World\ValueObject\EntropyScore($currentEntropyValue);
+            $currentEntropy = new EntropyScore($currentEntropyValue);
             
             $newTick = $world->currentTick() + 1;
 
@@ -108,9 +107,9 @@ final class TickWorldAction
     }
 
     private function updateEntropy(
-        \Tuzy\Domain\World\ValueObject\EntropyScore $currentEntropy,
+        EntropyScore $currentEntropy,
         WorldAggregate $world
-    ): \Tuzy\Domain\World\ValueObject\EntropyScore {
+    ): EntropyScore {
         
         // Base entropy increase
         $entropyIncrease = self::ENTROPY_TICK_INCREMENT;
@@ -126,12 +125,12 @@ final class TickWorldAction
 
         $newEntropyValue = min(self::MAX_ENTROPY, $currentEntropy->value() + $finalIncrease);
 
-        return new \Tuzy\Domain\World\ValueObject\EntropyScore($newEntropyValue);
+        return new EntropyScore($newEntropyValue);
     }
 
     private function generateShockEvents(
         WorldAggregate $world,
-        \Tuzy\Domain\World\ValueObject\EntropyScore $entropy,
+        EntropyScore $entropy,
         int $tick
     ): Collection {
         
@@ -164,7 +163,7 @@ final class TickWorldAction
 
     private function processCharacterSurvival(
         Collection $characters,
-        \Tuzy\Domain\World\ValueObject\EntropyScore $entropy,
+        EntropyScore $entropy,
         Collection $shockEvents
     ): Collection {
         
@@ -249,7 +248,7 @@ final readonly class TickResult
     public function __construct(
         public readonly WorldAggregate $world,
         public readonly int $tick,
-        public readonly \Tuzy\Domain\World\ValueObject\EntropyScore $entropy,
+        public readonly EntropyScore $entropy,
         public readonly Collection $shockEvents,
         public readonly Collection $survivalResults,
         public readonly TickMetrics $metrics,

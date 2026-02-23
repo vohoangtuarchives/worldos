@@ -1,0 +1,16 @@
+<?php
+
+namespace Tests\Unit\WorldOS\Saga\Domain\Narrative;
+
+use PHPUnit\Framework\TestCase;
+use WorldOS\Saga\Domain\Narrative\ValueObject\DefaultOutcome;
+
+final class DefaultOutcomeTest extends TestCase
+{
+    public function test_constants_and_constructor(): void
+    {
+        $o = new DefaultOutcome(DefaultOutcome::RESULT_WIN, 0.8, DefaultOutcome::SCOPE_LOCAL);
+        $this->assertSame('win', $o->result);
+        $this->assertSame(0.8, $o->intensity);
+    }
+}

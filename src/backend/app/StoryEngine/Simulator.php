@@ -58,7 +58,7 @@ class Simulator
     public function run(int $chapters): array
     {
         $metrics = [];
-        $validator = new \Tuzy\Application\World\Services\WorldLawValidator();
+        $validator = new \WorldOS\World\Application\Services\WorldLawValidator();
 
         // Build Pipeline
         $pipeline = new \App\StoryEngine\Simulation\SimulationPipeline();
@@ -80,7 +80,7 @@ class Simulator
                 // Fetch fresh status
                 $freshWorld = \App\Models\World::find($worldId);
                 if ($freshWorld) {
-                    if ($freshWorld->health_status === \Tuzy\Domain\World\ValueObject\WorldHealthStatus::HALTED) {
+                    if ($freshWorld->health_status === \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::HALTED) {
                          $metrics[] = ['status' => 'HALTED', 'message' => 'Simulation stopped by Kill Switch'];
                          break;
                     }

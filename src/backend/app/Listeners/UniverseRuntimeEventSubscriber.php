@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Listeners;
 
-use Tuzy\Domain\Runtime\Event\UniverseCollapsed;
-use Tuzy\Domain\Runtime\Event\UniverseForked;
-use Tuzy\Domain\Runtime\Event\UniverseTicked;
-use Tuzy\Domain\Saga\ValueObject\SagaEvaluationReport;
-use Tuzy\Application\Saga\Services\BlueprintMutationPlanner;
-use Tuzy\Application\Saga\Services\CivilizationScorer;
-use Tuzy\Application\Saga\Services\ParetoFrontManager;
-use Tuzy\Application\Saga\Services\SagaMetaEvaluator;
-use Tuzy\Domain\Saga\SagaObserver;
-use Tuzy\Domain\Saga\SagaWorld;
+use WorldOS\Legacy\Domain\Runtime\Event\UniverseCollapsed;
+use WorldOS\Legacy\Domain\Runtime\Event\UniverseForked;
+use WorldOS\Legacy\Domain\Runtime\Event\UniverseTicked;
+use WorldOS\Saga\Domain\Legacy\ValueObject\SagaEvaluationReport;
+use WorldOS\Legacy\Application\Saga\Services\BlueprintMutationPlanner;
+use WorldOS\Legacy\Application\Saga\Services\CivilizationScorer;
+use WorldOS\Legacy\Application\Saga\Services\ParetoFrontManager;
+use WorldOS\Legacy\Application\Saga\Services\SagaMetaEvaluator;
+use WorldOS\Saga\Domain\Legacy\SagaObserver;
+use WorldOS\Saga\Domain\Legacy\SagaWorld;
 use Illuminate\Support\Facades\Log;
 
 /**

@@ -3,11 +3,11 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Tuzy\Application\Cosmology\Entities\WorldStateVector;
-use Tuzy\Application\Evolution\Dynamics\DriftField;
-use Tuzy\Application\Evolution\Engine\VectorDynamicsEngine;
-use Tuzy\Domain\Evolution\EvolutionContext;
-use Tuzy\Domain\Evolution\ValueObjects\EvolutionResult;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
+use WorldOS\Legacy\Application\Evolution\Dynamics\DriftField;
+use WorldOS\Legacy\Application\Evolution\Engine\VectorDynamicsEngine;
+use WorldOS\Evolution\Domain\Legacy\EvolutionContext;
+use WorldOS\Evolution\Domain\Legacy\ValueObjects\EvolutionResult;
 use Illuminate\Support\Str;
 
 class WorldV3TestCommand extends Command

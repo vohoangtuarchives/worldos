@@ -44,7 +44,7 @@ class VietnameseOriginService
                 // 'type' removed as column does not exist
                 'status' => 'active',
                 'autonomous' => true,
-                'health_status' => \Tuzy\Domain\World\ValueObject\WorldHealthStatus::STABLE->value,
+                'health_status' => \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::STABLE->value,
                 
                 // Vietnamese-specific metadata
                 'origin_metadata' => [

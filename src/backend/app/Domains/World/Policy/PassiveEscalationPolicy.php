@@ -3,11 +3,8 @@
 namespace App\Domains\World\Policy;
 
 use App\Domains\World\Contracts\Policy\EscalationPolicy;
+use WorldOS\Blueprint\Domain\Legacy\Policy\PassiveEscalationPolicy as LegacyPassiveEscalationPolicy;
 
-class PassiveEscalationPolicy implements EscalationPolicy
+class PassiveEscalationPolicy extends LegacyPassiveEscalationPolicy implements EscalationPolicy
 {
-    public function evaluateEscalation(array $snapshot): float
-    {
-        return 0.0;
-    }
 }

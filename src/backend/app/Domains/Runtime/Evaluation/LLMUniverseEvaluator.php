@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Runtime\Evaluation;
 
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
-use Tuzy\Domain\Runtime\ValueObject\EvaluationResult;
-use Tuzy\Domain\Runtime\ValueObject\MutationSuggestion;
-use Tuzy\Domain\Runtime\ValueObject\UniverseMetrics;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\EvaluationResult;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\MutationSuggestion;
+use WorldOS\Legacy\Domain\Runtime\ValueObject\UniverseMetrics;
 use Illuminate\Support\Facades\Log;
 use App\Services\AI\AIAgentContext;
 

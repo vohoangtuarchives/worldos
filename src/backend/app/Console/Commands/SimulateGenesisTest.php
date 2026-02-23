@@ -8,10 +8,10 @@ use App\Models\Theme;
 use App\Models\ConflictPattern;
 use App\Models\PowerSystem;
 use App\Models\CharacterArchetype;
-use Tuzy\Application\Genesis\Services\WorldSeedGenerator;
-use Tuzy\Application\Genesis\Services\StoryGenerationService;
-use Tuzy\Application\Genesis\Services\NoveltyScorer;
-use Tuzy\Application\Genesis\Services\MotifUsageTracker;
+use WorldOS\Legacy\Application\Genesis\Services\WorldSeedGenerator;
+use WorldOS\Legacy\Application\Genesis\Services\StoryGenerationService;
+use WorldOS\Legacy\Application\Genesis\Services\NoveltyScorer;
+use WorldOS\Legacy\Application\Genesis\Services\MotifUsageTracker;
 
 class SimulateGenesisTest extends Command
 {

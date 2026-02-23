@@ -4,17 +4,17 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tuzy\Application\Narrative\Character\Character;
-use Tuzy\Application\Narrative\Character\MemoryCollection;
-use Tuzy\Application\Narrative\Character\GoalStack;
-use Tuzy\Application\Narrative\Scene\Scene;
-use Tuzy\Application\Narrative\Dialogue\Services\DialogueEngine;
-use Tuzy\Application\Narrative\Dialogue\Services\TurnScheduler;
-use Tuzy\Application\Narrative\Dialogue\Services\ConsistencyGuard;
-use Tuzy\Application\Narrative\Dialogue\Services\SceneUpdater;
-use Tuzy\Application\Narrative\LLM\Services\FakeLLMService;
-use Tuzy\Application\Narrative\LLM\Services\ContextBuilder;
-use Tuzy\Application\Narrative\LLM\Services\IntentParser;
+use WorldOS\Legacy\Application\Narrative\Character\Character;
+use WorldOS\Legacy\Application\Narrative\Character\MemoryCollection;
+use WorldOS\Legacy\Application\Narrative\Character\GoalStack;
+use WorldOS\Legacy\Application\Narrative\Scene\Scene;
+use WorldOS\Legacy\Application\Narrative\Dialogue\Services\DialogueEngine;
+use WorldOS\Legacy\Application\Narrative\Dialogue\Services\TurnScheduler;
+use WorldOS\Legacy\Application\Narrative\Dialogue\Services\ConsistencyGuard;
+use WorldOS\Legacy\Application\Narrative\Dialogue\Services\SceneUpdater;
+use WorldOS\Legacy\Application\Narrative\LLM\Services\FakeLLMService;
+use WorldOS\Legacy\Application\Narrative\LLM\Services\ContextBuilder;
+use WorldOS\Legacy\Application\Narrative\LLM\Services\IntentParser;
 use Illuminate\Support\Collection;
 
 class LLMIntegrationTest extends TestCase
@@ -32,7 +32,7 @@ class LLMIntegrationTest extends TestCase
         $scheduler = new TurnScheduler();
         $guard = new ConsistencyGuard();
 
-        $updater = new SceneUpdater(new \Tuzy\Application\Narrative\Character\Repositories\CharacterEloquentRepository());
+        $updater = new SceneUpdater(new \WorldOS\Legacy\Application\Narrative\Character\Repositories\CharacterEloquentRepository());
 
         $llm = new FakeLLMService();
         $contextBuilder = new ContextBuilder();

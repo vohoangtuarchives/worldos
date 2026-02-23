@@ -3,8 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Models\World;
-use Tuzy\Domain\Saga\SagaRunner;
-use Tuzy\Application\Vietnamese\Services\CosmicIntegrationService;
+use WorldOS\Saga\Domain\Legacy\SagaRunner;
+use WorldOS\Legacy\Application\Vietnamese\Services\CosmicIntegrationService;
 use Illuminate\Console\Command;
 
 class TestSimulationBoostCommand extends Command

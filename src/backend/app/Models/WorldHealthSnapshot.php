@@ -19,7 +19,7 @@ class WorldHealthSnapshot extends Model
     protected $casts = [
         'metadata' => 'array',
         'recorded_at' => 'datetime',
-        'health_status' => \Tuzy\Domain\World\ValueObject\WorldHealthStatus::class,
+        'health_status' => \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus::class,
     ];
 
     public function world(): BelongsTo

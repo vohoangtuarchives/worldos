@@ -166,8 +166,8 @@ class CompatibilityGate
         $material = $instance->material;
 
         // 1. Institutional + Stabilizing needs minimum tech/organization level
-        if ($material->ontology === \Tuzy\Domain\Material\Enums\MaterialOntology::INSTITUTIONAL &&
-            $material->function === \Tuzy\Domain\Material\Enums\MaterialFunction::STABILIZING) {
+        if ($material->ontology === \WorldOS\Legacy\Domain\Material\Enums\MaterialOntology::INSTITUTIONAL &&
+            $material->function === \WorldOS\Legacy\Domain\Material\Enums\MaterialFunction::STABILIZING) {
             
             $techLevel = $worldContext['tech_level'] ?? 0;
             if ($techLevel < 2) {

@@ -5,7 +5,7 @@ namespace App\Domains\Vietnamese\Listeners;
 use App\Domains\Evolution\Events\WorldTicked;
 use App\Domains\Vietnamese\Services\HeroMaterialBridge;
 use App\Domains\Vietnamese\Models\VietnameseHero; 
-use App\Domains\Vietnamese\Models\WorldHero;
+use App\Domains\Vietnamese\Models\Hero;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -100,7 +100,7 @@ class CheckHeroSpawningListener implements ShouldQueue
             // Check if already exists in world to avoid duplicates if unique? 
             // For now allow duplicates (reincarnation/legacy) or check name.
             // Let's create a new runtime instance.
-            $hero = \App\Domains\Vietnamese\Models\WorldHero::create([
+            $hero = \App\Domains\Vietnamese\Models\Hero::create([
                 'world_id' => $world->id,
                 'name' => $seededHero->name,
                 'other_names' => $seededHero->other_names,
@@ -131,7 +131,7 @@ class CheckHeroSpawningListener implements ShouldQueue
 
         // Apply Resonance
         Log::info("Spawning Hero {$hero->name} due to {$reason} in World {$world->id}");
-        $effects = $this->bridge->processHeroEmergence($hero, $world); // Bridge now accepts WorldHero
+        $effects = $this->bridge->processHeroEmergence($hero, $world); // Bridge now accepts Hero
         
         // Log effect
         Log::info("Hero Effects Applied:", $effects);

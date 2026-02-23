@@ -2,8 +2,8 @@
 
 namespace App\Domains\Material\Extraction;
 
-use Tuzy\Domain\Material\Enums\MaterialOntology;
-use Tuzy\Domain\Material\Enums\MaterialFunction;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialOntology;
+use WorldOS\Legacy\Domain\Material\Enums\MaterialFunction;
 
 /**
  * MaterialValidator - Enforce material laws

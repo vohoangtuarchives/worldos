@@ -3,12 +3,8 @@
 namespace App\Domains\World\Policy;
 
 use App\Domains\World\Contracts\Policy\PowerLawPolicy;
+use WorldOS\Blueprint\Domain\Legacy\Policy\LinearPowerPolicy as LegacyLinearPowerPolicy;
 
-class LinearPowerPolicy implements PowerLawPolicy
+class LinearPowerPolicy extends LegacyLinearPowerPolicy implements PowerLawPolicy
 {
-    public function resolve(array $snapshot, string $entityId): float
-    {
-        $attributes = $snapshot['characters'][$entityId]['attributes'] ?? [];
-        return (float) ($attributes['power_base'] ?? 0);
-    }
 }

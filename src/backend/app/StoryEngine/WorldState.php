@@ -6,11 +6,11 @@ class WorldState
 {
     public int $tierIndex = 0;
     
-    public \Tuzy\Domain\World\ValueObject\WorldLawProfile $lawProfile;
+    public \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile $lawProfile;
 
     public function __construct()
     {
-        $this->lawProfile = \Tuzy\Domain\World\ValueObject\WorldLawProfile::default();
+        $this->lawProfile = \WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile::default();
     }
 
     public int $publicAwareness = 5;

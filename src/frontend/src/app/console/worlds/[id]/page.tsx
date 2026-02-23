@@ -1,10 +1,12 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { writerApi as writer } from "@/shared/api/writer";
 import Link from "next/link";
+import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, GitMerge, Activity, Orbit, Zap } from "lucide-react";
+import { ArrowLeft, GitMerge, Activity, Orbit, Zap, Trash2 } from "lucide-react";
 
 interface UniverseSnippet {
     id: string;
@@ -17,6 +19,8 @@ interface WorldWithUniverses {
     name: string;
     status: string;
     origin_type: string;
+    config?: Record<string, any>;
+    gene_vector?: Record<string, any>;
     runtime_instances: UniverseSnippet[]; // Thuộc tính load từ API GET /api/worlds/{id} hiện thời
 }
 
@@ -25,14 +29,74 @@ export default function WorldUniversesHubPage() {
     const router = useRouter();
     const worldId = params.id as string;
 
+    const queryClient = useQueryClient();
+
     const { data: world, isLoading, error } = useQuery<WorldWithUniverses>({
         queryKey: ["world", worldId],
         queryFn: async () => {
-            // Tận dụng API GET /api/worlds/{id} của backend đã có sẵn runtime_instances
-            const res = await api.get<{ data: WorldWithUniverses }>(`/api/worlds/${worldId}`);
-            return res.data.data;
+            const res = await api.get<WorldWithUniverses>(`/api/v4/tuzy/worlds/${worldId}`);
+            return res.data;
         },
     });
+
+    const deleteUniverseMutation = useMutation({
+        mutationFn: (id: string) => writer.universes.delete(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["world", worldId] });
+        },
+    });
+
+    const handleDeleteUniverse = (e: React.MouseEvent, id: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm("Are you sure you want to delete this universe branch?")) {
+            deleteUniverseMutation.mutate(id);
+        }
+    };
+
+    const [isSpawning, setIsSpawning] = useState(false);
+
+    const handleSpawnUniverse = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        try {
+            setIsSpawning(true);
+            const saga = await writer.sagas.create({ name: `${world?.name || 'Unknown'} - Genesis Saga` });
+            const universe = await writer.universes.create({
+                name: `${world?.name || 'Unknown'} - Universe Alpha`,
+                world_id: worldId,
+                saga_id: saga.id,
+            });
+
+            setTimeout(() => {
+                router.push(`/console/universes/${universe.id}`);
+            }, 1500);
+        } catch (err) {
+            console.error(err);
+            setIsSpawning(false);
+            alert("Failed to spawn universe.");
+        }
+    };
+
+    if (isSpawning) {
+        return (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black text-white px-4 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(59,130,246,0.15),transparent_70%)]" />
+                <div className="relative z-10 flex flex-col items-center animate-pulse">
+                    <div className="w-32 h-32 rounded-full border-t-2 border-blue-500 animate-spin flex items-center justify-center mb-8 relative">
+                        <div className="absolute inset-2 rounded-full border-r-2 border-cyan-400 animate-spin-slow"></div>
+                        <div className="absolute inset-4 rounded-full border-l-2 border-purple-500 animate-spin-reverse"></div>
+                        <Zap className="w-8 h-8 text-blue-400 animate-bounce" />
+                    </div>
+                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 font-vi tracking-widest uppercase">
+                        Spawning First Universe...
+                    </h2>
+                    <p className="mt-4 text-slate-400 font-mono text-sm max-w-md text-center">
+                        Synthesizing elements. Applying Gene Bounds. Unfurling state vectors.
+                    </p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="p-4 md:p-8 space-y-6">
@@ -53,6 +117,59 @@ export default function WorldUniversesHubPage() {
                 </div>
             </header>
 
+            {/* Gene Vector / Preset Configuration */}
+            {world?.gene_vector && Object.keys(world.gene_vector).length > 0 && (
+                <div className="glass-card border border-white/5 rounded-xl p-5 mb-8">
+                    <h3 className="text-white font-mono tracking-widest text-sm mb-4 flex items-center gap-2">
+                        <Zap className="w-4 h-4 text-amber-400" />
+                        INITIAL GENE VECTOR (PRESET: {world.config?.preset_key?.toUpperCase() || 'DEFAULT'})
+                    </h3>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {world.gene_vector.genre && (
+                            <div className="bg-black/30 p-3 rounded-lg border border-white/5">
+                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest block mb-1">Genre Pattern</span>
+                                <span className="text-emerald-400 font-mono text-sm">{world.gene_vector.genre}</span>
+                            </div>
+                        )}
+                        {world.gene_vector.power_system && (
+                            <div className="bg-black/30 p-3 rounded-lg border border-white/5">
+                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest block mb-1">Power System</span>
+                                <span className="text-amber-400 font-mono text-sm">{world.gene_vector.power_system}</span>
+                            </div>
+                        )}
+                        {world.gene_vector.tech_level && (
+                            <div className="bg-black/30 p-3 rounded-lg border border-white/5">
+                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest block mb-1">Tech Ceiling</span>
+                                <span className="text-cyan-400 font-mono text-sm">{world.gene_vector.tech_level}</span>
+                            </div>
+                        )}
+                        {world.gene_vector.archetype && (
+                            <div className="bg-black/30 p-3 rounded-lg border border-white/5">
+                                <span className="text-[10px] text-muted-foreground uppercase tracking-widest block mb-1">Archetype Code</span>
+                                <span className="text-purple-400 font-mono text-sm">{world.gene_vector.archetype}</span>
+                            </div>
+                        )}
+                    </div>
+                    {world.gene_vector.seed_vector && (
+                        <div className="mt-4 pt-4 border-t border-white/5">
+                            <span className="text-[10px] text-muted-foreground uppercase tracking-widest block mb-3">Ontological & Epistemic Seed Constraints</span>
+                            <div className="flex flex-wrap gap-2">
+                                {Object.entries(world.gene_vector.seed_vector).map(([cat, dims]: [string, any]) =>
+                                    Object.entries(dims).map(([dim, range]: [string, any]) => (
+                                        <div key={`${cat}-${dim}`} className="text-xs bg-accent/10 border border-accent/20 px-2.5 py-1.5 rounded text-white flex gap-2 items-center">
+                                            <span className="text-accent/70 capitalize">{dim}</span>
+                                            <span className="font-mono">
+                                                {Array.isArray(range) ? `${range[0]} → ${range[1]}` : range}
+                                            </span>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            )}
+
             {/* Main Grid */}
             <main>
                 <div className="mb-6 flex items-center justify-between border-b border-white/10 pb-4">
@@ -64,7 +181,10 @@ export default function WorldUniversesHubPage() {
                         <p className="text-sm text-muted-foreground mt-1">Select a universe branch to enter core simulation.</p>
                     </div>
 
-                    <button className="glass-panel px-4 py-2 rounded-full text-accent hover:bg-accent/20 hover:text-white transition-all flex items-center gap-2 border border-accent/30 text-xs tracking-widest uppercase font-mono shadow-[0_0_15px_theme(colors.accent.DEFAULT/0.2)]">
+                    <button
+                        onClick={handleSpawnUniverse}
+                        className="glass-panel px-4 py-2 rounded-full text-accent hover:bg-accent/20 hover:text-white transition-all flex items-center gap-2 border border-accent/30 text-xs tracking-widest uppercase font-mono shadow-[0_0_15px_theme(colors.accent.DEFAULT/0.2)]"
+                    >
                         <GitMerge className="w-4 h-4" />
                         Fork Branch
                     </button>
@@ -80,8 +200,22 @@ export default function WorldUniversesHubPage() {
                         System Error: Failed to load timeline data.
                     </div>
                 ) : !world?.runtime_instances || world.runtime_instances.length === 0 ? (
-                    <div className="text-muted-foreground font-mono text-center py-20 border border-white/5 bg-white/5 rounded-xl border-dashed">
-                        NO UNIVERSES FOUND IN THIS WORLD DOMAIN.
+                    <div className="flex flex-col items-center justify-center py-20 border border-white/5 bg-white/5 rounded-xl border-dashed">
+                        <p className="text-muted-foreground font-mono text-center mb-6">
+                            NO UNIVERSES FOUND IN THIS WORLD DOMAIN.
+                        </p>
+                        <button
+                            onClick={handleSpawnUniverse}
+                            className="relative group overflow-hidden rounded-lg p-px"
+                        >
+                            <span className="absolute inset-0 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 opacity-70 group-hover:opacity-100 transition-opacity duration-300"></span>
+                            <div className="relative flex items-center justify-center gap-2 bg-slate-900 px-8 py-4 rounded-lg transition-all duration-300 group-hover:bg-slate-900/50">
+                                <Zap className="w-5 h-5 text-amber-400" />
+                                <span className="text-white font-bold tracking-widest uppercase text-sm font-vi">
+                                    Ignite First Timeline
+                                </span>
+                            </div>
+                        </button>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -101,6 +235,13 @@ export default function WorldUniversesHubPage() {
                                                 UID: {universe.id.split('-')[0]}
                                             </p>
                                         </div>
+                                        <button
+                                            onClick={(e) => handleDeleteUniverse(e, universe.id)}
+                                            className="p-1.5 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                                            title="Delete Universe"
+                                        >
+                                            <Trash2 className="w-3.5 h-3.5" />
+                                        </button>
                                     </div>
                                     {/* Body Metrics */}
                                     <div className="p-4 pl-6 pt-2 mt-auto border-t border-white/5 bg-black/40">

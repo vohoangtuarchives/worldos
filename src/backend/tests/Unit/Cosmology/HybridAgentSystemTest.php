@@ -2,9 +2,9 @@
 
 namespace Tests\Unit\Cosmology;
 
-use Tuzy\Application\Cosmology\Agents\LegendaryAgent;
-use Tuzy\Application\Cosmology\Agents\PopulationBlock;
-use Tuzy\Application\Cosmology\Entities\WorldStateVector;
+use WorldOS\Legacy\Application\Cosmology\Agents\LegendaryAgent;
+use WorldOS\Legacy\Application\Cosmology\Agents\PopulationBlock;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
 use PHPUnit\Framework\TestCase;
 
 class HybridAgentSystemTest extends TestCase

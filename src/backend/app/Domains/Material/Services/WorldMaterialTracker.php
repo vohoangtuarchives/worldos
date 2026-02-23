@@ -8,10 +8,10 @@ use App\Domains\Material\Aggregates\MaterialAggregate;
 use App\Domains\Material\ValueObjects\MaterialInstance;
 use App\Domains\World\Aggregates\WorldAggregate;
 use App\Domains\Material\Collections\WorldMaterialCollection;
-use Tuzy\Domain\Material\ValueObject\MaterialState;
+use WorldOS\Legacy\Domain\Material\ValueObject\MaterialState;
 use App\Domains\Material\Contracts\MaterialRepositoryInterface;
 use App\Domains\Material\Repositories\WorldMaterialRepository;
-use Tuzy\Domain\Material\ValueObject\MaterialChange;
+use WorldOS\Legacy\Domain\Material\ValueObject\MaterialChange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 

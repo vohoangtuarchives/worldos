@@ -3,10 +3,10 @@
 namespace App\Domains\Social\Honorifics;
 
 use App\Domains\Social\HonorificContext;
-use Tuzy\Domain\Social\Enums\RelativeAgeRank;
-use Tuzy\Domain\Social\Enums\SocialStatus;
-use Tuzy\Domain\Social\Enums\RelationshipTone;
-use Tuzy\Domain\Social\Enums\SituationType;
+use WorldOS\Society\Social\Enums\RelativeAgeRank;
+use WorldOS\Society\Social\Enums\SocialStatus;
+use WorldOS\Society\Social\Enums\RelationshipTone;
+use WorldOS\Society\Social\Enums\SituationType;
 
 class HonorificResolver
 {

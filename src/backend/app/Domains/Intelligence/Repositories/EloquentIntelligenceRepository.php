@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Intelligence\Repositories;
 
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceReport;
 use App\Domains\Intelligence\Collections\IntelligenceCollection;
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceSource;
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceType;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceSource;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceType;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

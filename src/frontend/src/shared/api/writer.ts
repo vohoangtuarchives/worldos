@@ -50,6 +50,8 @@ export type World = {
   status?: string;
   current_tick?: number;
   preset?: string;
+  config?: Record<string, any>;
+  gene_vector?: Record<string, any>;
   genre?: string;
   created_at?: string;
   updated_at?: string;
@@ -229,6 +231,7 @@ type AIRequestLogDetail = AIRequestLogItem & {
 export const writerApi = {
   sagas: {
     list: () => api.get<Saga[]>("/api/writer/sagas"),
+    create: (data: { name: string }) => api.post<{ id: string; name: string }>("/api/v4/tuzy/sagas", data),
     stats: () => api.get<{ success: boolean; data: Record<string, unknown> }>("/api/writer/sagas/stats").then(r => r.data),
     show: (sagaId: string) => api.get<SagaDetail>(`/api/writer/sagas/${sagaId}`),
     createFromActive: (body?: { universe_id?: string }) => api.post<Saga>("/api/writer/sagas/create-from-active", body),
@@ -239,16 +242,30 @@ export const writerApi = {
   },
   universes: {
     list: () => api.get<Universe[]>("/api/writer/universes"),
+    create: (data: { name: string; world_id: string; saga_id: string }) =>
+      api.post<{ id: string; name: string }>("/api/v4/tuzy/universes", data),
     snapshots: (universeId: string) =>
       api.get<{ success: boolean; data: { snapshots: UniverseSnapshotItem[] } }>(`/api/writer/universes/${universeId}/snapshots`).then((r) => r.data?.snapshots ?? []),
     metrics: (universeId: string) =>
-      api.get<{ tick: number; state_vector: Record<string, number>; entropy?: number | null; stability_index?: number | null; phase: string }>(
-        `/api/writer/universes/${universeId}/metrics`
-      ),
+      api.get<{ age: number; state_vector: Record<string, number>; entropy?: number | null; stability_index?: number | null; status: string }>(
+        `/api/v4/tuzy/universes/${universeId}`
+      ).then(u => ({
+        ...u,
+        tick: u.age, // Backward compatibility for UI
+        phase: u.status // Backward compatibility for UI
+      })),
     fork: (universeId: string, tick: number, sagaId?: string) =>
       api.post<{ success: boolean; message: string; data: { id: string, name: string } }>(`/api/writer/universes/${universeId}/fork`, { tick, saga_id: sagaId }),
     evaluate: (universeId: string) =>
       api.post<{ success: boolean; data: { recommendation: string; ip_score: number; suggestion?: { type: string; intensity: number } } }>(`/api/writer/universes/${universeId}/evaluate`),
+    update: (id: string, data: {
+      name: string;
+      age: number;
+      status: string;
+      entropy: number;
+      stability_index: number;
+    }) => api.patch<{ success: boolean }>(`/api/v4/tuzy/universes/${id}`, data),
+    delete: (id: string) => api.delete<{ success: boolean }>(`/api/v4/tuzy/universes/${id}`),
     applyPressure: (universeId: string, type: string, intensity: number) =>
       api.post<{ success: boolean; message: string }>(`/api/writer/universes/${universeId}/pressure`, { type, intensity }),
     style: (universeId: string) =>
@@ -263,8 +280,10 @@ export const writerApi = {
       api.post<{ success: boolean; message: string }>(`/api/writer/governance/proposals/${id}/reject`),
   },
   worlds: {
-    list: () => api.get<World[]>("/api/writer/worlds"),
-    show: (id: string) => api.get<WorldDetail>(`/api/writer/worlds/${id}`),
+    list: () => api.get<World[]>("/api/v4/tuzy/worlds"),
+    show: (id: string) => api.get<WorldDetail>(`/api/v4/tuzy/worlds/${id}`),
+    create: (data: { name: string; preset: string; origin_type: string }) =>
+      api.post<{ id: string; name: string }>("/api/v4/tuzy/worlds", data),
     createInstance: (id: string) => api.post(`/api/writer/worlds/${id}/instances`),
     freeze: (id: string) => api.post(`/api/writer/worlds/${id}/freeze`),
     resume: (id: string) => api.post(`/api/writer/worlds/${id}/resume`),
@@ -278,6 +297,15 @@ export const writerApi = {
       api.post(`/api/writer/worlds/${id}/god-console/intervene`, body),
     emergency: (id: string, action: string, params?: Record<string, unknown>) =>
       api.post<{ success: boolean; message: string; universe_id?: string }>(`/api/writer/worlds/${id}/emergency/${action}`, params),
+    update: (id: string, data: {
+      name: string;
+      status: string;
+      health_status: string;
+      current_tick: number;
+      origin_type: string;
+      preset: string;
+    }) => api.patch<{ success: boolean }>(`/api/v4/tuzy/worlds/${id}`, data),
+    delete: (id: string) => api.delete<{ success: boolean }>(`/api/v4/tuzy/worlds/${id}`),
     snapshots: {
       list: (id: string) =>
         api.get<{ success: boolean; data: { snapshots: WorldSnapshotItem[] } }>(`/api/writer/worlds/${id}/snapshots`).then((r) => r.data?.snapshots ?? []),
@@ -323,11 +351,7 @@ export const writerApi = {
       api.post(`/api/writer/materials/${instanceId}/retire`),
   },
   genesis: {
-    presets: () => api.get<{ categories?: Record<string, GenesisPreset[]> }>("/api/writer/genesis/presets"),
-    createWorld: (body: { name: string; genre?: string; origin_type?: string }) =>
-      api.post<{ world_id: string; name: string; message: string }>("/api/writer/genesis/world", body),
-    createUniverse: (body: { world_id: string; preset_key: string }) =>
-      api.post<{ universe_id: string; name: string; message: string }>("/api/writer/genesis/universe", body),
+    presets: () => api.get<{ data: any[] }>("/api/v4/tuzy/genesis/presets").then(r => r.data),
   },
   ai: {
     getMetrics: () =>
@@ -341,7 +365,7 @@ export const writerApi = {
     upsertFeatureConfig: (payload: { feature_key: string; agent_name: string; provider: string; model?: string; system_prompt?: string; temperature?: number; enabled?: boolean }) =>
       api.post<{ success: boolean; message: string; data: AIFeatureConfig }>("/api/writer/ai/feature-configs", payload).then(r => r.data),
     deleteFeatureConfig: (featureKey: string) =>
-      api.delete<{ success: boolean; deleted: boolean; feature_key: string }>(`/api/writer/ai/feature-configs/${encodeURIComponent(featureKey)}`).then(r => r.data),
+      api.delete<{ success: boolean; deleted: boolean; feature_key: string }>(`/api/writer/ai/feature-configs/${encodeURIComponent(featureKey)}`),
     getRequestLogFilters: () =>
       api.get<{ success: boolean; data: { feature_keys: string[]; agent_names: string[]; statuses: string[] } }>("/api/writer/ai/request-logs/filters").then(r => r.data),
     getRequestLogs: (params?: { feature_key?: string; agent_name?: string; status?: string; per_page?: number; page?: number }) => {

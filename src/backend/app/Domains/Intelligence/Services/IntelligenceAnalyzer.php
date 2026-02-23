@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Domains\Intelligence\Services;
 
 use App\Domains\Intelligence\Collections\IntelligenceCollection;
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceReport;
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceType;
-use Tuzy\Domain\Intelligence\ValueObject\IntelligenceSource;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceReport;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceType;
+use WorldOS\Legacy\Domain\Intelligence\ValueObject\IntelligenceSource;
 
 final class IntelligenceAnalyzer
 {

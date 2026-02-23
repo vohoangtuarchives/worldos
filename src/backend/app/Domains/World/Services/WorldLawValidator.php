@@ -2,13 +2,13 @@
 
 namespace App\Domains\World\Services;
 
-use Tuzy\Domain\World\Enums\MagicSystemType;
-use Tuzy\Domain\World\Enums\PowerCeiling;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\Blueprint\Domain\Legacy\Enums\MagicSystemType;
+use WorldOS\Blueprint\Domain\Legacy\Enums\PowerCeiling;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use App\Models\World;
 use App\StoryEngine\Seed;
 
-use Tuzy\Domain\World\ValueObject\Claim;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\Claim;
 
 class WorldLawValidator
 {

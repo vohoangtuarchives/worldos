@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Planning;
 
-use Tuzy\Domain\Narrative\ValueObject\BeatSpec;
-use Tuzy\Domain\Narrative\ValueObject\MemorySnapshot;
+use WorldOS\Saga\Domain\Narrative\ValueObject\BeatSpec;
+use WorldOS\Saga\Domain\Narrative\ValueObject\MemorySnapshot;
 use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use App\Services\AI\AIAgentContext;
 use App\Domains\Narrative\Serial\SerialGenrePreset;

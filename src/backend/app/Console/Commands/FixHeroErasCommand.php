@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
+use WorldOS\Legacy\Domain\Vietnamese\Models\VietnameseHero;
 use Illuminate\Console\Command;
 
 class FixHeroErasCommand extends Command

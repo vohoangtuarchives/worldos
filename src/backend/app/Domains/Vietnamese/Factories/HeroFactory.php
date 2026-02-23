@@ -2,7 +2,7 @@
 
 namespace App\Domains\Vietnamese\Factories;
 
-use App\Domains\Vietnamese\Models\WorldHero;
+use App\Domains\Vietnamese\Models\Hero;
 use App\Domains\Vietnamese\Services\VietnameseNameGenerator;
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use Illuminate\Support\Str;
@@ -13,7 +13,7 @@ class HeroFactory
         private readonly VietnameseNameGenerator $nameGen
     ) {}
 
-    public function createProceduralHero(string $worldId, array $worldDimensions, ?string $forceArchetype = null): WorldHero
+    public function createProceduralHero(string $worldId, array $worldDimensions, ?string $forceArchetype = null): Hero
     {
         $archetype = $forceArchetype ?? $this->determineArchetype($worldDimensions);
         $gender = in_array($archetype, ['WISE_QUEEN']) ? 'female' : 'male';
@@ -23,7 +23,7 @@ class HeroFactory
 
         $stats = $this->generateStats($archetype, $worldDimensions);
         
-        $hero = WorldHero::create([
+        $hero = Hero::create([
             'world_id' => $worldId,
             'name' => $nameData['full_name'],
             'other_names' => [$title, $nameData['meaning']],

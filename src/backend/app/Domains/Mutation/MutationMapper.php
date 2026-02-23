@@ -6,7 +6,7 @@ namespace App\Domains\Mutation;
 
 use App\Domains\Cosmology\Entities\WorldStateVector;
 use App\Domains\Narrative\Planning\ArcType;
-use Tuzy\Domain\Narrative\ValueObject\StoryOutcomeDTO;
+use WorldOS\Saga\Domain\Narrative\ValueObject\StoryOutcomeDTO;
 
 /**
  * Maps StoryOutcomeDTO + ArcType to a structural delta (WorldStateVector).

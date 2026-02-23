@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
-use Tuzy\Domain\Power\StageTransitionEngine;
-use Tuzy\Application\Power\Services\WorldPressureService;
-use Tuzy\Domain\Power\ValueObject\PowerStage;
+use WorldOS\Legacy\Domain\Power\StageTransitionEngine;
+use WorldOS\Legacy\Application\Power\Services\WorldPressureService;
+use WorldOS\Legacy\Domain\Power\ValueObject\PowerStage;
 use Illuminate\Support\Facades\DB;
 
 class StageTransitionTest extends TestCase

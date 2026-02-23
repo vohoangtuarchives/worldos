@@ -5,7 +5,7 @@ namespace App\Services\AI;
 use App\StoryEngine\WorldState;
 use App\StoryEngine\CharacterState;
 use App\StoryEngine\Seed;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 

@@ -2,7 +2,7 @@
 
 namespace App\Domains\Power\Rules;
 
-use Tuzy\Domain\Power\ValueObject\PowerStage;
+use WorldOS\Legacy\Domain\Power\ValueObject\PowerStage;
 
 class StageTransitionNarrativeRule
 {

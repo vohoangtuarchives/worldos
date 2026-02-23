@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Cpu, Globe2, BookOpenText, Target, Beaker, LogOut } from "lucide-react";
+import { Cpu, Globe2, BookOpenText, Target, Beaker, LogOut, Sparkles } from "lucide-react";
 import { useAuth } from "@/lib/auth/AuthProvider";
 
 const MENUS = [
     { name: "Nexus", path: "/console", icon: <Cpu className="w-4 h-4" /> },
+    { name: "Genesis", path: "/console/genesis", icon: <Sparkles className="w-4 h-4" /> },
     { name: "Worlds", path: "/console/worlds", icon: <Globe2 className="w-4 h-4" /> },
     { name: "Sagas", path: "/console/sagas", icon: <BookOpenText className="w-4 h-4" /> },
-    { name: "Heroes", path: "/console/vietnamese-heroes", icon: <Target className="w-4 h-4" /> },
+    { name: "Heroes", path: "/console/heroes", icon: <Target className="w-4 h-4" /> },
     { name: "Market", path: "/console/marketplace", icon: <Beaker className="w-4 h-4" /> },
 ];
 
@@ -40,8 +41,8 @@ export default function ConsoleLayout({ children }: { children: React.ReactNode 
                                         key={menu.name}
                                         href={menu.path}
                                         className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${isActive
-                                                ? "bg-primary/20 text-primary shadow-[0_0_15px_theme(colors.primary.DEFAULT/0.3)] border border-primary/30"
-                                                : "text-muted-foreground hover:text-foreground hover:bg-white/5"
+                                            ? "bg-primary/20 text-primary shadow-[0_0_15px_theme(colors.primary.DEFAULT/0.3)] border border-primary/30"
+                                            : "text-muted-foreground hover:text-foreground hover:bg-white/5"
                                             }`}
                                     >
                                         {menu.icon}

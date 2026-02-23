@@ -5,7 +5,7 @@ namespace App\Domains\Faction\Services;
 use App\Models\Faction;
 use App\Models\World;
 use App\Models\FactionHistoryLog;
-use Tuzy\Domain\Faction\Enums\FactionIntentType;
+use WorldOS\Society\Faction\Enums\FactionIntentType;
 
 class FactionAgent
 {
@@ -27,8 +27,8 @@ class FactionAgent
         Faction $faction, 
         World $world, 
         int $turn,
-        ?\Tuzy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
-        ?\Tuzy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
+        ?\WorldOS\Legacy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
+        ?\WorldOS\Legacy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
     ): void {
         // 0. Apply Historical Drift (Scars)
         $drift = $this->scarService->calculateFactionIdeologyDrift($faction, $turn);
@@ -60,7 +60,7 @@ class FactionAgent
     {
         $ideology = $faction->getIdeology();
         
-        $newIdeology = new \Tuzy\Domain\Faction\ValueObject\IdeologyVector(
+        $newIdeology = new \WorldOS\Society\Faction\ValueObject\IdeologyVector(
             militarism: $this->clamp($ideology->militarism + ($drift['militarism'] ?? 0)),
             spiritualism: $this->clamp($ideology->spiritualism + ($drift['spiritualism'] ?? 0)),
             expansionism: $this->clamp($ideology->expansionism + ($drift['expansionism'] ?? 0)),

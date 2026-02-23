@@ -3,7 +3,7 @@
 namespace App\Domains\World\Services;
 
 use App\Models\WorldPrimitive;
-use Tuzy\Domain\World\Exception\OntologyViolation;
+use WorldOS\Blueprint\Domain\Legacy\Exception\OntologyViolation;
 
 class PrimitiveGuard
 {

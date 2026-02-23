@@ -9,7 +9,7 @@ use App\Domains\Cosmology\Entities\WorldStateVector;
 use App\Domains\Cosmology\Events\UniverseMutationCommitted;
 use App\Domains\Cosmology\Repositories\CosmologyRepository;
 use App\Domains\Narrative\Planning\ArcType;
-use Tuzy\Domain\Narrative\ValueObject\StoryOutcomeDTO;
+use WorldOS\Saga\Domain\Narrative\ValueObject\StoryOutcomeDTO;
 use Illuminate\Support\Facades\Event;
 
 /**

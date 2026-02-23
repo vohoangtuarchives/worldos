@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Http\Controllers\Writer;
 
-use Tuzy\Domain\Narrative\Models\MaterialSeed;
-use Tuzy\Domain\Narrative\Models\StoryPremise;
+use WorldOS\Saga\Domain\Narrative\Models\MaterialSeed;
+use WorldOS\Saga\Domain\Narrative\Models\StoryPremise;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

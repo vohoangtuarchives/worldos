@@ -7,7 +7,7 @@ $kernel->bootstrap();
 use App\Models\World;
 use App\Models\Story;
 use App\StoryEngine\Seed;
-use Tuzy\Domain\World\ValueObject\WorldLawProfile;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldLawProfile;
 use App\StoryEngine\Services\StoryContentGenerator;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +26,7 @@ $story->character_state = ['powerTier' => 1]; // Dummy
 
 // 2. Mock LLM Provider
 // We need a mock that returns content with Claims.
-$mockLLM = new class implements \Tuzy\Application\Narrative\LLM\Contracts\LLMProvider {
+$mockLLM = new class implements \App\Domains\Narrative\LLM\Contracts\LLMProvider {
     public function generate(string $systemPrompt, string $userPrompt): array {
         return [
             'title' => 'The Forbidden Spell',
@@ -36,9 +36,9 @@ $mockLLM = new class implements \Tuzy\Application\Narrative\LLM\Contracts\LLMPro
 };
 
 // 3. Instantiate Generator with Real Services
-$validator = new \Tuzy\Application\World\Services\WorldLawValidator();
-$extractor = new \App\Domains\World\Services\ClaimExtractor();
-$governance = new \Tuzy\Application\WorldManagement\Services\AIGovernanceService();
+$validator = new \WorldOS\World\Application\Services\WorldLawValidator();
+$extractor = new \App\Domains\World\Services\RegexClaimExtractor();
+$governance = new \App\Domains\WorldManagement\Services\AIGovernanceService();
 
 $generator = new StoryContentGenerator($mockLLM, $validator, $extractor, $governance);
 

@@ -5,7 +5,7 @@ namespace App\StoryEngine\Simulation\Phases;
 use App\StoryEngine\Simulation\SimulationPhaseInterface;
 use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\Balancing\BalancingApplier;
-use Tuzy\Application\World\Services\WorldLawValidator;
+use WorldOS\World\Application\Services\WorldLawValidator;
 
 class BalancingPhase implements SimulationPhaseInterface
 {

@@ -1,26 +1,46 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { writerApi as writer } from "@/shared/api/writer";
 import Link from "next/link";
-import { Globe2, Plus, Zap, Activity } from "lucide-react";
+import { Globe2, Plus, Zap, Activity, Trash2 } from "lucide-react";
 
 interface World {
     id: string;
     name: string;
     status: string;
-    tick: number;
+    health_status: string;
+    current_tick: number;
     origin_type: string;
+    preset: string;
 }
 
 export default function WorldsHubPage() {
+    const queryClient = useQueryClient();
+
     const { data: worlds, isLoading, error } = useQuery<World[]>({
         queryKey: ["worlds"],
         queryFn: async () => {
-            const res = await api.get<{ data: World[] }>("/api/worlds");
+            const res = await api.get<World[]>("/api/v4/tuzy/worlds");
             return res.data;
         },
     });
+
+    const deleteMutation = useMutation({
+        mutationFn: (id: string) => writer.worlds.delete(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["worlds"] });
+        },
+    });
+
+    const handleDelete = (e: React.MouseEvent, id: string) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (confirm("Are you sure you want to delete this world? This action cannot be undone.")) {
+            deleteMutation.mutate(id);
+        }
+    };
 
     return (
         <div className="p-4 md:p-8 space-y-6">
@@ -86,10 +106,19 @@ export default function WorldsHubPage() {
                                             </div>
                                         </div>
 
-                                        {/* Status Badge */}
-                                        <div className="h-2 w-2 relative">
-                                            <div className={`absolute inset-0 rounded-full animate-pulse ${(world.status === 'running' || world.status === 'active') ? 'bg-primary shadow-[0_0_10px_theme(colors.primary.DEFAULT)]' : 'bg-muted-foreground'
-                                                }`} />
+                                        {/* Status & Actions */}
+                                        <div className="flex flex-col items-end gap-3">
+                                            <div className="h-2 w-2 relative">
+                                                <div className={`absolute inset-0 rounded-full animate-pulse ${(world.status === 'running' || world.status === 'active') ? 'bg-primary shadow-[0_0_10px_theme(colors.primary.DEFAULT)]' : 'bg-muted-foreground'
+                                                    }`} />
+                                            </div>
+                                            <button
+                                                onClick={(e) => handleDelete(e, world.id)}
+                                                className="p-1.5 rounded-md hover:bg-destructive/20 text-muted-foreground hover:text-destructive transition-colors opacity-0 group-hover:opacity-100"
+                                                title="Delete World"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
                                         </div>
                                     </div>
 
@@ -107,7 +136,7 @@ export default function WorldsHubPage() {
                                                 <span className="text-[10px] text-muted-foreground font-mono uppercase tracking-widest block mb-1">Time Tick</span>
                                                 <span className="text-sm font-mono text-foreground flex items-center gap-1.5">
                                                     <Activity className="w-3 h-3 text-success" />
-                                                    {world.tick || 0}
+                                                    {world.current_tick || 0}
                                                 </span>
                                             </div>
                                         </div>

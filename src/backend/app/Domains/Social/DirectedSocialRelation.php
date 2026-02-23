@@ -2,7 +2,7 @@
 
 namespace App\Domains\Social;
 
-use Tuzy\Domain\Social\Enums\RelationshipTone;
+use WorldOS\Society\Social\Enums\RelationshipTone;
 
 class DirectedSocialRelation
 {

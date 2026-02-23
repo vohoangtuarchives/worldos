@@ -2,11 +2,11 @@
 
 namespace App\Jobs\Cosmology;
 
-use Tuzy\Application\Cosmology\Services\StyleAdvisorService;
-use Tuzy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
+use WorldOS\Legacy\Application\Cosmology\Services\StyleAdvisorService;
+use WorldOS\Legacy\Domain\Cosmology\ValueObject\UniverseStyleVersion;
 use App\Models\World;
 use App\Models\UniverseStyle;
-use Tuzy\Application\Governance\Actions\ProposeStyleChangeAction;
+use WorldOS\Legacy\Application\Governance\Actions\ProposeStyleChangeAction;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;

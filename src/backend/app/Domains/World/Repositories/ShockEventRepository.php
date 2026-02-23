@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\World\Repositories;
 
-use Tuzy\Domain\World\Event\ShockEvent;
+use WorldOS\Blueprint\Domain\Legacy\Event\ShockEvent;
 use Illuminate\Support\Collection;
 
 interface ShockEventRepository

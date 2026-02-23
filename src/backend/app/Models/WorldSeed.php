@@ -18,7 +18,7 @@ class WorldSeed extends Model
 
     protected $casts = [
         'metadata' => 'array',
-        'state' => \Tuzy\Domain\World\Enums\SeedState::class,
+        'state' => \WorldOS\Blueprint\Domain\Legacy\Enums\SeedState::class,
     ];
 
     public function world(): BelongsTo
@@ -36,12 +36,12 @@ class WorldSeed extends Model
      */
     public function forceDormant(): void
     {
-        if ($this->state === \Tuzy\Domain\World\Enums\SeedState::EXHAUSTED) {
+        if ($this->state === \WorldOS\Blueprint\Domain\Legacy\Enums\SeedState::EXHAUSTED) {
             throw new \Exception('Cannot reactivate EXHAUSTED seed');
         }
 
         $this->update([
-            'state' => \Tuzy\Domain\World\Enums\SeedState::DORMANT,
+            'state' => \WorldOS\Blueprint\Domain\Legacy\Enums\SeedState::DORMANT,
             'activation_tick' => null,
         ]);
     }
@@ -52,7 +52,7 @@ class WorldSeed extends Model
     public function forceExhaust(): void
     {
         $this->update([
-            'state' => \Tuzy\Domain\World\Enums\SeedState::EXHAUSTED,
+            'state' => \WorldOS\Blueprint\Domain\Legacy\Enums\SeedState::EXHAUSTED,
             'exhaustion_tick' => $this->world->clock->current_tick ?? 0,
         ]);
     }

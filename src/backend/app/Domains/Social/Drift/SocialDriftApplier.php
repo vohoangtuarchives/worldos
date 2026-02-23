@@ -3,8 +3,8 @@
 namespace App\Domains\Social\Drift;
 
 use App\Domains\Social\SocialRelationState;
-use Tuzy\Domain\Social\Enums\SocialImpactEvent;
-use Tuzy\Domain\Social\Enums\RelationshipTone;
+use WorldOS\Society\Social\Enums\SocialImpactEvent;
+use WorldOS\Society\Social\Enums\RelationshipTone;
 
 class SocialDriftApplier
 {

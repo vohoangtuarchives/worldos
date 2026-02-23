@@ -3,7 +3,7 @@
 namespace App\StoryEngine\Services;
 
 use App\Models\Story;
-use Tuzy\Application\Narrative\LLM\Contracts\LLMProvider;
+use App\Domains\Narrative\LLM\Contracts\LLMProvider;
 use App\StoryEngine\Seed;
 use App\StoryEngine\Services\NarrativeAssembler;
 
@@ -11,9 +11,9 @@ class StoryContentGenerator
 {
     public function __construct(
         protected LLMProvider $llm,
-        protected \Tuzy\Application\World\Services\WorldLawValidator $validator,
-        protected \Tuzy\Domain\World\Contracts\ClaimExtractorInterface $extractor,
-        protected \Tuzy\Application\WorldManagement\Services\AIGovernanceService $governance, // ADR-0007
+        protected \WorldOS\World\Application\Services\WorldLawValidator $validator,
+        protected \App\Domains\World\Contracts\ClaimExtractorInterface $extractor,
+        protected \App\Domains\WorldManagement\Services\AIGovernanceService $governance,
         protected NarrativeAssembler $assembler
     ) {}
 

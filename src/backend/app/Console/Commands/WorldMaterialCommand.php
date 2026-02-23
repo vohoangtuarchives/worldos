@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Tuzy\Application\Material\Services\WorldMaterialTracker;
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface;
+use WorldOS\Legacy\Application\Material\Services\WorldMaterialTracker;
+use WorldOS\Legacy\Infrastructure\World\Repositories\WorldRepository;
+use WorldOS\Legacy\Domain\Material\Contracts\MaterialRepositoryInterface;
 use Illuminate\Console\Command;
 
 final class WorldMaterialCommand extends Command

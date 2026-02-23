@@ -47,13 +47,14 @@ export function LiveChronicleNode() {
                     </div>
                 ) : (
                     events.map((evt, idx) => {
-                        const config = SEVERITY_CONFIG[evt.severity] || SEVERITY_CONFIG.LOW;
+                        const severityKey = (evt.severity || 'low').toUpperCase();
+                        const config = SEVERITY_CONFIG[severityKey as keyof typeof SEVERITY_CONFIG] || SEVERITY_CONFIG.LOW;
                         const Icon = config.icon;
                         const isLatest = idx === 0;
 
                         return (
                             <div
-                                key={`${evt.year}-${evt.type}-${idx}`}
+                                key={`${evt.tick}-${evt.type}-${idx}`}
                                 className={cn(
                                     "p-3 rounded-lg border text-sm transition-all duration-500 group relative overflow-hidden",
                                     config.bg, config.border,
@@ -72,19 +73,24 @@ export function LiveChronicleNode() {
                                                 {evt.title}
                                             </span>
                                             <span className="text-[9px] font-mono text-slate-400 shrink-0 uppercase tracking-wider">
-                                                Year {evt.year}
+                                                Tick {evt.tick}
                                             </span>
                                         </div>
-                                        <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">
-                                            {evt.description}
-                                        </p>
-                                        {evt.metadata && Object.keys(evt.metadata).length > 0 && (
+                                        {evt.payload?.message && (
+                                            <p className="text-[11px] text-slate-400 leading-relaxed line-clamp-2 group-hover:line-clamp-none transition-all">
+                                                {evt.payload.message}
+                                            </p>
+                                        )}
+                                        {evt.payload && Object.keys(evt.payload).length > 0 && (
                                             <div className="mt-2 flex flex-wrap gap-1">
-                                                {Object.entries(evt.metadata).slice(0, 3).map(([k, v]) => (
-                                                    <span key={k} className="text-[8px] bg-slate-950/50 px-1.5 py-0.5 rounded text-slate-400 border border-slate-800">
-                                                        {k}: {String(v)}
-                                                    </span>
-                                                ))}
+                                                {Object.entries(evt.payload).slice(0, 4).map(([k, v]) => {
+                                                    if (k === 'message') return null; // block message rendered above
+                                                    return (
+                                                        <span key={k} className="text-[8px] bg-slate-950/50 px-1.5 py-0.5 rounded text-slate-400 border border-slate-800">
+                                                            {k}: {(typeof v === 'object' && v !== null) ? JSON.stringify(v) : String(v)}
+                                                        </span>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>

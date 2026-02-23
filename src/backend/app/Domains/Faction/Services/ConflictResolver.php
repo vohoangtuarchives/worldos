@@ -4,13 +4,13 @@ namespace App\Domains\Faction\Services;
 
 use App\Models\World;
 use App\Models\Faction;
-use Tuzy\Domain\Faction\Enums\FactionIntentType;
+use WorldOS\Society\Faction\Enums\FactionIntentType;
 
 class ConflictResolver
 {
     public function __construct(
         private \App\Domains\Faction\Policies\CivilWarPolicy $civilWarPolicy,
-        private \App\Domains\World\Services\WorldEventLedger $ledger
+        private \WorldOS\World\Application\Services\WorldEventLedger $ledger
     ) {}
 
     /**

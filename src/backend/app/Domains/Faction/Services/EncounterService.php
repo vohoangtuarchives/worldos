@@ -4,8 +4,8 @@ namespace App\Domains\Faction\Services;
 
 use App\Models\Faction;
 use App\Models\World;
-use App\Domains\World\Services\WorldEventLedger;
-use Tuzy\Domain\Faction\ValueObject\Leader;
+use WorldOS\World\Application\Services\WorldEventLedger;
+use WorldOS\Society\Faction\ValueObject\Leader;
 
 class EncounterService
 {

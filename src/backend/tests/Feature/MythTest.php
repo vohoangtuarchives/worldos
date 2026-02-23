@@ -8,8 +8,8 @@ use Database\Seeders\WorldSeeder;
 use App\Models\World;
 use App\Models\WorldBelief;
 use App\Models\WorldMyth;
-use Tuzy\Application\World\Services\BeliefRecorder;
-use Tuzy\Application\World\Services\MythEmergenceService;
+use WorldOS\Legacy\Application\World\Services\BeliefRecorder;
+use WorldOS\Legacy\Application\World\Services\MythEmergenceService;
 
 class MythTest extends TestCase
 {

@@ -2,12 +2,12 @@
 
 namespace App\Domains\WorldManagement\Services;
 
-use Tuzy\Domain\World\ValueObject\WorldHealthStatus;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\WorldHealthStatus;
 use App\Models\World;
 use App\Models\WorldAlert;
 use Illuminate\Support\Facades\DB;
 
-use Tuzy\Domain\WorldManagement\ValueObject\HealthResult;
+use WorldOS\Blueprint\Domain\LegacyManagement\ValueObject\HealthResult;
 
 class AlertService
 {

@@ -5,7 +5,7 @@ namespace App\StoryEngine;
 use App\StoryEngine\Simulation\SimulationPipeline;
 use App\StoryEngine\Simulation\SimulationContext;
 use App\StoryEngine\Persistence\OptimizedEventStore;
-use Tuzy\Application\World\Services\WorldLawValidator;
+use WorldOS\World\Application\Services\WorldLawValidator;
 use App\Exceptions\Simulation\SimulationException;
 
 class PhaseExecutor
@@ -286,7 +286,7 @@ class PhaseExecutor
         
         // Extract claims from world state
         if ($context->world->publicAwareness > 8) {
-            $claims[] = new \Tuzy\Domain\World\ValueObject\Claim(
+            $claims[] = new \WorldOS\Blueprint\Domain\Legacy\ValueObject\Claim(
                 'HIGH_PUBLIC_AWARENESS',
                 $context->world->publicAwareness
             );
@@ -295,7 +295,7 @@ class PhaseExecutor
         // Extract claims from factions
         foreach ($context->world->factions as $faction) {
             if (isset($faction->militaryPower) && $faction->militaryPower > 7) {
-                $claims[] = new \Tuzy\Domain\World\ValueObject\Claim(
+                $claims[] = new \WorldOS\Blueprint\Domain\Legacy\ValueObject\Claim(
                     'HIGH_MILITARY_POWER',
                     $faction->militaryPower
                 );

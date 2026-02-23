@@ -4,9 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\World;
-use Tuzy\Domain\Saga\Saga;
-use Tuzy\Domain\Saga\SagaRunner;
-use Tuzy\Domain\Vietnamese\Models\VietnameseHero;
+use WorldOS\Saga\Domain\Legacy\Saga;
+use WorldOS\Saga\Domain\Legacy\SagaRunner;
+use WorldOS\Legacy\Domain\Vietnamese\Models\VietnameseHero;
 
 class TestVietnameseSimulationCommand extends Command
 {
@@ -52,7 +52,7 @@ class TestVietnameseSimulationCommand extends Command
         // Let's create the world manually using the Service to ensure it works, 
         // then define it as the current world of the saga, then run simulation steps.
         
-        $originService = app(\Tuzy\Application\Vietnamese\Services\VietnameseOriginService::class);
+        $originService = app(\WorldOS\Legacy\Application\Vietnamese\Services\VietnameseOriginService::class);
         $world = $originService->createVietnameseWorld([
             'name' => "{$saga->name} - World 1",
             'chaos_seed' => 12345,
@@ -61,11 +61,11 @@ class TestVietnameseSimulationCommand extends Command
         ]);
         
         // Link to Saga
-        \Tuzy\Domain\Saga\SagaWorld::create([
+        \WorldOS\Saga\Domain\Legacy\SagaWorld::create([
             'saga_id' => $saga->id,
             'world_id' => $world->id,
             'sequence' => 0,
-            'status' => \Tuzy\Domain\Saga\SagaWorld::STATUS_RUNNING,
+            'status' => \WorldOS\Saga\Domain\Legacy\SagaWorld::STATUS_RUNNING,
         ]);
         
         $saga->update(['current_world_index' => 0, 'status' => Saga::STATUS_RUNNING]);
@@ -74,12 +74,12 @@ class TestVietnameseSimulationCommand extends Command
 
         // FORCE RECALCULATION OF SCORES (to ensure test data is valid)
         $this->info("🔄 Recalculating Hero Scores...");
-        $scoringService = app(\Tuzy\Application\Vietnamese\Services\HeroScoringService::class);
-        $version = \Tuzy\Domain\Vietnamese\Models\ScoringVersion::active();
+        $scoringService = app(\WorldOS\Legacy\Application\Vietnamese\Services\HeroScoringService::class);
+        $version = \WorldOS\Legacy\Domain\Vietnamese\Models\ScoringVersion::active();
         
         if (!$version) {
             $this->warn("⚠️ No active scoring version found. Seeding v1.0...");
-            \Tuzy\Domain\Vietnamese\Models\ScoringVersion::create([
+            \WorldOS\Legacy\Domain\Vietnamese\Models\ScoringVersion::create([
                 'version' => '1.0',
                 'weights' => [
                     'military' => 1.0,
@@ -90,7 +90,7 @@ class TestVietnameseSimulationCommand extends Command
                 'dimension_mapping' => [], // Default
                 'is_active' => true,
             ]);
-            $version = \Tuzy\Domain\Vietnamese\Models\ScoringVersion::active();
+            $version = \WorldOS\Legacy\Domain\Vietnamese\Models\ScoringVersion::active();
         }
 
         $allHeroes = VietnameseHero::all();
@@ -117,8 +117,8 @@ class TestVietnameseSimulationCommand extends Command
         $epochs = (int) $this->option('epochs');
         $this->info("⏳ Simulating {$epochs} epochs (50 years each)...");
 
-        $csmService = app(\Tuzy\Application\Vietnamese\Services\CosmicIntegrationService::class);
-        $bifService = app(\Tuzy\Application\Vietnamese\Services\HeroBifurcationService::class);
+        $csmService = app(\WorldOS\Legacy\Application\Vietnamese\Services\CosmicIntegrationService::class);
+        $bifService = app(\WorldOS\Legacy\Application\Vietnamese\Services\HeroBifurcationService::class);
         
         $headers = ['Era', 'Year', 'Active Heroes', 'Civ Boosts', 'Bifurcation Check'];
         $rows = [];

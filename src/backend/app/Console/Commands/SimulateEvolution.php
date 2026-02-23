@@ -18,8 +18,8 @@ class SimulateEvolution extends Command
     public function handle()
     {
         $worldId = $this->argument('world_id');
-        $pressureService = app(\Tuzy\Application\Power\Services\WorldPressureService::class);
-        $engine = app(\Tuzy\Domain\Power\StageTransitionEngine::class);
+        $pressureService = app(\WorldOS\Legacy\Application\Power\Services\WorldPressureService::class);
+        $engine = app(\WorldOS\Legacy\Domain\Power\StageTransitionEngine::class);
 
         $this->info("=== Khởi động mô phỏng tiến hoá thế giới (World: {$worldId}) ===");
 

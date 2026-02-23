@@ -9,8 +9,8 @@ use App\Models\World;
 use App\Models\MetaLayerState;
 use App\Models\MetaSnapshot;
 use App\Models\WorldSnapshotV2;
-use Tuzy\Domain\World\Enums\WorldType;
-use Tuzy\Domain\World\Enums\WorldHealthStatus;
+use WorldOS\Blueprint\Domain\Legacy\Enums\WorldType;
+use WorldOS\Blueprint\Domain\Legacy\Enums\WorldHealthStatus;
 
 class AutonomousSimulationTest extends TestCase
 {

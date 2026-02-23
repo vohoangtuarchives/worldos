@@ -5,8 +5,8 @@ export const publicApi = {
     artifacts: () =>
       api.get<unknown>("/api/marketplace/artifacts").then((r) => (Array.isArray(r) ? r : [])),
   },
-  vietnameseHeroes: {
+  heroes: {
     list: () =>
-      api.get<unknown>("/api/vietnamese-heroes").then((r) => (Array.isArray(r) ? r : [])),
+      api.get<unknown>("/api/heroes").then((r) => (Array.isArray(r) ? r : [])),
   },
 };

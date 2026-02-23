@@ -9,7 +9,7 @@ use App\StoryEngine\Levers\PerceptionFilter;
 use App\StoryEngine\DecisionBias;
 use App\StoryEngine\Events\FactionActionEvent;
 use App\StoryEngine\Persistence\EventStore;
-use Tuzy\Application\World\Services\WorldLawValidator;
+use WorldOS\World\Application\Services\WorldLawValidator;
 
 class FactionActionPhase implements SimulationPhaseInterface
 {

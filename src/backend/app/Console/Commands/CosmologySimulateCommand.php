@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Tuzy\Domain\Cosmology\Cosmology;
-use Tuzy\Application\Cosmology\Entities\Universe;
-use Tuzy\Application\Cosmology\Entities\WorldStateVector;
-use Tuzy\Application\Narrative\Services\LLMChronicler;
+use WorldOS\Legacy\Domain\Cosmology\Cosmology;
+use WorldOS\Legacy\Application\Cosmology\Entities\Universe;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
+use WorldOS\Legacy\Application\Narrative\Services\LLMChronicler;
 use Illuminate\Console\Command;
 
 class CosmologySimulateCommand extends Command

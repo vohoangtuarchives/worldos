@@ -4,7 +4,7 @@ namespace App\Domains\Institution\Services;
 
 use App\Models\Institution;
 use App\Models\Faction;
-use Tuzy\Domain\Faction\ValueObject\IdeologyVector;
+use WorldOS\Society\Faction\ValueObject\IdeologyVector;
 
 class ConsensusService
 {

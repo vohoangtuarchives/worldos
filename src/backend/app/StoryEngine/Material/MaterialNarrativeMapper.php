@@ -2,7 +2,7 @@
 
 namespace App\StoryEngine\Material;
 
-use Tuzy\Domain\Material\MaterialInstance;
+use WorldOS\Legacy\Domain\Material\MaterialInstance;
 use Illuminate\Support\Facades\File;
 
 class MaterialNarrativeMapper

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services\World;
 
 use App\Application\World\Actions\TickWorldAction;
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use App\Domains\World\Repositories\WorldRepository;
+use App\Domains\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Queue;

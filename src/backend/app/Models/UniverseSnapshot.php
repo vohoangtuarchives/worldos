@@ -2,9 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Model;
 
+/**
+ * WorldOS V5 Universe Snapshot Eloquent Model.
+ * Stores one complete state capture per tick for deterministic replay.
+ */
 class UniverseSnapshot extends Model
 {
     use HasUuids;
@@ -16,18 +20,22 @@ class UniverseSnapshot extends Model
     protected $fillable = [
         'universe_id',
         'tick',
-        'state_vector',
+        'seed',
         'entropy',
         'stability_index',
-        'metrics',
+        'existence_weight',
+        'state_vector',
+        'captured_at',
     ];
 
     protected $casts = [
-        'state_vector' => 'array',
-        'metrics' => 'array',
-        'tick' => 'integer',
-        'entropy' => 'float',
-        'stability_index' => 'float',
+        'state_vector'     => 'array',
+        'tick'             => 'integer',
+        'seed'             => 'integer',
+        'entropy'          => 'float',
+        'stability_index'  => 'float',
+        'existence_weight' => 'float',
+        'captured_at'      => 'datetime',
     ];
 
     public function universe()

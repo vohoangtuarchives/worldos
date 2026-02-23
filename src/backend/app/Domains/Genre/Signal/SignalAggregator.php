@@ -2,7 +2,7 @@
 
 namespace App\Domains\Genre\Signal;
 
-use Tuzy\Domain\Genre\ValueObject\GenreProfile;
+use WorldOS\Legacy\Domain\Genre\ValueObject\GenreProfile;
 
 class SignalAggregator
 {

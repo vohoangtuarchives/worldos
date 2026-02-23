@@ -3,7 +3,7 @@
 namespace App\Domains\World\Services;
 
 use App\Domains\World\Contracts\ClaimExtractorInterface;
-use Tuzy\Domain\World\ValueObject\Claim;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\Claim;
 
 class RegexClaimExtractor implements ClaimExtractorInterface
 {

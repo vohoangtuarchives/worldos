@@ -4,7 +4,7 @@ namespace App\Domains\Narrative\Timeline\Repositories;
 
 use App\Models\TimelineNode as TimelineNodeModel;
 use App\Domains\Narrative\Timeline\TimelineNode;
-use Tuzy\Domain\Narrative\ValueObject\StateSnapshot;
+use WorldOS\Saga\Domain\Narrative\ValueObject\StateSnapshot;
 
 class TimelineEloquentRepository
 {

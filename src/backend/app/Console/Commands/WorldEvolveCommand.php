@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Tuzy\Domain\Evolution\Service\MetaCosmos\MetaCycleOrchestrator;
-use Tuzy\Domain\Evolution\Entity\LawGenome;
-use Tuzy\Domain\Evolution\Entity\Universe;
+use WorldOS\Evolution\Domain\Legacy\Service\MetaCosmos\MetaCycleOrchestrator;
+use WorldOS\Evolution\Domain\Legacy\Entity\LawGenome;
+use WorldOS\Evolution\Domain\Legacy\Entity\Universe;
 use Illuminate\Support\Str;
 
 class WorldEvolveCommand extends Command

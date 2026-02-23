@@ -2,7 +2,7 @@
 
 namespace App\StoryEngine\Material;
 
-use Tuzy\Domain\Material\Contracts\MaterialRepositoryInterface;
+use WorldOS\Legacy\Domain\Material\Contracts\MaterialRepositoryInterface;
 use App\Models\World;
 
 class MaterialEventGenerator

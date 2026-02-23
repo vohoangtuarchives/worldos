@@ -26,6 +26,7 @@ import { useWorldStream } from "./hooks/useWorldStream";
 import { RealtimeVectorAnalysis } from "./components/RealtimeVectorAnalysis";
 import { LiveChronicleNode } from "./components/LiveChronicleNode";
 import { useSimulationStore } from "./stores/useSimulationStore";
+import { Button } from "@/components/ui/button";
 
 const METRICS_POLL_MS = 4000;
 
@@ -109,11 +110,28 @@ export function EvolutionView({
   const materialEvents = timelineData?.events ?? [];
   const materialLifecycle = materialsData?.lifecycle ?? { active: 0, dormant: 0, retired: 0 };
 
-  const KEYS = [
-    'ce', 'sc', 'tech', 'stab', 'pros', 'mp', 'ie',
-    'legit', 'ec', 'ineq', 'sust', 'myst', 'legacy',
-    'exp', 'info', 'mob', 'curv'
-  ];
+  const [isSimulating, setIsSimulating] = useState(false);
+
+  const simulateTicks = async (ticks: number) => {
+    if (!selectedUniverseId) return;
+    setIsSimulating(true);
+    try {
+      const res = await fetch(`/api/v6/evolution/universes/${selectedUniverseId}/simulate`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticks })
+      });
+      if (res.ok) {
+        alert(`Đã tiến hóa ${ticks} ticks thành công.`);
+      } else {
+        alert("Lỗi khi giả lập.");
+      }
+    } catch (e: any) {
+      alert(e.message);
+    } finally {
+      setIsSimulating(false);
+    }
+  };
 
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
@@ -173,9 +191,9 @@ export function EvolutionView({
               </div>
 
               <div className="pt-4 border-t border-border/30">
-                <span className="metric-label">Current Phase</span>
+                <span className="metric-label">Lifecycle / Phase</span>
                 <Badge variant="secondary" className="mt-2 w-full justify-center py-1 font-mono uppercase text-[10px] tracking-widest border-primary/20 bg-primary/5 text-primary">
-                  {rtPhase !== 'PRIMORDIAL' ? rtPhase : phase}
+                  {useSimulationStore(s => s.lifecycle) || phase}
                 </Badge>
               </div>
             </div>
@@ -198,19 +216,43 @@ export function EvolutionView({
             <div className="px-6 py-4 border-b border-border/50 flex items-center justify-between bg-white/40">
               <h3 className="font-bold text-sm uppercase tracking-wider flex items-center gap-2">
                 <Zap className="h-4 w-4 text-sky-500" />
-                Hyper-Realtime Vector Analysis
+                V6 Ontology Matrix
               </h3>
             </div>
-            <div className="flex-1 p-6 flex flex-col">
+            <div className="flex-1 p-6 flex flex-col justify-between">
               <RealtimeVectorAnalysis />
 
-              <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
-                {KEYS.map((k, i) => (
-                  <div key={k} className="flex flex-col p-2 bg-muted/20 border border-border/20 rounded-md">
-                    <span className="text-[9px] text-muted-foreground uppercase font-bold">{k}</span>
-                    <span className="text-xs font-mono font-bold">{(rtVector[i] || 0).toFixed(4)}</span>
-                  </div>
-                ))}
+              <div className="mt-6 pt-6 border-t border-border/20">
+                <h4 className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mb-3">Simulation Controls</h4>
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isSimulating}
+                    onClick={() => simulateTicks(1)}
+                    className="flex-1 bg-slate-900/50 hover:bg-slate-800"
+                  >
+                    +1 Tick
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isSimulating}
+                    onClick={() => simulateTicks(10)}
+                    className="flex-1 bg-slate-900/50 hover:bg-slate-800"
+                  >
+                    +10 Ticks
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={isSimulating}
+                    onClick={() => simulateTicks(100)}
+                    className="flex-1 bg-sky-900/40 hover:bg-sky-800/60 border-sky-500/30 text-sky-400"
+                  >
+                    +100 Ticks
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

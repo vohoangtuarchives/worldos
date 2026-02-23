@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\World;
-use Tuzy\Application\World\Services\WorldForkService;
+use App\Domains\World\Services\WorldForkService;
 
 class ForkWorldCommand extends Command
 {

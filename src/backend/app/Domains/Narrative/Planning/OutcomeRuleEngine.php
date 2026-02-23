@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Planning;
 
-use Tuzy\Domain\Conflict\ValueObject\ConflictSeed;
+use WorldOS\Legacy\Domain\Conflict\ValueObject\ConflictSeed;
 
 /**
  * Computes default outcome (win/lose/partial) from arc type and conflict context.

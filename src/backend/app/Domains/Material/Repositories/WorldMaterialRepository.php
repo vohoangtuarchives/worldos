@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Material\Repositories;
 
 use App\Domains\Material\ValueObjects\MaterialInstance;
-use Tuzy\Domain\Material\ValueObject\MaterialChange;
+use WorldOS\Legacy\Domain\Material\ValueObject\MaterialChange;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

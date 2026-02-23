@@ -7,8 +7,8 @@ use App\Models\World;
 use App\Models\WorldClock;
 use App\Models\Observer;
 use App\Models\ObserverVersion;
-use Tuzy\Application\World\Services\EventRecorder;
-use Tuzy\Application\World\Services\ScarFactory;
+use WorldOS\World\Application\Services\EventRecorder;
+use WorldOS\World\Application\Services\ScarFactory;
 
 class WorldSeeder extends Seeder
 {

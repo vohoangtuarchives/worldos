@@ -1,68 +1,59 @@
 import { useEffect } from 'react';
-import { decode } from '@msgpack/msgpack';
 import { useSimulationStore } from '../stores/useSimulationStore';
 
-export function useWorldStream(worldId: string | null) {
+export function useWorldStream(universeId: string | null) {
     const setTargetState = useSimulationStore((state) => state.setTargetState);
     const updateInterpolation = useSimulationStore((state) => state.updateInterpolation);
+    const addChronicleEvent = useSimulationStore((state) => state.addChronicleEvent);
 
     useEffect(() => {
-        if (!worldId) return;
+        if (!universeId) return;
 
-        // SSE connection to the hyper-performance stream
-        // Using a relative path which should be proxied or direct depending on setup
-        const eventSource = new EventSource(`/api/realtime/stream/${worldId}`);
+        let isPolling = true;
 
-        const handleMetric = (event: MessageEvent) => {
+        const pollData = async () => {
+            if (!isPolling) return;
             try {
-                // SSE data is base64 encoded MessagePack
-                const binaryString = atob(event.data);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
+                const res = await fetch(`/api/v6/evolution/universes/${universeId}`);
+                if (res.ok) {
+                    const data = await res.json();
+                    setTargetState(data);
                 }
 
-                const decoded = decode(bytes);
-                useSimulationStore.getState().setTargetState(decoded);
-            } catch (error) {
-                console.error('Failed to decode metric data:', error);
+                // Poll chronicles
+                const resChrons = await fetch(`/api/v6/evolution/universes/${universeId}/chronicles`);
+                if (resChrons.ok) {
+                    const chrons = await resChrons.json();
+                    // Just take the latest ones and add them if they are new, but for simplicity we assume the store only keeps unique or we just add them
+                    // Since the API returns top 100 desc, we might need a smart way to deduplicate in store. 
+                    // For now, let's just let the store handle it or we can pass the whole array
+                    if (chrons && chrons.length > 0) {
+                        useSimulationStore.setState({ chronicleEvents: chrons });
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to poll universe data:", err);
             }
         };
 
-        const handleChronicle = (event: MessageEvent) => {
-            try {
-                const binaryString = atob(event.data);
-                const bytes = new Uint8Array(binaryString.length);
-                for (let i = 0; i < binaryString.length; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
+        // Initial poll
+        pollData();
 
-                const decoded = decode(bytes);
-                useSimulationStore.getState().addChronicleEvent(decoded as any);
-            } catch (error) {
-                console.error('Failed to decode chronicle data:', error);
-            }
-        };
-
-        eventSource.addEventListener('metric', handleMetric);
-        eventSource.addEventListener('chronicle', handleChronicle);
+        // Fallback polling interval (since SSE is gone)
+        const intervalId = setInterval(pollData, 5000);
 
         // Interpolation Loop (60fps)
         let rafId: number;
         const animate = () => {
-            // Sensitivity factor: how fast we move towards target
-            // 0.1 means 10% of the distance covered per frame (~6.2ms if 60fps)
-            // This creates a very smooth "weighted average" drift
             updateInterpolation(0.12);
             rafId = requestAnimationFrame(animate);
         };
         rafId = requestAnimationFrame(animate);
 
         return () => {
-            eventSource.removeEventListener('metric', handleMetric);
-            eventSource.removeEventListener('chronicle', handleChronicle);
-            eventSource.close();
+            isPolling = false;
+            clearInterval(intervalId);
             cancelAnimationFrame(rafId);
         };
-    }, [worldId, setTargetState, updateInterpolation]);
+    }, [universeId, setTargetState, updateInterpolation]);
 }

@@ -2,8 +2,8 @@
 
 namespace App\StoryEngine\Character;
 
-use Tuzy\Domain\Material\Material;
-use Tuzy\Domain\Material\MaterialInstance;
+use WorldOS\Legacy\Domain\Material\Material;
+use WorldOS\Legacy\Domain\Material\MaterialInstance;
 
 class CharacterTraitDeriver
 {

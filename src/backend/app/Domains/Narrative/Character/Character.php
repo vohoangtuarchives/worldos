@@ -2,7 +2,7 @@
 
 namespace App\Domains\Narrative\Character;
 
-use Tuzy\Domain\Narrative\ValueObject\EmotionState;
+use WorldOS\Saga\Domain\Narrative\ValueObject\EmotionState;
 use App\Domains\Narrative\Character\Entities\Memory;
 use Illuminate\Support\Collection;
 

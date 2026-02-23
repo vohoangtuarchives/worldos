@@ -8,8 +8,8 @@
 
 namespace App\Examples;
 
-use Tuzy\Application\Material\Mutation\MutationTriggerDetector;
-use Tuzy\Application\Material\Mutation\MutationExecutor;
+use WorldOS\Legacy\Application\Material\Mutation\MutationTriggerDetector;
+use WorldOS\Legacy\Application\Material\Mutation\MutationExecutor;
 use App\StoryEngine\Material\MaterialEventGenerator;
 use App\Models\World;
 
@@ -83,7 +83,7 @@ class MaterialSystemExample
      */
     public function simulateTickWithMaterials(World $world)
     {
-        $bridge = app(\Tuzy\Domain\Material\MaterialWorldBridge::class);
+        $bridge = app(\WorldOS\Legacy\Domain\Material\MaterialWorldBridge::class);
         $generator = app(MaterialEventGenerator::class);
 
         // Build world context

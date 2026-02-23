@@ -4,9 +4,9 @@ namespace Tests\Simulation;
 
 use Tests\TestCase;
 use App\Models\World;
-use Tuzy\Domain\World\ValueObject\PhysicsProfile;
-use Tuzy\Application\Saga\Services\PhysicsMutator;
-use Tuzy\Application\Saga\Actions\TerraformWorldAction;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\PhysicsProfile;
+use WorldOS\Legacy\Application\Saga\Services\PhysicsMutator;
+use WorldOS\Legacy\Application\Saga\Actions\TerraformWorldAction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PhysicsInvasionTest extends TestCase
@@ -111,7 +111,7 @@ class PhysicsInvasionTest extends TestCase
 
         $this->assertNotNull($event, "A TERRAFORM_EVENT should be recorded");
         
-        $narrator = app(\Tuzy\Application\Saga\Services\LedgerNarrator::class);
+        $narrator = app(\WorldOS\Legacy\Application\Saga\Services\LedgerNarrator::class);
         $narrative = $narrator->narrate($event);
         
         $this->assertNotNull($narrative, "Narrative should be generated");

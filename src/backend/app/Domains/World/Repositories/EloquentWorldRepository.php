@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Domains\World\Repositories;
 
 use App\Domains\World\Aggregates\WorldAggregate;
-use Tuzy\Domain\World\ValueObject\EntropyScore;
-use Tuzy\Domain\World\ValueObject\GeneVector;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\EntropyScore;
+use WorldOS\Blueprint\Domain\Legacy\ValueObject\GeneVector;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;

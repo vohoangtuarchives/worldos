@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Narrative\Bridge;
 
-use Tuzy\Domain\Narrative\ValueObject\StoryEvent;
+use WorldOS\Saga\Domain\Narrative\ValueObject\StoryEvent;
 
 /**
  * Maps narrative story events to deltas on narrative_driven_state.

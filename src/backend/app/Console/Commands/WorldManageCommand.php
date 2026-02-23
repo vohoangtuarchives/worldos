@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use Tuzy\Infrastructure\World\Repositories\WorldRepository;
-use Tuzy\Application\World\Services\WorldInitializer;
-use Tuzy\Infrastructure\Character\Repositories\CharacterSurvivalRepository;
+use App\Domains\World\Repositories\WorldRepository;
+use App\Domains\World\Services\WorldInitializer;
+use App\Domains\Character\Repositories\CharacterSurvivalRepository;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Validator;
 

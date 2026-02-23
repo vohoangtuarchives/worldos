@@ -4,7 +4,7 @@ namespace App\Domains\Faction\Services;
 
 use App\Models\Faction;
 use App\Models\World;
-use Tuzy\Domain\Faction\Enums\FactionIntentType;
+use WorldOS\Society\Faction\Enums\FactionIntentType;
 
 class DecisionEngine
 {
@@ -17,8 +17,8 @@ class DecisionEngine
     public function scoreIntents(
         Faction $faction, 
         World $world,
-        ?\Tuzy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
-        ?\Tuzy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
+        ?\WorldOS\Legacy\Domain\Cosmology\ValueObject\CosmicState $cosmic = null,
+        ?\WorldOS\Legacy\Domain\Cosmology\ValueObject\CivilizationState $civ = null
     ): array {
         $personality = $faction->getPersonality();
         $ideology = $faction->getIdeology();

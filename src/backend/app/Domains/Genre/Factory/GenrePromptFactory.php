@@ -3,7 +3,7 @@
 namespace App\Domains\Genre\Factory;
 
 use App\Domains\Genre\Contracts\GenreDefinition;
-use Tuzy\Domain\Genre\ValueObject\GenrePromptCapsule;
+use WorldOS\Legacy\Domain\Genre\ValueObject\GenrePromptCapsule;
 
 class GenrePromptFactory
 {

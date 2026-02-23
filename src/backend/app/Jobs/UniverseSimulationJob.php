@@ -10,10 +10,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Tuzy\Domain\Evolution\Service\WorldEvolutionPipeline;
-use Tuzy\Domain\Evolution\Service\Fitness\UniverseFitnessEvaluator;
-use Tuzy\Domain\Evolution\Entity\Universe;
-use Tuzy\Domain\Evolution\Entity\LawGenome;
+use WorldOS\Evolution\Domain\Legacy\Service\WorldEvolutionPipeline;
+use WorldOS\Evolution\Domain\Legacy\Service\Fitness\UniverseFitnessEvaluator;
+use WorldOS\Evolution\Domain\Legacy\Entity\Universe;
+use WorldOS\Evolution\Domain\Legacy\Entity\LawGenome;
 
 class UniverseSimulationJob implements ShouldQueue
 {
