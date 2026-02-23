@@ -12,7 +12,7 @@ class StoryContentGenerator
     public function __construct(
         protected LLMProvider $llm,
         protected \WorldOS\World\Application\Services\WorldLawValidator $validator,
-        protected \App\Domains\World\Contracts\ClaimExtractorInterface $extractor,
+        protected \WorldOS\Blueprint\Domain\Legacy\Contracts\ClaimExtractorInterface $extractor,
         protected \App\Domains\WorldManagement\Services\AIGovernanceService $governance,
         protected NarrativeAssembler $assembler
     ) {}

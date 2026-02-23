@@ -51,34 +51,10 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-        $this->app->bind(
-            \App\Domains\Narrative\LLM\Contracts\LLMProvider::class,
-            function ($app) {
-                $apiKey = config('services.openai.api_key');
-                if (empty($apiKey) || app()->environment('testing')) {
-                    return new \App\Domains\Narrative\LLM\Services\FakeLLMService(
-                        $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class)
-                    );
-                }
-                return new \App\Domains\Narrative\LLM\Services\OpenAIService(
-                    $apiKey,
-                    config('services.openai.model'),
-                    $app->make(\App\Domains\Narrative\LLM\Support\AIProviderRequestLogger::class),
-                    $app->make(\App\Services\AI\AIAgentContext::class),
-                    $app->make(\App\Services\AI\AIFeatureAgentResolver::class)
-                );
-            }
-        );
-
         // World system bindings
         $this->app->bind(
             \WorldOS\Blueprint\Domain\Legacy\Contracts\ClaimExtractorInterface::class,
             \WorldOS\Legacy\Application\World\Services\RegexClaimExtractor::class
-        );
-
-        $this->app->bind(
-            \App\Domains\World\Contracts\ClaimExtractorInterface::class,
-            \App\Domains\World\Services\RegexClaimExtractor::class
         );
         
         // World repository binding
@@ -164,7 +140,6 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Continuous operation services
-        $this->app->singleton(\App\Services\World\ContinuousWorldService::class);
         $this->app->singleton(\WorldOS\Legacy\Application\Intelligence\Services\WorldIntelligenceService::class);
         $this->app->singleton(\WorldOS\Legacy\Application\Material\Services\WorldMaterialTracker::class);
         

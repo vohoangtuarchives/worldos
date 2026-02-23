@@ -71,7 +71,7 @@ echo "\n--- TEST 3: Generator Integration ---\n";
 // Mock Dependencies
 $mockLLM = new \App\StoryEngine\Services\FakeStoryLLMService();
 // We need to bind things or just instantiate manually. Manual is faster for script.
-$extractor = new \App\Domains\World\Services\RegexClaimExtractor();
+$extractor = new \WorldOS\Legacy\Application\World\Services\RegexClaimExtractor();
 $governance = new \App\Domains\WorldManagement\Services\AIGovernanceService();
 
 $generator = new \App\StoryEngine\Services\StoryContentGenerator($mockLLM, $validator, $extractor, $governance);

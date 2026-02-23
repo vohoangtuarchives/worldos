@@ -5,7 +5,6 @@ namespace App\Console\Commands;
 use WorldOS\Legacy\Domain\Cosmology\Cosmology;
 use WorldOS\Legacy\Application\Cosmology\Entities\Universe;
 use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
-use WorldOS\Legacy\Application\Narrative\Services\LLMChronicler;
 use Illuminate\Console\Command;
 
 class CosmologySimulateCommand extends Command
@@ -27,9 +26,6 @@ class CosmologySimulateCommand extends Command
         $universe = new Universe($initialState, [], 'prime-universe');
         $cosmology->getFieldSpace()->addUniverse($universe);
 
-        // Setup Narrative Engine (uses LLM when configured, else rich template)
-        $chronicler = app(LLMChronicler::class);
-
         $this->info("Simulation Start. Universe: " . $universe->getId());
         $this->renderState($universe);
 
@@ -41,10 +37,6 @@ class CosmologySimulateCommand extends Command
             
             // Render Math State
             $this->renderState($universe);
-            
-            // Render Narrative
-            $chronicle = $chronicler->chronicle($universe);
-            $this->line("<comment>Narrative:</comment> " . $chronicle);
             
             // Sleep for effect?
             // usleep(500000); 
@@ -73,4 +65,3 @@ class CosmologySimulateCommand extends Command
         );
     }
 }
-

@@ -37,7 +37,7 @@ $mockLLM = new class implements \App\Domains\Narrative\LLM\Contracts\LLMProvider
 
 // 3. Instantiate Generator with Real Services
 $validator = new \WorldOS\World\Application\Services\WorldLawValidator();
-$extractor = new \App\Domains\World\Services\RegexClaimExtractor();
+$extractor = new \WorldOS\Legacy\Application\World\Services\RegexClaimExtractor();
 $governance = new \App\Domains\WorldManagement\Services\AIGovernanceService();
 
 $generator = new StoryContentGenerator($mockLLM, $validator, $extractor, $governance);

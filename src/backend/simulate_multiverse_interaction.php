@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\World;
-use App\Domains\Cosmology\Entities\Universe;
-use App\Domains\Cosmology\Entities\WorldStateVector;
-use App\Domains\Cosmology\Services\BasePhysicsEngine;
+use WorldOS\Legacy\Application\Cosmology\Entities\Universe;
+use WorldOS\Legacy\Application\Cosmology\Entities\WorldStateVector;
+use WorldOS\Legacy\Application\Cosmology\Services\BasePhysicsEngine;
 use App\Domains\Saga\Services\EntropyPressureService;
 use App\Domains\Saga\Services\CivilizationScorer;
 use App\Domains\Saga\Services\BlueprintMutationPlanner;
