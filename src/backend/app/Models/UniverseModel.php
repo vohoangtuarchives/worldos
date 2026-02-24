@@ -1,76 +1,85 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * WorldOS V5 Universe Eloquent Model.
- * Clean V5 schema — no V3 legacy fields.
+ * Eloquent Model for universes table.
+ *
+ * Infrastructure layer — NO business logic.
+ * Domain logic belongs in UniverseEntity.
+ *
+ * @property string $id
+ * @property string $world_id
+ * @property array $state_vector
+ * @property array|null $cascade_state
+ * @property int $current_tick
+ * @property int $age
+ * @property string $status
+ * @property int $random_seed
+ * @property string|null $parent_universe_id
+ * @property array|null $parameters
+ * @property \Illuminate\Support\Carbon $created_at
+ * @property \Illuminate\Support\Carbon $updated_at
  */
 class UniverseModel extends Model
 {
-    use HasFactory, HasUuids, SoftDeletes;
+    use HasUuids;
 
     protected $table = 'universes';
-    public $incrementing = false;
+
     protected $keyType = 'string';
+
+    public $incrementing = false;
 
     protected $fillable = [
         'id',
-        'name',
-        'status',
-        // Lineage (DAG)
-        'world_blueprint_id',
-        'multiverse_id',
-        'parent_universe_id',
-        // Simulation state
-        'generation_id',
-        'current_tick',
-        'current_seed',
-        'entropy',
-        'stability_index',
-        'existence_weight',
+        'world_id',
         'state_vector',
-        'seed_dna',
-        'fitness_total_score',
-        'lifespan',
-        // V6 Ontology
-        'culture_vector',
-        'ideology_vector',
-        'influence_mass',
-        'stability_duration',
-        'lifecycle_state',
+        'cascade_state',
+        'current_tick',
+        'age',
+        'status',
+        'random_seed',
+        'parent_universe_id',
+        'parameters',
     ];
 
-    protected $casts = [
-        'state_vector'     => 'array',
-        'current_tick'     => 'integer',
-        'current_seed'     => 'integer',
-        'entropy'          => 'float',
-        'stability_index'  => 'float',
-        'existence_weight' => 'float',
-        'culture_vector'   => 'array',
-        'ideology_vector'  => 'array',
-        'influence_mass'   => 'float',
-        'stability_duration' => 'integer',
-    ];
-
-    public function snapshots()
+    protected function casts(): array
     {
-        return $this->hasMany(UniverseSnapshot::class, 'universe_id');
+        return [
+            'state_vector' => 'array',
+            'cascade_state' => 'array',
+            'current_tick' => 'integer',
+            'age' => 'integer',
+            'random_seed' => 'integer',
+            'parameters' => 'array',
+        ];
     }
 
-    public function parentUniverse()
+    public function world(): BelongsTo
+    {
+        return $this->belongsTo(World::class, 'world_id');
+    }
+
+    public function parent(): BelongsTo
     {
         return $this->belongsTo(self::class, 'parent_universe_id');
     }
 
-    public function childUniverses()
+    public function forks(): HasMany
     {
         return $this->hasMany(self::class, 'parent_universe_id');
+    }
+
+    public function snapshots(): HasMany
+    {
+        return $this->hasMany(UniverseSnapshotModel::class, 'universe_id');
     }
 }

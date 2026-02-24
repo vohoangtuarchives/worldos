@@ -1,77 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use App\WorldOS\Runtime\Entities\UniverseEntity;
+use App\WorldOS\Runtime\ValueObjects\UniverseId;
+use App\WorldOS\Shared\ValueObjects\LawVector;
+use App\WorldOS\Shared\ValueObjects\WorldStateVector;
+use App\WorldOS\World\Contracts\WorldRepositoryInterface;
+use App\WorldOS\World\Entities\WorldEntity;
 use Illuminate\Database\Seeder;
-use App\Models\World;
-use App\Models\WorldClock;
-use App\Models\Observer;
-use App\Models\ObserverVersion;
-use WorldOS\World\Application\Services\EventRecorder;
-use WorldOS\World\Application\Services\ScarFactory;
 
+/**
+ * World Seeder — seeds preset Worlds for development.
+ *
+ * From docs §13.3: php artisan db:seed --class=WorldSeeder
+ */
 class WorldSeeder extends Seeder
 {
-    public function run(): void
+    public function run(WorldRepositoryInterface $worldRepository): void
     {
-        $world = World::firstOrCreate(
-            ['name' => 'The First Chronicle'],
-            [
-                'description' => 'A world for the Material Law Engine simulation',
-                'current_epoch' => 0,
-                'status' => 'active',
-                'preset' => 'myth',
-                'gene_vector' => [],
-            ]
-        );
+        $presets = config('worldos.presets', []);
 
-        $this->command->info("World created: {$world->name}");
+        foreach ($presets as $presetKey => $presetData) {
+            $this->command->info("Seeding World: {$presetData['name']} ({$presetKey})");
 
-        // 1. Initialize WorldState (Phase 13) — only if no snapshot exists yet
-        $repository = app(\Tuzy\Application\Material\State\WorldStateRepository::class);
-        if ($repository->getLatestSnapshot((string) $world->id) === null) {
-            $initialState = \Tuzy\Application\Material\State\WorldState::createInitial((string) $world->id);
-            $repository->saveSnapshot($initialState);
-            $this->command->info("WorldState initialized for World {$world->id}");
-        } else {
-            $this->command->info("WorldState already exists for World {$world->id}, skipping.");
+            $world = WorldEntity::createFromPreset(
+                presetKey: $presetKey,
+                presetData: $presetData,
+            );
+
+            $worldRepository->save($world);
+
+            $this->command->line("  → World ID: {$world->getId()->value}");
         }
 
-        // 2. Activate Materials (Phase 14)
-        $materials = \Tuzy\Domain\Material\Material::all();
-        
-        if ($materials->isEmpty()) {
-            $this->command->warn('No materials found. Running MaterialSeeder...');
-            $this->call(MaterialSeeder::class);
-            $materials = \Tuzy\Domain\Material\Material::all();
-        }
-
-        $activatedCount = 0;
-        foreach ($materials as $material) {
-            // Activate ~50% of materials with random strength
-            if (rand(0, 100) > 50) {
-                \Tuzy\Domain\Material\MaterialInstance::firstOrCreate(
-                    [
-                        'world_id' => $world->id,
-                        'material_id' => $material->id,
-                    ],
-                    [
-                        'strength_level' => rand(3, 8), // 3-8 strength
-                        'activation_epoch' => 0,
-                        'retired_at' => null,
-                        'mutation_state' => ['original' => true],
-                    ]
-                );
-                $activatedCount++;
-            }
-        }
-
-        $this->command->info("Activated {$activatedCount} materials in World {$world->id}");
-
-        // 3. Keep Observers (Legacy Support)
-        WorldClock::firstOrCreate(['world_id' => $world->id]);
-        
-        $chronicler = Observer::firstOrCreate(['name' => 'chronicler', 'role' => 'chronicler']);
-        ObserverVersion::firstOrCreate(['observer_id' => $chronicler->id, 'version' => 'v1'], ['rules' => ['tone' => 'neutral']]);
+        $this->command->info('WorldSeeder complete: ' . count($presets) . ' worlds created.');
     }
 }
