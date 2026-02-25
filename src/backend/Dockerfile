@@ -19,6 +19,9 @@ RUN apt-get update && apt-get install -y \
     libjpeg62-turbo-dev \
     libwebp-dev \
     libpq-dev \
+    libssl-dev \
+    zlib1g-dev \
+    protobuf-compiler \
     zip \
     unzip \
     nginx \
@@ -27,8 +30,8 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && pecl install redis \
-    && docker-php-ext-enable redis \
+    && pecl install redis grpc \
+    && docker-php-ext-enable redis grpc \
     && docker-php-ext-install -j$(nproc) \
     pdo \
     pdo_pgsql \

@@ -16,10 +16,6 @@ return new class extends Migration
             
             // Evolutionary Link
             $table->uuid('parent_id')->nullable()->index();
-            $table->foreign('parent_id')
-                  ->references('id')
-                  ->on('world_tree_lineages')
-                  ->onDelete('cascade');
                   
             $table->unsignedBigInteger('generation')->default(0);
             
@@ -50,6 +46,13 @@ return new class extends Migration
             $table->string('final_snapshot_hash', 64)->nullable();
             
             $table->timestamps();
+        });
+
+        Schema::table('world_tree_lineages', function (Blueprint $table) {
+            $table->foreign('parent_id')
+                  ->references('id')
+                  ->on('world_tree_lineages')
+                  ->onDelete('cascade');
         });
     }
 

@@ -1,0 +1,19 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Modules\Universe\Events;
+
+use App\Modules\Universe\ValueObjects\WorldId;
+
+/**
+ * Domain Event: World law vector has been updated.
+ */
+final readonly class WorldLawUpdated
+{
+    public function __construct(
+        public WorldId $worldId,
+        public string $reason,
+    ) {
+    }
+}

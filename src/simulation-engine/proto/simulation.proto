@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package simulation;
+
+service SimulationEngine {
+    // Run exactly one tick iteratively
+    rpc RunTick (TickRequest) returns (TickResponse);
+}
+
+message TickRequest {
+    string universe_id = 1;
+    uint32 dimension = 2;              // N (for N x N matrices)
+    repeated double current_state = 3; // x(t) (length N)
+    repeated double control_vector = 4;// u(t) (length N)
+    repeated double a_matrix = 5;      // Flattened A matrix (length N x N)
+    repeated double l_matrix = 6;      // Flattened L matrix (length N x N)
+    
+    // Core Parameters
+    double alpha = 7;
+    double lambda = 8;
+    double eta = 9;
+    double beta = 10;
+    
+    // Guard parameters
+    double delta_target = 11;
+    double gamma_cap = 12;
+    double r_max = 13;
+    double energy_rate_limit = 14;
+    
+    // Cascade Engine Parameters
+    repeated double current_cascade = 15;      // Physics, Chemistry, Biology, Cognition, Culture (length 5)
+    repeated double cascade_thresholds = 16;   // P->C, C->B, B->N, N->K (length 4)
+    repeated double law_vector = 17;           // Theta_1 to Theta_17 (length 17)
+}
+
+message TickResponse {
+    string universe_id = 1;
+    bool success = 2;
+    repeated double next_state = 3; // x(t+1)
+    repeated double next_cascade_state = 4; // Cascade(t+1)
+    string error_message = 5;
+}

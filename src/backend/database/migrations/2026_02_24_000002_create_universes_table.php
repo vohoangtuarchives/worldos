@@ -26,14 +26,16 @@ return new class extends Migration
                 ->on('worlds')
                 ->onDelete('cascade');
 
+            $table->index('world_id');
+            $table->index('status');
+            $table->index('parent_universe_id');
+        });
+
+        Schema::table('universes', function (Blueprint $table) {
             $table->foreign('parent_universe_id')
                 ->references('id')
                 ->on('universes')
                 ->onDelete('set null');
-
-            $table->index('world_id');
-            $table->index('status');
-            $table->index('parent_universe_id');
         });
     }
 

@@ -1,7 +1,7 @@
-use App\Http\Controllers\WriterGenesisController;
-use App\Http\Controllers\WriterNarrativeController;
-use App\Http\Controllers\WriterSagaController;
-use App\Http\Controllers\WriterUniverseController;
+use App\Modules\Universe\Http\Controllers\WriterGenesisController;
+use App\Modules\Narrative\Http\Controllers\WriterNarrativeController;
+use App\Modules\Narrative\Http\Controllers\WriterSagaController;
+use App\Modules\Universe\Http\Controllers\WriterUniverseController;
 use Illuminate\Support\Facades\Route;
 
 /*

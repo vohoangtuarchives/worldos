@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('saga_worlds', function (Blueprint $table) {
-            $table->uuid('id')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('id')->primary();
             $table->uuid('saga_id');
             $table->uuid('world_id');
             $table->uuid('universe_id');
