@@ -65,7 +65,20 @@ final class TickUniverseAction
         $controlVector = $params['controlVector'] ?? array_fill(0, $dim, 0.0);
 
         // 2. Extract current state
-        $currentState = $universe->getStateVector()->toArray();
+        // WorldStateVector.toArray() returns named keys — flatten to indexed float array for gRPC
+        $currentState = array_values($universe->getStateVector()->toArray());
+        // dim is the length of the state vector (always 6 for WorldStateVector)
+        $dim = count($currentState);
+        // Adjust matrices and control vector to match actual dim
+        $expectedMatrixSize = $dim * $dim;
+        if (count($aMatrix) !== $expectedMatrixSize) {
+            // Pad or reseed aMatrix and lMatrix to correct dimension
+            $aMatrix = array_fill(0, $expectedMatrixSize, 0.0);
+            $lMatrix = array_fill(0, $expectedMatrixSize, 0.0);
+        }
+        if (count($controlVector) !== $dim) {
+            $controlVector = array_fill(0, $dim, 0.0);
+        }
         $currentCascade = $universe->getCascadeState()?->toArray() ?? [
             'physics' => 0.0, 'chemistry' => 0.0, 'biology' => 0.0, 'cognition' => 0.0, 'culture' => 0.0
         ];
