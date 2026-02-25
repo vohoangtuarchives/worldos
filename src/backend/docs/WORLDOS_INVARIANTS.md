@@ -1,81 +1,126 @@
 # WORLDOS INVARIANTS REGISTRY
 
-**Phiên bản:** 1.0  
-**Ngày:** 2026-02-24  
-**Trạng thái:** Bắt buộc (Non-Negotiable)  
+**Version:** 1.0  
+**Status:** Mandatory  
+**Scope:** Kernel Layer (MathCore + GovernanceGuard)  
 
-Tài liệu này định nghĩa các **bất biến (invariants)** cốt lõi của không gian mô phỏng WorldOS. Vì WorldOS được định hướng là nền tảng nghiên cứu nguyên khối về động lực học văn minh có giới hạn (a formal computational framework for bounded civilizational dynamics), các invariant này đóng vai trò như các định luật vật lý bất khả xâm phạm.
+## 1. Mục tiêu
+Tài liệu này định nghĩa các bất biến (invariants) bắt buộc của WorldOS Kernel. Mọi tick, mọi experiment, mọi plugin đều phải tuân thủ nghiêm ngặt.
+Nếu một invariant bị vi phạm:
+- Tick bị reject
+- Snapshot rollback
+- Experiment bị đánh dấu invalid
 
-**Mọi module, câu lệnh, quá trình tiến hóa (math core), hoặc mở rộng (plugin, actor) NẾU vi phạm bất kỳ invariant nào dưới đây đều dẫn đến việc tự động từ chối (reject) tick và ném ra ngoại lệ nghiêm trọng (Halt/Panic).**
+Không có ngoại lệ.
 
----
-
-## Invariant 1: Spectral Margin (Stable Contraction)
-
-**Định nghĩa:** Hệ thống phải duy trì tính co giãn tuyệt đối (strictly contractive) để mọi trạng thái đều hội tụ về một fixed point khi không có xung lực ngoại sinh.
-
-**Toán học:** 
+## 2. Stability Invariants
+### 2.1 Spectral Margin Invariant
+Kernel update matrix:
+$$ \mathbf{J} = \mathbf{I} + \alpha [(\mathbf{A} - \mathbf{I}) - \lambda \mathbf{L} - \eta \mathbf{I}] $$
+Phải thỏa mãn:
 $$ \rho(\mathbf{J}) \le 1 - \delta $$
-với $\delta \ge 0.05$ là safety margin.
+với: $\delta \ge 0.05$
 
-**Governance Guard:**
-Thay vì phân tích toàn diện phổ (đắt đỏ $O(n^3)$), `GovernanceGuard` sử dụng Định lý vòng tròn Gershgorin ($O(n^2)$) để ép buộc bất biến này trên ma trận Jacobian $\mathbf{J}$ ở mọi tick:
-$$ |J_{ii}| + \sum_{j \neq i} |J_{ij}| \le 1 - \delta \quad \forall i $$
+Trong runtime, có thể dùng Gershgorin bound thay cho eigen decomposition để tối ưu hiệu năng:
+Với mọi $i$:
+$$ |J_{ii}| + \sum_{j \neq i} |J_{ij}| < 1 $$
+Nếu không thỏa $\rightarrow$ reject update.
 
----
+### 2.2 Intrinsic Damping Invariant
+$$ \eta > 0 $$
+Và:
+$$ \alpha \eta < 1 $$
+Đảm bảo hệ thống luôn suy giảm tự nhiên (damped) và không bị hiện tượng overshoot.
 
-## Invariant 2: Input Cap (Bounded Exogenous Force)
+### 2.3 Diffusion Positivity Invariant
+Nếu multi-region enabled:
+- $\mathbf{L}$ phải là symmetric matrix (đối xứng).
+- $\mathbf{L}$ phải là positive semi-definite (bán xác định dương).
+- $\lambda \ge 0$
 
-**Định nghĩa:** Tổng lực tác động từ bên ngoài (Actor, Plugin, Material) trong một tick không bao giờ được phép thay đổi hệ thống vượt quá giới hạn an toàn. Không một thực thể đơn lẻ hay tập hợp nào có thể sinh ra "Năng lượng vô hạn".
+Nếu không thỏa $\rightarrow$ reject configuration.
 
-**Toán học:**
+## 3. Input Control Invariants
+### 3.1 Input Norm Bound
+Tổng lực tác động ngoại sinh bị chặn:
 $$ \|\mathbf{u}(t)\| \le \gamma_{\text{cap}} $$
-Và chặn trên khi qua hệ số scale:
-$$ \alpha \beta \gamma_{\text{cap}} < \delta \cdot R $$
-(với $R$ là bán kính kỳ vọng của attractor).
+Không cho phép bất kỳ plugin hay actor nào bypass giới hạn này.
 
-**Governance Guard:**
-Lớp `ExtensionOrchestrator` có nhiệm vụ thu thập $\mathbf{u}_i$ từ các module. Lớp `GovernanceGuard` đánh giá $\mathbf{u}(t) = \sum \mathbf{u}_i$. Nếu $\|\mathbf{u}(t)\|$ vượt quá $\gamma_{\text{cap}}$, vector $\mathbf{u}(t)$ sẽ bị **cắt ngắn (scale down/clip)** về đúng giới hạn $\gamma_{\text{cap}}$ trước khi đưa vào `MathCore`. 
+### 3.2 Stability Budget Invariant
+Định nghĩa tỷ lệ gia tăng năng lượng giữa 2 tick:
+$$ r(t) = \frac{\|\mathbf{x}(t+1)\|}{\|\mathbf{x}(t)\|} $$
+Phải thỏa mãn:
+$$ r(t) \le 1 - \delta + \epsilon $$
+với $\epsilon$ siêu nhỏ (ví dụ 0.01).
+Nếu vượt $\rightarrow$ hệ thống cảnh báo + reject.
 
----
+## 4. Boundedness Invariant
+Vì hệ thống là contractive, ta có:
+$$ \sup_t \|\mathbf{x}(t)\| < \infty $$
+Trong runtime, trạng thái bị cứng giới hạn:
+- Nếu $\|\mathbf{x}(t)\| > R_{\max}$ (configurable) $\rightarrow$ hard stop simulation.
+- $R_{\max}$ phải được định nghĩa tường minh trong experiment config.
 
-## Invariant 3: Stability Budget (Energy Boundedness)
+## 5. Determinism Invariants
+### 5.1 Tick Determinism
+Cho trước:
+- cùng initial state $\mathbf{x}(0)$
+- cùng system parameters
+- cùng static PRNG seed
+- cùng plugin execution order
 
-**Định nghĩa:** Hệ thống nghiêm cấm mọi sự bùng nổ hàm mũ (exponential blow-up). Sự thay đổi năng lượng của hệ (khoảng cách rời rạc của trạng thái ẩn) trong một tick không được vượt quá mức cản nội tại.
+Yêu cầu phải tạo ra:
+- identical $\mathbf{x}(t)$
+- identical snapshot hash
 
-**Toán học:**
-Tỷ lệ năng lượng (Energy Ratio) giữa 2 tick liên tiếp phải thỏa mãn:
-$$ \frac{\|\mathbf{x}(t+1)\|}{\|\mathbf{x}(t)\|} \le 1 - \delta + \epsilon $$
-*(với $\epsilon$ là dung sai nhỏ cho phép các nhiễu động số học hoặc thao tác làm tròn)*.
+Nếu không trùng khớp $\rightarrow$ bug nghiên cứu nghiêm trọng (xem lại precision hoặc source of randomness).
 
-**Governance Guard:**
-Sau khi `MathCore` tính xong $\mathbf{x}_{\text{new}}$, `GovernanceGuard` đo lường Energy Ratio. Nếu vi phạm, `GovernanceGuard` sẽ báo động (Raise Panic), hủy bỏ cập nhật $\mathbf{x}_{\text{new}}$, và rollback hệ thống về trạng thái $\mathbf{x}(t)$.
+### 5.2 Execution Order Determinism
+Thứ tự thực thi plugin phải:
+- Explicitly sorted (sắp xếp rõ ràng, ví dụ theo UUID phân loại chữ cái lexicographical).
+- Deterministic.
+- Tuyệt đối không phụ thuộc vào container resolution order (thứ tự tiêm của Dependency Injection Container).
 
----
+## 6. Snapshot Integrity Invariants
+### 6.1 Hash Chain
+Mỗi tick tạo ra một link không thể phá vỡ:
+$$ \text{hash}_t = \text{SHA256}(\text{hash}_{t-1} + \text{serialize}(\mathbf{x}_t)) $$
+Tuyệt đối không cho phép sửa snapshot cũ (Append-Only).
 
-## Invariant 4: Mathematical Determinism
+### 6.2 Parameter Immutability
+Sau khi một experiment bắt đầu, các tham số cấu trúc:
+$\alpha, \beta, \lambda, \eta, \gamma_{\text{cap}}$ **không được phép thay đổi**.
+Regime change (chuyển đổi thể loại/kỷ nguyên) yêu cầu:
+- Đóng experiment hiện tại (Seal Ledger).
+- Mở experiment mới (New Genesis với thông số mới).
 
-**Định nghĩa:** Quá trình tiến hóa của Vũ trụ phải hoàn toàn tất định. Nếu cung cấp cùng một Trạng thái ban đầu (State), cùng Tham số cấu hình (LawVector, Matrix), cùng Đầu vào ngoại sinh (Input $u$), và cùng một Seed (hạt giống ngẫu nhiên tĩnh), hệ thống phải **luôn luôn** cho ra cùng một trạng thái tiếp theo ở bất cứ nền tảng hay không thời gian nào.
+## 7. Numerical Precision Invariant
+Phải đảm bảo tính nhất quán toán học:
+- Khác biệt tính toán dấu phẩy động (Floating-point drift) $\le$ dung sai $\epsilon_{\text{machine}}$.
+- Hoặc sử dụng Fixed Precision Layer (như `bcmath` trong PHP).
+Nếu chạy cross-machine (đối chiếu đa máy chủ) cho ra kết quả khác nhau quá dung sai $\rightarrow$ experiment invalid.
 
-**Điều kiện ép buộc:**
-1. Mọi truy xuất lấy hàm ngẫu nhiên bên trong `MathCore` hoặc `ExtensionOrchestrator` (bao gồm hành vi của Actor/Plugin) **phải** được lấy từ instance của `SeededRNG` gắn liền với Universe, không bao giờ dùng `rand()` hay ngẫu nhiên hệ thống (system clock).
-2. Các phép toán dấu phẩy động (float) phải được chuẩn hóa thông qua thư viện fixed-point toán học nếu cần, hoặc đảm bảo tuân thủ nghiêm ngặt IEEE 754 với độ chính xác double ($FP64$).
-3. Thứ tự duyệt và thực thi (iterate) các `Actor`, `Plugin`, hoặc `Region` phải được sắp xếp deterministically (ví dụ: theo ID/UUID có thứ tự tử điển - lexicographical sort), không phụ thuộc vào Hash Map hay thứ tự nạp bộ nhớ.
+## 8. Complexity Invariant
+Thiết kế tối ưu thuật toán. Cho không gian vũ trụ số chiều $n$:
+- Update complexity phải đạt $O(n^2)$ hoặc tốt hơn.
+- Memory growth phải tuyến tính $O(n)$.
+Mọi plugin có độ phức tạp vượt ngưỡng $O(n^3)$ $\rightarrow$ lập tức reject.
 
----
+## 9. Governance Authority
+Lớp `GovernanceGuard` độc lập và có toàn quyền:
+- Reject tick.
+- Rollback state.
+- Disable plugin vi phạm.
+- Terminate experiment.
+`MathCore` chỉ thực hiện phép tính, không có quyền tự kiểm soát (Pure Functionality).
 
-## Invariant 5: Snapshot Reproducibility
+## 10. The Core Principle
+Simulation Kernel bắt buộc phải duy trì 6 đặc tính tối thượng:
+1. **Contractive** (Luôn Co giãn)
+2. **Input-bounded** (Lực Tác Động Có Giới Hạn)
+3. **Deterministic** (Tất Định Hoàn Toàn)
+4. **Auditable** (Truy Vết Mọi Step)
+5. **Finite-memory** (Tiêu Thụ Bộ Nhớ Tuyến Tính Định Tuyến)
+6. **Parameter-explicit** (Mọi Tham Số Phải Rõ Ràng)
 
-**Định nghĩa:** Bức ảnh chụp trạng thái (Snapshot) của hệ thống là **Nguồn Sự thật Duy nhất (Single Source of Truth)**. Một Snapshot chứa toàn bộ thông tin cần thiết để khởi động lại (resume) Vũ trụ từ thời điểm đó mà không có bất kỳ trạng thái chìm (hidden state) nào bị sót.
-
-**Điều kiện ép buộc:**
-1. Snapshot **phải** lưu trữ chính xác vector trạng thái ẩn $\mathbf{x}(t)$, vector lực $\mathbf{u}(t)$, các hệ số cấu trúc $\alpha, \lambda, \beta, \eta$, ma trận $\mathbf{A}, \mathbf{L}$ và **state của SeededRNG** tại thời điểm $t$.
-2. Không gian observable $\mathbf{S}(t) = \sigma(\mathbf{x}(t))$ không bao giờ được dùng làm input tính toán vật lý (chỉ dùng cho mục đích quan sát/dịch thuật narrative). Mọi quá trình tính toán đều đọc state từ $\mathbf{x}$. 
-3. Các Actor và Plugin muốn lưu giữ trạng thái lịch sử qua nhiều tick đều phải đóng gói payload của chúng vào cấu trúc dữ liệu của Snapshot. Bộ nhớ In-Memory (ví dụ: Redis cache) không bao giờ được xem là nguồn sự thật.
-
----
-
-## Phụ lục: Quyết định cơ sở
-
-- Kernel không sinh ra "emergence chaos" nội sinh. Kịch tính (Drama) chỉ sinh ra từ lực Input $\mathbf{u}$ có kiểm soát. 
-- Mọi module thay đổi bản chất hệ thống (Genre shift, Phase transition) **không** thay đổi phương trình trực tiếp, mà thực hiện qua việc **chỉnh sửa ma trận hệ số $\mathbf{A}, \lambda, \eta$** và tạo một Snapshot mới đại diện cho Region/Regime thay đổi.
+Nếu một Pull Request hay tính năng mới vô tình làm mất 1 trong 6 tính chất trên $\rightarrow$ **KHÔNG MERGE**. 
