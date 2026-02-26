@@ -1,7 +1,7 @@
-# WorldOS v1.0.0 — Tài liệu Kiến trúc & Vận hành Hệ thống
+# WorldOS v1.1.0 — Tài liệu Kiến trúc & Vận hành Hệ thống
 
-**Phiên bản:** 1.0.1
-**Ngày:** 2026-02-25  
+**Phiên bản:** 1.1.0
+**Ngày:** 2026-02-26  
 **Trạng thái:** Chính thức  
 **Phạm vi:** Toàn bộ hệ thống WorldOS – Core Kernel, Governance, Experimentation, và AI Meta-Layer  
 
@@ -384,6 +384,8 @@ Mọi phát triển trong tương lai đều phải tuân thủ các nguyên t�
 - **[Appendix 02: Kịch tính Tự sinh & Bifurcation Formalization (RSCD v1.2)](Appendix_02.md)**: Khai thác lực căng biểu kiến (Tension-first), Event Extraction, Tension Integral. Giải nghĩa sự sụp đổ như Saddle-Node Bifurcation và mô hình hóa Cây Đa Vũ trụ dưới dạng chuỗi Markov (Markov Chain) mang phân phối bất biến.
 - **[Appendix 03: Động lực học Huyền thoại, Ký ức & Tiến hóa Ý nghĩa (RSCD v1.3 - Tầng CAS)](Appendix_03.md)**: Gắn kết không gian Field Layer (Myth, Scar), tầng nhận thức Ideology và Meta-Meaning. Chứng minh WorldOS là một hệ thống CAS có "Ý chí Lịch sử Nổi sinh" thông qua phân cấp thời gian và đột biến hệ tư tưởng.
 - **[Appendix 04: Động Lực Học Vô Hướng, Ký Ức & Chuyển Pha Lịch Sử](Appendix_04_Meta_Dynamics.md)**: Xác lập toán học cho các cơ chế bất khả nghịch (Irreversibility $\Sigma$), Lan truyền sẹo vũ trụ, Hỗn loạn tầng siêu nhận thức (Meta-Entropy), và Phá vỡ chế độ (Regime Transition $\Theta$).
+- **[Appendix 05: Đặc tả Trường Vật chất & Tri thức (Material & Knowledge Field)](WORLDOS_MATERIAL_KNOWLEDGE_FIELD.md)**: Các định luật Entropy vĩ mô, giới hạn công nghệ (Tech Envelope), kiến trúc thực thi xử lý chu kỳ pha (Meta-Cycle Engine) qua mô hình đa luồng bằng Rust (`Rayon`).
+- **[Appendix 06: Đặc tả Tích lũy Lịch sử (Historical Accumulation Layer)](WORLDOS_HISTORICAL_ACCUMULATION_LAYER.md)**: Động lực học ly khai vùng, cấu trúc tổ chức văn hóa, niềm tin thể chế và di sản chấn thương văn minh cạnh tranh.
 - **[WORLDOS_ARCHITECTURE_MULTIVERSE: Phân Tích Kiến Trúc Kỹ Thuật Dự Án](WORLDOS_ARCHITECTURE_MULTIVERSE.md)**: Cẩm nang hướng dẫn Microservices, Data-flow, và Database Design mở rộng từ 5 lên 10,000 Universes (Next.js/PHP/Rust/Redis).
 - **[WORLDOS_ARCHITECTURE_SIMULATION_ENGINE: Kiến Trúc Lõi Của WorldOS Game Engine & Social Physics](WORLDOS_ARCHITECTURE_SIMULATION_ENGINE.md)**: Đặc tả mô hình Đa vũ trụ A+B (DAG), hệ thống mô phỏng đa phân giải (Hybrid Resolution) kết hợp Deterministic Macro và Stochastic Micro, cấu trúc MicroSession với Semi-Agent 12D Trait, và thiết kế Bimodal Dynamics khám phá điểm chuyển pha lịch sử.
 - **[WORLDOS_PHILOSOPHY_HUYEN_NGUYEN_V2: Siêu Hình Học Về Điều Kiện Của Xuất Hiện](WORLDOS_PHILOSOPHY_HUYEN_NGUYEN_V2.md)**: Chuyên luận triết học làm nền tảng cốt lõi của hệ thống, định hình thế giới quan thiết kế WorldOS qua 8 tiên đề phát sinh phân biệt, quan hệ và sự nổi sinh của quy luật lịch sử.
