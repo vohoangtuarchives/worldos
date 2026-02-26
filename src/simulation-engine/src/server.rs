@@ -63,9 +63,10 @@ impl SimulationEngine for MySimulationEngine {
         }
 
         let jacobian = math_core.compute_jacobian(&a_matrix, &l_matrix);
+        let spectral_radius = math_core.compute_spectral_radius(&jacobian);
         
-        // --- Governance Check 2: Spectral margin (Gershgorin) ---
-        if let Err(reason) = guard.check_spectral_margin_gershgorin(&jacobian) {
+        // --- Governance Check 2: Lyapunov Absolute Stability ---
+        if let Err(reason) = guard.check_lyapunov_stability(spectral_radius) {
             self.publish_event("GOVERNANCE_VIOLATION", &req.universe_id, &reason).await;
             return Ok(Response::new(TickResponse {
                 universe_id: req.universe_id,
@@ -117,6 +118,7 @@ impl SimulationEngine for MySimulationEngine {
             "universe_id": req.universe_id,
             "x_next": x_next_vec,
             "next_cascade": next_cascade_vec,
+            "spectral_radius": spectral_radius,
         }).to_string();
         {
             let mut con = self.redis.lock().await;

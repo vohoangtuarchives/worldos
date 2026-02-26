@@ -1,4 +1,4 @@
-use ndarray::{Array1, Array2};
+use ndarray::Array1;
 
 pub struct GovernanceGuard {
     pub delta_target: f64,
@@ -20,19 +20,13 @@ impl GovernanceGuard {
         Ok(())
     }
 
-    pub fn check_spectral_margin_gershgorin(&self, jacobian: &Array2<f64>) -> Result<(), String> {
-        let n = jacobian.dim().0;
-        for i in 0..n {
-            let mut row_sum = 0.0;
-            for j in 0..n {
-                if i != j {
-                    row_sum += jacobian[[i, j]].abs();
-                }
-            }
-            let radius = jacobian[[i, i]].abs() + row_sum;
-            if radius >= 1.0 - self.delta_target {
-                return Err(format!("Gershgorin disc radius {:.4} at row {} violates spectral margin <= {:.4}", radius, i, 1.0 - self.delta_target));
-            }
+    /// Verifies absolute stability (Lyapunov): ρ(J) <= 1 - delta_target
+    /// This uses MathCore's power iteration to get the exact spectral radius instead of 
+    /// the Gershgorin upper-bound, significantly reducing false positives.
+    pub fn check_lyapunov_stability(&self, spectral_radius: f64) -> Result<(), String> {
+        let margin = 1.0 - self.delta_target;
+        if spectral_radius > margin {
+            return Err(format!("Spectral radius {:.4} violates Lyapunov absolute stability margin {:.4}", spectral_radius, margin));
         }
         Ok(())
     }

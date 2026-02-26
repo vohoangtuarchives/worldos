@@ -35,4 +35,17 @@ return [
         ],
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | WorldOS Simulation Engine (Rust gRPC Server)
+    |--------------------------------------------------------------------------
+    | Trong Docker: dùng service name "simulation-engine:50051" (cùng app_network).
+    | Trong local (non-Docker): dùng "127.0.0.1:50051".
+    | Đặt biến SIMULATION_ENGINE_GRPC_HOST trong .env để ghi đè.
+    */
+    'simulation_engine' => [
+        'host'    => env('SIMULATION_ENGINE_GRPC_HOST', 'simulation-engine:50051'),
+        'timeout' => env('SIMULATION_ENGINE_TIMEOUT_MS', 5000),
+    ],
+
 ];
