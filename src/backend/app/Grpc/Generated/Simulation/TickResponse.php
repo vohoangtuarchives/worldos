@@ -176,5 +176,60 @@ class TickResponse extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
+    /**
+     * V1.1.0: Universe SlotMap Serialized JSON State (updated)
+     *
+     * Generated from protobuf field <code>string zone_topology_json = 6;</code>
+     */
+    protected $zone_topology_json = '';
+
+    /**
+     * Generated from protobuf field <code>string zone_topology_json = 6;</code>
+     * @return string
+     */
+    public function getZoneTopologyJson()
+    {
+        return $this->zone_topology_json;
+    }
+
+    /**
+     * Generated from protobuf field <code>string zone_topology_json = 6;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setZoneTopologyJson($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->zone_topology_json = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>double global_entropy = 7;</code>
+     */
+    protected $global_entropy = 0.0;
+
+    /**
+     * Generated from protobuf field <code>double global_entropy = 7;</code>
+     * @return float
+     */
+    public function getGlobalEntropy()
+    {
+        return $this->global_entropy;
+    }
+
+    /**
+     * Generated from protobuf field <code>double global_entropy = 7;</code>
+     * @param float $var
+     * @return $this
+     */
+    public function setGlobalEntropy($var)
+    {
+        GPBUtil::checkDouble($var);
+        $this->global_entropy = $var;
+
+        return $this;
+    }
 }
 

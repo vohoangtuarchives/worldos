@@ -63,6 +63,7 @@ final class SimulationTickCommand
         array  $cascadeState       = [],
         array  $cascadeThresholds  = [],
         array  $lawVector          = [],
+        string $zoneTopologyJson   = '',
     ): array {
         // 1. Lấy định nghĩa Regime (Pure PHP Domain logic)
         $regime = RegimeFactory::fromName($currentRegimeName);
@@ -72,6 +73,7 @@ final class SimulationTickCommand
         if (!empty($cascadeState))      { $params['current_cascade']     = $cascadeState; }
         if (!empty($cascadeThresholds)) { $params['cascade_thresholds']  = $cascadeThresholds; }
         if (!empty($lawVector))         { $params['law_vector']          = $lawVector; }
+        $params['zone_topology_json'] = $zoneTopologyJson;
 
         $startTime = microtime(true);
 
@@ -106,6 +108,9 @@ final class SimulationTickCommand
         // 4b. Tick thành công — tính Hash Chain (Invariant #9)
         $nextHash = $this->hashChain->generateNextHash($previousHash, $nextState);
 
+        $nextTopologyJson = $engineResponse['zone_topology_json'] ?? '';
+        $globalEntropy = $engineResponse['global_entropy'] ?? 0.0;
+
         // 5. Persist snapshot
         $this->snapshotRepo->storeSnapshot(
             $experimentId,
@@ -115,7 +120,9 @@ final class SimulationTickCommand
             $regime->toGrpcParams(),
             $nextCascade,
             $nextHash,
-            $previousHash
+            $previousHash,
+            $nextTopologyJson,
+            $globalEntropy
         );
 
         // 6. Lưu metrics vào experiment record
@@ -141,6 +148,8 @@ final class SimulationTickCommand
             'nextState' => $nextState,
             'nextHash'  => $nextHash,
             'message'   => '',
+            'nextTopologyJson' => $engineResponse['zone_topology_json'] ?? '',
+            'globalEntropy' => $engineResponse['global_entropy'] ?? 0.0,
         ];
     }
 }

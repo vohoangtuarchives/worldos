@@ -556,5 +556,34 @@ class TickRequest extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
+    /**
+     * V1.1.0: Universe SlotMap Serialized JSON State
+     *
+     * Generated from protobuf field <code>string zone_topology_json = 18;</code>
+     */
+    protected $zone_topology_json = '';
+
+    /**
+     * Generated from protobuf field <code>string zone_topology_json = 18;</code>
+     * @return string
+     */
+    public function getZoneTopologyJson()
+    {
+        return $this->zone_topology_json;
+    }
+
+    /**
+     * Generated from protobuf field <code>string zone_topology_json = 18;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setZoneTopologyJson($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->zone_topology_json = $var;
+
+        return $this;
+    }
+
 }
 

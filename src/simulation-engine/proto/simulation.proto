@@ -31,6 +31,9 @@ message TickRequest {
     repeated double current_cascade = 15;      // Physics, Chemistry, Biology, Cognition, Culture (length 5)
     repeated double cascade_thresholds = 16;   // P->C, C->B, B->N, N->K (length 4)
     repeated double law_vector = 17;           // Theta_1 to Theta_17 (length 17)
+    
+    // V1.1.0: Universe SlotMap Serialized JSON State
+    string zone_topology_json = 18;
 }
 
 message TickResponse {
@@ -39,4 +42,8 @@ message TickResponse {
     repeated double next_state = 3; // x(t+1)
     repeated double next_cascade_state = 4; // Cascade(t+1)
     string error_message = 5;
+    
+    // V1.1.0: Universe SlotMap Serialized JSON State (updated)
+    string zone_topology_json = 6;
+    double global_entropy = 7;
 }

@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\DB;
  */
 class SnapshotRepository
 {
-    /**
-     * Store a deterministic snapshot hash chain link.
-     * MUST be append-only.
-     */
     public function storeSnapshot(
         string $experimentId,
         int $tick,
@@ -23,7 +19,9 @@ class SnapshotRepository
         array $structureParams,
         ?array $rngState,
         string $snapshotHash,
-        string $previousHash
+        string $previousHash,
+        string $zoneTopologyJson = '',
+        float $globalEntropy = 0.0
     ): void {
         DB::table('kernel_experiment_snapshots')->insert([
             'experiment_id' => $experimentId,
@@ -35,6 +33,8 @@ class SnapshotRepository
             'snapshot_hash' => $snapshotHash,
             'previous_hash' => $previousHash,
             'created_at' => now(),
+            'zone_topology_json' => empty($zoneTopologyJson) ? null : $zoneTopologyJson,
+            'global_entropy' => $globalEntropy,
         ]);
     }
 }

@@ -53,6 +53,9 @@ class GrpcSimulationEngineClient implements SimulationEngineClientInterface
         $request->setCascadeThresholds($params['cascade_thresholds'] ?? [0.7, 0.7, 0.7, 0.7]);
         $request->setLawVector($params['law_vector'] ?? array_fill(0, 17, 0.1));
 
+        // V1.1.0 Nạp Data Structure JSON
+        $request->setZoneTopologyJson($params['zone_topology_json'] ?? '');
+
         // Gọi gRPC Call
         /** @var \Simulation\TickResponse $reply */
         /** @var \Grpc\Call $status */
@@ -81,6 +84,8 @@ class GrpcSimulationEngineClient implements SimulationEngineClientInterface
         return [
             'state' => $nextState,
             'cascade' => $nextCascadeState,
+            'zone_topology_json' => $reply->getZoneTopologyJson(),
+            'global_entropy' => $reply->getGlobalEntropy(),
         ];
     }
 }

@@ -27,6 +27,7 @@ import { RealtimeVectorAnalysis } from "./components/RealtimeVectorAnalysis";
 import { LiveChronicleNode } from "./components/LiveChronicleNode";
 import { useSimulationStore } from "./stores/useSimulationStore";
 import { Button } from "@/components/ui/button";
+import { ZoneTopologyHeatmap } from "./components/ZoneTopologyHeatmap";
 
 const METRICS_POLL_MS = 4000;
 
@@ -263,7 +264,13 @@ export function EvolutionView({
         </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-3">
+      {selectedUniverseId && (
+        <div className="mt-8 animate-in slide-in-from-bottom duration-700">
+          <ZoneTopologyHeatmap universeId={selectedUniverseId} />
+        </div>
+      )}
+
+      <div className="grid gap-6 lg:grid-cols-3 mt-8">
         <div className="lg:col-span-2 glass-card p-6 space-y-4">
           <h3 className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
             <Route className="h-4 w-4 text-primary" /> Vận hành tiến hoá & vận chuyển universe

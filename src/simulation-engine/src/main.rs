@@ -1,16 +1,8 @@
-pub mod math;
-pub mod governance;
-pub mod cascade;
-pub mod server;
-
-pub mod simulation {
-    tonic::include_proto!("simulation");
-}
-
 use std::env;
 use tonic::transport::Server;
-use simulation::simulation_engine_server::SimulationEngineServer;
-use server::MySimulationEngine;
+use simulation_engine::server::MySimulationEngine;
+use simulation_engine::simulation::simulation_engine_server::SimulationEngineServer;
+
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

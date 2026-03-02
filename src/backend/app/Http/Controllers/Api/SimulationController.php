@@ -103,4 +103,48 @@ final class SimulationController extends Controller
             ],
         ]);
     }
+
+    /**
+     * GET /api/simulation/universes/{universeId}/zone-culture-map
+     */
+    public function getZoneCultureMap(Request $request, string $universeId): JsonResponse
+    {
+        $experimentId = $this->getLatestExperimentId($universeId);
+        if (!$experimentId) {
+            return response()->json(['success' => false, 'message' => 'No active experiment found'], 404);
+        }
+
+        $query = new \App\Domain\Simulation\Actions\GetZoneCultureMapQuery();
+        return response()->json([
+            'success' => true,
+            'data' => $query->execute($experimentId),
+        ]);
+    }
+
+    /**
+     * GET /api/simulation/universes/{universeId}/historical-scars
+     */
+    public function getHistoricalScars(Request $request, string $universeId): JsonResponse
+    {
+        $experimentId = $this->getLatestExperimentId($universeId);
+        if (!$experimentId) {
+            return response()->json(['success' => false, 'message' => 'No active experiment found'], 404);
+        }
+
+        $query = new \App\Domain\Simulation\Actions\GetHistoricalScarsQuery();
+        return response()->json([
+            'success' => true,
+            'data' => $query->execute($experimentId),
+        ]);
+    }
+
+    private function getLatestExperimentId(string $universeId): ?string
+    {
+        $experiment = \Illuminate\Support\Facades\DB::table('kernel_experiments')
+            ->whereRaw("JSON_EXTRACT(config, '$.universe_id') = ?", [$universeId])
+            ->orderByDesc('started_at')
+            ->first();
+            
+        return $experiment ? $experiment->id : null;
+    }
 }

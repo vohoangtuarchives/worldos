@@ -113,12 +113,31 @@ impl SimulationEngine for MySimulationEngine {
         let next_cascade = evolve_cascade(&cascade_state, &law_vector, &cascade_thresholds);
         let next_cascade_vec = next_cascade.to_vec();
 
+        // --- V1.1.0 Init Universe from JSON ---
+        let mut universe = if !req.zone_topology_json.is_empty() {
+            serde_json::from_str(&req.zone_topology_json)
+                .unwrap_or_else(|_| crate::domain::universe::Universe::new())
+        } else {
+            crate::domain::universe::Universe::new()
+        };
+
+        // --- Run Compute Layer Phase 2 (Parallel Map-Reduce) ---
+        crate::engine::sim_loop::SimulationEngineLoop::execute_parallel_tick(&mut universe);
+        let mut macro_event = crate::engine::events::MacroEventEngine;
+        macro_event.evaluate_secession(&mut universe);
+        crate::engine::meta_cycle::MetaCycleEngine::trigger_metacycle_if_needed(&mut universe);
+
+        // --- Package updated universe ---
+        let updated_topology_json = serde_json::to_string(&universe).unwrap_or_default();
+        let current_global_entropy = universe.global_entropy;
+
         let payload = json!({
             "type": "TICK_COMPLETED",
             "universe_id": req.universe_id,
             "x_next": x_next_vec,
             "next_cascade": next_cascade_vec,
             "spectral_radius": spectral_radius,
+            "global_entropy": current_global_entropy,
         }).to_string();
         {
             let mut con = self.redis.lock().await;
@@ -131,6 +150,8 @@ impl SimulationEngine for MySimulationEngine {
             next_state: x_next_vec,
             next_cascade_state: next_cascade_vec,
             error_message: "".to_string(),
+            zone_topology_json: updated_topology_json,
+            global_entropy: current_global_entropy,
         }))
     }
 }

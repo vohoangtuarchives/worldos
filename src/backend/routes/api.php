@@ -17,4 +17,8 @@ Route::post('/universes/{id}/tick', [UniverseController::class, 'tick']);
 Route::prefix('simulation')->group(function () {
     Route::post('/experiments', [SimulationController::class, 'runExperiment']); // Chạy N ticks
     Route::get('/universes/{universeId}/snapshot', [SimulationController::class, 'getSnapshot']); // Đọc Observable State
+    
+    // V1.1.0: Zone Mapping API
+    Route::get('/universes/{universeId}/zone-culture-map', [SimulationController::class, 'getZoneCultureMap']);
+    Route::get('/universes/{universeId}/historical-scars', [SimulationController::class, 'getHistoricalScars']);
 });
